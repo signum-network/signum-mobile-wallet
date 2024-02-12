@@ -1,4 +1,4 @@
-import { CustomButton } from "@/components/action/Button";
+import { Button } from "@/components/Button";
 import { StatusBar } from "expo-status-bar";
 import { Text, View } from "react-native";
 
@@ -19,12 +19,8 @@ const WalletCreateSelection = () => {
         </Text>
       </View>
       <View className="gap-4">
-        <CustomButton type="primary" title="Create a new wallet" />
-        <CustomButton
-          type="secondary"
-          title="I already have one"
-          linkProps={{ href: "/account/import" }}
-        />
+        <Button type="primary" title="Create a new wallet" />
+        <Button type="secondary" title="I already have one" />
       </View>
       <StatusBar style="auto" />
     </View>

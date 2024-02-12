@@ -1,11 +1,11 @@
-import { CustomButton } from "@/components/action/Button";
+import { Button } from "@/components/Button";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Address } from "@signumjs/core";
 import { generateMasterKeys } from "@signumjs/crypto";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { useEffect, useState } from "react";
-import { Alert, Button, Text, TextInput, View } from "react-native";
+import { useState } from "react";
+import { Alert, Text, TextInput, View } from "react-native";
 
 const ImportAccount = () => {
   const [passphrase, setPassphrase] = useState("");
@@ -41,7 +41,7 @@ const ImportAccount = () => {
         <TextInput value={walletName} onChangeText={setWalletName} />
       </View>
       <View className="gap-4">
-        <CustomButton
+        <Button
           type="primary"
           title="Restore wallet"
           icon={<MaterialIcons name="check-circle" size={24} color="white" />}

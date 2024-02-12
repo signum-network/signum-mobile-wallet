@@ -1,19 +1,20 @@
-import clsx from "clsx";
+import type { ReactNode } from "react";
+import type { LinkProps } from "expo-router/build/link/Link";
 import { Link } from "expo-router";
-import { LinkProps } from "expo-router/build/link/Link";
 import { Pressable, PressableProps, Text, View } from "react-native";
+import clsx from "clsx";
 
-interface CustomButtonProps {
+interface Props {
   type: "primary" | "secondary";
   linkProps?: LinkProps;
   pressableProps?: PressableProps;
   title?: string;
-  icon?: React.ReactNode;
+  icon?: ReactNode;
   fullWidth?: boolean;
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
-export const CustomButton = ({
+export const Button = ({
   type,
   linkProps,
   pressableProps,
@@ -21,7 +22,7 @@ export const CustomButton = ({
   icon,
   fullWidth,
   children,
-}: CustomButtonProps) => {
+}: Props) => {
   const classNames = clsx([
     "flex-row justify-center items-center px-4 py-4 rounded-lg",
     fullWidth && "w-full",
@@ -31,6 +32,7 @@ export const CustomButton = ({
 
   if (linkProps) {
     return (
+      // @ts-expect-error Routes are statically typed
       <Link {...linkProps} asChild>
         <Pressable className={classNames} {...pressableProps}>
           {icon && <View className="mr-4">{icon}</View>}
