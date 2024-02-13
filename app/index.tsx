@@ -1,5 +1,13 @@
-import { WelcomeScreen } from "@/features/Welcome/WelcomeScreen";
+import { View } from "react-native";
+import { useAppStore } from "@/hooks/useAppStore";
+import { Redirect } from "expo-router";
 
 export default function Screen() {
-  return <WelcomeScreen />;
+  const { isTermAgreed } = useAppStore();
+
+  if (!isTermAgreed) {
+    return <Redirect href="/terms" />;
+  }
+
+  return <View></View>;
 }
