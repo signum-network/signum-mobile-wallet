@@ -12,6 +12,7 @@ interface Props {
   icon?: ReactNode;
   fullWidth?: boolean;
   children?: ReactNode;
+  disabled?: boolean;
 }
 
 export const Button = ({
@@ -22,23 +23,32 @@ export const Button = ({
   icon,
   fullWidth,
   children,
+  disabled = false,
 }: Props) => {
   const classNames = clsx([
     "flex-row justify-center items-center px-4 py-4 rounded-lg",
     fullWidth && "w-full",
     type === "primary" && "bg-signum",
     type === "secondary" && "bg-gray-500",
+    disabled && "!bg-slate-200",
+  ]);
+
+  const textClassNames = clsx([
+    disabled && "font-bold !color-slate-500",
+    type && "color-white",
   ]);
 
   if (linkProps) {
     return (
       // @ts-expect-error Routes are statically typed
       <Link {...linkProps} asChild>
-        <Pressable className={classNames} {...pressableProps}>
+        <Pressable
+          disabled={disabled}
+          className={classNames}
+          {...pressableProps}
+        >
           {icon && <View className="mr-4">{icon}</View>}
-          {title && (
-            <Text className={clsx([type && "color-white"])}>{title}</Text>
-          )}
+          {title && <Text className={textClassNames}>{title}</Text>}
           {children && children}
         </Pressable>
       </Link>
@@ -46,9 +56,9 @@ export const Button = ({
   }
 
   return (
-    <Pressable className={classNames} {...pressableProps}>
+    <Pressable disabled={disabled} className={classNames} {...pressableProps}>
       {icon && <View className="mr-4">{icon}</View>}
-      {title && <Text className={clsx([type && "color-white"])}>{title}</Text>}
+      {title && <Text className={textClassNames}>{title}</Text>}
       {children && children}
     </Pressable>
   );

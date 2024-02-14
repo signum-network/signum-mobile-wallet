@@ -1,3 +1,9 @@
 {
-  "welcome": "Welcome"
+  "welcome": "Welcome",
+  "continue": "Continue",
+  "terms": {
+    "requestFirstLine": "Before you start using this wallet",
+    "requestSecondLine": "Please read and agree the following terms",
+    "acceptTerms": "I accept the terms of service"
+  }
 }
