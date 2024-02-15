@@ -1,20 +1,21 @@
+import { useState, useEffect } from "react";
 import { View } from "react-native";
-import { LICENSE } from "./License";
-import { useState } from "react";
-import { Button } from "@/components/Button";
 import { useTranslation } from "react-i18next";
+import { useRouter } from "expo-router";
 import { Image } from "expo-image";
+import { LICENSE } from "./License";
+import { Button } from "@/components/Button";
 import { signumWhiteSymbolPicture } from "@/assets";
 import { Text } from "@/components/Text";
 import { FormCheckbox } from "@/components/FormCheckbox";
 import { useAppStore } from "@/hooks/useAppStore";
-import { useRouter } from "expo-router";
+import { getHardwareAuth } from "@/utils/getHardwareAuth";
 
 import Markdown from "react-native-marked";
 
 export const TermsScreen = () => {
   const { t } = useTranslation();
-  const { setIsTermAgreed } = useAppStore();
+  const { setAuthMethod, setIsTermAgreed } = useAppStore();
   const [accepted, setAccepted] = useState(false);
   const toggleTerms = () => setAccepted(!accepted);
   const router = useRouter();
@@ -23,6 +24,13 @@ export const TermsScreen = () => {
     setIsTermAgreed(true);
     router.replace("/auth");
   };
+
+  useEffect(() => {
+    (async () => {
+      const { canUseHardwareAuth } = await getHardwareAuth();
+      setAuthMethod(canUseHardwareAuth ? "BIOMETRIC" : "PIN");
+    })();
+  }, []);
 
   return (
     <View className="flex-1 bg-white gap-4">

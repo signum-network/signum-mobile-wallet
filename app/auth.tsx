@@ -1,10 +1,5 @@
-import { Fragment } from "react";
-import { Text } from "@/components/Text";
+import { AuthScreen } from "@/features/Auth";
 
 export default function Screen() {
-  return (
-    <Fragment>
-      <Text>Auth Screen</Text>
-    </Fragment>
-  );
+  return <AuthScreen />;
 }

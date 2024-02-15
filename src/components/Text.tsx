@@ -6,7 +6,7 @@ interface Props {
   size?: "small" | "medium" | "large";
   className?: string;
   fullWidth?: boolean;
-  children: string;
+  children: string | string[];
 }
 
 export const Text = ({

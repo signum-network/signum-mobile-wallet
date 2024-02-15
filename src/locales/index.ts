@@ -25,7 +25,7 @@ export const getDefaultLocale = (): locales => {
 };
 
 i18n.use(initReactI18next).init({
-  debug: process.env.NODE_ENV === "development",
+  // debug: process.env.NODE_ENV === "development",
   fallbackLng: getDefaultLocale(),
   supportedLngs,
   resources: {
