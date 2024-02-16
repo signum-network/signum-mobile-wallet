@@ -15,11 +15,7 @@ export {
 export default function RootLayout() {
   return (
     <AppProviders>
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="index" />
-        <Stack.Screen name="terms" />
-        <Stack.Screen name="auth" />
-      </Stack>
+      <Stack screenOptions={{ headerShown: false }} />
     </AppProviders>
   );
 }

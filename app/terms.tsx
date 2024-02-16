@@ -9,6 +9,7 @@ export default function Screen() {
       <StatusBar
         style={Platform.OS === "ios" ? "dark" : "light"}
         backgroundColor="#0099ff"
+        translucent
       />
       <TermsScreen />
     </Fragment>

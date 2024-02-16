@@ -22,7 +22,7 @@ export const TermsScreen = () => {
 
   const saveTerms = () => {
     setIsTermAgreed(true);
-    router.replace("/auth");
+    router.replace("/auth/enroll");
   };
 
   useEffect(() => {
