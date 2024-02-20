@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { useState } from "react";
 import { Text } from "@/components/Text";
 import { useAppStore } from "@/hooks/useAppStore";
 import { PinAuthenticator } from "@/features/Auth/components/PinAuthenticator";
@@ -34,19 +34,17 @@ export const LoginAuthScreen = () => {
   };
 
   return (
-    <Fragment>
-      <PinAuthenticator
-        label="Please set a passcode to secure your device"
-        complementaryLabel="A passcode is used to protect the wallet"
-        errorLabel="Wrong PIN, Please try again"
-        successLabel="Welcome back 😊"
-        error={error}
-        success={success}
-        length={PUBLIC_PIN_LENGTH}
-        value={value}
-        onChange={handleOnChangeValues}
-        onReset={resetValues}
-      />
-    </Fragment>
+    <PinAuthenticator
+      label="Please set a passcode to secure your device"
+      complementaryLabel="A passcode is used to protect the wallet"
+      errorLabel="Wrong PIN, Please try again"
+      successLabel="Welcome back 😊"
+      error={error}
+      success={success}
+      length={PUBLIC_PIN_LENGTH}
+      value={value}
+      onChange={handleOnChangeValues}
+      onReset={resetValues}
+    />
   );
 };

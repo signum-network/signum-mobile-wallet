@@ -9,7 +9,7 @@ interface State {
   themeMode: ColorSchemeName;
   language: locales;
   isTermAgreed: boolean; // Determine whether the user has agreed to terms of service
-  isAuthEnrolled: boolean; // Determine whether the user has saved PIN or Fingerprint to use for authentication.
+  isAuthEnrolled: boolean; // Determine whether the user has enrolled for authentication.
   authMethod: authMethod; // Determine the method the user will use for authentication (PIN or Biometric)
 }
 

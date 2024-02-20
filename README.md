@@ -4,6 +4,10 @@ The new 🚀 Signum Mobile Wallet - Better than ever before 🤘
 
 ## Development Tips
 
+### What to do when new libraries are installed
+
+Execute `npm run prebuild`
+
 ### Android
 
 - JDK 17

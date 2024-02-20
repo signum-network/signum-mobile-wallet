@@ -178,7 +178,7 @@ export const PinAuthenticator = ({
         <Text className="max-w-xs w-full text-center !text-2xl">{label}</Text>
       </View>
 
-      <View className="w-full max-w-md mx-auto px-4 flex flex-row items-center justify-between">
+      <View className="w-full max-w-md mx-auto px-4 flex flex-row items-center justify-center gap-2">
         {inputs.map((_item, index) => (
           <TextInput
             ref={(ref) => {

@@ -1,12 +1,14 @@
 import { useState, useEffect, Fragment } from "react";
-import { View } from "react-native";
+import { View, Alert, Platform } from "react-native";
 import { useTranslation } from "react-i18next";
+import { router } from "expo-router";
 import { useAppStore } from "@/hooks/useAppStore";
 import { PinAuthenticator } from "@/features/Auth/components/PinAuthenticator";
 import { PUBLIC_PIN_LENGTH } from "@/types/constants";
 import { Button } from "@/components/Button";
 import { getHardwareAuth } from "@/utils/sec/getHardwareAuth";
-import { stretchKey } from "@/utils/sec/stretchKey";
+import { generateHash } from "@/utils/sec/generateHash";
+import { savePin } from "@/utils/sec/handleKeys";
 
 enum Steps {
   enter,
@@ -17,7 +19,7 @@ const initialValues = [...new Array(PUBLIC_PIN_LENGTH)];
 
 export const EnrollAuthScreen = () => {
   const { t } = useTranslation();
-  const { authMethod, setAuthMethod } = useAppStore();
+  const { authMethod, setAuthMethod, setIsAuthEnrolled } = useAppStore();
 
   const [step, setStep] = useState(Steps.enter);
 
@@ -62,15 +64,48 @@ export const EnrollAuthScreen = () => {
     setStep(Steps.enter);
   };
 
-  const onSuccess = async (pin: string) => {
-    console.log("Success");
+  const askHardwareAuthPermission = () => {
+    const goToWizard = () => {
+      setTimeout(() => {
+        setIsAuthEnrolled(true);
+        router.replace("/account-wizard/");
+      }, 2000);
+    };
 
-    // Strech and Store PIN on SecureStore
-    const securedPIN = await stretchKey(pin).then((data) => data);
+    if (authMethod === "BIOMETRIC") {
+      Alert.alert(
+        `${t("auth.askHardwareAuthTitle")} 🔐`,
+        t(
+          Platform.OS === "android"
+            ? "auth.androidAskHardwareAuthDescription"
+            : "auth.iOSAskHardwareAuthDescription"
+        ),
+        [
+          {
+            text: t("no"),
+            onPress: () => {
+              setAuthMethod("PIN");
+              goToWizard();
+            },
+            style: "destructive",
+          },
+          { text: t("auth.acceptHardwareAuth"), onPress: goToWizard },
+        ]
+      );
+    } else {
+      goToWizard();
+    }
+  };
+
+  const onSuccess = async (pin: string) => {
+    const securedPIN = await generateHash(pin).then((data) => data);
 
     if (securedPIN) {
-      // TODO: Store keys
       const { key, salt } = securedPIN;
+
+      await savePin(key, salt).then(() => {
+        askHardwareAuthPermission();
+      });
     }
   };
 

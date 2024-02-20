@@ -1,6 +1,7 @@
 {
   "welcome": "Welcome",
   "continue": "Continue",
+  "no": "No",
   "terms": {
     "requestFirstLine": "Before you start using this wallet",
     "requestSecondLine": "Please read and agree the following terms",
@@ -15,6 +16,10 @@
     "verifycorrectPassCode": "Congratulations",
     "verifyLoadingWait": "Please wait for the app setting up the PIN",
     "loadingWait": "Loading...",
-    "goBack": "Go back"
+    "goBack": "Go back",
+    "askHardwareAuthTitle": "Seamless log in",
+    "androidAskHardwareAuthDescription": "Do you want to use your fingerprint to log in?",
+    "iOSAskHardwareAuthDescription": "Do you want to use Face ID or Touch ID to log in?",
+    "acceptHardwareAuth": "Yes, i want!"
   }
 }
