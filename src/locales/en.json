@@ -5,5 +5,16 @@
     "requestFirstLine": "Before you start using this wallet",
     "requestSecondLine": "Please read and agree the following terms",
     "acceptTerms": "I accept the terms of service"
+  },
+  "auth": {
+    "enrollPassCodeTitle": "Please set a passcode to secure your device",
+    "enrollPassCodeDescription": "A passcode is used to protect the wallet",
+    "enterPassCodeAgain": "Enter passcode again",
+    "verifyPassCode": "Verify the passcode",
+    "verifyIncorrectPassCode": "Incorrect passcode, Please try again",
+    "verifycorrectPassCode": "Congratulations",
+    "verifyLoadingWait": "Please wait for the app setting up the PIN",
+    "loadingWait": "Loading...",
+    "goBack": "Go back"
   }
 }

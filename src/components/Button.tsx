@@ -11,6 +11,7 @@ interface Props {
   title?: string;
   icon?: ReactNode;
   fullWidth?: boolean;
+  wide?: boolean;
   children?: ReactNode;
   disabled?: boolean;
 }
@@ -22,6 +23,7 @@ export const Button = ({
   title,
   icon,
   fullWidth,
+  wide,
   children,
   disabled = false,
 }: Props) => {
@@ -31,6 +33,7 @@ export const Button = ({
     type === "primary" && "bg-signum",
     type === "secondary" && "bg-gray-500",
     disabled && "!bg-slate-200",
+    wide && "!px-16",
   ]);
 
   const textClassNames = clsx([

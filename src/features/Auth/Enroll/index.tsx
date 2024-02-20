@@ -1,8 +1,12 @@
-import { Fragment, useState } from "react";
+import { useState, useEffect, Fragment } from "react";
+import { View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useAppStore } from "@/hooks/useAppStore";
 import { PinAuthenticator } from "@/features/Auth/components/PinAuthenticator";
 import { PUBLIC_PIN_LENGTH } from "@/types/constants";
+import { Button } from "@/components/Button";
+import { getHardwareAuth } from "@/utils/sec/getHardwareAuth";
+import { stretchKey } from "@/utils/sec/stretchKey";
 
 enum Steps {
   enter,
@@ -13,7 +17,7 @@ const initialValues = [...new Array(PUBLIC_PIN_LENGTH)];
 
 export const EnrollAuthScreen = () => {
   const { t } = useTranslation();
-  const { authMethod } = useAppStore();
+  const { authMethod, setAuthMethod } = useAppStore();
 
   const [step, setStep] = useState(Steps.enter);
 
@@ -47,21 +51,50 @@ export const EnrollAuthScreen = () => {
 
       setVerificationSuccess(isValidPin);
       setVerificationError(!isValidPin ? true : false);
-
-      if (isValidPin) onSuccess();
     }
   };
 
-  const onSuccess = () => {
-    console.log("Success");
+  const resetProgress = () => {
+    setFirstStepValues(initialValues);
+    setVerificationValues(initialValues);
+    setVerificationError(false);
+    setVerificationSuccess(false);
+    setStep(Steps.enter);
   };
 
+  const onSuccess = async (pin: string) => {
+    console.log("Success");
+
+    // Strech and Store PIN on SecureStore
+    const securedPIN = await stretchKey(pin).then((data) => data);
+
+    if (securedPIN) {
+      // TODO: Store keys
+      const { key, salt } = securedPIN;
+    }
+  };
+
+  useEffect(() => {
+    (async () => {
+      const { canUseHardwareAuth } = await getHardwareAuth();
+      setAuthMethod(canUseHardwareAuth ? "BIOMETRIC" : "PIN");
+    })();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      if (verificationSuccess && !verificationError) {
+        await onSuccess(verificationValues.join(""));
+      }
+    })();
+  }, [verificationSuccess, verificationError]);
+
   return (
-    <Fragment>
+    <View className="flex-1 flex flex-col items-center justify-center">
       {step === Steps.enter && (
         <PinAuthenticator
-          label="Please set a passcode to secure your device"
-          complementaryLabel="A passcode is used to protect the wallet"
+          label={t("auth.enrollPassCodeTitle")}
+          complementaryLabel={t("auth.enrollPassCodeDescription")}
           errorLabel=""
           successLabel=""
           error={false}
@@ -74,19 +107,32 @@ export const EnrollAuthScreen = () => {
       )}
 
       {step === Steps.verify && (
-        <PinAuthenticator
-          label="Enter passcode again"
-          complementaryLabel="Verify the passcode"
-          errorLabel="Incorrect passcode, Please try again"
-          successLabel="Congratulations ✅"
-          error={verificationError}
-          success={verificationSuccess}
-          length={PUBLIC_PIN_LENGTH}
-          value={verificationValues}
-          onChange={handleOnChangeVerificationValues}
-          onReset={resetVerificationValues}
-        />
+        <Fragment>
+          {!verificationSuccess && (
+            <View className="flex justify-center items-center">
+              <Button
+                type="secondary"
+                title={t("auth.goBack")}
+                pressableProps={{ onPress: resetProgress }}
+                wide
+              />
+            </View>
+          )}
+
+          <PinAuthenticator
+            label={t("auth.enterPassCodeAgain")}
+            complementaryLabel={t("auth.verifyPassCode")}
+            errorLabel={t("auth.verifyIncorrectPassCode")}
+            successLabel={`${t("auth.verifyLoadingWait")} 🔒`}
+            error={verificationError}
+            success={verificationSuccess}
+            length={PUBLIC_PIN_LENGTH}
+            value={verificationValues}
+            onChange={handleOnChangeVerificationValues}
+            onReset={resetVerificationValues}
+          />
+        </Fragment>
       )}
-    </Fragment>
+    </View>
   );
 };

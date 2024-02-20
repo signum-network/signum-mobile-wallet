@@ -2,6 +2,7 @@ import "../global.css";
 import "@/locales";
 import { Stack } from "expo-router/stack";
 import { AppProviders } from "@/providers";
+import "fast-text-encoding";
 import * as SplashScreen from "expo-splash-screen";
 
 export {

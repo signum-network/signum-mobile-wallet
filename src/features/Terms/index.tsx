@@ -9,13 +9,12 @@ import { signumWhiteSymbolPicture } from "@/assets";
 import { Text } from "@/components/Text";
 import { FormCheckbox } from "@/components/FormCheckbox";
 import { useAppStore } from "@/hooks/useAppStore";
-import { getHardwareAuth } from "@/utils/getHardwareAuth";
 
 import Markdown from "react-native-marked";
 
 export const TermsScreen = () => {
   const { t } = useTranslation();
-  const { setAuthMethod, setIsTermAgreed } = useAppStore();
+  const { setIsTermAgreed } = useAppStore();
   const [accepted, setAccepted] = useState(false);
   const toggleTerms = () => setAccepted(!accepted);
   const router = useRouter();
@@ -24,13 +23,6 @@ export const TermsScreen = () => {
     setIsTermAgreed(true);
     router.replace("/auth/enroll");
   };
-
-  useEffect(() => {
-    (async () => {
-      const { canUseHardwareAuth } = await getHardwareAuth();
-      setAuthMethod(canUseHardwareAuth ? "BIOMETRIC" : "PIN");
-    })();
-  }, []);
 
   return (
     <View className="flex-1 bg-white gap-4">
