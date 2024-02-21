@@ -4,21 +4,23 @@ import { Keyboard } from "react-native";
 import { router } from "expo-router";
 import { useAppStore } from "@/hooks/useAppStore";
 import { PinAuthenticator } from "@/features/Auth/components/PinAuthenticator";
-import {
-  PUBLIC_PIN_LENGTH,
-  SECURE_STORE_PIN_SALT,
-  SECURE_STORE_PIN_KEY,
-} from "@/types/constants";
+import { PUBLIC_PIN_MAX_ATTEMPTS, PUBLIC_PIN_LENGTH } from "@/types/constants";
 import { generateHash } from "@/utils/sec/generateHash";
+import { readPin, deletePin } from "@/utils/sec/handlePin";
 import * as LocalAuthentication from "expo-local-authentication";
-import * as SecureStore from "expo-secure-store";
 
 const initialValues = [...new Array(PUBLIC_PIN_LENGTH)];
 
 export const LoginAuthScreen = () => {
   const { t } = useTranslation();
-  const { authMethod } = useAppStore();
+  const {
+    authMethod,
+    failedAuthAttempts,
+    setFailedAuthAttempts,
+    resetAppStore,
+  } = useAppStore();
 
+  const [locked, setLocked] = useState(false);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
@@ -35,20 +37,25 @@ export const LoginAuthScreen = () => {
     if (submit) {
       setLoading(true);
       const formatedValues = values.join("");
-      const salt = await SecureStore.getItemAsync(SECURE_STORE_PIN_SALT);
-      const key = await SecureStore.getItemAsync(SECURE_STORE_PIN_KEY);
+      const storedPinData = await readPin();
 
-      if (!salt || !key) return goToEnrollScreen();
+      if (!storedPinData) return goToEnrollScreen();
+
+      const { key, salt } = storedPinData;
 
       const tryHash = await generateHash(formatedValues, salt);
 
       if (!tryHash) return goToEnrollScreen();
 
       const isValidPin = key === tryHash.key;
-      setSuccess(isValidPin);
-      setError(!isValidPin);
 
-      if (!isValidPin) setLoading(false);
+      if (isValidPin) {
+        setSuccess(true);
+      } else {
+        setLoading(false);
+        setError(true);
+        setFailedAuthAttempts(failedAuthAttempts + 1);
+      }
     }
   };
 
@@ -65,6 +72,7 @@ export const LoginAuthScreen = () => {
 
   const onSuccess = () => {
     const areAllFieldsFilled = value.join("").length === PUBLIC_PIN_LENGTH;
+    setFailedAuthAttempts(0);
 
     // This timeout is here because of the success sound feedback :D, the tone lasts 3 seconds
     // As UX practice, if user logs in with hardware auth, the tone will not sound, because user want to log in quick
@@ -84,6 +92,31 @@ export const LoginAuthScreen = () => {
     if (authMethod === "BIOMETRIC") requestHardwareAuth();
   }, [authMethod]);
 
+  useEffect(() => {
+    (async () => {
+      if (failedAuthAttempts === PUBLIC_PIN_MAX_ATTEMPTS) {
+        setLocked(true);
+        alert(t("resetApp"));
+        Keyboard.dismiss();
+
+        await deletePin().then(() => {
+          resetAppStore();
+
+          // Timeout is applied because audio must finish, otherwise app will break
+          setTimeout(() => {
+            router.replace("/terms");
+          }, 3000);
+        });
+      } else if (failedAuthAttempts >= PUBLIC_PIN_MAX_ATTEMPTS - 2) {
+        alert(
+          t("auth.loginPassCodeTooManyAttempts", {
+            count: PUBLIC_PIN_MAX_ATTEMPTS - failedAuthAttempts,
+          })
+        );
+      }
+    })();
+  }, [failedAuthAttempts]);
+
   return (
     <PinAuthenticator
       label={t("auth.loginPassCodeTitle")}
@@ -96,7 +129,7 @@ export const LoginAuthScreen = () => {
       value={value}
       onChange={handleOnChangeValues}
       onReset={resetValues}
-      disabled={loading}
+      disabled={loading || locked}
     />
   );
 };

@@ -8,7 +8,7 @@ import { PUBLIC_PIN_LENGTH } from "@/types/constants";
 import { Button } from "@/components/Button";
 import { getHardwareAuth } from "@/utils/sec/getHardwareAuth";
 import { generateHash } from "@/utils/sec/generateHash";
-import { savePin } from "@/utils/sec/handleKeys";
+import { savePin } from "@/utils/sec/handlePin";
 
 enum Steps {
   enter,
