@@ -66,10 +66,13 @@ export const EnrollAuthScreen = () => {
 
   const askHardwareAuthPermission = () => {
     const goToWizard = () => {
-      setTimeout(() => {
-        setIsAuthEnrolled(true);
-        router.replace("/account-wizard/");
-      }, 2000);
+      // TODO: Remove this conditional until iOS issue is fixed
+      if (Platform.OS === "android") {
+        setTimeout(() => {
+          setIsAuthEnrolled(true);
+          router.replace("/account-wizard/");
+        }, 2700);
+      }
     };
 
     if (authMethod === "BIOMETRIC") {
@@ -97,7 +100,8 @@ export const EnrollAuthScreen = () => {
     }
   };
 
-  const onSuccess = async (pin: string) => {
+  const onSuccess = async () => {
+    const pin = verificationValues.join("");
     const securedPIN = await generateHash(pin).then((data) => data);
 
     if (securedPIN) {
@@ -119,7 +123,7 @@ export const EnrollAuthScreen = () => {
   useEffect(() => {
     (async () => {
       if (verificationSuccess && !verificationError) {
-        await onSuccess(verificationValues.join(""));
+        await onSuccess();
       }
     })();
   }, [verificationSuccess, verificationError]);

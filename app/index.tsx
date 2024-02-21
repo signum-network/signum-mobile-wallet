@@ -12,6 +12,5 @@ export default function Screen() {
     return <Redirect href="/auth/enroll" />;
   }
 
-  // TODO: After testing the generateHashes feature, change the href to /auth/login
-  return <Redirect href="/auth/enroll" />;
+  return <Redirect href="/auth/login" />;
 }
