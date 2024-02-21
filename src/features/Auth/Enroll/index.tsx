@@ -52,7 +52,7 @@ export const EnrollAuthScreen = () => {
       const isValidPin = formatedFirstStepValues === formatedVerificationValues;
 
       setVerificationSuccess(isValidPin);
-      setVerificationError(!isValidPin ? true : false);
+      setVerificationError(!isValidPin);
     }
   };
 

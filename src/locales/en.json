@@ -21,7 +21,7 @@
     "androidAskHardwareAuthDescription": "Do you want to use your fingerprint to log in?",
     "iOSAskHardwareAuthDescription": "Do you want to use Face ID or Touch ID to log in?",
     "acceptHardwareAuth": "Yes, i want!",
-    "loginPassCodeTitle": "Please set a passcode to secure your device",
+    "loginPassCodeTitle": "Unlock the wallet to continue",
     "loginPassCodeDescription": "A passcode is used to protect the wallet",
     "loginCorrectPassCode": "Welcome back",
     "verifyItsYou": "Verify it's you"

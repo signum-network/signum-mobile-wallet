@@ -23,6 +23,7 @@ interface Props {
   value: string[];
   error: boolean;
   success: boolean;
+  disabled?: boolean;
   onChange: (value: string[], submit: boolean) => void;
   onReset: () => void;
 }
@@ -40,6 +41,7 @@ export const PinAuthenticator = ({
   value,
   error,
   success,
+  disabled = false,
   onChange,
   onReset,
 }: Props) => {
@@ -137,16 +139,18 @@ export const PinAuthenticator = ({
     (async () => {
       if (areAllItemsFilled(value)) {
         if (success) {
-          inputRefs.current = [];
-          Keyboard.dismiss();
-          await playSuccessSound();
-        } else {
-          await resetValues();
-          await playErrorSound();
+          await playSuccessSound().then(() => {
+            inputRefs.current = [];
+            Keyboard.dismiss();
+          });
+        } else if (error) {
+          await playErrorSound().then(() => {
+            resetValues();
+          });
         }
       }
     })();
-  }, [value]);
+  }, [value, success, error]);
 
   if (success) {
     return (
@@ -188,7 +192,9 @@ export const PinAuthenticator = ({
             }}
             key={index}
             autoFocus={index === 0}
-            className="text-2xl font-bold text-center w-14 h-14 border-2 rounded-md bg-white border-card-border dark:border-card-border-dark"
+            className={`text-2xl font-bold text-center w-14 h-14 border-2 rounded-md bg-white border-card-border dark:border-card-border-dark ${
+              disabled && "opacity-50"
+            }`}
             maxLength={1}
             contextMenuHidden
             selectTextOnFocus
@@ -197,8 +203,8 @@ export const PinAuthenticator = ({
             keyboardType="decimal-pad"
             secureTextEntry
             testID={`OTPInput-${index}`}
-            onChangeText={(text) => handleChange(text, index)}
-            onKeyPress={(event) => handleBackspace(event, index)}
+            onChangeText={(text) => !disabled && handleChange(text, index)}
+            onKeyPress={(event) => !disabled && handleBackspace(event, index)}
           />
         ))}
       </View>
@@ -206,6 +212,13 @@ export const PinAuthenticator = ({
       <Text color={error ? "error" : "content"}>
         {error ? errorLabel : complementaryLabel}
       </Text>
+
+      {disabled && (
+        <View className="gap-2 flex flex-row items-center justify-center">
+          <ActivityIndicator />
+          <Text color="muted">{t("auth.loadingWait")}</Text>
+        </View>
+      )}
     </View>
   );
 };
