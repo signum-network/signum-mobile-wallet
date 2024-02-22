@@ -1,4 +1,4 @@
-import { Appearance, type ColorSchemeName } from "react-native";
+import { type ColorSchemeName } from "react-native";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { getDefaultLocale, type locales } from "@/locales";
@@ -25,7 +25,7 @@ interface Actions {
 }
 
 const initialState: State = {
-  themeMode: Appearance.getColorScheme(),
+  themeMode: "light",
   language: getDefaultLocale(),
   isTermAgreed: false,
   isAuthEnrolled: false,
