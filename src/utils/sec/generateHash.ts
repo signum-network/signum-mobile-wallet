@@ -16,6 +16,7 @@ export const generateHash = async (secret: string, saltBase64?: string) => {
 
     let hash = await Crypto.digest(Crypto.CryptoDigestAlgorithm.SHA512, merged);
 
+    // TODO: Fix iOS issue regarding PIN rehashing
     for (let i = 0; i < PUBLIC_PIN_HASH_ITERATIONS - 1; ++i) {
       hash = await Crypto.digest(
         Crypto.CryptoDigestAlgorithm.SHA512,
