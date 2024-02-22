@@ -8,7 +8,9 @@ export const useAppTheme = () => {
   const themeMode = appStore((state) => state.themeMode);
   const toggleThemeMode = appStore((state) => state.toggleThemeMode);
 
-  const theme = themeMode === "dark" ? DarkTheme : DefaultTheme;
+  const isDarkMode = themeMode === "dark";
+
+  const theme = isDarkMode ? DarkTheme : DefaultTheme;
 
   const iconColor = theme.colors.card;
 
@@ -16,5 +18,5 @@ export const useAppTheme = () => {
     setColorScheme(themeMode || "system");
   }, [themeMode, setColorScheme]);
 
-  return { theme, themeMode, iconColor, toggleThemeMode };
+  return { isDarkMode, theme, themeMode, iconColor, toggleThemeMode };
 };

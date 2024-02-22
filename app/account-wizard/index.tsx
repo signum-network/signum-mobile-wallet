@@ -1,5 +1,6 @@
-import { Text } from "@/components/Text";
+import { QuickStartScreen } from "@/features/AccountWizard/QuickStart";
 
+// TODO: Validate if an account is already set/imported
 export default function Screen() {
-  return <Text>Welcome to the wizard Screen</Text>;
+  return <QuickStartScreen />;
 }

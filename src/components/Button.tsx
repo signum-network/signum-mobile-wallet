@@ -5,7 +5,8 @@ import { Pressable, PressableProps, Text, View } from "react-native";
 import clsx from "clsx";
 
 interface Props {
-  type: "primary" | "secondary";
+  type: "primary" | "secondary" | "blackout";
+  size?: "small" | "medium" | "large";
   linkProps?: LinkProps;
   pressableProps?: PressableProps;
   title?: string;
@@ -18,6 +19,7 @@ interface Props {
 
 export const Button = ({
   type,
+  size = "medium",
   linkProps,
   pressableProps,
   title,
@@ -28,10 +30,11 @@ export const Button = ({
   disabled = false,
 }: Props) => {
   const classNames = clsx([
-    "flex-row justify-center items-center px-4 py-4 rounded-lg",
+    "flex flex-row justify-center items-center px-4 py-4 rounded-lg",
     fullWidth && "w-full",
-    type === "primary" && "bg-signum",
+    type === "primary" && "bg-signum dark:bg-signum-dark",
     type === "secondary" && "bg-gray-500",
+    type === "blackout" && "bg-black dark:bg-white",
     disabled && "!bg-slate-200",
     wide && "!px-16",
   ]);
@@ -39,6 +42,8 @@ export const Button = ({
   const textClassNames = clsx([
     disabled && "font-bold !color-slate-500",
     type && "color-white",
+    type === "blackout" && "!color-dark dark:!color-black",
+    size === "large" && "text-xl",
   ]);
 
   if (linkProps) {

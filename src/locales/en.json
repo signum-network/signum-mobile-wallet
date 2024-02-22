@@ -4,6 +4,7 @@
   "no": "No",
   "cancel": "Cancel",
   "resetApp": "A reset is happening, and all accounts will be erased from the app",
+  "or": "OR",
   "terms": {
     "requestFirstLine": "Before you start using this wallet",
     "requestSecondLine": "Please read and agree the following terms",
@@ -27,5 +28,16 @@
     "loginCorrectPassCode": "Welcome back",
     "verifyItsYou": "Verify it's you",
     "loginPassCodeTooManyAttempts": "You've tried logging in too many times. If you keep entering incorrect information, the app will reset and delete all accounts.\n\nYou have {{count}} attempt(s) left"
+  },
+  "accountWizard": {
+    "quickStart": {
+      "title": "Signum Mobile Wallet",
+      "description": "Set up your account to send and receive money using this awesome wallet!",
+      "ctaTitle": "Please make a selection to create or restore your account",
+      "createCta": "Create a New Wallet",
+      "importCta": "Add an Existing Wallet"
+    },
+    "createAccount": {},
+    "importAccount": {}
   }
 }

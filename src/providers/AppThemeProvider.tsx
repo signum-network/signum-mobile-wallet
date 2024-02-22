@@ -3,9 +3,10 @@ import { ThemeProvider } from "@react-navigation/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { ChildrenProps } from "@/types/children";
+import { StatusBar } from "expo-status-bar";
 
 export const AppThemeProvider = ({ children }: ChildrenProps) => {
-  const { theme } = useAppTheme();
+  const { isDarkMode, theme } = useAppTheme();
   const insets = useSafeAreaInsets();
 
   return (
@@ -16,6 +17,7 @@ export const AppThemeProvider = ({ children }: ChildrenProps) => {
         backgroundColor: theme.colors.background,
       }}
     >
+      <StatusBar style={isDarkMode ? "light" : "dark"} />
       <ThemeProvider value={theme}>{children}</ThemeProvider>
     </View>
   );
