@@ -42,7 +42,7 @@ export const Button = ({
   const textClassNames = clsx([
     disabled && "font-bold !color-slate-500",
     type && "color-white",
-    type === "blackout" && "!color-dark dark:!color-black",
+    type === "blackout" && "dark:color-black",
     size === "large" && "text-xl",
   ]);
 
