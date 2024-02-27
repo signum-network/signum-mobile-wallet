@@ -66,13 +66,10 @@ export const EnrollAuthScreen = () => {
 
   const askHardwareAuthPermission = () => {
     const goToWizard = () => {
-      // TODO: Remove this conditional until iOS issue is fixed
-      if (Platform.OS === "android") {
-        setTimeout(() => {
-          setIsAuthEnrolled(true);
-          router.replace("/account-wizard/");
-        }, 2700);
-      }
+      setTimeout(() => {
+        setIsAuthEnrolled(true);
+        router.replace("/account-wizard/");
+      }, 2700); // Timeout is assigned because of ringtone duration
     };
 
     if (authMethod === "BIOMETRIC") {

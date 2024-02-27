@@ -1,10 +1,10 @@
-import { Slot } from "expo-router";
 import { View } from "react-native";
+import type { ChildrenProps } from "@/types/childrenProps";
 
-export default function Layout() {
+export const AccountWizardContainer = ({ children }: ChildrenProps) => {
   return (
     <View className="flex-1 flex flex-col items-start justify-start gap-8 max-w-md mx-auto p-4">
-      <Slot />
+      {children}
     </View>
   );
-}
+};

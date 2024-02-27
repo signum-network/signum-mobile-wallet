@@ -1,5 +1,19 @@
-import { Text } from "@/components/Text";
+import { Fragment } from "react";
+import { useTranslation } from "react-i18next";
+import { Stack } from "expo-router/stack";
+import { getHeaderTitle } from "@/utils/getHeaderTitle";
+import { ImportScreen } from "@/features/AccountWizard/Import";
 
 export default function Screen() {
-  return <Text>Let's import or watch a Signum Account</Text>;
+  const { t } = useTranslation();
+
+  return (
+    <Fragment>
+      <Stack.Screen
+        options={getHeaderTitle(t("accountWizard.importAccount.headerTitle"))}
+      />
+
+      <ImportScreen />
+    </Fragment>
+  );
 }

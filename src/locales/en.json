@@ -37,7 +37,11 @@
       "createCta": "Create a New Wallet",
       "importCta": "Add an Existing Wallet"
     },
-    "createAccount": {},
-    "importAccount": {}
+    "createAccount": {
+      "headerTitle": "Wallet Creation"
+    },
+    "importAccount": {
+      "headerTitle": "Import Existing Wallet"
+    }
   }
 }
