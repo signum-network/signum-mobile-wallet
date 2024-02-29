@@ -4,7 +4,7 @@ import { Link } from "expo-router";
 import { Pressable, PressableProps, Text, View } from "react-native";
 import clsx from "clsx";
 
-interface Props {
+export interface Props {
   type: "primary" | "secondary" | "blackout";
   size?: "small" | "medium" | "large";
   linkProps?: LinkProps;
@@ -15,6 +15,7 @@ interface Props {
   wide?: boolean;
   children?: ReactNode;
   disabled?: boolean;
+  extraClassNames?: string;
 }
 
 export const Button = ({
@@ -28,6 +29,7 @@ export const Button = ({
   wide,
   children,
   disabled = false,
+  extraClassNames,
 }: Props) => {
   const classNames = clsx([
     "flex flex-row justify-center items-center px-4 py-4 rounded-lg",
@@ -37,6 +39,7 @@ export const Button = ({
     type === "blackout" && "bg-black dark:bg-white",
     disabled && "!bg-slate-200",
     wide && "!px-16",
+    extraClassNames && extraClassNames,
   ]);
 
   const textClassNames = clsx([
