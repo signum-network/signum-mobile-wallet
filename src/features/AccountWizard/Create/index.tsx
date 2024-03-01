@@ -1,23 +1,24 @@
-import { View, ScrollView } from "react-native";
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useRef, useState, useEffect, type RefObject } from "react";
+import { ScrollView } from "react-native";
 import { useForm, FormProvider } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { yupResolver } from "@hookform/resolvers/yup";
-import Animated, { SlideInRight, SlideOutLeft } from "react-native-reanimated";
 import { AccountWizardContainer } from "../components/AccountWizardContainer";
 import type { AccountCreationAgreement } from "./validation/types";
 import { accountCreationAgreementSchema } from "./validation/schemas";
 import { Agreement } from "./sections/Agreement";
 import { SecretPhraseGeneration } from "./sections/SecretPhraseGeneration";
-import { Button } from "@/components/Button";
+import { AnimatedSlideContainer } from "@/components/AnimatedSlideContainer";
+import { FormNavButton } from "@/components/FormNavButton";
 
-export enum Steps {
+enum Steps {
   AccountCreationAgreement,
   SecretPhraseGeneration,
 }
 
 export const CreateScreen = () => {
   const { t } = useTranslation();
+  const scrollRef: RefObject<ScrollView> = useRef(null);
 
   const [activeStep, setActiveStep] = useState(Steps.AccountCreationAgreement);
   const showAccountAgreementStep = () =>
@@ -35,37 +36,50 @@ export const CreateScreen = () => {
     },
   });
 
+  const { watch } = methods;
+
+  const firstTerm = watch("firstTerm");
+  const secondTerm = watch("secondTerm");
+  const thirdTerm = watch("thirdTerm");
+
+  const canCompleteFirstStep = firstTerm && secondTerm && thirdTerm;
+
+  useEffect(() => {
+    if (!scrollRef.current) return;
+
+    scrollRef.current?.scrollTo({
+      y: 0,
+      animated: true,
+    });
+  }, [activeStep]);
+
   return (
     <FormProvider {...methods}>
-      <View className="flex justify-center items-center flex-1 w-full absolute bottom-0 z-[50] p-4">
-        <Button
-          type="primary"
-          title="Switch"
-          fullWidth
-          extraClassNames="max-w-sm"
-          size="large"
-          pressableProps={{
-            onPress: () => {
-              activeStep === Steps.AccountCreationAgreement
-                ? showSecretPhraseGenerationStep()
-                : showAccountAgreementStep();
-            },
-          }}
-        />
-      </View>
+      <FormNavButton
+        type="primary"
+        title={t("continue")}
+        disabled={!canCompleteFirstStep}
+        pressableProps={{
+          onPress: () => {
+            activeStep === Steps.AccountCreationAgreement
+              ? showSecretPhraseGenerationStep()
+              : showAccountAgreementStep();
+          },
+        }}
+      />
 
-      <ScrollView>
+      <ScrollView ref={scrollRef}>
         <AccountWizardContainer>
           {activeStep === Steps.AccountCreationAgreement && (
-            <Animated.View entering={SlideInRight} exiting={SlideOutLeft}>
+            <AnimatedSlideContainer>
               <Agreement />
-            </Animated.View>
+            </AnimatedSlideContainer>
           )}
 
           {activeStep === Steps.SecretPhraseGeneration && (
-            <Animated.View entering={SlideInRight} exiting={SlideOutLeft}>
+            <AnimatedSlideContainer>
               <SecretPhraseGeneration />
-            </Animated.View>
+            </AnimatedSlideContainer>
           )}
         </AccountWizardContainer>
       </ScrollView>

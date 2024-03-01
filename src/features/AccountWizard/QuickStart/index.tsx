@@ -21,7 +21,7 @@ export const QuickStartScreen = () => {
             style={{ width: 274, height: 204 }}
           />
 
-          <Text className="font-bold text-3xl">
+          <Text className="font-bold" size="extraLarge">
             {t("accountWizard.quickStart.title")}
           </Text>
           <Text className="text-center max-w-sm" size="large">

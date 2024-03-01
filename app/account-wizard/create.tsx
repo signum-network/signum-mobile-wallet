@@ -10,7 +10,7 @@ export default function Screen() {
   return (
     <Fragment>
       <Stack.Screen
-        options={getHeaderTitle(t("accountWizard.createAccount.headerTitle"))}
+        options={getHeaderTitle(t("accountWizard.quickStart.createCta"))}
       />
 
       <CreateScreen />

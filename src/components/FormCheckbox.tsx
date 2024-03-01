@@ -29,9 +29,11 @@ export const FormCheckbox = ({
 
   return (
     <Pressable className={classNames} onPress={onPress}>
-      <Checkbox value={value} />
+      <View className="w-1/12  flex justify-center items-center">
+        <Checkbox value={value} />
+      </View>
 
-      <View className="flex-col items-start justify-start">
+      <View className="w-11/12  flex-col items-start justify-start">
         <Text className="font-medium">{title}</Text>
 
         {description && (

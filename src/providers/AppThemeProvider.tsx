@@ -2,7 +2,7 @@ import { View } from "react-native";
 import { ThemeProvider } from "@react-navigation/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { ChildrenProps } from "@/types/children";
+import { ChildrenProps } from "@/types/childrenProps";
 import { StatusBar } from "expo-status-bar";
 
 export const AppThemeProvider = ({ children }: ChildrenProps) => {
