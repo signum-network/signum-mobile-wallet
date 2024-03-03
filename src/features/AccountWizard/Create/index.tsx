@@ -1,48 +1,31 @@
-import { useRef, useState, useEffect, type RefObject } from "react";
+import { useRef, useEffect, type RefObject } from "react";
 import { ScrollView } from "react-native";
-import { useForm, FormProvider } from "react-hook-form";
-import { useTranslation } from "react-i18next";
+import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { AnimatedSlideContainer } from "@/components/AnimatedSlideContainer";
 import { AccountWizardContainer } from "../components/AccountWizardContainer";
-import type { AccountCreationAgreement } from "./validation/types";
-import { accountCreationAgreementSchema } from "./validation/schemas";
+import { accountCreationAgreementSchema } from "./utils/schemas";
 import { Agreement } from "./sections/Agreement";
 import { SecretPhraseGeneration } from "./sections/SecretPhraseGeneration";
-import { AnimatedSlideContainer } from "@/components/AnimatedSlideContainer";
-import { FormNavButton } from "@/components/FormNavButton";
-
-enum Steps {
-  AccountCreationAgreement,
-  SecretPhraseGeneration,
-}
+import { type AccountCreationAgreement, Steps } from "./utils/types";
+import { FormNavigation } from "./components/FormNavigation";
 
 export const CreateScreen = () => {
-  const { t } = useTranslation();
   const scrollRef: RefObject<ScrollView> = useRef(null);
-
-  const [activeStep, setActiveStep] = useState(Steps.AccountCreationAgreement);
-  const showAccountAgreementStep = () =>
-    setActiveStep(Steps.AccountCreationAgreement);
-  const showSecretPhraseGenerationStep = () =>
-    setActiveStep(Steps.SecretPhraseGeneration);
 
   const methods = useForm<AccountCreationAgreement>({
     mode: "onChange",
     resolver: yupResolver(accountCreationAgreementSchema),
     defaultValues: {
+      activeStep: Steps.AccountCreationAgreement,
       firstTerm: false,
       secondTerm: false,
       thirdTerm: false,
+      seedPhrase: "",
     },
   });
 
-  const { watch } = methods;
-
-  const firstTerm = watch("firstTerm");
-  const secondTerm = watch("secondTerm");
-  const thirdTerm = watch("thirdTerm");
-
-  const canCompleteFirstStep = firstTerm && secondTerm && thirdTerm;
+  const activeStep = methods.watch("activeStep");
 
   useEffect(() => {
     if (!scrollRef.current) return;
@@ -53,20 +36,13 @@ export const CreateScreen = () => {
     });
   }, [activeStep]);
 
+  const onSubmit: SubmitHandler<AccountCreationAgreement> = (data) => {
+    console.log(data);
+  };
+
   return (
     <FormProvider {...methods}>
-      <FormNavButton
-        type="primary"
-        title={t("continue")}
-        disabled={!canCompleteFirstStep}
-        pressableProps={{
-          onPress: () => {
-            activeStep === Steps.AccountCreationAgreement
-              ? showSecretPhraseGenerationStep()
-              : showAccountAgreementStep();
-          },
-        }}
-      />
+      <FormNavigation onSubmit={methods.handleSubmit(onSubmit)} />
 
       <ScrollView ref={scrollRef}>
         <AccountWizardContainer>

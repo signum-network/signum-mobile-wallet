@@ -22,6 +22,10 @@ Execute `npm run prebuild`
 
 See `.nvmrc` file
 
+### NativeWind Troubleshooting
+
+https://www.nativewind.dev/v4/guides/troubleshooting
+
 ### OS Support
 
 https://docs.expo.dev/versions/latest/#support-for-android-and-ios-versions

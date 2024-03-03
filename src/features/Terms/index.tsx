@@ -3,7 +3,7 @@ import { View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "expo-router";
 import { Image } from "expo-image";
-import { LICENSE } from "./License";
+import { LICENSE } from "./utils/License";
 import { Button } from "@/components/Button";
 import { signumWhiteSymbolPicture } from "@/assets";
 import { Text } from "@/components/Text";

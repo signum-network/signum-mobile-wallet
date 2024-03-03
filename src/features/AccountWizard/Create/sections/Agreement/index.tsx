@@ -1,7 +1,7 @@
 import { View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
-import type { AccountCreationAgreement } from "../../validation/types";
+import type { AccountCreationAgreement } from "../../utils/types";
 import { Text } from "@/components/Text";
 import { FormCheckbox } from "@/components/FormCheckbox";
 
@@ -30,9 +30,7 @@ export const Agreement = () => {
 
       <FormCheckbox
         value={firstTerm}
-        onPress={() => {
-          toggleTerm("firstTerm", firstTerm);
-        }}
+        onPress={() => toggleTerm("firstTerm", firstTerm)}
         title={t("accountWizard.createAccount.firstStepPrimaryTermTitle")}
         fullWidth
         bordered
@@ -40,9 +38,7 @@ export const Agreement = () => {
 
       <FormCheckbox
         value={secondTerm}
-        onPress={() => {
-          toggleTerm("secondTerm", secondTerm);
-        }}
+        onPress={() => toggleTerm("secondTerm", secondTerm)}
         title={t("accountWizard.createAccount.firstStepSecondaryTermTitle")}
         fullWidth
         bordered
@@ -50,9 +46,7 @@ export const Agreement = () => {
 
       <FormCheckbox
         value={thirdTerm}
-        onPress={() => {
-          toggleTerm("thirdTerm", thirdTerm);
-        }}
+        onPress={() => toggleTerm("thirdTerm", thirdTerm)}
         title={t("accountWizard.createAccount.firstStepThirdTermTitle")}
         fullWidth
         bordered

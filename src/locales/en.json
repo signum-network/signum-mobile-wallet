@@ -5,6 +5,9 @@
   "cancel": "Cancel",
   "resetApp": "A reset is happening, and all accounts will be erased from the app",
   "or": "OR",
+  "copyToClipboard": "Copy to clipboard",
+  "copiedSeedPhrase": "Secret Phrase copied successfully!",
+  "loading": "Loading",
   "terms": {
     "requestFirstLine": "Before you start using this wallet",
     "requestSecondLine": "Please read and agree the following terms",
@@ -42,7 +45,11 @@
       "firstStepDescription": "In Blockchain or Crypto, to fully own your new account, you must store securely your wallet's new secret phrase in a place you control. This ensures you can recover your wallet if needed",
       "firstStepPrimaryTermTitle": "I understand that i am solely responsible for the security and backup of my wallets",
       "firstStepSecondaryTermTitle": "I understand that if i ever lose access to my wallets, no one can help restore it",
-      "firstStepThirdTermTitle": "I understand that in the event of this application being transferred to a different device or being deleted, my funds can solely be retrieved using the secret phrase"
+      "firstStepThirdTermTitle": "I understand that in the event of this application being transferred to a different device or being deleted, my funds can solely be retrieved using the secret phrase",
+      "secondStepTitle": "Your secret phrase",
+      "secondStepDescription": "A secret phrase is a set of random words arranged in a specific order. It's like the main password for your wallet, and you can't change or choose it.",
+      "secondStepSeedPhraseTip": "For your eyes only",
+      "secondStepSeedPhraseSecondTip": "We do not store the secret phrase even on your device. Note it and always keep it private!. After backing up your secret phrase, you can use your wallet confidently, knowing it's safely saved"
     },
     "importAccount": {}
   }
