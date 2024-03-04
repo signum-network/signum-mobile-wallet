@@ -46,7 +46,7 @@ export const TermsScreen = () => {
           </Text>
         </View>
 
-        <View className="p-2 border-2 border-card-border dark:border-card-border-dark rounded-md flex-1">
+        <View className="p-2 border border-card-border dark:border-card-border-dark rounded-md flex-1">
           <Markdown value={LICENSE} />
         </View>
       </View>

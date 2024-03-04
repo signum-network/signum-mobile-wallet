@@ -1,11 +1,10 @@
 import { View } from "react-native";
 import { useMemo } from "react";
 import { usePathname } from "expo-router";
-
 import { ThemeProvider } from "@react-navigation/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { ChildrenProps } from "@/types/childrenProps";
+import type { ChildrenProps } from "@/types/childrenProps";
 import { StatusBar } from "expo-status-bar";
 
 export const AppThemeProvider = ({ children }: ChildrenProps) => {

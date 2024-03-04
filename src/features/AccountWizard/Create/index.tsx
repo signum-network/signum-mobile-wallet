@@ -7,6 +7,7 @@ import { AccountWizardContainer } from "../components/AccountWizardContainer";
 import { accountCreationAgreementSchema } from "./utils/schemas";
 import { Agreement } from "./sections/Agreement";
 import { SecretPhraseGeneration } from "./sections/SecretPhraseGeneration";
+import { SecretPhraseVerification } from "./sections/SecretPhraseVerification";
 import { type AccountCreationAgreement, Steps } from "./utils/types";
 import { FormNavigation } from "./components/FormNavigation";
 
@@ -22,6 +23,9 @@ export const CreateScreen = () => {
       secondTerm: false,
       thirdTerm: false,
       seedPhrase: "",
+      seedPhraseVerificationIndex: 0,
+      seedPhraseVerificationWord: "",
+      walletName: "",
     },
   });
 
@@ -55,6 +59,12 @@ export const CreateScreen = () => {
           {activeStep === Steps.SecretPhraseGeneration && (
             <AnimatedSlideContainer>
               <SecretPhraseGeneration />
+            </AnimatedSlideContainer>
+          )}
+
+          {activeStep === Steps.SecretPhraseVerification && (
+            <AnimatedSlideContainer>
+              <SecretPhraseVerification />
             </AnimatedSlideContainer>
           )}
         </AccountWizardContainer>

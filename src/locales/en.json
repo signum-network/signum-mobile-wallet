@@ -6,7 +6,6 @@
   "resetApp": "A reset is happening, and all accounts will be erased from the app",
   "or": "OR",
   "copyToClipboard": "Copy to clipboard",
-  "copiedSeedPhrase": "Secret Phrase copied successfully!",
   "loading": "Loading",
   "terms": {
     "requestFirstLine": "Before you start using this wallet",
@@ -49,7 +48,15 @@
       "secondStepTitle": "Your secret phrase",
       "secondStepDescription": "A secret phrase is a set of random words arranged in a specific order. It's like the main password for your wallet, and you can't change or choose it.",
       "secondStepSeedPhraseTip": "For your eyes only",
-      "secondStepSeedPhraseSecondTip": "We do not store the secret phrase even on your device. Note it and always keep it private!. After backing up your secret phrase, you can use your wallet confidently, knowing it's safely saved"
+      "secondStepSeedPhraseSecondTip": "We do not store the secret phrase even on your device. Note it and always keep it private!. After backing up your secret phrase, you can use your wallet confidently, knowing it's safely saved",
+      "copiedSeedPhrase": "Secret phrase copied successfully!",
+      "enterSeedPhraseVerification": "Now, confirm that you store the phrase by entering the requested word from your secret phrase",
+      "verification": "Verification",
+      "verificationHint": "Enter Word #{{word}} from your Secret Phrase",
+      "verificationPlaceholder": "Enter Word #{{word}}",
+      "walletName": "Wallet name",
+      "walletNameHint": "Please enter a name that you would like to use to identify this account",
+      "walletNamePlaceholder": "Enter the name"
     },
     "importAccount": {}
   }

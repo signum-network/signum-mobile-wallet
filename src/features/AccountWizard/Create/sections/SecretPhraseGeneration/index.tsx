@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
 import { Text } from "@/components/Text";
 import { Button } from "@/components/Button";
+import { generateSeed, pickRandomKeySeedIndex } from "@/utils/sec/generateSeed";
 import type { AccountCreationAgreement } from "../../utils/types";
 import * as Clipboard from "expo-clipboard";
 
@@ -15,15 +16,19 @@ export const SecretPhraseGeneration = () => {
   const seedPhrase = watch("seedPhrase");
 
   const generateSeedPhrase = async () => {
-    const passphrase =
-      "Lorem ipsum dolor sit ame Lorem ipsum dolor sit ame Lorem ipsum dolor sit ame";
-
-    setValue("seedPhrase", passphrase);
+    try {
+      const randomIndex = pickRandomKeySeedIndex();
+      const passphrase = await generateSeed().then((data) => data);
+      setValue("seedPhrase", passphrase);
+      setValue("seedPhraseVerificationIndex", randomIndex);
+    } catch (error) {
+      console.log("Error generating seed");
+    }
   };
 
   const copyToClipboard = async () => {
     await Clipboard.setStringAsync(seedPhrase).then(() =>
-      alert(t("copiedSeedPhrase"))
+      alert(t("accountWizard.createAccount.copiedSeedPhrase"))
     );
   };
 
@@ -39,7 +44,7 @@ export const SecretPhraseGeneration = () => {
         {t("accountWizard.createAccount.secondStepTitle")}
       </Text>
 
-      <Text size="large" color="muted" className="text-center mb-4">
+      <Text size="large" color="muted" className="text-center">
         {t("accountWizard.createAccount.secondStepDescription")}
       </Text>
 
@@ -53,7 +58,7 @@ export const SecretPhraseGeneration = () => {
         disabled={!seedPhrase}
       />
 
-      <View className="my-4 p-4 py-6 w-full border-2 border-card-border dark:border-card-border-dark rounded-md">
+      <View className="my-4 p-4 py-6 w-full bg-card-foreground dark:bg-card-foreground-dark border border-card-border dark:border-card-border-dark rounded-md">
         <Text size="extraLarge">
           {seedPhrase ? seedPhrase : t("loading") + "..."}
         </Text>

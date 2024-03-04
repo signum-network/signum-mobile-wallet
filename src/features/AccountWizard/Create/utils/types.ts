@@ -1,6 +1,7 @@
 export enum Steps {
   AccountCreationAgreement,
   SecretPhraseGeneration,
+  SecretPhraseVerification,
 }
 
 // Form Schemas
@@ -11,4 +12,7 @@ export type AccountCreationAgreement = {
   secondTerm: boolean;
   thirdTerm: boolean;
   seedPhrase: string;
+  seedPhraseVerificationIndex: number;
+  seedPhraseVerificationWord: string;
+  walletName: string;
 };

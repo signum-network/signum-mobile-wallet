@@ -17,32 +17,58 @@ export const FormNavigation = ({ onSubmit }: Props) => {
   const secondTerm = watch("secondTerm");
   const thirdTerm = watch("thirdTerm");
   const seedPhrase = watch("seedPhrase");
+  const seedPhraseVerificationIndex = watch("seedPhraseVerificationIndex");
+  const seedPhraseVerificationWord = watch("seedPhraseVerificationWord");
+  const walletName = watch("walletName");
 
   const canCompleteFirstStep = firstTerm && secondTerm && thirdTerm;
+  const canCompleteSecondStep = !!seedPhrase;
+
+  const isCorrectWord =
+    seedPhraseVerificationWord ===
+    seedPhrase.split(" ").at(seedPhraseVerificationIndex - 1);
+
+  const canCompleteThirdStep = !!walletName.trim() && isCorrectWord;
 
   const FormNavButtonProps = useMemo(() => {
     switch (activeStep) {
-      // Steps.AccountCreationAgreement
       case Steps.AccountCreationAgreement:
         return {
           disabled: !canCompleteFirstStep,
           pressableProps: {
-            onPress: () => setValue("activeStep", Steps.SecretPhraseGeneration),
+            onPress: () => {
+              setValue("activeStep", Steps.SecretPhraseGeneration);
+            },
           },
         };
 
-      // Steps.SecretPhraseGeneration
+      case Steps.SecretPhraseGeneration:
+        return {
+          disabled: !canCompleteSecondStep,
+          pressableProps: {
+            onPress: () => {
+              setValue("activeStep", Steps.SecretPhraseVerification);
+            },
+          },
+        };
+
+      // Steps.SecretPhraseVerification
       default:
         return {
+          disabled: !canCompleteThirdStep,
           pressableProps: {
-            disabled: !seedPhrase,
             onPress: () => {
               onSubmit();
             },
           },
         };
     }
-  }, [activeStep, canCompleteFirstStep]);
+  }, [
+    activeStep,
+    canCompleteFirstStep,
+    canCompleteSecondStep,
+    canCompleteThirdStep,
+  ]);
 
   return (
     <FormNavButton
