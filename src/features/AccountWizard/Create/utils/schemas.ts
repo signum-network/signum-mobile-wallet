@@ -1,6 +1,6 @@
 import * as yup from "yup";
 
-export const accountCreationAgreementSchema = yup
+export const accountCreationSchema = yup
   .object({
     activeStep: yup.number().default(0),
     firstTerm: yup.boolean().required(),

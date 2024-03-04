@@ -5,11 +5,11 @@ import { HorizontalDivider } from "@/components/HorizontalDivider";
 import { Text } from "@/components/Text";
 import { Card } from "@/components/Card";
 import { TextInput } from "@/components/TextInput";
-import type { AccountCreationAgreement } from "../../utils/types";
+import type { AccountCreation } from "../../utils/types";
 
 export const SecretPhraseVerification = () => {
   const { t } = useTranslation();
-  const { watch, control } = useFormContext<AccountCreationAgreement>();
+  const { watch, control } = useFormContext<AccountCreation>();
 
   const seedPhraseVerificationIndex = watch("seedPhraseVerificationIndex");
 
@@ -39,9 +39,6 @@ export const SecretPhraseVerification = () => {
 
         <Controller
           control={control}
-          rules={{
-            required: true,
-          }}
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
               placeholder={t(
@@ -54,7 +51,7 @@ export const SecretPhraseVerification = () => {
               onChangeText={onChange}
               value={value}
               size="large"
-              extraClassNames="!p-4 font-medium text-center"
+              extraClassNames="font-medium text-center"
             />
           )}
           name="seedPhraseVerificationWord"
@@ -86,8 +83,8 @@ export const SecretPhraseVerification = () => {
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
-                extraClassNames="!p-4 font-medium text-center"
-                maxLength={20}
+                extraClassNames="font-medium text-center"
+                maxLength={30}
               />
             )}
             name="walletName"

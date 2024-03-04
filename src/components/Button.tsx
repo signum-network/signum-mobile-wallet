@@ -5,7 +5,7 @@ import { Pressable, PressableProps, Text, View } from "react-native";
 import clsx from "clsx";
 
 export interface Props {
-  type: "primary" | "secondary" | "blackout";
+  type?: "primary" | "secondary" | "blackout";
   size?: "small" | "medium" | "large";
   linkProps?: LinkProps;
   pressableProps?: PressableProps;

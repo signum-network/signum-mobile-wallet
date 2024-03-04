@@ -10,7 +10,7 @@ import { AccountWizardContainer } from "../components/AccountWizardContainer";
 
 export const QuickStartScreen = () => {
   const { t } = useTranslation();
-  const { isDarkMode } = useAppTheme();
+  const { iconColor } = useAppTheme();
 
   return (
     <AccountWizardContainer>
@@ -56,7 +56,7 @@ export const QuickStartScreen = () => {
               <Ionicons
                 name="refresh-sharp"
                 size={24}
-                color={isDarkMode ? "black" : "white"}
+                color={iconColor.blackout}
               />
             }
             linkProps={{ href: "/account-wizard/import" }}

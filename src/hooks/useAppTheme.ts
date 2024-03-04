@@ -12,7 +12,10 @@ export const useAppTheme = () => {
 
   const theme = isDarkMode ? DarkTheme : DefaultTheme;
 
-  const iconColor = theme.colors.card;
+  const iconColor = {
+    default: theme.colors.text,
+    blackout: theme.colors.card,
+  };
 
   useEffect(() => {
     setColorScheme(themeMode || "system");

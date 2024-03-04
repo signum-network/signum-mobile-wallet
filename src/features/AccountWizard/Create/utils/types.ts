@@ -6,7 +6,7 @@ export enum Steps {
 
 // Form Schemas
 
-export type AccountCreationAgreement = {
+export type AccountCreation = {
   activeStep: Steps;
   firstTerm: boolean;
   secondTerm: boolean;

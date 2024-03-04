@@ -1,19 +1,19 @@
 import { View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
-import type { AccountCreationAgreement } from "../../utils/types";
+import type { AccountCreation } from "../../utils/types";
 import { Text } from "@/components/Text";
 import { FormCheckbox } from "@/components/FormCheckbox";
 
 export const Agreement = () => {
   const { t } = useTranslation();
-  const { watch, setValue } = useFormContext<AccountCreationAgreement>();
+  const { watch, setValue } = useFormContext<AccountCreation>();
 
   const firstTerm = watch("firstTerm");
   const secondTerm = watch("secondTerm");
   const thirdTerm = watch("thirdTerm");
 
-  const toggleTerm = (key: keyof AccountCreationAgreement, value: boolean) =>
+  const toggleTerm = (key: keyof AccountCreation, value: boolean) =>
     setValue(key, !value);
 
   return (

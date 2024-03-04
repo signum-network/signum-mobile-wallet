@@ -4,19 +4,19 @@ import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { AnimatedSlideContainer } from "@/components/AnimatedSlideContainer";
 import { AccountWizardContainer } from "../components/AccountWizardContainer";
-import { accountCreationAgreementSchema } from "./utils/schemas";
+import { accountCreationSchema } from "./utils/schemas";
 import { Agreement } from "./sections/Agreement";
 import { SecretPhraseGeneration } from "./sections/SecretPhraseGeneration";
 import { SecretPhraseVerification } from "./sections/SecretPhraseVerification";
-import { type AccountCreationAgreement, Steps } from "./utils/types";
+import { type AccountCreation, Steps } from "./utils/types";
 import { FormNavigation } from "./components/FormNavigation";
 
 export const CreateScreen = () => {
   const scrollRef: RefObject<ScrollView> = useRef(null);
 
-  const methods = useForm<AccountCreationAgreement>({
+  const methods = useForm<AccountCreation>({
     mode: "onChange",
-    resolver: yupResolver(accountCreationAgreementSchema),
+    resolver: yupResolver(accountCreationSchema),
     defaultValues: {
       activeStep: Steps.AccountCreationAgreement,
       firstTerm: false,
@@ -40,7 +40,7 @@ export const CreateScreen = () => {
     });
   }, [activeStep]);
 
-  const onSubmit: SubmitHandler<AccountCreationAgreement> = (data) => {
+  const onSubmit: SubmitHandler<AccountCreation> = (data) => {
     console.log(data);
   };
 

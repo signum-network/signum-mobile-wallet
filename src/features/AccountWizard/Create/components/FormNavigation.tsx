@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
 import { FormNavButton } from "@/components/FormNavButton";
-import { type AccountCreationAgreement, Steps } from "../utils/types";
+import { type AccountCreation, Steps } from "../utils/types";
 
 interface Props {
   onSubmit: () => void;
@@ -10,7 +10,7 @@ interface Props {
 
 export const FormNavigation = ({ onSubmit }: Props) => {
   const { t } = useTranslation();
-  const { watch, setValue } = useFormContext<AccountCreationAgreement>();
+  const { watch, setValue } = useFormContext<AccountCreation>();
 
   const activeStep = watch("activeStep");
   const firstTerm = watch("firstTerm");

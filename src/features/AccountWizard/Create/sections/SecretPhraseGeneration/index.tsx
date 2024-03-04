@@ -6,12 +6,12 @@ import { useFormContext } from "react-hook-form";
 import { Text } from "@/components/Text";
 import { Button } from "@/components/Button";
 import { generateSeed, pickRandomKeySeedIndex } from "@/utils/sec/generateSeed";
-import type { AccountCreationAgreement } from "../../utils/types";
+import type { AccountCreation } from "../../utils/types";
 import * as Clipboard from "expo-clipboard";
 
 export const SecretPhraseGeneration = () => {
   const { t } = useTranslation();
-  const { watch, setValue } = useFormContext<AccountCreationAgreement>();
+  const { watch, setValue } = useFormContext<AccountCreation>();
 
   const seedPhrase = watch("seedPhrase");
 
@@ -52,7 +52,6 @@ export const SecretPhraseGeneration = () => {
         icon={<Ionicons name="copy" size={24} color="white" />}
         type="secondary"
         title={t("copyToClipboard")}
-        size="large"
         wide
         pressableProps={{ onPress: copyToClipboard }}
         disabled={!seedPhrase}
