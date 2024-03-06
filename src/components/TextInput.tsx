@@ -1,5 +1,4 @@
 import {
-  useWindowDimensions,
   TextInput as NativeTextInput,
   type TextInputProps,
 } from "react-native";
@@ -11,8 +10,6 @@ interface Props extends Omit<TextInputProps, "className"> {
 }
 
 export const TextInput = (props: Props) => {
-  const { width } = useWindowDimensions();
-
   const classNames = clsx([
     "p-4 rounded-lg border border-card-border dark:border-card-border-dark w-full",
     props.editable === false && "opacity-80",
@@ -22,14 +19,7 @@ export const TextInput = (props: Props) => {
     props.extraClassNames && props.extraClassNames,
   ]);
 
-  const dynamicWidth = width > 335 ? 335 : width * 0.75;
-
   return (
-    <NativeTextInput
-      className={classNames}
-      {...props}
-      contextMenuHidden
-      style={{ width: dynamicWidth }}
-    />
+    <NativeTextInput contextMenuHidden className={classNames} {...props} />
   );
 };

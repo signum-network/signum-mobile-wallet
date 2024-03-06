@@ -5,6 +5,7 @@ import { AccountType } from "@/types/accountType";
 export type AccountImport = {
   type: AccountType;
   account: string;
+  isAccountValid: boolean;
   walletName: string;
   mnemonicAccountAgreement: boolean;
 };

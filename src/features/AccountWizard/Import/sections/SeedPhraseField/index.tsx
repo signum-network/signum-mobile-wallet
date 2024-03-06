@@ -4,35 +4,50 @@ import { useFormContext, Controller } from "react-hook-form";
 import { Text } from "@/components/Text";
 import { Card } from "@/components/Card";
 import { TextInput } from "@/components/TextInput";
+import { FormCheckbox } from "@/components/FormCheckbox";
 import { AccountImport } from "../../utils/types";
 
 export const SeedPhraseField = () => {
   const { t } = useTranslation();
-  const { control } = useFormContext<AccountImport>();
+  const { control, watch, setValue } = useFormContext<AccountImport>();
+
+  const mnemonicAccountAgreement = watch("mnemonicAccountAgreement");
+  const toggleAgreement = () =>
+    setValue("mnemonicAccountAgreement", !mnemonicAccountAgreement);
 
   return (
-    <Card>
-      <View>
-        <Text size="large" className="font-medium">
-          {t("accountWizard.importAccount.importMnemonicTitle")}
-        </Text>
-      </View>
+    <View className="gap-4 w-full">
+      <Card>
+        <View>
+          <Text size="large" className="font-medium">
+            {t("accountWizard.importAccount.importMnemonicTitle")}
+          </Text>
+        </View>
 
-      <Controller
-        control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            extraClassNames="font-medium w-full min-h-40"
-            size="large"
-            multiline
-            textAlignVertical="top"
-          />
-        )}
-        name="account"
+        <Controller
+          control={control}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              extraClassNames="font-medium w-full min-h-40"
+              size="large"
+              multiline
+              textAlignVertical="top"
+            />
+          )}
+          name="account"
+        />
+      </Card>
+
+      <FormCheckbox
+        value={mnemonicAccountAgreement}
+        onPress={toggleAgreement}
+        title={t("accountWizard.createAccount.firstStepPrimaryTermTitle")}
+        fullWidth
+        bordered
       />
-    </Card>
+    </View>
   );
 };

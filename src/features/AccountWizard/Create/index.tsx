@@ -3,6 +3,7 @@ import { ScrollView } from "react-native";
 import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { AnimatedSlideContainer } from "@/components/AnimatedSlideContainer";
+import { KeyboardAvoidingView } from "@/components/KeyboardAvoidingView";
 import { AccountWizardContainer } from "../components/AccountWizardContainer";
 import { accountCreationSchema } from "./utils/schemas";
 import { Agreement } from "./sections/Agreement";
@@ -48,27 +49,29 @@ export const CreateScreen = () => {
     <FormProvider {...methods}>
       <FormNavigation onSubmit={methods.handleSubmit(onSubmit)} />
 
-      <ScrollView ref={scrollRef}>
-        <AccountWizardContainer>
-          {activeStep === Steps.AccountCreationAgreement && (
-            <AnimatedSlideContainer>
-              <Agreement />
-            </AnimatedSlideContainer>
-          )}
+      <KeyboardAvoidingView>
+        <ScrollView ref={scrollRef}>
+          <AccountWizardContainer>
+            {activeStep === Steps.AccountCreationAgreement && (
+              <AnimatedSlideContainer>
+                <Agreement />
+              </AnimatedSlideContainer>
+            )}
 
-          {activeStep === Steps.SecretPhraseGeneration && (
-            <AnimatedSlideContainer>
-              <SecretPhraseGeneration />
-            </AnimatedSlideContainer>
-          )}
+            {activeStep === Steps.SecretPhraseGeneration && (
+              <AnimatedSlideContainer>
+                <SecretPhraseGeneration />
+              </AnimatedSlideContainer>
+            )}
 
-          {activeStep === Steps.SecretPhraseVerification && (
-            <AnimatedSlideContainer>
-              <SecretPhraseVerification />
-            </AnimatedSlideContainer>
-          )}
-        </AccountWizardContainer>
-      </ScrollView>
+            {activeStep === Steps.SecretPhraseVerification && (
+              <AnimatedSlideContainer>
+                <SecretPhraseVerification />
+              </AnimatedSlideContainer>
+            )}
+          </AccountWizardContainer>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </FormProvider>
   );
 };

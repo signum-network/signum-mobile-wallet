@@ -1,4 +1,4 @@
-import { type ColorSchemeName } from "react-native";
+import type { ColorSchemeName } from "react-native";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { getDefaultLocale, type locales } from "@/locales";
@@ -68,6 +68,7 @@ export const appStore = create<State & Actions>()(
     {
       name: "app-storage",
       storage: createJSONStorage(() => AsyncStorage),
+      version: 1,
     }
   )
 );
