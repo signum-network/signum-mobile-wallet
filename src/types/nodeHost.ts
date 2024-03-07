@@ -3,3 +3,10 @@ export type nodeHost = {
   url: string;
   isTestnet: boolean;
 };
+
+export type PublicNodeHost = {
+  id: string;
+  name: string;
+  description: string;
+  url: string;
+};

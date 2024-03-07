@@ -12,6 +12,7 @@ interface State {
   isAuthEnrolled: boolean; // Determine whether the user has enrolled for authentication.
   authMethod: authMethod; // Determine the method the user will use for authentication (PIN or Biometric)
   failedAuthAttempts: number;
+  isConnected: boolean; // Determine wheter the user has internet access
 }
 
 interface Actions {
@@ -22,6 +23,7 @@ interface Actions {
   setIsAuthEnrolled: (value: boolean) => void;
   setAuthMethod: (value: authMethod) => void;
   setFailedAuthAttempts: (value: number) => void;
+  setIsConnected: (value: boolean) => void;
 }
 
 const initialState: State = {
@@ -31,6 +33,7 @@ const initialState: State = {
   isAuthEnrolled: false,
   authMethod: "PIN",
   failedAuthAttempts: 0,
+  isConnected: true,
 };
 
 export const appStore = create<State & Actions>()(
@@ -63,6 +66,10 @@ export const appStore = create<State & Actions>()(
       setFailedAuthAttempts: (value: number) =>
         set(() => ({
           failedAuthAttempts: value,
+        })),
+      setIsConnected: (value: boolean) =>
+        set(() => ({
+          isConnected: value,
         })),
     }),
     {
