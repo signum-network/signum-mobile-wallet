@@ -15,16 +15,19 @@ export const NodeHostInitializer = () => {
   const setReliableNodeHost = nodeHostStore(
     (state) => state.setReliableNodeHost
   );
+  const setTestnetReliableNodeHost = nodeHostStore(
+    (state) => state.setTestnetReliableNodeHost
+  );
 
   useQuery({
     queryKey: ["fetchReliableNodeHosts"],
     queryFn: () =>
-      fetch(`${PUBLIC_SIGNUM_PUBLIC_RESOURCES_URL}/nodesa.json`).then(
+      fetch(`${PUBLIC_SIGNUM_PUBLIC_RESOURCES_URL}/nodes.json`).then(
         async (res) => {
           const response: any = await res.json();
-          const reliableNodes: nodeHost[] = [];
 
-          console.log(response);
+          const reliableNodes: nodeHost[] = [];
+          const testnetReliableNodes: nodeHost[] = [];
 
           const mainnetNodes = response.mainnet;
           const testnetNodes = response.testnet;
@@ -38,7 +41,7 @@ export const NodeHostInitializer = () => {
           });
 
           testnetNodes.forEach((node: PublicNodeHost) => {
-            reliableNodes.push({
+            testnetReliableNodes.push({
               name: node.name,
               url: node.url,
               isTestnet: true,
@@ -46,8 +49,9 @@ export const NodeHostInitializer = () => {
           });
 
           setReliableNodeHost(reliableNodes);
+          setTestnetReliableNodeHost(testnetNodes);
 
-          return reliableNodes;
+          return testnetNodes;
         }
       ),
     refetchOnMount: false,

@@ -1,9 +1,12 @@
-import { useRef, useEffect, type RefObject } from "react";
-import { ScrollView } from "react-native";
+import { useState, useRef, useEffect, type RefObject } from "react";
+import { ScrollView, View, ActivityIndicator } from "react-native";
 import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
+import { useTranslation } from "react-i18next";
+import { Ionicons } from "@expo/vector-icons";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { AnimatedSlideContainer } from "@/components/AnimatedSlideContainer";
 import { KeyboardAvoidingView } from "@/components/KeyboardAvoidingView";
+import { Dialog } from "@/components/Dialog";
 import { AccountWizardContainer } from "../components/AccountWizardContainer";
 import { accountCreationSchema } from "./utils/schemas";
 import { Agreement } from "./sections/Agreement";
@@ -11,8 +14,17 @@ import { SecretPhraseGeneration } from "./sections/SecretPhraseGeneration";
 import { SecretPhraseVerification } from "./sections/SecretPhraseVerification";
 import { type AccountCreation, Steps } from "./utils/types";
 import { FormNavigation } from "./components/FormNavigation";
+import { Text } from "@/components/Text";
+import {
+  generateSecretKeys,
+  saveSecretKey,
+} from "@/utils/sec/handleSecretKeys";
 
 export const CreateScreen = () => {
+  const { t } = useTranslation();
+
+  const [isCreationCompleted, setIsCreationCompleted] = useState(false);
+
   const scrollRef: RefObject<ScrollView> = useRef(null);
 
   const methods = useForm<AccountCreation>({
@@ -41,12 +53,41 @@ export const CreateScreen = () => {
     });
   }, [activeStep]);
 
-  const onSubmit: SubmitHandler<AccountCreation> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<AccountCreation> = async (data) => {
+    setIsCreationCompleted(true);
+
+    const { seedPhrase } = data;
+    const { publicKey, signPrivateKey, agreementPrivateKey } =
+      generateSecretKeys(seedPhrase);
+
+    await saveSecretKey(publicKey, signPrivateKey, agreementPrivateKey).then(
+      (data) => {
+        console.log({ data });
+      }
+    );
   };
 
   return (
     <FormProvider {...methods}>
+      <Dialog variant="full" visible={isCreationCompleted}>
+        <View className="flex flex-col items-center justify-center gap-4 w-full">
+          <Ionicons name="checkmark-circle" size={85} color="green" />
+
+          <Text className="text-center" size="large">
+            {t("accountWizard.createAccount.accountCreated")}
+          </Text>
+
+          <Text className="text-center" color="muted">
+            {t("accountWizard.createAccount.accountCreatedDescription")} ❤️
+          </Text>
+
+          <View className="gap-2 flex flex-row items-center justify-center">
+            <ActivityIndicator />
+            <Text color="muted">{t("auth.loadingWait")}</Text>
+          </View>
+        </View>
+      </Dialog>
+
       <FormNavigation onSubmit={methods.handleSubmit(onSubmit)} />
 
       <KeyboardAvoidingView>

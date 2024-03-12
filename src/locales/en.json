@@ -11,6 +11,7 @@
   "fullAccount": "Full Account",
   "watchOnly": "Watch-only",
   "example": "E.g.",
+  "download": "Download",
   "terms": {
     "requestFirstLine": "Before you start using this wallet",
     "requestSecondLine": "Please read and agree the following terms",
@@ -60,7 +61,11 @@
       "verificationPlaceholder": "Enter Word #{{word}}",
       "walletName": "Wallet name",
       "walletNameHint": "Please enter a name that you would like to use to identify this account",
-      "walletNamePlaceholder": "Enter the name"
+      "walletNamePlaceholder": "Enter the name",
+      "accountCreated": "Account created successfully!",
+      "accountCreatedDescription": "Kindly hold on while the wallet prepares your account to use",
+      "secretPhraseCreationDescription": "It is very important that you store this Secret Phrase in a safe place. If you lose it, you will lose the access to your account. You need this Secret Phrase to import your account on other devices and/or alternative Signum Blockchain Wallets",
+      "secretPhraseCreationSecondDescription": "This account is part of the Signum Network, an advanced blockchain platform. You can use this Secret Phrase throughout the entire Signum eco-system, e.g. trade crypto tokens, create/buy NFTs and much more"
     },
     "importAccount": {
       "importTitle": "Restore Wallet",

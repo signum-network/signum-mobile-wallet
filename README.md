@@ -8,6 +8,10 @@ The new 🚀 Signum Mobile Wallet - Better than ever before 🤘
 
 Execute `npm run prebuild`
 
+### Debugging tools
+
+https://docs.infinite.red/reactotron/
+
 ### Android
 
 - JDK 17

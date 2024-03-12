@@ -6,6 +6,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 interface State {
   activeNodeHost: nodeHost;
   reliableNodeHost: nodeHost[];
+  testnetReliableNodeHost: nodeHost[];
 
   // TODO: Allow the user to add or remove specific custom nodes
   customNodeHost: nodeHost[];
@@ -15,11 +16,13 @@ interface Actions {
   reset: () => void;
   setActiveNodeHost: (value: nodeHost) => void;
   setReliableNodeHost: (value: nodeHost[]) => void;
+  setTestnetReliableNodeHost: (value: nodeHost[]) => void;
 }
 
 const initialState: State = {
   activeNodeHost: { name: "", url: "", isTestnet: false },
   reliableNodeHost: [],
+  testnetReliableNodeHost: [],
   customNodeHost: [],
 };
 
@@ -37,6 +40,10 @@ export const nodeHostStore = create<State & Actions>()(
       setReliableNodeHost: (value: nodeHost[]) =>
         set(() => ({
           reliableNodeHost: value,
+        })),
+      setTestnetReliableNodeHost: (value: nodeHost[]) =>
+        set(() => ({
+          testnetReliableNodeHost: value,
         })),
     }),
     {
