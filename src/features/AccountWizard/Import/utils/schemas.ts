@@ -1,5 +1,5 @@
 import * as yup from "yup";
-import { AccountType } from "@/types/accountType";
+import { AccountType } from "@/types/account";
 
 export const accountImportSchema = yup
   .object({

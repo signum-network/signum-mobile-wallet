@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
-import { FormNavButton } from "@/components/FormNavButton";
+import { FormNavButton } from "@/components/Form/NavButton";
 import { type AccountCreation, Steps } from "../utils/types";
 
 interface Props {

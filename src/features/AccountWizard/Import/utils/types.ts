@@ -1,4 +1,4 @@
-import { AccountType } from "@/types/accountType";
+import { AccountType } from "@/types/account";
 
 // Form Schemas
 

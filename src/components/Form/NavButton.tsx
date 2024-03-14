@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Keyboard, Platform } from "react-native";
-import { Button, type Props as ButtonProps } from "./Button";
+import { Button, type Props as ButtonProps } from "../Button";
 import Animated, { useSharedValue } from "react-native-reanimated";
 
 const DEFAULT_HEIGHT = 81.4;

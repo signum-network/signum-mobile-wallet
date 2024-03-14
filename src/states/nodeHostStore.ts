@@ -33,15 +33,15 @@ export const nodeHostStore = create<State & Actions>()(
       reset: () => {
         set(initialState);
       },
-      setActiveNodeHost: (value: nodeHost) =>
+      setActiveNodeHost: (value) =>
         set(() => ({
           activeNodeHost: value,
         })),
-      setReliableNodeHost: (value: nodeHost[]) =>
+      setReliableNodeHost: (value) =>
         set(() => ({
           reliableNodeHost: value,
         })),
-      setTestnetReliableNodeHost: (value: nodeHost[]) =>
+      setTestnetReliableNodeHost: (value) =>
         set(() => ({
           testnetReliableNodeHost: value,
         })),

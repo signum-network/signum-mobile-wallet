@@ -1,9 +1,9 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
-import { FormNavButton } from "@/components/FormNavButton";
+import { FormNavButton } from "@/components/Form/NavButton";
 import type { AccountImport } from "../utils/types";
-import { AccountType } from "@/types/accountType";
+import { AccountType } from "@/types/account";
 
 interface Props {
   onSubmit: () => void;

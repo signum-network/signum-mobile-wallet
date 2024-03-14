@@ -1,6 +1,6 @@
 import { View, Pressable } from "react-native";
 import { Text } from "@/components/Text";
-import Checkbox from "expo-checkbox";
+import NativeCheckbox from "expo-checkbox";
 import clsx from "clsx";
 
 interface Props {
@@ -30,7 +30,7 @@ export const FormCheckbox = ({
   return (
     <Pressable className={classNames} onPress={onPress}>
       <View className="w-1/12  flex justify-center items-center">
-        <Checkbox value={value} />
+        <NativeCheckbox value={value} />
       </View>
 
       <View className="w-11/12  flex-col items-start justify-start">

@@ -7,7 +7,7 @@ import { LICENSE } from "./utils/License";
 import { Button } from "@/components/Button";
 import { signumWhiteSymbolPicture } from "@/assets";
 import { Text } from "@/components/Text";
-import { FormCheckbox } from "@/components/FormCheckbox";
+import { FormCheckbox } from "@/components/Form/Checkbox";
 import { useAppStore } from "@/hooks/useAppStore";
 
 import Markdown from "react-native-marked";

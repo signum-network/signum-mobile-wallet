@@ -7,12 +7,14 @@ import { PinAuthenticator } from "@/features/Auth/components/PinAuthenticator";
 import { PUBLIC_PIN_MAX_ATTEMPTS, PUBLIC_PIN_LENGTH } from "@/types/constants";
 import { generateHash } from "@/utils/sec/generateHash";
 import { readPin, deletePin } from "@/utils/sec/handlePin";
+import { useAccountStore } from "@/hooks/useAccountStore";
 import * as LocalAuthentication from "expo-local-authentication";
 
 const initialValues = [...new Array(PUBLIC_PIN_LENGTH)];
 
 export const LoginAuthScreen = () => {
   const { t } = useTranslation();
+  const { isAccountEnrolled } = useAccountStore();
   const {
     authMethod,
     failedAuthAttempts,
@@ -78,7 +80,9 @@ export const LoginAuthScreen = () => {
     // As UX practice, if user logs in with hardware auth, the tone will not sound, because user want to log in quick
     setTimeout(
       () => {
-        router.replace("/account-wizard/");
+        if (!isAccountEnrolled) router.replace("/account-wizard/");
+
+        router.replace("/(dashboard)/overview");
       },
       areAllFieldsFilled ? 2700 : 1000
     );

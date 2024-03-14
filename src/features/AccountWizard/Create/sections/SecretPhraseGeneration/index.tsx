@@ -1,11 +1,5 @@
 import { View } from "react-native";
-import {
-  useRef,
-  useEffect,
-  useMemo,
-  type RefObject,
-  isValidElement,
-} from "react";
+import { useRef, useEffect, useMemo, type RefObject } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
@@ -109,9 +103,9 @@ export const SecretPhraseGeneration = () => {
         </Text>
       </View>
 
-      <View className="hidden">
+      <View className="hidden h-0 overflow-hidden">
         <QRCode
-          size={256}
+          size={0}
           style={{ height: "auto", maxWidth: "100%", width: "100%" }}
           value={seedPhrase}
           viewBox="0 0 37 37"

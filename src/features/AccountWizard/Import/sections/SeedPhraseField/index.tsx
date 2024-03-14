@@ -4,7 +4,7 @@ import { useFormContext, Controller } from "react-hook-form";
 import { Text } from "@/components/Text";
 import { Card } from "@/components/Card";
 import { TextInput } from "@/components/TextInput";
-import { FormCheckbox } from "@/components/FormCheckbox";
+import { FormCheckbox } from "@/components/Form/Checkbox";
 import { AccountImport } from "../../utils/types";
 
 export const SeedPhraseField = () => {

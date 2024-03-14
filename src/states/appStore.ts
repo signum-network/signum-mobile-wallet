@@ -47,27 +47,27 @@ export const appStore = create<State & Actions>()(
         set(() => ({
           themeMode: get().themeMode === "dark" ? "light" : "dark",
         })),
-      setLanguage: (value: locales) =>
+      setLanguage: (value) =>
         set(() => ({
           language: value,
         })),
-      setIsTermAgreed: (value: boolean) =>
+      setIsTermAgreed: (value) =>
         set(() => ({
           isTermAgreed: value,
         })),
-      setIsAuthEnrolled: (value: boolean) =>
+      setIsAuthEnrolled: (value) =>
         set(() => ({
           isAuthEnrolled: value,
         })),
-      setAuthMethod: (value: authMethod) =>
+      setAuthMethod: (value) =>
         set(() => ({
           authMethod: value,
         })),
-      setFailedAuthAttempts: (value: number) =>
+      setFailedAuthAttempts: (value) =>
         set(() => ({
           failedAuthAttempts: value,
         })),
-      setIsConnected: (value: boolean) =>
+      setIsConnected: (value) =>
         set(() => ({
           isConnected: value,
         })),

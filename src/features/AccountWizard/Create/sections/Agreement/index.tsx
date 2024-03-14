@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
 import type { AccountCreation } from "../../utils/types";
 import { Text } from "@/components/Text";
-import { FormCheckbox } from "@/components/FormCheckbox";
+import { FormCheckbox } from "@/components/Form/Checkbox";
 
 export const Agreement = () => {
   const { t } = useTranslation();

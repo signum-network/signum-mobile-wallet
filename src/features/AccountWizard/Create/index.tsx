@@ -2,10 +2,11 @@ import { useState, useRef, useEffect, type RefObject } from "react";
 import { ScrollView, View, ActivityIndicator } from "react-native";
 import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { AnimatedSlideContainer } from "@/components/AnimatedSlideContainer";
-import { KeyboardAvoidingView } from "@/components/KeyboardAvoidingView";
+import { KeyboardAvoidingView } from "@/components/Form/KeyboardAvoidingView";
 import { Dialog } from "@/components/Dialog";
 import { AccountWizardContainer } from "../components/AccountWizardContainer";
 import { accountCreationSchema } from "./utils/schemas";
@@ -19,11 +20,14 @@ import {
   generateSecretKeys,
   saveSecretKey,
 } from "@/utils/sec/handleSecretKeys";
+import { useAccountStore } from "@/hooks/useAccountStore";
+import { AccountType } from "@/types/account";
 
 export const CreateScreen = () => {
   const { t } = useTranslation();
+  const { addAccount, setActiveAccount } = useAccountStore();
 
-  const [isCreationCompleted, setIsCreationCompleted] = useState(false);
+  const [showDialog, setShowDialog] = useState(false);
 
   const scrollRef: RefObject<ScrollView> = useRef(null);
 
@@ -54,22 +58,34 @@ export const CreateScreen = () => {
   }, [activeStep]);
 
   const onSubmit: SubmitHandler<AccountCreation> = async (data) => {
-    setIsCreationCompleted(true);
+    setShowDialog(true);
 
-    const { seedPhrase } = data;
+    const { seedPhrase, walletName } = data;
     const { publicKey, signPrivateKey, agreementPrivateKey } =
       generateSecretKeys(seedPhrase);
 
-    await saveSecretKey(publicKey, signPrivateKey, agreementPrivateKey).then(
-      (data) => {
-        console.log({ data });
-      }
-    );
+    try {
+      await saveSecretKey(publicKey, signPrivateKey, agreementPrivateKey).then(
+        () => {
+          addAccount({
+            publicKey,
+            type: AccountType.mnemonic,
+            walletName,
+          });
+
+          setActiveAccount(publicKey);
+
+          router.replace("/");
+        }
+      );
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
     <FormProvider {...methods}>
-      <Dialog variant="full" visible={isCreationCompleted}>
+      <Dialog variant="full" visible={showDialog}>
         <View className="flex flex-col items-center justify-center gap-4 w-full">
           <Ionicons name="checkmark-circle" size={85} color="green" />
 
