@@ -34,4 +34,6 @@ https://www.nativewind.dev/v4/guides/troubleshooting
 
 ### OS Support
 
+#### Wallet will be available only on `Android` and `iOS`
+
 https://docs.expo.dev/versions/latest/#support-for-android-and-ios-versions
