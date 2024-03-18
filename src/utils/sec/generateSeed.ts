@@ -2,12 +2,18 @@ import { PassPhraseGenerator } from "@signumjs/crypto";
 import * as Crypto from "expo-crypto";
 
 export const generateSeed = async () => {
-  const byteArray = await Crypto.getRandomBytesAsync(1024).then((data) => data);
-  Crypto.getRandomValues(byteArray);
+  try {
+    const byteArray = await Crypto.getRandomBytesAsync(1024).then(
+      (data) => data
+    );
+    Crypto.getRandomValues(byteArray);
 
-  const generator = new PassPhraseGenerator();
-  const words = await generator.generatePassPhrase(Array.from(byteArray));
-  return words.join(" ");
+    const generator = new PassPhraseGenerator();
+    const words = await generator.generatePassPhrase(Array.from(byteArray));
+    return words.join(" ");
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export const pickRandomKeySeedIndex = () => {

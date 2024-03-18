@@ -3,7 +3,6 @@ import "@/locales";
 import { Stack } from "expo-router/stack";
 import { AppProviders } from "@/providers";
 import "fast-text-encoding";
-import "react-native-url-polyfill/auto";
 import * as SplashScreen from "expo-splash-screen";
 
 if (__DEV__) {

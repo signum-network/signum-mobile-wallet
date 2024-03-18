@@ -25,6 +25,9 @@ export const SecretPhraseGeneration = () => {
     try {
       const randomIndex = pickRandomKeySeedIndex();
       const passphrase = await generateSeed().then((data) => data);
+
+      if (!passphrase) return alert("Error: Passphrase Generation");
+
       setValue("seedPhrase", passphrase);
       setValue("seedPhraseVerificationIndex", randomIndex);
     } catch (error) {

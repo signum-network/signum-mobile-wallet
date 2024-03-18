@@ -10,10 +10,13 @@ export const useAccountStore = () => {
 
   const isAccountEnrolled = !!Object.keys(accounts).length;
 
+  const accountPublicKeys = Object.keys(accounts);
+
   const resetAccountStore = accountStore((state) => state.reset);
 
   return {
     isAccountEnrolled,
+    accountPublicKeys,
     accounts,
     activeAccount,
     addAccount,
