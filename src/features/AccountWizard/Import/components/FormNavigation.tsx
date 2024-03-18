@@ -19,7 +19,7 @@ export const FormNavigation = ({ onSubmit }: Props) => {
   const walletName = watch("walletName");
   const mnemonicAccountAgreement = watch("mnemonicAccountAgreement");
 
-  const canImportAccount = account && isAccountValid && walletName;
+  const canImportAccount = account.trim() && walletName;
 
   const FormNavButtonProps = useMemo(() => {
     switch (type) {
@@ -31,10 +31,10 @@ export const FormNavigation = ({ onSubmit }: Props) => {
       // AccountType.watchOnly
       default:
         return {
-          disabled: !canImportAccount,
+          disabled: !(canImportAccount && !isAccountValid),
         };
     }
-  }, [canImportAccount, mnemonicAccountAgreement]);
+  }, [canImportAccount, mnemonicAccountAgreement, isAccountValid]);
 
   return (
     <FormNavButton

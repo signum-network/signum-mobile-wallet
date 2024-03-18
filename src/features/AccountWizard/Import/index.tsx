@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { ScrollView, View } from "react-native";
 import { useTranslation } from "react-i18next";
+import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -8,6 +9,8 @@ import { accountImportSchema } from "./utils/schemas";
 import type { AccountImport } from "./utils/types";
 import { AccountWizardContainer } from "../components/AccountWizardContainer";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { useAccountStore } from "@/hooks/useAccountStore";
+import { useLedgerService } from "@/hooks/useLedgerService";
 import { AnimatedSlideContainer } from "@/components/AnimatedSlideContainer";
 import { Text } from "@/components/Text";
 import { Button } from "@/components/Button";
@@ -18,10 +21,22 @@ import { FormNavigation } from "./components/FormNavigation";
 import { WalletNameField } from "./sections/WalletNameField";
 import { SeedPhraseField } from "./sections/SeedPhraseField";
 import { AccountIdField } from "./sections/AccountIdField";
+import {
+  generateSecretKeys,
+  saveSecretKey,
+} from "@/utils/sec/handleSecretKeys";
+import { asAddress } from "@/utils/account/asAddress";
 
 export const ImportScreen = () => {
   const { t } = useTranslation();
   const { iconColor } = useAppTheme();
+  const { ledgerService } = useLedgerService();
+  const {
+    accountWalletNames,
+    accountPublicKeys,
+    addAccount,
+    setActiveAccount,
+  } = useAccountStore();
 
   const methods = useForm<AccountImport>({
     mode: "onChange",
@@ -50,8 +65,75 @@ export const ImportScreen = () => {
     setValue("mnemonicAccountAgreement", false);
   }, [type]);
 
-  const onSubmit: SubmitHandler<AccountImport> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<AccountImport> = async (data) => {
+    const { walletName, account } = data;
+
+    if (accountWalletNames.includes(walletName.toLowerCase())) {
+      return alert(t("accountWizard.walletNameAlreadyUsed"));
+    }
+
+    switch (data.type) {
+      case AccountType.mnemonic:
+        const { publicKey, signPrivateKey, agreementPrivateKey } =
+          generateSecretKeys(account);
+
+        if (accountPublicKeys.includes(publicKey)) {
+          return alert(
+            t("accountWizard.importAccount.importAccountAlreadyExists")
+          );
+        }
+
+        saveSecretKey(publicKey, signPrivateKey, agreementPrivateKey).then(
+          () => {
+            addAccount({
+              publicKey,
+              type: AccountType.mnemonic,
+              walletName,
+            });
+
+            setActiveAccount(publicKey);
+
+            router.replace("/(dashboard)/overview");
+          }
+        );
+        break;
+
+      // AccountType.watchOnly
+      // Get account request to active node
+      default:
+        try {
+          if (!ledgerService) return;
+
+          const watchAccountID = asAddress(account).getNumericId();
+
+          const watchAccountPublicKey =
+            await ledgerService.account.fetchAccountPublicKey(watchAccountID);
+
+          if (accountPublicKeys.includes(watchAccountPublicKey)) {
+            return alert(
+              t("accountWizard.importAccount.importAccountAlreadyExists")
+            );
+          }
+
+          addAccount({
+            publicKey: watchAccountPublicKey,
+            type: AccountType.watchOnly,
+            walletName,
+          });
+
+          setActiveAccount(watchAccountPublicKey);
+
+          router.replace("/(dashboard)/overview");
+        } catch (error: any) {
+          if (error.message === "unknownAccount") {
+            return alert(t("accountDoesNotExists"));
+          }
+
+          console.error(error);
+        }
+
+        break;
+    }
   };
 
   return (

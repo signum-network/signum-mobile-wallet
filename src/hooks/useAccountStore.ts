@@ -12,11 +12,16 @@ export const useAccountStore = () => {
 
   const accountPublicKeys = Object.keys(accounts);
 
+  const accountWalletNames = Object.values(accounts).map((account) =>
+    account.walletName.toLowerCase()
+  );
+
   const resetAccountStore = accountStore((state) => state.reset);
 
   return {
     isAccountEnrolled,
     accountPublicKeys,
+    accountWalletNames,
     accounts,
     activeAccount,
     addAccount,

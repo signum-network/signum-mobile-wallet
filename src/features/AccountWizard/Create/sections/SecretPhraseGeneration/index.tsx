@@ -24,7 +24,7 @@ export const SecretPhraseGeneration = () => {
   const generateSeedPhrase = async () => {
     try {
       const randomIndex = pickRandomKeySeedIndex();
-      const passphrase = await generateSeed().then((data) => data);
+      const passphrase = await generateSeed();
 
       if (!passphrase) return alert("Error: Passphrase Generation");
 

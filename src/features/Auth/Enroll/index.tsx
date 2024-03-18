@@ -99,7 +99,7 @@ export const EnrollAuthScreen = () => {
 
   const onSuccess = async () => {
     const pin = verificationValues.join("");
-    const securedPIN = await generateHash(pin).then((data) => data);
+    const securedPIN = await generateHash(pin);
 
     if (securedPIN) {
       const { key, salt } = securedPIN;

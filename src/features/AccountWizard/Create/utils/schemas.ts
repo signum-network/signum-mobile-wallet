@@ -9,6 +9,6 @@ export const accountCreationSchema = yup
     seedPhrase: yup.string().required(),
     seedPhraseVerificationIndex: yup.number().default(0),
     seedPhraseVerificationWord: yup.string().required(),
-    walletName: yup.string().required(),
+    walletName: yup.string().trim().required(),
   })
   .required();

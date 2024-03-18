@@ -12,6 +12,7 @@
   "watchOnly": "Watch-only",
   "example": "E.g.",
   "download": "Download",
+  "accountDoesNotExists": "Account does not exists",
   "terms": {
     "requestFirstLine": "Before you start using this wallet",
     "requestSecondLine": "Please read and agree the following terms",
@@ -74,7 +75,11 @@
       "importMnemonicHint": "Import a Full account for making transactions. You'll need to provide a secret phrase or passphrase",
       "importWatchOnlyTitle": "Enter the Account Address",
       "importWatchOnlyHint": "Import a watch-only account for only supervising, you will not be able to make any transaction. You just view the account's transactions. This is a good security measure for wallets with a big amount of funds",
-      "importWatchOnlySecondHint": "You have the option to enter a Signum Wallet Address, account ID, or even aliases"
-    }
+      "importWatchOnlySecondHint": "You have the option to enter a Signum Wallet Address, account ID, or even aliases",
+      "importAccountAlreadyExists": "This account already exists on your wallet, please go to account settings and use it!",
+      "importAccountResolvedAddress": "Account address: {{address}}",
+      "importAccountResolvedAddressHint": "Use this suggestion as a helpful tool to ensure you import the accurate account"
+    },
+    "walletNameAlreadyUsed": "The wallet name is already being used, please choose another one!"
   }
 }

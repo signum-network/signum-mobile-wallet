@@ -7,7 +7,7 @@ export const generateHash = async (secret: string, saltBase64?: string) => {
   try {
     const byteSalt = saltBase64
       ? new Uint8Array(Buffer.from(saltBase64, "base64"))
-      : await Crypto.getRandomBytesAsync(1024).then((data) => data);
+      : await Crypto.getRandomBytesAsync(1024);
 
     const byteSecret = new TextEncoder().encode(secret);
 

@@ -25,7 +25,8 @@ import { AccountType } from "@/types/account";
 
 export const CreateScreen = () => {
   const { t } = useTranslation();
-  const { addAccount, setActiveAccount } = useAccountStore();
+  const { accountWalletNames, addAccount, setActiveAccount } =
+    useAccountStore();
 
   const [showDialog, setShowDialog] = useState(false);
 
@@ -61,23 +62,27 @@ export const CreateScreen = () => {
     setShowDialog(true);
 
     const { seedPhrase, walletName } = data;
+
+    if (accountWalletNames.includes(walletName.toLowerCase())) {
+      alert(t("accountWizard.walletNameAlreadyUsed"));
+      return setShowDialog(false);
+    }
+
     const { publicKey, signPrivateKey, agreementPrivateKey } =
       generateSecretKeys(seedPhrase);
 
     try {
-      await saveSecretKey(publicKey, signPrivateKey, agreementPrivateKey).then(
-        () => {
-          addAccount({
-            publicKey,
-            type: AccountType.mnemonic,
-            walletName,
-          });
+      saveSecretKey(publicKey, signPrivateKey, agreementPrivateKey).then(() => {
+        addAccount({
+          publicKey,
+          type: AccountType.mnemonic,
+          walletName,
+        });
 
-          setActiveAccount(publicKey);
+        setActiveAccount(publicKey);
 
-          router.replace("/(dashboard)/overview");
-        }
-      );
+        router.replace("/(dashboard)/overview");
+      });
     } catch (error) {
       console.error(error);
     }
