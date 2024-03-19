@@ -125,11 +125,7 @@ export const ImportScreen = () => {
 
           router.replace("/(dashboard)/overview");
         } catch (error: any) {
-          if (error.message === "unknownAccount") {
-            return alert(t("accountDoesNotExists"));
-          }
-
-          console.error(error);
+          return alert(t("accountDoesNotExists"));
         }
 
         break;

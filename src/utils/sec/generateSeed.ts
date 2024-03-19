@@ -1,16 +1,9 @@
-import { PassPhraseGenerator } from "@signumjs/crypto";
-import * as Crypto from "expo-crypto";
+import * as bip39 from "@scure/bip39";
+import { wordlist } from "@scure/bip39/wordlists/english";
 
 export const generateSeed = async () => {
   try {
-    const byteArray = await Crypto.getRandomBytesAsync(1024).then(
-      (data) => data
-    );
-    Crypto.getRandomValues(byteArray);
-
-    const generator = new PassPhraseGenerator();
-    const words = await generator.generatePassPhrase(Array.from(byteArray));
-    return words.join(" ");
+    return bip39.generateMnemonic(wordlist, 256);
   } catch (error) {
     console.error(error);
   }
@@ -18,7 +11,7 @@ export const generateSeed = async () => {
 
 export const pickRandomKeySeedIndex = () => {
   const min = 1;
-  const max = 12;
+  const max = 24;
 
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };

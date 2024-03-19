@@ -1,5 +1,6 @@
 import "../global.css";
 import "@/locales";
+import * as Crypto from "expo-crypto";
 import { Stack } from "expo-router/stack";
 import { AppProviders } from "@/providers";
 import "fast-text-encoding";
@@ -10,6 +11,11 @@ if (__DEV__) {
   import("../ReactotronConfig").then(() =>
     console.log("Reactotron Configured")
   );
+}
+
+if (!global.crypto) {
+  // @ts-expect-error typing issue
+  global.crypto = Crypto;
 }
 
 export {
