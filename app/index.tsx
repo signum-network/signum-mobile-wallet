@@ -12,8 +12,5 @@ export default function Screen() {
     return <Redirect href="/auth/enroll" />;
   }
 
-  return <Redirect href="/account-wizard/" />;
-
-  // TODO: Return to auth
-  // return <Redirect href="/auth/login" />;
+  return <Redirect href="/auth/login" />;
 }
