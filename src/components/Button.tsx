@@ -5,7 +5,7 @@ import { Pressable, PressableProps, Text, View } from "react-native";
 import clsx from "clsx";
 
 export interface Props {
-  type?: "primary" | "secondary" | "blackout";
+  type?: "primary" | "secondary" | "error" | "blackout";
   size?: "small" | "medium" | "large";
   linkProps?: LinkProps;
   pressableProps?: PressableProps;
@@ -36,6 +36,7 @@ export const Button = ({
     fullWidth && "w-full",
     type === "primary" && "bg-signum dark:bg-signum-dark",
     type === "secondary" && "bg-gray-500",
+    type === "error" && "bg-red-500",
     type === "blackout" && "bg-black dark:bg-white",
     disabled && "!bg-slate-200",
     wide && "!px-16",

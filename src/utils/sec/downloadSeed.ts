@@ -51,9 +51,11 @@ export const downloadSeed = async ({
         ${seed}
         </p>
 
-        <svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 37 37" fill="#ffffff">
+        <div style="width:256px;height:256px;margin-left: auto; margin-right: auto;">
+         <svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 42 42" fill="#ffffff">
           ${qrCodePaths}
-        </svg>
+         </svg>
+        </div>
 
         <p style="font-size: 22px; font-family: Helvetica Neue; font-weight: bold; text-align: justify; max-width: 90%; margin-left: auto; margin-right: auto;">
         ${description}

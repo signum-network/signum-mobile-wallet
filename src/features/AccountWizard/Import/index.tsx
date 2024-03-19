@@ -5,6 +5,7 @@ import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { type BarcodeScanningResult } from "expo-camera/next";
 import { accountImportSchema } from "./utils/schemas";
 import type { AccountImport } from "./utils/types";
 import { AccountWizardContainer } from "../components/AccountWizardContainer";
@@ -17,6 +18,7 @@ import { Button } from "@/components/Button";
 import { AccountType } from "@/types/account";
 import { HorizontalDivider } from "@/components/HorizontalDivider";
 import { KeyboardAvoidingView } from "@/components/Form/KeyboardAvoidingView";
+import { CameraDialog } from "@/components/CameraDialog";
 import { FormNavigation } from "./components/FormNavigation";
 import { WalletNameField } from "./sections/WalletNameField";
 import { SeedPhraseField } from "./sections/SeedPhraseField";
@@ -64,6 +66,10 @@ export const ImportScreen = () => {
     resetField("isAccountValid");
     setValue("mnemonicAccountAgreement", false);
   }, [type]);
+
+  const onCodeScanned = (data: BarcodeScanningResult) => {
+    setValue("account", data.data);
+  };
 
   const onSubmit: SubmitHandler<AccountImport> = async (data) => {
     const { walletName, account } = data;
@@ -189,6 +195,8 @@ export const ImportScreen = () => {
                     : "accountWizard.importAccount.importWatchOnlyHint"
                 )}
               </Text>
+
+              <CameraDialog onCodeScanned={onCodeScanned} />
 
               {type === AccountType.mnemonic && (
                 <AnimatedSlideContainer>

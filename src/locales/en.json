@@ -13,6 +13,10 @@
   "example": "E.g.",
   "download": "Download",
   "accountDoesNotExists": "Account does not exists",
+  "scanQRCode": "Scan QR Code",
+  "permissionRejected": "Permission Rejected",
+  "requestCameraPermission": "Request Camera Permission",
+  "allowTheAppToUseTheCamera": "Please, allow the app to use the camera in order to scan",
   "terms": {
     "requestFirstLine": "Before you start using this wallet",
     "requestSecondLine": "Please read and agree the following terms",
