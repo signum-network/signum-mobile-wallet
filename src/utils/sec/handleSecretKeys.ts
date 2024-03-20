@@ -49,5 +49,6 @@ export const deleteSecretKey = async (publicKey: string) => {
     );
   } catch (error) {
     console.error(error);
+    return false;
   }
 };

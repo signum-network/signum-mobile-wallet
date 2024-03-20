@@ -11,6 +11,7 @@ import { LedgerClientFactory } from "@signumjs/core";
 export const NodeHostInitializer = () => {
   const activeNodeHost = nodeHostStore((state) => state.activeNodeHost);
   const setActiveNodeHost = nodeHostStore((state) => state.setActiveNodeHost);
+
   const reliableNodeHost = nodeHostStore((state) => state.reliableNodeHost);
   const setReliableNodeHost = nodeHostStore(
     (state) => state.setReliableNodeHost
@@ -49,7 +50,7 @@ export const NodeHostInitializer = () => {
           });
 
           setReliableNodeHost(reliableNodes);
-          setTestnetReliableNodeHost(testnetNodes);
+          setTestnetReliableNodeHost(testnetReliableNodes);
 
           return testnetNodes;
         }
