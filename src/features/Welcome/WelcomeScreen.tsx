@@ -1,19 +1,24 @@
 import { StatusBar } from "expo-status-bar";
 import { Text, View } from "react-native";
 import { LICENSE } from "./License";
-import Markdown from "react-native-marked";
 import { useState } from "react";
+import { Button } from "@/components/Button";
+import { useTranslation } from "react-i18next";
+import Markdown from "react-native-marked";
 import Checkbox from "expo-checkbox";
-import { CustomButton } from "@/components/action/Button";
 
-const WelcomeScreen = () => {
+export const WelcomeScreen = () => {
+  const { t } = useTranslation();
   const [accepted, setAccepted] = useState(false);
+
   return (
-    <View style={{ flex: 1 }} className="flex bg-white">
+    <View className="flex-1 bg-white">
       <View className="items-center bg-signum p-16">
         <Text>Logo</Text>
+        <Text>{t("welcome")}</Text>
         <Text className="color-white text-xl">Signum Mobile Wallet</Text>
       </View>
+
       <View style={{ flex: 1 }} className="px-2">
         <View>
           <Text>
@@ -35,16 +40,9 @@ const WelcomeScreen = () => {
           </Text>
         </View>
       </View>
-      <CustomButton
-        type="primary"
-        title="Get started"
-        linkProps={{
-          href: "/account",
-        }}
-      />
+
+      <Button type="primary" title="Get started" />
       <StatusBar style="auto" />
     </View>
   );
 };
-
-export default WelcomeScreen;
