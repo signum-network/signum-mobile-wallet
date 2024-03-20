@@ -3,11 +3,11 @@ import { View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "expo-router";
 import { Image } from "expo-image";
-import { LICENSE } from "./License";
+import { LICENSE } from "./utils/License";
 import { Button } from "@/components/Button";
 import { signumWhiteSymbolPicture } from "@/assets";
 import { Text } from "@/components/Text";
-import { FormCheckbox } from "@/components/FormCheckbox";
+import { FormCheckbox } from "@/components/Form/Checkbox";
 import { useAppStore } from "@/hooks/useAppStore";
 
 import Markdown from "react-native-marked";
@@ -46,7 +46,7 @@ export const TermsScreen = () => {
           </Text>
         </View>
 
-        <View className="p-2 border-2 border-card-border dark:border-card-border-dark rounded-md flex-1">
+        <View className="p-2 border border-card-border dark:border-card-border-dark rounded-md flex-1">
           <Markdown value={LICENSE} />
         </View>
       </View>

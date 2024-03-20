@@ -1,4 +1,4 @@
-import { Appearance, type ColorSchemeName } from "react-native";
+import type { ColorSchemeName } from "react-native";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { getDefaultLocale, type locales } from "@/locales";
@@ -12,6 +12,7 @@ interface State {
   isAuthEnrolled: boolean; // Determine whether the user has enrolled for authentication.
   authMethod: authMethod; // Determine the method the user will use for authentication (PIN or Biometric)
   failedAuthAttempts: number;
+  isConnected: boolean; // Determine wheter the user has internet access
 }
 
 interface Actions {
@@ -22,15 +23,17 @@ interface Actions {
   setIsAuthEnrolled: (value: boolean) => void;
   setAuthMethod: (value: authMethod) => void;
   setFailedAuthAttempts: (value: number) => void;
+  setIsConnected: (value: boolean) => void;
 }
 
 const initialState: State = {
-  themeMode: Appearance.getColorScheme(),
+  themeMode: "light",
   language: getDefaultLocale(),
   isTermAgreed: false,
   isAuthEnrolled: false,
   authMethod: "PIN",
   failedAuthAttempts: 0,
+  isConnected: true,
 };
 
 export const appStore = create<State & Actions>()(
@@ -44,30 +47,35 @@ export const appStore = create<State & Actions>()(
         set(() => ({
           themeMode: get().themeMode === "dark" ? "light" : "dark",
         })),
-      setLanguage: (value: locales) =>
+      setLanguage: (value) =>
         set(() => ({
           language: value,
         })),
-      setIsTermAgreed: (value: boolean) =>
+      setIsTermAgreed: (value) =>
         set(() => ({
           isTermAgreed: value,
         })),
-      setIsAuthEnrolled: (value: boolean) =>
+      setIsAuthEnrolled: (value) =>
         set(() => ({
           isAuthEnrolled: value,
         })),
-      setAuthMethod: (value: authMethod) =>
+      setAuthMethod: (value) =>
         set(() => ({
           authMethod: value,
         })),
-      setFailedAuthAttempts: (value: number) =>
+      setFailedAuthAttempts: (value) =>
         set(() => ({
           failedAuthAttempts: value,
+        })),
+      setIsConnected: (value) =>
+        set(() => ({
+          isConnected: value,
         })),
     }),
     {
       name: "app-storage",
       storage: createJSONStorage(() => AsyncStorage),
+      version: 1,
     }
   )
 );

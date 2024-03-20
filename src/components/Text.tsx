@@ -3,10 +3,10 @@ import clsx from "clsx";
 
 interface Props {
   color?: "primary" | "content" | "muted" | "error";
-  size?: "small" | "medium" | "large";
+  size?: "small" | "medium" | "large" | "extraLarge";
   className?: string;
   fullWidth?: boolean;
-  children: string | string[];
+  children: any;
 }
 
 export const Text = ({
@@ -24,6 +24,7 @@ export const Text = ({
       "text-muted-foreground dark:text-muted-foreground-dark",
     size === "small" && "text-sm",
     size === "large" && "text-lg",
+    size === "extraLarge" && "text-3xl",
     fullWidth && "w-full",
     className && className,
   ]);

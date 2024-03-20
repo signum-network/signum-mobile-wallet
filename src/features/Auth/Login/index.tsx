@@ -5,14 +5,18 @@ import { router } from "expo-router";
 import { useAppStore } from "@/hooks/useAppStore";
 import { PinAuthenticator } from "@/features/Auth/components/PinAuthenticator";
 import { PUBLIC_PIN_MAX_ATTEMPTS, PUBLIC_PIN_LENGTH } from "@/types/constants";
+import { AccountType } from "@/types/account";
 import { generateHash } from "@/utils/sec/generateHash";
 import { readPin, deletePin } from "@/utils/sec/handlePin";
+import { deleteSecretKey } from "@/utils/sec/handleSecretKeys";
+import { useAccountStore } from "@/hooks/useAccountStore";
 import * as LocalAuthentication from "expo-local-authentication";
 
 const initialValues = [...new Array(PUBLIC_PIN_LENGTH)];
 
 export const LoginAuthScreen = () => {
   const { t } = useTranslation();
+  const { accounts, isAccountEnrolled, resetAccountStore } = useAccountStore();
   const {
     authMethod,
     failedAuthAttempts,
@@ -78,10 +82,44 @@ export const LoginAuthScreen = () => {
     // As UX practice, if user logs in with hardware auth, the tone will not sound, because user want to log in quick
     setTimeout(
       () => {
-        router.replace("/account-wizard/");
+        if (!isAccountEnrolled) router.replace("/account-wizard/");
+
+        router.replace("/(dashboard)/overview");
       },
       areAllFieldsFilled ? 2700 : 1000
     );
+  };
+
+  // Reset app settings
+  // Reset account store
+  // Delete account secret keys from secure storage
+  const resetApp = () => {
+    setLocked(true);
+
+    alert(t("resetApp"));
+
+    Keyboard.dismiss();
+
+    const promises: Promise<boolean>[] = [];
+
+    Object.values(accounts).forEach((account) => {
+      if (account.type === AccountType.mnemonic) {
+        promises.push(deleteSecretKey(account.publicKey));
+      }
+    });
+
+    deletePin().then(() => {
+      resetAppStore();
+
+      Promise.allSettled(promises).then((data) => {
+        resetAccountStore();
+
+        // Timeout is applied because error audio must finish, otherwise app will break
+        setTimeout(() => {
+          router.replace("/terms");
+        }, 3000);
+      });
+    });
   };
 
   useEffect(() => {
@@ -93,28 +131,15 @@ export const LoginAuthScreen = () => {
   }, [authMethod]);
 
   useEffect(() => {
-    (async () => {
-      if (failedAuthAttempts === PUBLIC_PIN_MAX_ATTEMPTS) {
-        setLocked(true);
-        alert(t("resetApp"));
-        Keyboard.dismiss();
-
-        await deletePin().then(() => {
-          resetAppStore();
-
-          // Timeout is applied because audio must finish, otherwise app will break
-          setTimeout(() => {
-            router.replace("/terms");
-          }, 3000);
-        });
-      } else if (failedAuthAttempts >= PUBLIC_PIN_MAX_ATTEMPTS - 2) {
-        alert(
-          t("auth.loginPassCodeTooManyAttempts", {
-            count: PUBLIC_PIN_MAX_ATTEMPTS - failedAuthAttempts,
-          })
-        );
-      }
-    })();
+    if (failedAuthAttempts === PUBLIC_PIN_MAX_ATTEMPTS) {
+      resetApp();
+    } else if (failedAuthAttempts >= PUBLIC_PIN_MAX_ATTEMPTS - 2) {
+      alert(
+        t("auth.loginPassCodeTooManyAttempts", {
+          count: PUBLIC_PIN_MAX_ATTEMPTS - failedAuthAttempts,
+        })
+      );
+    }
   }, [failedAuthAttempts]);
 
   return (

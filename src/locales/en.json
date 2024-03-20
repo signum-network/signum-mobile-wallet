@@ -4,6 +4,19 @@
   "no": "No",
   "cancel": "Cancel",
   "resetApp": "A reset is happening, and all accounts will be erased from the app",
+  "or": "OR",
+  "copyToClipboard": "Copy to clipboard",
+  "loading": "Loading",
+  "mnemonic": "Mnemonic",
+  "fullAccount": "Full Account",
+  "watchOnly": "Watch-only",
+  "example": "E.g.",
+  "download": "Download",
+  "accountDoesNotExists": "Account does not exists",
+  "scanQRCode": "Scan QR Code",
+  "permissionRejected": "Permission Rejected",
+  "requestCameraPermission": "Request Camera Permission",
+  "allowTheAppToUseTheCamera": "Please, allow the app to use the camera in order to scan",
   "terms": {
     "requestFirstLine": "Before you start using this wallet",
     "requestSecondLine": "Please read and agree the following terms",
@@ -27,5 +40,50 @@
     "loginCorrectPassCode": "Welcome back",
     "verifyItsYou": "Verify it's you",
     "loginPassCodeTooManyAttempts": "You've tried logging in too many times. If you keep entering incorrect information, the app will reset and delete all accounts.\n\nYou have {{count}} attempt(s) left"
+  },
+  "accountWizard": {
+    "quickStart": {
+      "title": "Signum Mobile Wallet",
+      "description": "Set up your account to send and receive money using this awesome wallet!",
+      "ctaTitle": "Please make a selection to create or restore your account",
+      "createCta": "Create a New Wallet",
+      "importCta": "Add an Existing Wallet"
+    },
+    "createAccount": {
+      "firstStepTitle": "Before you create a new account, there's something you should be aware of...",
+      "firstStepDescription": "In Blockchain or Crypto, to fully own your new account, you must store securely your wallet's new secret phrase in a place you control. This ensures you can recover your wallet if needed",
+      "firstStepPrimaryTermTitle": "I understand that i am solely responsible for the security and backup of my wallets",
+      "firstStepSecondaryTermTitle": "I understand that if i ever lose access to my wallets, no one can help restore it",
+      "firstStepThirdTermTitle": "I understand that in the event of this application being transferred to a different device or being deleted, my funds can solely be retrieved using the secret phrase",
+      "secondStepTitle": "Your secret phrase",
+      "secondStepDescription": "A secret phrase is a set of random words arranged in a specific order. It's like the main password for your wallet, and you can't change or choose it.",
+      "secondStepSeedPhraseTip": "For your eyes only",
+      "secondStepSeedPhraseSecondTip": "We do not store the secret phrase even on your device. Note it and always keep it private!. After backing up your secret phrase, you can use your wallet confidently, knowing it's safely saved",
+      "copiedSeedPhrase": "Secret phrase copied successfully!",
+      "enterSeedPhraseVerification": "Now, confirm that you store the phrase by entering the requested word from your secret phrase",
+      "verification": "Verification",
+      "verificationHint": "Enter Word #{{word}} from your Secret Phrase",
+      "verificationPlaceholder": "Enter Word #{{word}}",
+      "walletName": "Wallet name",
+      "walletNameHint": "Please enter a name that you would like to use to identify this account",
+      "walletNamePlaceholder": "Enter the name",
+      "accountCreated": "Account created successfully!",
+      "accountCreatedDescription": "Kindly hold on while the wallet prepares your account to use",
+      "secretPhraseCreationDescription": "It is very important that you store this Secret Phrase in a safe place. If you lose it, you will lose the access to your account. You need this Secret Phrase to import your account on other devices and/or alternative Signum Blockchain Wallets",
+      "secretPhraseCreationSecondDescription": "This account is part of the Signum Network, an advanced blockchain platform. You can use this Secret Phrase throughout the entire Signum eco-system, e.g. trade crypto tokens, create/buy NFTs and much more"
+    },
+    "importAccount": {
+      "importTitle": "Restore Wallet",
+      "importDescription": "Choose the type of the account",
+      "importMnemonicTitle": "Enter the Secret Phrase",
+      "importMnemonicHint": "Import a Full account for making transactions. You'll need to provide a secret phrase or passphrase",
+      "importWatchOnlyTitle": "Enter the Account Address",
+      "importWatchOnlyHint": "Import a watch-only account for only supervising, you will not be able to make any transaction. You just view the account's transactions. This is a good security measure for wallets with a big amount of funds",
+      "importWatchOnlySecondHint": "You have the option to enter a Signum Wallet Address, account ID, or even aliases",
+      "importAccountAlreadyExists": "This account already exists on your wallet, please go to account settings and use it!",
+      "importAccountResolvedAddress": "Account address: {{address}}",
+      "importAccountResolvedAddressHint": "Use this suggestion as a helpful tool to ensure you import the accurate account"
+    },
+    "walletNameAlreadyUsed": "The wallet name is already being used, please choose another one!"
   }
 }

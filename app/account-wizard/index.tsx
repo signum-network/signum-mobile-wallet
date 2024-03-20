@@ -1,5 +1,5 @@
-import { Text } from "@/components/Text";
+import { QuickStartScreen } from "@/features/AccountWizard/QuickStart";
 
 export default function Screen() {
-  return <Text>Welcome to the wizard Screen</Text>;
+  return <QuickStartScreen />;
 }

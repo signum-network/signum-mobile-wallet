@@ -8,13 +8,18 @@ export const useAppTheme = () => {
   const themeMode = appStore((state) => state.themeMode);
   const toggleThemeMode = appStore((state) => state.toggleThemeMode);
 
-  const theme = themeMode === "dark" ? DarkTheme : DefaultTheme;
+  const isDarkMode = themeMode === "dark";
 
-  const iconColor = theme.colors.card;
+  const theme = isDarkMode ? DarkTheme : DefaultTheme;
+
+  const iconColor = {
+    default: theme.colors.text,
+    blackout: theme.colors.card,
+  };
 
   useEffect(() => {
     setColorScheme(themeMode || "system");
   }, [themeMode, setColorScheme]);
 
-  return { theme, themeMode, iconColor, toggleThemeMode };
+  return { isDarkMode, theme, themeMode, iconColor, toggleThemeMode };
 };

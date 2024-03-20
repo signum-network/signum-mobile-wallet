@@ -192,7 +192,7 @@ export const PinAuthenticator = ({
             }}
             key={index}
             autoFocus={index === 0}
-            className={`text-2xl font-bold text-center w-14 h-14 border-2 rounded-md bg-white border-card-border dark:border-card-border-dark ${
+            className={`text-2xl font-bold text-center w-14 h-14 border rounded-md bg-white border-card-border dark:border-card-border-dark ${
               disabled && "opacity-50"
             }`}
             maxLength={1}
