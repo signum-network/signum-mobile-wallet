@@ -2,31 +2,53 @@ import { Appearance, type ColorSchemeName } from "react-native";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { getDefaultLocale, type locales } from "@/locales";
+import type { authMethod } from "@/types/authMethod";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-interface AppStore {
+interface State {
   themeMode: ColorSchemeName;
-  toggleThemeMode: () => void;
   language: locales;
-  setLanguage: (value: locales) => void;
+  isTermAgreed: boolean;
+  authMethod: authMethod;
 }
 
-const defaultTheme: ColorSchemeName = Appearance.getColorScheme();
-const defaultLanguage = getDefaultLocale();
+interface Actions {
+  toggleThemeMode: () => void;
+  setLanguage: (value: locales) => void;
+  setIsTermAgreed: (value: boolean) => void;
+  setAuthMethod: (value: authMethod) => void;
+}
 
-export const appStore = create<AppStore>()(
+const initialState: State = {
+  themeMode: Appearance.getColorScheme(),
+  language: getDefaultLocale(),
+  isTermAgreed: false,
+  authMethod: "",
+};
+
+export const appStore = create<State & Actions>()(
   persist(
     (set, get) => ({
-      themeMode: defaultTheme,
+      ...initialState,
       toggleThemeMode: () =>
         set(() => ({
           themeMode: get().themeMode === "dark" ? "light" : "dark",
         })),
-      language: defaultLanguage,
       setLanguage: (value: locales) =>
         set(() => ({
           language: value,
         })),
+      setIsTermAgreed: (value: boolean) =>
+        set(() => ({
+          isTermAgreed: value,
+        })),
+      setAuthMethod: (value: authMethod) =>
+        set(() => ({
+          authMethod: value,
+        })),
+      reset: () => {
+        set(initialState);
+      },
     }),
     {
       name: "app-storage",
