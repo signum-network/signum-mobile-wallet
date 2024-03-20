@@ -1,14 +1,14 @@
-import { View } from "react-native";
-import { LICENSE } from "./License";
 import { useState } from "react";
-import { Button } from "@/components/Button";
+import { View } from "react-native";
 import { useTranslation } from "react-i18next";
+import { useRouter } from "expo-router";
 import { Image } from "expo-image";
+import { LICENSE } from "./License";
+import { Button } from "@/components/Button";
 import { signumWhiteSymbolPicture } from "@/assets";
 import { Text } from "@/components/Text";
 import { FormCheckbox } from "@/components/FormCheckbox";
 import { useAppStore } from "@/hooks/useAppStore";
-import { useRouter } from "expo-router";
 
 import Markdown from "react-native-marked";
 
@@ -21,7 +21,7 @@ export const TermsScreen = () => {
 
   const saveTerms = () => {
     setIsTermAgreed(true);
-    router.replace("/auth");
+    router.replace("/auth/enroll");
   };
 
   return (

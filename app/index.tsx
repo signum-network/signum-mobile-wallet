@@ -1,17 +1,16 @@
-import { View } from "react-native";
 import { useAppStore } from "@/hooks/useAppStore";
 import { Redirect } from "expo-router";
 
 export default function Screen() {
-  const { isTermAgreed, authMethod } = useAppStore();
+  const { isTermAgreed, isAuthEnrolled } = useAppStore();
 
   if (!isTermAgreed) {
     return <Redirect href="/terms" />;
   }
 
-  if (!authMethod) {
-    return <Redirect href="/auth" />;
+  if (!isAuthEnrolled) {
+    return <Redirect href="/auth/enroll" />;
   }
 
-  return <View></View>;
+  return <Redirect href="/auth/login" />;
 }

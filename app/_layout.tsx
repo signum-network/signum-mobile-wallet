@@ -2,6 +2,7 @@ import "../global.css";
 import "@/locales";
 import { Stack } from "expo-router/stack";
 import { AppProviders } from "@/providers";
+import "fast-text-encoding";
 import * as SplashScreen from "expo-splash-screen";
 
 export {
@@ -15,11 +16,7 @@ export {
 export default function RootLayout() {
   return (
     <AppProviders>
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="index" />
-        <Stack.Screen name="terms" />
-        <Stack.Screen name="auth" />
-      </Stack>
+      <Stack screenOptions={{ headerShown: false }} />
     </AppProviders>
   );
 }

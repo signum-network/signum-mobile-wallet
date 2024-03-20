@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "signum-mobile-wallet",
+    "name": "Signum Mobile Wallet",
     "slug": "signum-mobile-wallet",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -11,9 +11,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#0099ff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "scheme": "signum",
     "experiments": {
       "typedRoutes": true
@@ -26,14 +24,20 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#0099ff"
       },
-      "package": "com.signum.phoenix"
+      "package": "com.signum.mobile"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
       "expo-router",
-      "expo-localization"
+      "expo-secure-store",
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Allow $(PRODUCT_NAME) to use Face ID for wallet authentication"
+        }
+      ]
     ]
   }
 }
