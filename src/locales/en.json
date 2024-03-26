@@ -85,5 +85,11 @@
       "importAccountResolvedAddressHint": "Use this suggestion as a helpful tool to ensure you import the accurate account"
     },
     "walletNameAlreadyUsed": "The wallet name is already being used, please choose another one!"
+  },
+  "bottomBar": {
+    "home": "Home",
+    "subscriptions": "Subscriptions",
+    "tokens": "Tokens",
+    "settings": "Settings"
   }
 }

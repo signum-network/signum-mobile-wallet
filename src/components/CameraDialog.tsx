@@ -7,11 +7,11 @@ import {
   PermissionStatus,
   type BarcodeScanningResult,
 } from "expo-camera/next";
-import { FontAwesome6 } from "@expo/vector-icons";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { Text } from "./Text";
 import { Button } from "./Button";
 import { Dialog } from "./Dialog";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 
 interface Props {
   onCodeScanned: (code: BarcodeScanningResult) => void;

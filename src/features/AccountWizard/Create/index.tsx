@@ -3,7 +3,6 @@ import { ScrollView, View, ActivityIndicator } from "react-native";
 import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { router } from "expo-router";
-import { Ionicons } from "@expo/vector-icons";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { AnimatedSlideContainer } from "@/components/AnimatedSlideContainer";
 import { KeyboardAvoidingView } from "@/components/Form/KeyboardAvoidingView";
@@ -22,6 +21,7 @@ import {
 } from "@/utils/sec/handleSecretKeys";
 import { useAccountStore } from "@/hooks/useAccountStore";
 import { AccountType } from "@/types/account";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 export const CreateScreen = () => {
   const { t } = useTranslation();

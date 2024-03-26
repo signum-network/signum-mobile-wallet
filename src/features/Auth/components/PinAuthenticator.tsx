@@ -11,8 +11,8 @@ import { useTranslation } from "react-i18next";
 import { Image } from "expo-image";
 import { signumBlueSymbolPicture } from "@/assets";
 import { Text } from "@/components/Text";
-import { Ionicons } from "@expo/vector-icons";
 import { Audio } from "expo-av";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 interface Props {
   label: string;

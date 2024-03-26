@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { ScrollView, View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { router } from "expo-router";
-import { Ionicons } from "@expo/vector-icons";
 import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { type BarcodeScanningResult } from "expo-camera/next";
@@ -28,6 +27,7 @@ import {
   saveSecretKey,
 } from "@/utils/sec/handleSecretKeys";
 import { asAddress } from "@/utils/account/asAddress";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 export const ImportScreen = () => {
   const { t } = useTranslation();
