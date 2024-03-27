@@ -81,7 +81,7 @@ export const CreateScreen = () => {
 
         setActiveAccount(publicKey);
 
-        router.replace("/(dashboard)/overview");
+        router.replace("/dashboard/overview");
       });
     } catch (error) {
       console.error(error);

@@ -99,7 +99,7 @@ export const ImportScreen = () => {
 
             setActiveAccount(publicKey);
 
-            router.replace("/(dashboard)/overview");
+            router.replace("/dashboard/overview");
           }
         );
         break;
@@ -129,7 +129,7 @@ export const ImportScreen = () => {
 
           setActiveAccount(watchAccountPublicKey);
 
-          router.replace("/(dashboard)/overview");
+          router.replace("/dashboard/overview");
         } catch (error: any) {
           return alert(t("accountDoesNotExists"));
         }

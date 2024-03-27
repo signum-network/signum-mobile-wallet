@@ -12,7 +12,7 @@ export default function Screen() {
     return <Redirect href="/auth/enroll" />;
   }
 
-  return <Redirect href="/(dashboard)/overview" />;
+  return <Redirect href="/dashboard/overview" />;
 
   // TODO: Redirect to auth
   // return <Redirect href="/auth/login" />;

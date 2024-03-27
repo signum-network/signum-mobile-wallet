@@ -84,7 +84,7 @@ export const LoginAuthScreen = () => {
       () => {
         if (!isAccountEnrolled) router.replace("/account-wizard/");
 
-        router.replace("/(dashboard)/overview");
+        router.replace("/dashboard/overview");
       },
       areAllFieldsFilled ? 2700 : 1000
     );
