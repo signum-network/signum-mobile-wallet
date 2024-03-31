@@ -32,7 +32,7 @@ export const Button = ({
   extraClassNames,
 }: Props) => {
   const classNames = clsx([
-    "flex flex-row justify-center items-center px-4 py-4 rounded-lg",
+    "flex flex-row justify-center items-center px-4 py-4 rounded-lg active:opacity-80 ripple-[#333] ripple-bordered",
     fullWidth && "w-full",
     type === "primary" && "bg-signum dark:bg-signum-dark",
     type === "secondary" && "bg-gray-500",

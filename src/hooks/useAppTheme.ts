@@ -13,6 +13,7 @@ export const useAppTheme = () => {
   const theme = isDarkMode ? DarkTheme : DefaultTheme;
 
   const iconColor = {
+    primary: theme.colors.primary,
     default: theme.colors.text,
     blackout: theme.colors.card,
   };

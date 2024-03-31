@@ -52,7 +52,7 @@ export const ImportScreen = () => {
     },
   });
 
-  const { watch, setValue, resetField } = methods;
+  const { watch, setValue, resetField, handleSubmit } = methods;
 
   const type = watch("type");
   const isAccountypeMnemonic = type === AccountType.mnemonic;
@@ -140,7 +140,7 @@ export const ImportScreen = () => {
 
   return (
     <FormProvider {...methods}>
-      <FormNavigation onSubmit={methods.handleSubmit(onSubmit)} />
+      <FormNavigation onSubmit={handleSubmit(onSubmit)} />
 
       <KeyboardAvoidingView>
         <ScrollView>

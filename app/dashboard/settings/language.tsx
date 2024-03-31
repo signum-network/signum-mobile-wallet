@@ -1,5 +1,17 @@
+import { Fragment } from "react";
+import { useTranslation } from "react-i18next";
+import { Stack } from "expo-router/stack";
+import { getHeaderTitle } from "@/utils/getHeaderTitle";
 import { Text } from "@/components/Text";
 
 export default function Screen() {
-  return <Text>Language Screen</Text>;
+  const { t } = useTranslation();
+
+  return (
+    <Fragment>
+      <Stack.Screen options={getHeaderTitle(t("settings.language.title"))} />
+
+      <Text>Language Screen</Text>
+    </Fragment>
+  );
 }

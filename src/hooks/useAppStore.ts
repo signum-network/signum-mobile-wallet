@@ -18,8 +18,8 @@ export const useAppStore = () => {
     (state) => state.setFailedAuthAttempts
   );
 
-  const isConnected = appStore((state) => state.isConnected);
-  const setIsConnected = appStore((state) => state.setIsConnected);
+  const isOnline = appStore((state) => state.isOnline);
+  const setIsOnline = appStore((state) => state.setIsOnline);
 
   const resetAppStore = appStore((state) => state.reset);
 
@@ -29,13 +29,13 @@ export const useAppStore = () => {
     isAuthEnrolled,
     authMethod,
     failedAuthAttempts,
-    isConnected,
+    isOnline,
     setIsTermAgreed,
     setLanguage,
     setIsAuthEnrolled,
     setAuthMethod,
     setFailedAuthAttempts,
-    setIsConnected,
+    setIsOnline,
     resetAppStore,
   };
 };

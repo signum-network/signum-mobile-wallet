@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from "react";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { appStore } from "@/states/appStore";
 import type { ChildrenProps } from "@/types/childrenProps";
@@ -11,5 +11,5 @@ export const AppTranslationsProvider = ({ children }: ChildrenProps) => {
     i18n.changeLanguage(language);
   }, [language]);
 
-  return <Fragment>{children}</Fragment>;
+  return children;
 };

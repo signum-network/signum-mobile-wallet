@@ -3,6 +3,9 @@
   "continue": "Continue",
   "no": "No",
   "cancel": "Cancel",
+  "add": "Add",
+  "use": "Use",
+  "delete": "Delete",
   "resetApp": "A reset is happening, and all accounts will be erased from the app",
   "or": "OR",
   "copyToClipboard": "Copy to clipboard",
@@ -91,5 +94,40 @@
     "subscriptions": "Subscriptions",
     "tokens": "Tokens",
     "settings": "Settings"
+  },
+  "settings": {
+    "language": {
+      "title": "App Language",
+      "description": "Change the app language"
+    },
+    "node": {
+      "title": "Network Nodes",
+      "description": "Add or delete custom signum nodes",
+      "connectionType": "Connection Type",
+      "auto": "Automatic",
+      "manual": "Manual",
+      "currentSelectedNode": "Currently Selected Node",
+      "selectANode": "Select a node of your preference",
+      "network": "Network",
+      "custom": "Custom",
+      "select": "Select",
+      "selected": "Selected",
+      "noCustomNode": "No custom nodes found",
+      "noCustomNodeDescription": "Start adding your preferred custom node!",
+      "nodeAutomaticSelected": "Node is automatically picked",
+      "options": "Options",
+      "addCustomNode": "Add custom node",
+      "customNodeName": "Name",
+      "customNodeUrl": "Network Node URL",
+      "invalidNodeUrl": "Invalid node URL, please enter a valid node URL.\nExample:https://europe.signum.network/",
+      "customNodeAdded": "Custom node added successfully!",
+      "customNodeRemoved": "Custom node removed successfully!",
+      "customNodeNameAlreadyUsed": "Custom node with similar name already exists, please pick another name",
+      "customNodeUrlAlreadyUsed": "Custom node with similar url already exists, please pick another url",
+      "switchedNode": "Switched node successfully!",
+      "customNodeOptions": "Custom node options",
+      "customNodeOptionsDescription": "What do you want to do with {{name}}?",
+      "useThisCustomNode": "Use this custom node"
+    }
   }
 }

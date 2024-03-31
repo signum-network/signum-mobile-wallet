@@ -1,24 +1,19 @@
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { PUBLIC_SIGNUM_PUBLIC_RESOURCES_URL } from "@/types/constants";
-import { nodeHostStore } from "@/states/nodeHostStore";
+import { useNodeHostStore } from "@/hooks/useNodeHostStore";
 import type { nodeHost, PublicNodeHost } from "@/types/nodeHost";
 import { LedgerClientFactory } from "@signumjs/core";
 
-// TODO: Add Support for inactive node which user has active
-// TODO: Detect if user is on a unsynced node
-
 export const NodeHostInitializer = () => {
-  const activeNodeHost = nodeHostStore((state) => state.activeNodeHost);
-  const setActiveNodeHost = nodeHostStore((state) => state.setActiveNodeHost);
-
-  const reliableNodeHost = nodeHostStore((state) => state.reliableNodeHost);
-  const setReliableNodeHost = nodeHostStore(
-    (state) => state.setReliableNodeHost
-  );
-  const setTestnetReliableNodeHost = nodeHostStore(
-    (state) => state.setTestnetReliableNodeHost
-  );
+  const {
+    connectionType,
+    activeNodeHost,
+    reliableNodeHost,
+    setActiveNodeHost,
+    setReliableNodeHost,
+    setTestnetReliableNodeHost,
+  } = useNodeHostStore();
 
   useQuery({
     queryKey: ["fetchReliableNodeHosts"],
@@ -33,21 +28,40 @@ export const NodeHostInitializer = () => {
           const mainnetNodes = response.mainnet;
           const testnetNodes = response.testnet;
 
-          mainnetNodes.forEach((node: PublicNodeHost) => {
+          mainnetNodes.forEach(({ name, url }: PublicNodeHost) => {
+            if (url.includes("localhost")) return;
+
             reliableNodes.push({
-              name: node.name,
-              url: node.url,
+              name,
+              url,
               isTestnet: false,
             });
           });
 
-          testnetNodes.forEach((node: PublicNodeHost) => {
+          testnetNodes.forEach(({ name, url }: PublicNodeHost) => {
+            if (url.includes("localhost")) return;
+
             testnetReliableNodes.push({
-              name: node.name,
-              url: node.url,
+              name,
+              url,
               isTestnet: true,
             });
           });
+
+          // Sorting the array alphabetically by the "name" property
+          const sorter = (a: nodeHost, b: nodeHost) => {
+            // Convert names to lowercase for case-insensitive sorting
+            const nameA = a.name.toLowerCase();
+            const nameB = b.name.toLowerCase();
+
+            // Compare names
+            if (nameA < nameB) return -1;
+            if (nameA > nameB) return 1;
+            return 0; // Names are equal
+          };
+
+          reliableNodes.sort(sorter);
+          testnetReliableNodes.sort(sorter);
 
           setReliableNodeHost(reliableNodes);
           setTestnetReliableNodeHost(testnetReliableNodes);
@@ -63,7 +77,13 @@ export const NodeHostInitializer = () => {
   });
 
   useEffect(() => {
-    if (!reliableNodeHost.length || activeNodeHost.name) return;
+    if (
+      !reliableNodeHost.length ||
+      activeNodeHost.name ||
+      connectionType === "manual"
+    ) {
+      return;
+    }
 
     (async () => {
       const reliableNodeHostsUrls = reliableNodeHost.map((node) => node.url);
@@ -78,7 +98,7 @@ export const NodeHostInitializer = () => {
         setActiveNodeHost(reliableNodeHost[index]);
       });
     })();
-  }, [reliableNodeHost, activeNodeHost]);
+  }, [reliableNodeHost, activeNodeHost, connectionType]);
 
   return null;
 };
