@@ -11,6 +11,8 @@ export const PUBLIC_INACTIVITY_AUTO_LOCK = 30_000;
 export const PUBLIC_SIGNUM_PUBLIC_RESOURCES_URL =
   "https://signum-network.github.io/public-resources";
 
+export const PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MILLISECONDS = 240_000;
+
 // Constants of predefined keys for Expo Secure Store
 
 export const SECURE_STORE_PIN_KEY = "PIN_KEY";

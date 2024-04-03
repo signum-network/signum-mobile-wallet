@@ -14,19 +14,24 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 export const NodeSettingsScreen = () => {
   const { t } = useTranslation();
   const { iconColor } = useAppTheme();
-  const { connectionType, setConnectionType } = useNodeHostStore();
+  const { connectionType, setConnectionType, resetActiveNodeHost } =
+    useNodeHostStore();
 
   const isConnectionTypeAutomatic = connectionType === "automatic";
   const isConnectionTypeManual = connectionType === "manual";
-  const setAutomaticMode = () => setConnectionType("automatic");
+
   const setManualMode = () => setConnectionType("manual");
+  const setAutomaticMode = () => {
+    resetActiveNodeHost();
+    setConnectionType("automatic");
+  };
 
   return (
     <KeyboardAvoidingView>
       <ScrollView>
         <SettingScreenContainer>
           <View className="flex flex-col items-center justify-center w-full gap-4 px-4">
-            <Text size="extraLarge" className="font-bold text-center mt-8">
+            <Text size="large" className="font-bold text-center mt-8">
               {t("settings.node.connectionType")}
             </Text>
 

@@ -14,7 +14,12 @@ export const CurrentNode = () => {
         {t("settings.node.currentSelectedNode")}
       </Text>
 
-      <HostCard {...activeNodeHost} showNetwork />
+      <HostCard
+        name={activeNodeHost.name || t("loading")}
+        url={activeNodeHost.url || t("loading")}
+        isTestnet={activeNodeHost.isTestnet}
+        showNetwork
+      />
     </View>
   );
 };

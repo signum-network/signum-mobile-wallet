@@ -10,3 +10,5 @@ export type PublicNodeHost = {
   description: string;
   url: string;
 };
+
+export const defaultNodeHost = { name: "", url: "", isTestnet: false };

@@ -6,6 +6,28 @@ export const useNodeHostStore = () => {
 
   const activeNodeHost = nodeHostStore((state) => state.activeNodeHost);
   const setActiveNodeHost = nodeHostStore((state) => state.setActiveNodeHost);
+  const resetActiveNodeHost = nodeHostStore(
+    (state) => state.resetActiveNodeHost
+  );
+
+  const isActiveNodeAvailable = nodeHostStore(
+    (state) => state.isActiveNodeAvailable
+  );
+  const setIsActiveNodeAvailable = nodeHostStore(
+    (state) => state.setIsActiveNodeAvailable
+  );
+
+  const isActiveNodeSynced = nodeHostStore((state) => state.isActiveNodeSynced);
+  const setIsActiveNodeSynced = nodeHostStore(
+    (state) => state.setIsActiveNodeSynced
+  );
+
+  const activeNodeSyncedPercentage = nodeHostStore(
+    (state) => state.activeNodeSyncedPercentage
+  );
+  const setActiveNodeSyncedPercentage = nodeHostStore(
+    (state) => state.setActiveNodeSyncedPercentage
+  );
 
   const reliableNodeHost = nodeHostStore((state) => state.reliableNodeHost);
   const setReliableNodeHost = nodeHostStore(
@@ -23,23 +45,28 @@ export const useNodeHostStore = () => {
   const addCustomNode = nodeHostStore((state) => state.addCustomNode);
   const removeCustomNode = nodeHostStore((state) => state.removeCustomNode);
 
-  const { isTestnet } = activeNodeHost;
-
   const resetNodeHostStore = nodeHostStore((state) => state.reset);
 
   return {
     connectionType,
     activeNodeHost,
+    isActiveNodeAvailable,
+    isActiveNodeSynced,
+    activeNodeSyncedPercentage,
     reliableNodeHost,
     testnetReliableNodeHost,
     customNodeHost,
-    isTestnet,
+    isTestnet: activeNodeHost.isTestnet,
     resetNodeHostStore,
     setConnectionType,
     setActiveNodeHost,
+    resetActiveNodeHost,
     setReliableNodeHost,
     setTestnetReliableNodeHost,
     addCustomNode,
     removeCustomNode,
+    setIsActiveNodeAvailable,
+    setIsActiveNodeSynced,
+    setActiveNodeSyncedPercentage,
   };
 };

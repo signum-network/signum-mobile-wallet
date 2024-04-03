@@ -12,4 +12,10 @@ export class NodeService extends LedgerSubService {
       this.context.ledger.network.getNetworkInfo()
     );
   }
+
+  fetchBlockchainStatus() {
+    return handleError(async () =>
+      this.context.ledger.network.getBlockchainStatus()
+    );
+  }
 }

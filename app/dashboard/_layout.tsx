@@ -6,13 +6,20 @@ export default function Layout() {
   const { t } = useTranslation();
 
   return (
-    <Tabs initialRouteName="overview" screenOptions={{ headerShown: false }}>
+    <Tabs
+      initialRouteName="overview"
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle: { height: 80, paddingTop: 15, paddingBottom: 15 },
+      }}
+    >
       <Tabs.Screen
         options={{
           title: t("bottomBar.home"),
           tabBarIcon: ({ color }) => (
-            <Ionicons name="home" size={24} color={color} />
+            <Ionicons name="home" size={28} color={color} />
           ),
+          tabBarLabelStyle: { fontSize: 12 },
         }}
         name="overview"
       />
@@ -21,8 +28,9 @@ export default function Layout() {
         options={{
           title: t("bottomBar.subscriptions"),
           tabBarIcon: ({ color }) => (
-            <Ionicons name="albums" size={24} color={color} />
+            <Ionicons name="albums" size={28} color={color} />
           ),
+          tabBarLabelStyle: { fontSize: 12 },
         }}
         name="subscriptions"
       />
@@ -31,8 +39,9 @@ export default function Layout() {
         options={{
           title: t("bottomBar.tokens"),
           tabBarIcon: ({ color }) => (
-            <Ionicons name="apps" size={24} color={color} />
+            <Ionicons name="apps" size={28} color={color} />
           ),
+          tabBarLabelStyle: { fontSize: 12 },
         }}
         name="tokens"
       />
@@ -41,8 +50,9 @@ export default function Layout() {
         options={{
           title: t("bottomBar.settings"),
           tabBarIcon: ({ color }) => (
-            <Ionicons name="settings" size={24} color={color} />
+            <Ionicons name="settings" size={28} color={color} />
           ),
+          tabBarLabelStyle: { fontSize: 12 },
         }}
         name="settings"
       />

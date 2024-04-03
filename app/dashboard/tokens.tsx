@@ -1,5 +1,10 @@
+import { ProtectedScreen } from "@/features/Dashboard/components/ProtectedScreen";
 import { Text } from "@/components/Text";
 
 export default function Screen() {
-  return <Text>Tokens Screen</Text>;
+  return (
+    <ProtectedScreen>
+      <Text>Tokens Screen</Text>
+    </ProtectedScreen>
+  );
 }

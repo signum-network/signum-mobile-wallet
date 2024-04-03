@@ -1,11 +1,18 @@
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { PUBLIC_SIGNUM_PUBLIC_RESOURCES_URL } from "@/types/constants";
 import { useNodeHostStore } from "@/hooks/useNodeHostStore";
+import { useLedgerService } from "@/hooks/useLedgerService";
+import { useAppStore } from "@/hooks/useAppStore";
 import type { nodeHost, PublicNodeHost } from "@/types/nodeHost";
 import { LedgerClientFactory } from "@signumjs/core";
+import {
+  PUBLIC_SIGNUM_PUBLIC_RESOURCES_URL,
+  PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MILLISECONDS,
+} from "@/types/constants";
 
 export const NodeHostInitializer = () => {
+  const { isOnline } = useAppStore();
+  const { ledgerService } = useLedgerService();
   const {
     connectionType,
     activeNodeHost,
@@ -13,6 +20,10 @@ export const NodeHostInitializer = () => {
     setActiveNodeHost,
     setReliableNodeHost,
     setTestnetReliableNodeHost,
+    setIsActiveNodeAvailable,
+    setIsActiveNodeSynced,
+    setActiveNodeSyncedPercentage,
+    resetActiveNodeHost,
   } = useNodeHostStore();
 
   useQuery({
@@ -99,6 +110,37 @@ export const NodeHostInitializer = () => {
       });
     })();
   }, [reliableNodeHost, activeNodeHost, connectionType]);
+
+  useQuery({
+    queryKey: ["fetchBlockchainStatus", activeNodeHost.url],
+    queryFn: async () => {
+      if (!ledgerService) return false;
+
+      try {
+        const status = await ledgerService.node.fetchBlockchainStatus();
+        const { numberOfBlocks, lastBlockchainFeederHeight } = status;
+
+        setIsActiveNodeSynced(lastBlockchainFeederHeight - numberOfBlocks <= 1);
+
+        setActiveNodeSyncedPercentage(
+          (numberOfBlocks / lastBlockchainFeederHeight) * 100
+        );
+
+        setIsActiveNodeAvailable(true);
+
+        return true;
+      } catch (error) {
+        // Node is unavailable, reset chosen node if connectionType === automatic
+        if (isOnline && connectionType === "automatic") resetActiveNodeHost();
+
+        setIsActiveNodeAvailable(false);
+
+        return false;
+      }
+    },
+    refetchInterval: PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MILLISECONDS,
+    enabled: !!activeNodeHost.url,
+  });
 
   return null;
 };

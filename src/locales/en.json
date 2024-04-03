@@ -19,7 +19,11 @@
   "scanQRCode": "Scan QR Code",
   "permissionRejected": "Permission Rejected",
   "requestCameraPermission": "Request Camera Permission",
+  "testnetMode": "Testnet Mode",
+  "unSyncedNode": "Node is not fully synced ({{percentage}}%), please wait...",
   "allowTheAppToUseTheCamera": "Please, allow the app to use the camera in order to scan",
+  "youAreOffline": "You are offline. Check your data or wifi connection",
+  "nodeUnavailable": "The node you selected is unavailable",
   "terms": {
     "requestFirstLine": "Before you start using this wallet",
     "requestSecondLine": "Please read and agree the following terms",
