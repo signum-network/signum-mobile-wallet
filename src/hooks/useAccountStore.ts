@@ -16,6 +16,12 @@ export const useAccountStore = () => {
     account.walletName.toLowerCase()
   );
 
+  const updateAccountActivationStatus = accountStore(
+    (state) => state.updateAccountActivationStatus
+  );
+
+  const updateAccountData = accountStore((state) => state.updateAccountData);
+
   const resetAccountStore = accountStore((state) => state.reset);
 
   return {
@@ -28,5 +34,7 @@ export const useAccountStore = () => {
     deleteAccount,
     setActiveAccount,
     resetAccountStore,
+    updateAccountActivationStatus,
+    updateAccountData,
   };
 };

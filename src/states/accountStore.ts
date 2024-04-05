@@ -3,6 +3,8 @@ import { persist, createJSONStorage } from "zustand/middleware";
 import {
   type WalletAccount,
   type AccountType,
+  type networks,
+  type AccountNetworkData,
   defaultAccountNetworkData,
 } from "@/types/account";
 
@@ -26,7 +28,18 @@ interface Actions {
   setActiveAccount: (publicKey: string) => void;
   addAccount: ({ publicKey, type, walletName }: addAccountParams) => void;
   deleteAccount: (publicKey: string) => void;
-  //   updateAccount: (publicKey: string) => void;
+
+  // Account update related actions
+  updateAccountActivationStatus: (
+    publicKey: string,
+    accountNetwork: networks,
+    value: boolean
+  ) => void;
+  updateAccountData: (
+    publicKey: string,
+    accountNetwork: networks,
+    value: AccountNetworkData
+  ) => void;
 }
 
 const initialState: State = {
@@ -66,11 +79,35 @@ export const accountStore = create<State & Actions>()(
         }),
       deleteAccount: (publicKey) => {
         set(() => {
-          const accounts = get().accounts;
+          const { accounts } = get();
           delete accounts[publicKey];
 
           return {
             accounts,
+          };
+        });
+      },
+      updateAccountActivationStatus: (publicKey, accountNetwork, value) => {
+        set(() => {
+          const { accounts } = get();
+
+          const newValue = accounts;
+          newValue[publicKey][accountNetwork].isSecured = value;
+
+          return {
+            accounts: newValue,
+          };
+        });
+      },
+      updateAccountData: (publicKey, accountNetwork, value) => {
+        set(() => {
+          const { accounts } = get();
+
+          const newValue = accounts;
+          newValue[publicKey][accountNetwork] = value;
+
+          return {
+            accounts: newValue,
           };
         });
       },

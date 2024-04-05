@@ -13,6 +13,7 @@ export async function handleError<T = string>(fn: LedgerCallFunction<T>) {
     if (e instanceof HttpError) {
       message += ` - Signum Ledger returned: ${e.message}`;
       // TODO: see how to go on here... in terms of error handling... how to treat them all
+      if (e.data.errorCode === 4) message = "incorrectAccount";
       if (e.data.errorCode === 5) message = "unknownAccount";
       if (e.data.errorCode === 6) message = "insufficientFunds";
     }

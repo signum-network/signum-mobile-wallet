@@ -82,21 +82,21 @@ export const nodeHostStore = create<State & Actions>()(
       addCustomNode: (value) =>
         set(() => {
           const { customNodeHost } = get();
-          const newCustomNodeHost = [...customNodeHost, value];
+          const newValue = [...customNodeHost, value];
 
           return {
-            customNodeHost: newCustomNodeHost,
+            customNodeHost: newValue,
           };
         }),
       removeCustomNode: (value) =>
         set(() => {
           const { customNodeHost } = get();
-          const newCustomNodeHost = [...customNodeHost].filter(
+          const newValue = [...customNodeHost].filter(
             (node) => node.name !== value
           );
 
           return {
-            customNodeHost: newCustomNodeHost,
+            customNodeHost: newValue,
           };
         }),
     }),
