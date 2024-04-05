@@ -145,7 +145,7 @@ export const ManualNodeWizard = () => {
           ListEmptyComponent={
             <View className="flex-1 justify-center items-center gap-2 py-8">
               <Ionicons
-                name="albums"
+                name="server"
                 size={50}
                 color={iconColor.default}
                 className="opacity-50"

@@ -111,6 +111,7 @@ export const NodeHostInitializer = () => {
     })();
   }, [reliableNodeHost, activeNodeHost, connectionType]);
 
+  // TODO: Once SignumJS has improved the selectBestHost method, clean the active node host if active node is syncing
   useQuery({
     queryKey: ["fetchBlockchainStatus", activeNodeHost.url],
     queryFn: async () => {

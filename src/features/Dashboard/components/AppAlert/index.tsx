@@ -35,7 +35,8 @@ export const AppAlert = () => {
     return <Alert label={t("nodeUnavailable")} />;
   }
 
-  if (!isActiveNodeSynced && connectionType === "manual") {
+  // TODO: Once SignumJS has improved the selectBestHost method, add the following conditional: connectionType === "manual"
+  if (!isActiveNodeSynced) {
     return (
       <Alert
         label={t("unSyncedNode", {

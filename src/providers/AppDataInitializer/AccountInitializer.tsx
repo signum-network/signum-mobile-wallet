@@ -42,7 +42,10 @@ export const AccountInitializer = () => {
 
         return true;
       } catch (error: any) {
-        if (error.message === "incorrectAccount") {
+        if (
+          error.message === "incorrectAccount" ||
+          error.message === "unknownAccount"
+        ) {
           updateAccountActivationStatus(publicKey, accountNetwork, false);
         }
 
