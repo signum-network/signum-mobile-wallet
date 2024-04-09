@@ -19,7 +19,7 @@ import { AppAlert } from "../AppAlert";
 
 export const ProtectedScreen = ({ children }: ChildrenProps) => {
   const { publicKey, isAuthenticated } = useAccount();
-  const { isActiveNodeSynced } = useNodeHostStore();
+  const { isTestnet, isActiveNodeSynced } = useNodeHostStore();
 
   const isMainnetSecured = accountStore(
     useShallow(
@@ -34,7 +34,8 @@ export const ProtectedScreen = ({ children }: ChildrenProps) => {
   );
 
   // Check if account is secured on designated network (Mainnet or Testnet)
-  const isSecured = isMainnetSecured || isTestnetSecured;
+  const isSecured =
+    (isMainnetSecured && !isTestnet) || (isTestnetSecured && isTestnet);
 
   const dynamicContent: ChildrenProps["children"] =
     isAuthenticated && isActiveNodeSynced && !isSecured ? (
