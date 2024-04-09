@@ -7,7 +7,6 @@ import {
   type AccountNetworkData,
   defaultAccountNetworkData,
 } from "@/types/account";
-
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type addAccountParams = {
@@ -71,19 +70,22 @@ export const accountStore = create<State & Actions>()(
             testnet: defaultAccountNetworkData,
           };
 
-          accounts[publicKey] = initialAccountData;
+          const newValue = accounts;
+          newValue[publicKey] = initialAccountData;
 
           return {
-            accounts,
+            accounts: newValue,
           };
         }),
       deleteAccount: (publicKey) => {
         set(() => {
           const { accounts } = get();
-          delete accounts[publicKey];
+
+          const newValue = accounts;
+          delete newValue[publicKey];
 
           return {
-            accounts,
+            accounts: newValue,
           };
         });
       },

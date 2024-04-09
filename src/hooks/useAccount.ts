@@ -14,7 +14,6 @@ interface EasyWalletAccountData
   extends Omit<WalletAccount, "mainnet" | "testnet"> {
   isAuthenticated: boolean; // Confirm if the wallet is actively using an account (The account type does not matter)
   isWatchOnly: boolean; // Check if user is currently using a watch only account
-  isSecured: boolean; // Check if account is secured on designated network (Mainnet or Testnet)
   accountNetwork: networks;
   accountId: string;
   accountData: AccountNetworkData;
@@ -23,7 +22,6 @@ interface EasyWalletAccountData
 const defaultWalletAccountData: EasyWalletAccountData = {
   isAuthenticated: false,
   isWatchOnly: false,
-  isSecured: false,
   accountNetwork: "mainnet",
   type: AccountType.mnemonic,
   publicKey: "",
@@ -54,7 +52,6 @@ export const useAccount = (): EasyWalletAccountData => {
     return {
       isAuthenticated: !!publicKey,
       isWatchOnly: type === AccountType.watchOnly,
-      isSecured: accountData.isSecured,
       accountNetwork,
       type,
       publicKey,

@@ -26,17 +26,6 @@ export default function Layout() {
 
       <Tabs.Screen
         options={{
-          title: t("bottomBar.subscriptions"),
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="albums" size={28} color={color} />
-          ),
-          tabBarLabelStyle: { fontSize: 12 },
-        }}
-        name="subscriptions"
-      />
-
-      <Tabs.Screen
-        options={{
           title: t("bottomBar.tokens"),
           tabBarIcon: ({ color }) => (
             <Ionicons name="apps" size={28} color={color} />
@@ -44,6 +33,17 @@ export default function Layout() {
           tabBarLabelStyle: { fontSize: 12 },
         }}
         name="tokens"
+      />
+
+      <Tabs.Screen
+        options={{
+          title: t("bottomBar.subscriptions"),
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="albums" size={28} color={color} />
+          ),
+          tabBarLabelStyle: { fontSize: 12 },
+        }}
+        name="subscriptions"
       />
 
       <Tabs.Screen

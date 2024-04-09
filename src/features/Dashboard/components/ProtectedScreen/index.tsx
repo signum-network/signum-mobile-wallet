@@ -1,9 +1,11 @@
-import { Fragment, useMemo } from "react";
-import { AppAlert } from "../AppAlert";
+import { Fragment } from "react";
+import { useShallow } from "zustand/react/shallow";
 import type { ChildrenProps } from "@/types/childrenProps";
 import { useAccount } from "@/hooks/useAccount";
 import { useNodeHostStore } from "@/hooks/useNodeHostStore";
-import { Text } from "@/components/Text";
+import { AccountActivationCard } from "./components/AccountActivationCard";
+import { accountStore } from "@/states/accountStore";
+import { AppAlert } from "../AppAlert";
 
 // Protect screen from:
 // Inactive accounts
@@ -16,16 +18,29 @@ import { Text } from "@/components/Text";
 // Transfer funds
 
 export const ProtectedScreen = ({ children }: ChildrenProps) => {
-  const { isAuthenticated, isSecured } = useAccount();
+  const { publicKey, isAuthenticated } = useAccount();
   const { isActiveNodeSynced } = useNodeHostStore();
 
-  const dynamicContent: ChildrenProps["children"] = useMemo(() => {
-    if (isAuthenticated && isActiveNodeSynced && !isSecured) {
-      return <Text>The account is unsafe</Text>;
-    }
+  const isMainnetSecured = accountStore(
+    useShallow(
+      (state) => state.accounts?.[publicKey]?.mainnet?.isSecured || false
+    )
+  );
 
-    return children;
-  }, [isAuthenticated, isSecured, isActiveNodeSynced]);
+  const isTestnetSecured = accountStore(
+    useShallow(
+      (state) => state.accounts?.[publicKey]?.testnet?.isSecured || false
+    )
+  );
+
+  const isSecured = isMainnetSecured || isTestnetSecured;
+
+  const dynamicContent: ChildrenProps["children"] =
+    isAuthenticated && isActiveNodeSynced && !isSecured ? (
+      <AccountActivationCard />
+    ) : (
+      children
+    );
 
   return (
     <Fragment>

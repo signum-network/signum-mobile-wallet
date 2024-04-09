@@ -15,5 +15,5 @@ export default function Screen() {
   return <Redirect href="/dashboard/overview" />;
 
   // TODO: Redirect to auth
-  // return <Redirect href="/auth/login" />;
+  return <Redirect href="/auth/login" />;
 }
