@@ -33,6 +33,7 @@ export const ProtectedScreen = ({ children }: ChildrenProps) => {
     )
   );
 
+  // Check if account is secured on designated network (Mainnet or Testnet)
   const isSecured = isMainnetSecured || isTestnetSecured;
 
   const dynamicContent: ChildrenProps["children"] =
