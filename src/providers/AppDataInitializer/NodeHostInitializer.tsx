@@ -1,24 +1,30 @@
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { PUBLIC_SIGNUM_PUBLIC_RESOURCES_URL } from "@/types/constants";
-import { nodeHostStore } from "@/states/nodeHostStore";
+import { useNodeHostStore } from "@/hooks/useNodeHostStore";
+import { useLedgerService } from "@/hooks/useLedgerService";
+import { useAppStore } from "@/hooks/useAppStore";
 import type { nodeHost, PublicNodeHost } from "@/types/nodeHost";
 import { LedgerClientFactory } from "@signumjs/core";
-
-// TODO: Add Support for inactive node which user has active
-// TODO: Detect if user is on a unsynced node
+import {
+  PUBLIC_SIGNUM_PUBLIC_RESOURCES_URL,
+  PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MILLISECONDS,
+} from "@/types/constants";
 
 export const NodeHostInitializer = () => {
-  const activeNodeHost = nodeHostStore((state) => state.activeNodeHost);
-  const setActiveNodeHost = nodeHostStore((state) => state.setActiveNodeHost);
-
-  const reliableNodeHost = nodeHostStore((state) => state.reliableNodeHost);
-  const setReliableNodeHost = nodeHostStore(
-    (state) => state.setReliableNodeHost
-  );
-  const setTestnetReliableNodeHost = nodeHostStore(
-    (state) => state.setTestnetReliableNodeHost
-  );
+  const { isOnline } = useAppStore();
+  const { ledgerService } = useLedgerService();
+  const {
+    connectionType,
+    activeNodeHost,
+    reliableNodeHost,
+    setActiveNodeHost,
+    setReliableNodeHost,
+    setTestnetReliableNodeHost,
+    setIsActiveNodeAvailable,
+    setIsActiveNodeSynced,
+    setActiveNodeSyncedPercentage,
+    resetActiveNodeHost,
+  } = useNodeHostStore();
 
   useQuery({
     queryKey: ["fetchReliableNodeHosts"],
@@ -33,21 +39,40 @@ export const NodeHostInitializer = () => {
           const mainnetNodes = response.mainnet;
           const testnetNodes = response.testnet;
 
-          mainnetNodes.forEach((node: PublicNodeHost) => {
+          mainnetNodes.forEach(({ name, url }: PublicNodeHost) => {
+            if (url.includes("localhost")) return;
+
             reliableNodes.push({
-              name: node.name,
-              url: node.url,
+              name,
+              url,
               isTestnet: false,
             });
           });
 
-          testnetNodes.forEach((node: PublicNodeHost) => {
+          testnetNodes.forEach(({ name, url }: PublicNodeHost) => {
+            if (url.includes("localhost")) return;
+
             testnetReliableNodes.push({
-              name: node.name,
-              url: node.url,
+              name,
+              url,
               isTestnet: true,
             });
           });
+
+          // Sorting the array alphabetically by the "name" property
+          const sorter = (a: nodeHost, b: nodeHost) => {
+            // Convert names to lowercase for case-insensitive sorting
+            const nameA = a.name.toLowerCase();
+            const nameB = b.name.toLowerCase();
+
+            // Compare names
+            if (nameA < nameB) return -1;
+            if (nameA > nameB) return 1;
+            return 0; // Names are equal
+          };
+
+          reliableNodes.sort(sorter);
+          testnetReliableNodes.sort(sorter);
 
           setReliableNodeHost(reliableNodes);
           setTestnetReliableNodeHost(testnetReliableNodes);
@@ -63,7 +88,13 @@ export const NodeHostInitializer = () => {
   });
 
   useEffect(() => {
-    if (!reliableNodeHost.length || activeNodeHost.name) return;
+    if (
+      !reliableNodeHost.length ||
+      activeNodeHost.name ||
+      connectionType === "manual"
+    ) {
+      return;
+    }
 
     (async () => {
       const reliableNodeHostsUrls = reliableNodeHost.map((node) => node.url);
@@ -78,7 +109,39 @@ export const NodeHostInitializer = () => {
         setActiveNodeHost(reliableNodeHost[index]);
       });
     })();
-  }, [reliableNodeHost, activeNodeHost]);
+  }, [reliableNodeHost, activeNodeHost, connectionType]);
+
+  // TODO: Once SignumJS has improved the selectBestHost method, clean the active node host if active node is syncing
+  useQuery({
+    queryKey: ["fetchBlockchainStatus", activeNodeHost.url],
+    queryFn: async () => {
+      if (!ledgerService) return false;
+
+      try {
+        const status = await ledgerService.node.fetchBlockchainStatus();
+        const { numberOfBlocks, lastBlockchainFeederHeight } = status;
+
+        setIsActiveNodeSynced(lastBlockchainFeederHeight - numberOfBlocks <= 1);
+
+        setActiveNodeSyncedPercentage(
+          (numberOfBlocks / lastBlockchainFeederHeight) * 100
+        );
+
+        setIsActiveNodeAvailable(true);
+
+        return true;
+      } catch (error) {
+        // Node is unavailable, reset chosen node if connectionType === automatic
+        if (isOnline && connectionType === "automatic") resetActiveNodeHost();
+
+        setIsActiveNodeAvailable(false);
+
+        return false;
+      }
+    },
+    refetchInterval: PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MILLISECONDS,
+    enabled: !!activeNodeHost.url,
+  });
 
   return null;
 };

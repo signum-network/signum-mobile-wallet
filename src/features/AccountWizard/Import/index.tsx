@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { ScrollView, View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { router } from "expo-router";
-import { Ionicons } from "@expo/vector-icons";
 import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { type BarcodeScanningResult } from "expo-camera/next";
@@ -28,6 +27,7 @@ import {
   saveSecretKey,
 } from "@/utils/sec/handleSecretKeys";
 import { asAddress } from "@/utils/account/asAddress";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 export const ImportScreen = () => {
   const { t } = useTranslation();
@@ -52,7 +52,7 @@ export const ImportScreen = () => {
     },
   });
 
-  const { watch, setValue, resetField } = methods;
+  const { watch, setValue, resetField, handleSubmit } = methods;
 
   const type = watch("type");
   const isAccountypeMnemonic = type === AccountType.mnemonic;
@@ -99,7 +99,7 @@ export const ImportScreen = () => {
 
             setActiveAccount(publicKey);
 
-            router.replace("/(dashboard)/overview");
+            router.replace("/dashboard/overview");
           }
         );
         break;
@@ -129,7 +129,7 @@ export const ImportScreen = () => {
 
           setActiveAccount(watchAccountPublicKey);
 
-          router.replace("/(dashboard)/overview");
+          router.replace("/dashboard/overview");
         } catch (error: any) {
           return alert(t("accountDoesNotExists"));
         }
@@ -140,7 +140,7 @@ export const ImportScreen = () => {
 
   return (
     <FormProvider {...methods}>
-      <FormNavigation onSubmit={methods.handleSubmit(onSubmit)} />
+      <FormNavigation onSubmit={handleSubmit(onSubmit)} />
 
       <KeyboardAvoidingView>
         <ScrollView>

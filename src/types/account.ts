@@ -1,5 +1,7 @@
 import { Amount } from "@signumjs/util";
 
+export type networks = "mainnet" | "testnet";
+
 export enum AccountType {
   mnemonic = "mnemonic",
   watchOnly = "watchOnly",
@@ -13,7 +15,7 @@ export interface AccountBalance {
 }
 
 export interface AccountNetworkData {
-  isActive: boolean;
+  isSecured: boolean;
   name: string;
   description: string;
   balance: AccountBalance;
@@ -29,7 +31,7 @@ export interface WalletAccount {
 }
 
 export const defaultAccountNetworkData: AccountNetworkData = {
-  isActive: false,
+  isSecured: false,
   name: "",
   description: "",
   balance: {

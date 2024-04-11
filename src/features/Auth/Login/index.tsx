@@ -82,9 +82,11 @@ export const LoginAuthScreen = () => {
     // As UX practice, if user logs in with hardware auth, the tone will not sound, because user want to log in quick
     setTimeout(
       () => {
-        if (!isAccountEnrolled) router.replace("/account-wizard/");
-
-        router.replace("/(dashboard)/overview");
+        if (!isAccountEnrolled) {
+          router.replace("/account-wizard/");
+        } else {
+          router.replace("/dashboard/overview");
+        }
       },
       areAllFieldsFilled ? 2700 : 1000
     );

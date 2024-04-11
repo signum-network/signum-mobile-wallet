@@ -2,11 +2,11 @@ import { View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { Image } from "expo-image";
 import { Text } from "@/components/Text";
-import { Ionicons } from "@expo/vector-icons";
 import { wizardBannerPicture } from "@/assets";
 import { Button } from "@/components/Button";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { AccountWizardContainer } from "../components/AccountWizardContainer";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 export const QuickStartScreen = () => {
   const { t } = useTranslation();

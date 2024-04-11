@@ -1,6 +1,5 @@
 import { View } from "react-native";
 import { useRef, useEffect, useMemo, type RefObject } from "react";
-import { Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
 import { Text } from "@/components/Text";
@@ -12,6 +11,7 @@ import { Address } from "@signumjs/core";
 import type { AccountCreation } from "../../utils/types";
 import * as Clipboard from "expo-clipboard";
 import QRCode from "react-qr-code";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 export const SecretPhraseGeneration = () => {
   const { t } = useTranslation();

@@ -3,6 +3,9 @@
   "continue": "Continue",
   "no": "No",
   "cancel": "Cancel",
+  "add": "Add",
+  "use": "Use",
+  "delete": "Delete",
   "resetApp": "A reset is happening, and all accounts will be erased from the app",
   "or": "OR",
   "copyToClipboard": "Copy to clipboard",
@@ -16,7 +19,11 @@
   "scanQRCode": "Scan QR Code",
   "permissionRejected": "Permission Rejected",
   "requestCameraPermission": "Request Camera Permission",
+  "testnetMode": "Testnet Mode",
+  "unSyncedNode": "Node is not fully synced ({{percentage}}%), please wait...",
   "allowTheAppToUseTheCamera": "Please, allow the app to use the camera in order to scan",
+  "youAreOffline": "You are offline. Check your data or wifi connection",
+  "nodeUnavailable": "The node you selected is unavailable",
   "terms": {
     "requestFirstLine": "Before you start using this wallet",
     "requestSecondLine": "Please read and agree the following terms",
@@ -85,5 +92,53 @@
       "importAccountResolvedAddressHint": "Use this suggestion as a helpful tool to ensure you import the accurate account"
     },
     "walletNameAlreadyUsed": "The wallet name is already being used, please choose another one!"
+  },
+  "bottomBar": {
+    "home": "Home",
+    "subscriptions": "Subscriptions",
+    "tokens": "Tokens",
+    "settings": "Settings"
+  },
+  "settings": {
+    "language": {
+      "title": "App Language",
+      "description": "Change the app language"
+    },
+    "node": {
+      "title": "Network Nodes",
+      "description": "Add or delete custom signum nodes",
+      "connectionType": "Connection Type",
+      "auto": "Automatic",
+      "manual": "Manual",
+      "currentSelectedNode": "Currently Selected Node",
+      "selectANode": "Select a node of your preference",
+      "network": "Network",
+      "custom": "Custom",
+      "select": "Select",
+      "selected": "Selected",
+      "noCustomNode": "No custom nodes found",
+      "noCustomNodeDescription": "Start adding your preferred custom node!",
+      "nodeAutomaticSelected": "Node is automatically picked",
+      "options": "Options",
+      "addCustomNode": "Add custom node",
+      "customNodeName": "Name",
+      "customNodeUrl": "Network Node URL",
+      "invalidNodeUrl": "Invalid node URL, please enter a valid node URL.\nExample:https://europe.signum.network/",
+      "customNodeAdded": "Custom node added successfully!",
+      "customNodeRemoved": "Custom node removed successfully!",
+      "customNodeNameAlreadyUsed": "Custom node with similar name already exists, please pick another name",
+      "customNodeUrlAlreadyUsed": "Custom node with similar url already exists, please pick another url",
+      "switchedNode": "Switched node successfully!",
+      "customNodeOptions": "Custom node options",
+      "customNodeOptionsDescription": "What do you want to do with {{name}}?",
+      "useThisCustomNode": "Use this custom node"
+    }
+  },
+  "unsafeAccount": {
+    "title": "Account is unsafe",
+    "description": "This account is not yet fully registered on the blockchain. Please activate your account to ensure its security and make it fully usable for all services, including exchanges",
+    "activate": "Activate account",
+    "activating": "Activation is pending...",
+    "accountActivationIsPending": "Account activation is pending\nPlease wait..."
   }
 }

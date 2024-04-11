@@ -12,10 +12,13 @@ export const AppThemeProvider = ({ children }: ChildrenProps) => {
   const insets = useSafeAreaInsets();
   const pathname = usePathname();
 
-  const dynamicTopInset: number = useMemo(() => {
+  const dynamicTopInset = useMemo(() => {
     switch (pathname) {
       case "/account-wizard/create":
       case "/account-wizard/import":
+
+      case "/dashboard/settings/language":
+      case "/dashboard/settings/nodes":
         return 0;
 
       default:

@@ -1,7 +1,8 @@
 import { accountStore } from "@/states/accountStore";
+import { useShallow } from "zustand/react/shallow";
 
 export const useAccountStore = () => {
-  const accounts = accountStore((state) => state.accounts);
+  const accounts = accountStore(useShallow((state) => state.accounts));
   const addAccount = accountStore((state) => state.addAccount);
   const deleteAccount = accountStore((state) => state.deleteAccount);
 
@@ -16,6 +17,12 @@ export const useAccountStore = () => {
     account.walletName.toLowerCase()
   );
 
+  const updateAccountActivationStatus = accountStore(
+    (state) => state.updateAccountActivationStatus
+  );
+
+  const updateAccountData = accountStore((state) => state.updateAccountData);
+
   const resetAccountStore = accountStore((state) => state.reset);
 
   return {
@@ -28,5 +35,7 @@ export const useAccountStore = () => {
     deleteAccount,
     setActiveAccount,
     resetAccountStore,
+    updateAccountActivationStatus,
+    updateAccountData,
   };
 };

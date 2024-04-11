@@ -3,9 +3,10 @@ import { persist, createJSONStorage } from "zustand/middleware";
 import {
   type WalletAccount,
   type AccountType,
+  type networks,
+  type AccountNetworkData,
   defaultAccountNetworkData,
 } from "@/types/account";
-
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type addAccountParams = {
@@ -26,7 +27,18 @@ interface Actions {
   setActiveAccount: (publicKey: string) => void;
   addAccount: ({ publicKey, type, walletName }: addAccountParams) => void;
   deleteAccount: (publicKey: string) => void;
-  //   updateAccount: (publicKey: string) => void;
+
+  // Account update related actions
+  updateAccountActivationStatus: (
+    publicKey: string,
+    accountNetwork: networks,
+    value: boolean
+  ) => void;
+  updateAccountData: (
+    publicKey: string,
+    accountNetwork: networks,
+    value: AccountNetworkData
+  ) => void;
 }
 
 const initialState: State = {
@@ -58,19 +70,46 @@ export const accountStore = create<State & Actions>()(
             testnet: defaultAccountNetworkData,
           };
 
-          accounts[publicKey] = initialAccountData;
+          const newValue = accounts;
+          newValue[publicKey] = initialAccountData;
 
           return {
-            accounts,
+            accounts: newValue,
           };
         }),
       deleteAccount: (publicKey) => {
         set(() => {
-          const accounts = get().accounts;
-          delete accounts[publicKey];
+          const { accounts } = get();
+
+          const newValue = accounts;
+          delete newValue[publicKey];
 
           return {
-            accounts,
+            accounts: newValue,
+          };
+        });
+      },
+      updateAccountActivationStatus: (publicKey, accountNetwork, value) => {
+        set(() => {
+          const { accounts } = get();
+
+          const newValue = accounts;
+          newValue[publicKey][accountNetwork].isSecured = value;
+
+          return {
+            accounts: newValue,
+          };
+        });
+      },
+      updateAccountData: (publicKey, accountNetwork, value) => {
+        set(() => {
+          const { accounts } = get();
+
+          const newValue = accounts;
+          newValue[publicKey][accountNetwork] = value;
+
+          return {
+            accounts: newValue,
           };
         });
       },
