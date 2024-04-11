@@ -138,6 +138,7 @@
     "title": "Account is unsafe",
     "description": "This account is not yet fully registered on the blockchain. Please activate your account to ensure its security and make it fully usable for all services, including exchanges",
     "activate": "Activate account",
-    "activating": "Activation is pending..."
+    "activating": "Activation is pending...",
+    "accountActivationIsPending": "Account activation is pending\nPlease wait..."
   }
 }

@@ -1,7 +1,8 @@
 import { accountStore } from "@/states/accountStore";
+import { useShallow } from "zustand/react/shallow";
 
 export const useAccountStore = () => {
-  const accounts = accountStore((state) => state.accounts);
+  const accounts = accountStore(useShallow((state) => state.accounts));
   const addAccount = accountStore((state) => state.addAccount);
   const deleteAccount = accountStore((state) => state.deleteAccount);
 
