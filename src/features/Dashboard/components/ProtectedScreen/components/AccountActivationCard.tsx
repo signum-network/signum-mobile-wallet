@@ -3,16 +3,18 @@ import { View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useLedgerService } from "@/hooks/useLedgerService";
 import { useAccount } from "@/hooks/useAccount";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { Text } from "@/components/Text";
 import { Card } from "@/components/Card";
 import { Button } from "@/components/Button";
-
+import { asRSAddress } from "@/utils/account/asRSAddress";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 export const AccountActivationCard = () => {
   const { t } = useTranslation();
   const { ledgerService } = useLedgerService();
-  const { accountId, publicKey } = useAccount();
+  const { theme } = useAppTheme();
+  const { walletName, accountId, publicKey } = useAccount();
 
   const [activationPending, setActivationPending] = useState(false);
 
@@ -30,11 +32,26 @@ export const AccountActivationCard = () => {
     <View className="flex-1 flex flex-col items-center justify-center w-full max-w-sm mx-auto">
       <Card>
         <View className="w-full flex flex-col items-center justify-center gap-2 px-4">
-          <Ionicons name="alert-circle" size={50} color="#009688" />
+          <View className="my-2 w-full">
+            <Card>
+              <View className="w-full flex items-center justify-center gap-1">
+                <Text className="font-medium">{walletName}</Text>
+                <Text color="muted">{asRSAddress(accountId)}</Text>
+              </View>
+            </Card>
+          </View>
 
-          <Text size="large" className="font-medium">
-            {t("unsafeAccount.title")}
-          </Text>
+          <View className="w-full flex flex-row items-center justify-center gap-2">
+            <Ionicons
+              name="alert-circle"
+              size={22}
+              color={theme.colors.notification}
+            />
+
+            <Text size="large" className="font-medium" color="error">
+              {t("unsafeAccount.title")}
+            </Text>
+          </View>
 
           <Text color="muted" size="large" className="text-center">
             {t("unsafeAccount.description")}
@@ -42,7 +59,7 @@ export const AccountActivationCard = () => {
 
           <Button
             icon={<Ionicons name="lock-closed" size={24} color="white" />}
-            type="primary"
+            type="secondary"
             title={t(
               activationPending
                 ? "unsafeAccount.activating"

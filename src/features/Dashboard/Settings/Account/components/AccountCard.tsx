@@ -1,0 +1,195 @@
+import { useMemo } from "react";
+import { Dimensions, View, Pressable, Alert } from "react-native";
+import { useTranslation } from "react-i18next";
+import { useQuery } from "@tanstack/react-query";
+import { useNodeHostStore } from "@/hooks/useNodeHostStore";
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import Animated, {
+  runOnJS,
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+  withTiming,
+} from "react-native-reanimated";
+import { Text } from "@/components/Text";
+import { useTicker } from "@/hooks/useTicker";
+import { useAccountStore } from "@/hooks/useAccountStore";
+import { AccountType } from "@/types/account";
+import { deleteSecretKey } from "@/utils/sec/handleSecretKeys";
+import { Amount } from "@signumjs/util";
+import Ionicons from "@expo/vector-icons/Ionicons";
+
+interface Props {
+  publicKey: string;
+  type: AccountType;
+  walletName: string;
+}
+
+export const ITEM_HEIGHT = 90;
+const WIDTH_SCREEN = Dimensions.get("window").width;
+
+export const AccountCard = ({ publicKey, type, walletName }: Props) => {
+  const { t } = useTranslation();
+  const { NativeTicker } = useTicker();
+  const { isTestnet } = useNodeHostStore();
+  const { activeAccount, setActiveAccount, deleteAccount, accounts } =
+    useAccountStore();
+
+  const {
+    mainnet: { balance: mainnetBalance },
+    testnet: { balance: testnetBalance },
+  } = accounts[publicKey];
+
+  const availableBalance = useMemo(() => {
+    return Amount.fromPlanck("0").getSigna();
+  }, [mainnetBalance, testnetBalance, isTestnet]);
+
+  const pressed = useSharedValue(false);
+  const itemHeight = useSharedValue(ITEM_HEIGHT);
+  const swipeTranslateX = useSharedValue(0);
+
+  const isCurrentAccount = activeAccount === publicKey;
+
+  // TODO: Remove "asset balances", "transactions history", "subscription" from account
+  const removeAccount = async () => {
+    await deleteSecretKey(publicKey);
+
+    deleteAccount(publicKey);
+
+    itemHeight.value = withTiming(0);
+
+    if (isCurrentAccount) setActiveAccount("");
+
+    alert(t("settings.account.accountRemoved"));
+  };
+
+  const requestDelete = () => {
+    Alert.alert(
+      t("settings.account.removeAccount"),
+      t("settings.account.removeAccountDescription", { walletName }),
+      [
+        {
+          text: t("cancel"),
+          style: "cancel",
+        },
+        {
+          text: t("settings.account.confirm"),
+          onPress: removeAccount,
+          style: "destructive",
+        },
+      ],
+      {
+        cancelable: true,
+      }
+    );
+  };
+
+  const changeActiveAccount = () => {
+    if (isCurrentAccount) return;
+    setActiveAccount(publicKey);
+  };
+
+  const pan = Gesture.Pan()
+    .onBegin(() => {
+      pressed.value = true;
+    })
+    .onChange((event) => {
+      if (event.translationX < 0) {
+        swipeTranslateX.value = event.translationX;
+      }
+    })
+    .onFinalize(() => {
+      const isShouldDismiss = swipeTranslateX.value < -WIDTH_SCREEN * 0.5;
+
+      if (isShouldDismiss) {
+        swipeTranslateX.value = withTiming(0, undefined, (isDone) => {
+          if (isDone) {
+            runOnJS(requestDelete)();
+          }
+        });
+      } else {
+        swipeTranslateX.value = withSpring(0);
+      }
+      pressed.value = false;
+    });
+
+  const transformStyle = useAnimatedStyle(() => ({
+    transform: [
+      { translateX: swipeTranslateX.value },
+      { scale: withTiming(pressed.value ? 1.05 : 1) },
+    ],
+  }));
+
+  const itemHeightStyle = useAnimatedStyle(() => ({
+    height: itemHeight.value,
+    marginTop: 24,
+  }));
+
+  return (
+    <GestureDetector gesture={pan}>
+      <Animated.View style={itemHeightStyle}>
+        <Animated.View
+          className="bg-red-500 !rounded-lg pr-4 flex flex-row items-center justify-end"
+          style={{
+            height: ITEM_HEIGHT,
+            position: "absolute",
+            right: "0%",
+            width: "95%",
+          }}
+        >
+          <View className="flex flex-row items-center gap-2">
+            <Text color="white" className="font-bold">
+              {t("settings.account.deleteAccount")}
+            </Text>
+
+            <Ionicons name="trash-bin" size={24} color="white" />
+          </View>
+        </Animated.View>
+
+        <Animated.View
+          className="bg-card-foreground dark:bg-card-foreground-dark border border-card-border dark:border-card-border-dark !rounded-lg"
+          style={[
+            transformStyle,
+            {
+              width: "100%",
+              height: ITEM_HEIGHT,
+            },
+          ]}
+        >
+          <Pressable
+            onPress={changeActiveAccount}
+            className="flex flex-row items-center justify-between p-4 ripple-[#333] ripple-bordered !rounded-lg w-full"
+          >
+            <View className="flex flex-row gap-4 items-center justify-start flex-1">
+              <View className="w-10 h-10 bg-slate-300 rounded-lg"></View>
+
+              <View className="flex flex-col gap-1">
+                <Text className="font-bold">{walletName}</Text>
+
+                <Text color="muted" className="font-bold">
+                  {availableBalance} {NativeTicker}
+                </Text>
+
+                <Text color="primary" size="small" className="font-medium">
+                  {type === AccountType.watchOnly
+                    ? `🕵️ ${t("watchOnly")}`
+                    : `🤖 ${t("fullAccount")}`}
+                </Text>
+              </View>
+            </View>
+
+            {isCurrentAccount && (
+              <View className="flex flex-col items-center justify-center">
+                <Ionicons name="checkbox" size={36} color="green" />
+
+                <Text color="success" className="font-bold" size="small">
+                  {t("settings.account.active")}
+                </Text>
+              </View>
+            )}
+          </Pressable>
+        </Animated.View>
+      </Animated.View>
+    </GestureDetector>
+  );
+};

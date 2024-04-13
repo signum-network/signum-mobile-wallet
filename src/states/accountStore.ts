@@ -74,7 +74,7 @@ export const accountStore = create<State & Actions>()(
           newValue[publicKey] = initialAccountData;
 
           return {
-            accounts: newValue,
+            accounts: { ...newValue },
           };
         }),
       deleteAccount: (publicKey) => {
@@ -85,7 +85,7 @@ export const accountStore = create<State & Actions>()(
           delete newValue[publicKey];
 
           return {
-            accounts: newValue,
+            accounts: { ...newValue },
           };
         });
       },
@@ -97,7 +97,7 @@ export const accountStore = create<State & Actions>()(
           newValue[publicKey][accountNetwork].isSecured = value;
 
           return {
-            accounts: newValue,
+            accounts: { ...newValue },
           };
         });
       },
@@ -109,7 +109,7 @@ export const accountStore = create<State & Actions>()(
           newValue[publicKey][accountNetwork] = value;
 
           return {
-            accounts: newValue,
+            accounts: { ...newValue },
           };
         });
       },

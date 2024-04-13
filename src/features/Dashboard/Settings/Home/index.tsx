@@ -1,9 +1,8 @@
 import { ScrollView, View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { Text } from "@/components/Text";
-import { Card } from "@/components/Card";
 import { HorizontalDivider } from "@/components/HorizontalDivider";
+import { AccountSwitcher } from "@/components/Account/Switcher";
 import { NavLink } from "./components/NavLink";
 import { SettingScreenContainer } from "../components/SettingScreenContainer";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -16,9 +15,7 @@ export const SettingsScreen = () => {
     <ScrollView>
       <SettingScreenContainer>
         <View className="w-full max-w-md mx-auto px-4 pt-4">
-          <Card>
-            <Text>Account Switcher. To be developed :D</Text>
-          </Card>
+          <AccountSwitcher />
         </View>
 
         <HorizontalDivider />

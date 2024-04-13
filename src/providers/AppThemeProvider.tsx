@@ -17,6 +17,7 @@ export const AppThemeProvider = ({ children }: ChildrenProps) => {
       case "/account-wizard/create":
       case "/account-wizard/import":
 
+      case "/dashboard/settings/account":
       case "/dashboard/settings/language":
       case "/dashboard/settings/nodes":
         return 0;
