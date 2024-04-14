@@ -3,10 +3,11 @@ import { persist, createJSONStorage } from "zustand/middleware";
 import {
   type WalletAccount,
   type AccountType,
-  type networks,
   type AccountNetworkData,
+  type AccountBalance,
   defaultAccountNetworkData,
 } from "@/types/account";
+import { type networks } from "@/types/networks";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type addAccountParams = {
@@ -38,6 +39,11 @@ interface Actions {
     publicKey: string,
     accountNetwork: networks,
     value: AccountNetworkData
+  ) => void;
+  updateAccountBalance: (
+    publicKey: string,
+    accountNetwork: networks,
+    value: AccountBalance
   ) => void;
 }
 
@@ -107,6 +113,18 @@ export const accountStore = create<State & Actions>()(
 
           const newValue = accounts;
           newValue[publicKey][accountNetwork] = value;
+
+          return {
+            accounts: { ...newValue },
+          };
+        });
+      },
+      updateAccountBalance: (publicKey, accountNetwork, value) => {
+        set(() => {
+          const { accounts } = get();
+
+          const newValue = accounts;
+          newValue[publicKey][accountNetwork].balance = value;
 
           return {
             accounts: { ...newValue },

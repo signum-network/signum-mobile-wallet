@@ -112,7 +112,8 @@
       "confirm": "Yes, remove that account",
       "accountRemoved": "Account removed successfully!",
       "addAccount": "Add account",
-      "swipeToLeft": "Swipe left to delete account"
+      "swipeToLeft": "Swipe left to delete account",
+      "unsecuredAccount": "Unsecured account"
     },
     "language": {
       "title": "App Language",

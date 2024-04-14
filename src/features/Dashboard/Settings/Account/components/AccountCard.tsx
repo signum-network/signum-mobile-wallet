@@ -1,9 +1,9 @@
-import { useMemo } from "react";
 import { Dimensions, View, Pressable, Alert } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
 import { useNodeHostStore } from "@/hooks/useNodeHostStore";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import { Address } from "@signumjs/core";
 import Animated, {
   runOnJS,
   useAnimatedStyle,
@@ -17,6 +17,9 @@ import { useAccountStore } from "@/hooks/useAccountStore";
 import { AccountType } from "@/types/account";
 import { deleteSecretKey } from "@/utils/sec/handleSecretKeys";
 import { formatNumber } from "@/utils/formatNumber";
+import { useLedgerService } from "@/hooks/useLedgerService";
+import { getBalancesFromAccount } from "@/utils/account/getBalancesFromAccount";
+import { PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MILLISECONDS } from "@/types/constants";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 interface Props {
@@ -30,21 +33,50 @@ const WIDTH_SCREEN = Dimensions.get("window").width;
 
 export const AccountCard = ({ publicKey, type, walletName }: Props) => {
   const { t } = useTranslation();
+  const { ledgerService } = useLedgerService();
   const { NativeTicker } = useTicker();
-  const { isTestnet } = useNodeHostStore();
-  const { activeAccount, setActiveAccount, deleteAccount, accounts } =
-    useAccountStore();
-
+  const { isTestnet, isActiveNodeSynced, currentNetwork } = useNodeHostStore();
   const {
-    mainnet: { balance: mainnetBalance },
-    testnet: { balance: testnetBalance },
-  } = accounts[publicKey];
+    activeAccount,
+    setActiveAccount,
+    deleteAccount,
+    accounts,
+    accountPublicKeys,
+    updateAccountData,
+    updateAccountActivationStatus,
+  } = useAccountStore();
 
-  const availableBalance = useMemo(() => {
-    return isTestnet
-      ? testnetBalance.totalBalance.getSigna() || "0"
-      : mainnetBalance.totalBalance.getSigna() || "0";
-  }, [mainnetBalance, testnetBalance, isTestnet]);
+  const currentAccount = accounts[publicKey];
+
+  const isMainnetSecured = currentAccount
+    ? currentAccount.mainnet.isSecured
+    : undefined;
+
+  const isTestnetSecured = currentAccount
+    ? currentAccount.testnet.isSecured
+    : undefined;
+
+  const mainnetBalance = currentAccount
+    ? currentAccount.mainnet.balance
+    : undefined;
+
+  const testnetBalance = currentAccount
+    ? currentAccount.testnet.balance
+    : undefined;
+
+  // Check if account is secured on designated network (Mainnet or Testnet)
+  const isSecured =
+    (isMainnetSecured && !isTestnet) || (isTestnetSecured && isTestnet);
+
+  let availableBalance = "0";
+
+  if (isTestnet && testnetBalance?.totalBalance?.getSigna) {
+    availableBalance = testnetBalance?.totalBalance?.getSigna();
+  }
+
+  if (!isTestnet && mainnetBalance?.totalBalance?.getSigna) {
+    availableBalance = mainnetBalance?.totalBalance?.getSigna();
+  }
 
   const pressed = useSharedValue(false);
   const itemHeight = useSharedValue(ITEM_HEIGHT);
@@ -54,13 +86,18 @@ export const AccountCard = ({ publicKey, type, walletName }: Props) => {
 
   // TODO: Remove "asset balances", "transactions history", "subscription" from account
   const removeAccount = async () => {
+    itemHeight.value = withTiming(0);
+
+    if (isCurrentAccount) {
+      const newAccountPublicKeys = accountPublicKeys.filter(
+        (key) => publicKey != key
+      );
+      setActiveAccount(newAccountPublicKeys[0] ?? "");
+    }
+
     await deleteSecretKey(publicKey);
 
     deleteAccount(publicKey);
-
-    itemHeight.value = withTiming(0);
-
-    if (isCurrentAccount) setActiveAccount("");
 
     alert(t("settings.account.accountRemoved"));
   };
@@ -124,8 +161,54 @@ export const AccountCard = ({ publicKey, type, walletName }: Props) => {
 
   const itemHeightStyle = useAnimatedStyle(() => ({
     height: itemHeight.value,
-    marginTop: 24,
+    marginTop: 32,
   }));
+
+  useQuery({
+    queryKey: ["fetchAccountData", publicKey, currentNetwork],
+    queryFn: async () => {
+      if (!ledgerService) return false;
+
+      try {
+        const accountId = Address.fromPublicKey(publicKey).getNumericId();
+
+        const {
+          name,
+          description,
+          balanceNQT,
+          unconfirmedBalanceNQT,
+          committedBalanceNQT,
+        } = await ledgerService.account.fetchAccount(accountId, true);
+
+        const balance = getBalancesFromAccount(
+          balanceNQT,
+          unconfirmedBalanceNQT,
+          committedBalanceNQT
+        );
+
+        updateAccountData(publicKey, currentNetwork, {
+          isSecured: true,
+          name: name || "",
+          description: description || "",
+          balance,
+        });
+
+        return true;
+      } catch (error: any) {
+        if (
+          error.message === "incorrectAccount" ||
+          error.message === "unknownAccount"
+        ) {
+          updateAccountActivationStatus(publicKey, currentNetwork, false);
+        }
+
+        return false;
+      }
+    },
+    refetchInterval: PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MILLISECONDS,
+    staleTime: PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MILLISECONDS,
+    enabled: isActiveNodeSynced && !!ledgerService,
+  });
 
   return (
     <GestureDetector gesture={pan}>
@@ -172,11 +255,17 @@ export const AccountCard = ({ publicKey, type, walletName }: Props) => {
                   {formatNumber({ value: availableBalance })} {NativeTicker}
                 </Text>
 
-                <Text color="primary" size="small" className="font-medium">
-                  {type === AccountType.watchOnly
-                    ? `🕵️ ${t("watchOnly")}`
-                    : `🤖 ${t("fullAccount")}`}
-                </Text>
+                {!isSecured ? (
+                  <Text color="error" size="small" className="font-medium">
+                    ⚠️ {t("settings.account.unsecuredAccount")}
+                  </Text>
+                ) : (
+                  <Text color="primary" size="small" className="font-medium">
+                    {type === AccountType.watchOnly
+                      ? `🕵️ ${t("watchOnly")}`
+                      : `🤖 ${t("fullAccount")}`}
+                  </Text>
+                )}
               </View>
             </View>
 

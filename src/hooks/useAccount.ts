@@ -5,7 +5,6 @@ import { useNodeHostStore } from "@/hooks/useNodeHostStore";
 import {
   type WalletAccount,
   type AccountNetworkData,
-  type networks,
   AccountType,
   defaultAccountNetworkData,
 } from "@/types/account";
@@ -14,7 +13,6 @@ interface EasyWalletAccountData
   extends Omit<WalletAccount, "mainnet" | "testnet"> {
   isAuthenticated: boolean; // Confirm if the wallet is actively using an account (The account type does not matter)
   isWatchOnly: boolean; // Check if user is currently using a watch only account
-  accountNetwork: networks;
   accountId: string;
   accountData: AccountNetworkData;
 }
@@ -22,7 +20,6 @@ interface EasyWalletAccountData
 const defaultWalletAccountData: EasyWalletAccountData = {
   isAuthenticated: false,
   isWatchOnly: false,
-  accountNetwork: "mainnet",
   type: AccountType.mnemonic,
   publicKey: "",
   accountId: "",
@@ -47,12 +44,9 @@ export const useAccount = (): EasyWalletAccountData => {
 
     const accountData = isTestnet ? testnet : mainnet;
 
-    const accountNetwork: networks = isTestnet ? "testnet" : "mainnet";
-
     return {
       isAuthenticated: !!publicKey,
       isWatchOnly: type === AccountType.watchOnly,
-      accountNetwork,
       type,
       publicKey,
       accountId,

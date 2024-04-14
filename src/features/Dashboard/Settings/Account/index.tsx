@@ -74,12 +74,14 @@ export const AccountSettingsScreen = () => {
         <Button
           title={t("accountWizard.quickStart.createCta")}
           type="primary"
+          size="small"
           linkProps={{ href: "/account-wizard/create" }}
         />
 
         <Button
           title={t("accountWizard.quickStart.importCta")}
           type="blackout"
+          size="small"
           linkProps={{ href: "/account-wizard/import" }}
         />
       </BottomButtonsContainer>

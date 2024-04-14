@@ -21,6 +21,9 @@ export const useAccountStore = () => {
   );
 
   const updateAccountData = accountStore((state) => state.updateAccountData);
+  const updateAccountBalance = accountStore(
+    (state) => state.updateAccountBalance
+  );
 
   const resetAccountStore = accountStore((state) => state.reset);
 
@@ -36,5 +39,6 @@ export const useAccountStore = () => {
     resetAccountStore,
     updateAccountActivationStatus,
     updateAccountData,
+    updateAccountBalance,
   };
 };

@@ -7,14 +7,13 @@ import { getBalancesFromAccount } from "@/utils/account/getBalancesFromAccount";
 
 export const AccountInitializer = () => {
   const { ledgerService } = useLedgerService();
-  const { isActiveNodeSynced } = useNodeHostStore();
-  const { isAuthenticated, publicKey, accountNetwork, accountId } =
-    useAccount();
+  const { isActiveNodeSynced, currentNetwork } = useNodeHostStore();
+  const { isAuthenticated, publicKey, accountId } = useAccount();
   const { updateAccountActivationStatus, updateAccountData } =
     useAccountStore();
 
   useQuery({
-    queryKey: ["fetchAccount", publicKey, accountNetwork],
+    queryKey: ["fetchAccount", publicKey, currentNetwork],
     queryFn: async () => {
       if (!ledgerService) return false;
 
@@ -33,7 +32,7 @@ export const AccountInitializer = () => {
           committedBalanceNQT
         );
 
-        updateAccountData(publicKey, accountNetwork, {
+        updateAccountData(publicKey, currentNetwork, {
           isSecured: true,
           name: name || "",
           description: description || "",
@@ -46,14 +45,14 @@ export const AccountInitializer = () => {
           error.message === "incorrectAccount" ||
           error.message === "unknownAccount"
         ) {
-          updateAccountActivationStatus(publicKey, accountNetwork, false);
+          updateAccountActivationStatus(publicKey, currentNetwork, false);
         }
 
         return false;
       }
     },
-    refetchInterval: 30_000,
-    staleTime: 30_000,
+    refetchInterval: 60_000,
+    staleTime: 60_000,
     enabled: isAuthenticated && isActiveNodeSynced && !!ledgerService,
   });
 
