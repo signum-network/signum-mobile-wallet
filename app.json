@@ -11,7 +11,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#0099ff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "scheme": "signum",
     "experiments": {
       "typedRoutes": true
@@ -44,7 +46,8 @@
           "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
           "recordAudioAndroid": false
         }
-      ]
+      ],
+      "expo-localization"
     ]
   }
 }

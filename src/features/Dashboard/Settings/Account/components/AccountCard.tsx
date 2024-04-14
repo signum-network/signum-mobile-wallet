@@ -16,7 +16,7 @@ import { useTicker } from "@/hooks/useTicker";
 import { useAccountStore } from "@/hooks/useAccountStore";
 import { AccountType } from "@/types/account";
 import { deleteSecretKey } from "@/utils/sec/handleSecretKeys";
-import { Amount } from "@signumjs/util";
+import { formatNumber } from "@/utils/formatNumber";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 interface Props {
@@ -41,7 +41,9 @@ export const AccountCard = ({ publicKey, type, walletName }: Props) => {
   } = accounts[publicKey];
 
   const availableBalance = useMemo(() => {
-    return Amount.fromPlanck("0").getSigna();
+    return isTestnet
+      ? testnetBalance.totalBalance.getSigna() || "0"
+      : mainnetBalance.totalBalance.getSigna() || "0";
   }, [mainnetBalance, testnetBalance, isTestnet]);
 
   const pressed = useSharedValue(false);
@@ -167,7 +169,7 @@ export const AccountCard = ({ publicKey, type, walletName }: Props) => {
                 <Text className="font-bold">{walletName}</Text>
 
                 <Text color="muted" className="font-bold">
-                  {availableBalance} {NativeTicker}
+                  {formatNumber({ value: availableBalance })} {NativeTicker}
                 </Text>
 
                 <Text color="primary" size="small" className="font-medium">

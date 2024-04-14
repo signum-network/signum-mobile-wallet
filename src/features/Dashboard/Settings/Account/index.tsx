@@ -53,7 +53,7 @@ export const AccountSettingsScreen = () => {
               style={{
                 flex: 1,
                 flexGrow: 1,
-                minHeight: 250,
+                minHeight: 500,
                 width: "100%",
                 paddingBottom: 200,
               }}
