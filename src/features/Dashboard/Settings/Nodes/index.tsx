@@ -6,7 +6,7 @@ import { Text } from "@/components/Text";
 import { Button } from "@/components/Button";
 import { KeyboardAvoidingView } from "@/components/Form/KeyboardAvoidingView";
 import { AnimatedSlideContainer } from "@/components/AnimatedSlideContainer";
-import { SettingScreenContainer } from "../components/SettingScreenContainer";
+import { SettingScreenContainer } from "@/features/Dashboard/Settings/components/SettingScreenContainer";
 import { CurrentNode } from "./sections/CurrentNode";
 import { ManualNodeWizard } from "./sections/ManualNodeWizard";
 import Ionicons from "@expo/vector-icons/Ionicons";

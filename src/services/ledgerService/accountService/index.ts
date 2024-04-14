@@ -1,4 +1,4 @@
-import { type Account } from "@signumjs/core";
+import { type Account, type Balance } from "@signumjs/core";
 import { type LedgerServiceContext } from "../ledgerServiceContext";
 import { LedgerSubService } from "../ledgerSubService";
 import { handleError } from "../handleError";
@@ -22,6 +22,12 @@ export class AccountService extends LedgerSubService {
         accountId,
         includeCommittedAmount,
       })
+    );
+  }
+
+  fetchAccountBalance(accountId: string): Promise<Balance> {
+    return handleError(async () =>
+      this.context.ledger.account.getAccountBalance(accountId)
     );
   }
 

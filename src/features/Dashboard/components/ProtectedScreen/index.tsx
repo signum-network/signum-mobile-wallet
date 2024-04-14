@@ -3,11 +3,13 @@ import { useShallow } from "zustand/react/shallow";
 import type { ChildrenProps } from "@/types/childrenProps";
 import { useAccount } from "@/hooks/useAccount";
 import { useNodeHostStore } from "@/hooks/useNodeHostStore";
+import { NoAccountsFoundCard } from "@/components/Account/NoAccountsFoundCard";
 import { AccountActivationCard } from "./components/AccountActivationCard";
 import { accountStore } from "@/states/accountStore";
 import { AppAlert } from "../AppAlert";
 
 // Protect screen from:
+// No accounts imported
 // Inactive accounts
 
 // Screens to be protected:
@@ -20,6 +22,10 @@ import { AppAlert } from "../AppAlert";
 export const ProtectedScreen = ({ children }: ChildrenProps) => {
   const { publicKey, isAuthenticated } = useAccount();
   const { isTestnet, isActiveNodeSynced } = useNodeHostStore();
+
+  const accountKeys = accountStore(
+    useShallow((state) => Object.keys(state.accounts))
+  );
 
   const isMainnetSecured = accountStore(
     useShallow(
@@ -37,12 +43,15 @@ export const ProtectedScreen = ({ children }: ChildrenProps) => {
   const isSecured =
     (isMainnetSecured && !isTestnet) || (isTestnetSecured && isTestnet);
 
-  const dynamicContent: ChildrenProps["children"] =
-    isAuthenticated && isActiveNodeSynced && !isSecured ? (
-      <AccountActivationCard />
-    ) : (
-      children
-    );
+  let dynamicContent: ChildrenProps["children"] = children;
+
+  if (!accountKeys.length) {
+    dynamicContent = <NoAccountsFoundCard />;
+  }
+
+  if (isAuthenticated && isActiveNodeSynced && !isSecured) {
+    dynamicContent = <AccountActivationCard />;
+  }
 
   return (
     <Fragment>

@@ -2,7 +2,7 @@ import { Text as NativeText } from "react-native";
 import clsx from "clsx";
 
 interface Props {
-  color?: "primary" | "content" | "muted" | "error";
+  color?: "primary" | "content" | "white" | "muted" | "error" | "success";
   size?: "small" | "medium" | "large" | "extraLarge";
   className?: string;
   fullWidth?: boolean;
@@ -19,6 +19,8 @@ export const Text = ({
   const classNames = clsx([
     color === "primary" && "text-signum dark:text-signum-dark",
     color === "error" && "text-red-500",
+    color === "white" && "text-white",
+    color === "success" && "text-green-500",
     color === "content" && "text-black dark:text-white",
     color === "muted" &&
       "text-muted-foreground dark:text-muted-foreground-dark",

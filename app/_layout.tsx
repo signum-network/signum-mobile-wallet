@@ -1,10 +1,11 @@
 import "../global.css";
 import "@/locales";
+import "fast-text-encoding";
 import * as Crypto from "expo-crypto";
+import * as SplashScreen from "expo-splash-screen";
 import { Stack } from "expo-router/stack";
 import { AppProviders } from "@/providers";
-import "fast-text-encoding";
-import * as SplashScreen from "expo-splash-screen";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 if (__DEV__) {
   // @ts-expect-error importing modules typing issue
@@ -28,8 +29,10 @@ export {
 
 export default function RootLayout() {
   return (
-    <AppProviders>
-      <Stack screenOptions={{ headerShown: false }} />
-    </AppProviders>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <AppProviders>
+        <Stack screenOptions={{ headerShown: false }} />
+      </AppProviders>
+    </GestureHandlerRootView>
   );
 }

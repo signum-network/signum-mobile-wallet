@@ -1,7 +1,5 @@
 import { Amount } from "@signumjs/util";
 
-export type networks = "mainnet" | "testnet";
-
 export enum AccountType {
   mnemonic = "mnemonic",
   watchOnly = "watchOnly",

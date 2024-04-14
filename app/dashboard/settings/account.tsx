@@ -2,7 +2,7 @@ import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
 import { Stack } from "expo-router/stack";
 import { getHeaderTitle } from "@/utils/getHeaderTitle";
-import { ImportScreen } from "@/features/AccountWizard/Import";
+import { AccountSettingsScreen } from "@/features/Dashboard/Settings/Account";
 import { AppAlert } from "@/features/Dashboard/components/AppAlert";
 
 export default function Screen() {
@@ -10,11 +10,9 @@ export default function Screen() {
 
   return (
     <Fragment>
-      <Stack.Screen
-        options={getHeaderTitle(t("accountWizard.quickStart.importCta"))}
-      />
+      <Stack.Screen options={getHeaderTitle(t("settings.account.title"))} />
       <AppAlert />
-      <ImportScreen />
+      <AccountSettingsScreen />
     </Fragment>
   );
 }

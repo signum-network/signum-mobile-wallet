@@ -47,6 +47,7 @@ export const Button = ({
     disabled && "font-bold !color-slate-500",
     type && "color-white",
     type === "blackout" && "dark:color-black",
+    size === "small" && "text-sm",
     size === "large" && "text-xl",
   ]);
 
@@ -69,7 +70,7 @@ export const Button = ({
 
   return (
     <Pressable disabled={disabled} className={classNames} {...pressableProps}>
-      {icon && <View className="mr-4">{icon}</View>}
+      {icon && <View className={title && "mr-4"}>{icon}</View>}
       {title && <Text className={textClassNames}>{title}</Text>}
       {children && children}
     </Pressable>

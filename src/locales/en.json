@@ -11,6 +11,7 @@
   "copyToClipboard": "Copy to clipboard",
   "loading": "Loading",
   "mnemonic": "Mnemonic",
+  "accounts": "Accounts",
   "fullAccount": "Full Account",
   "watchOnly": "Watch-only",
   "example": "E.g.",
@@ -53,8 +54,8 @@
       "title": "Signum Mobile Wallet",
       "description": "Set up your account to send and receive money using this awesome wallet!",
       "ctaTitle": "Please make a selection to create or restore your account",
-      "createCta": "Create a New Wallet",
-      "importCta": "Add an Existing Wallet"
+      "createCta": "Create a new account",
+      "importCta": "Add an existing account"
     },
     "createAccount": {
       "firstStepTitle": "Before you create a new account, there's something you should be aware of...",
@@ -100,6 +101,20 @@
     "settings": "Settings"
   },
   "settings": {
+    "account": {
+      "title": "Account manager",
+      "deleteAccount": "Delete account",
+      "active": "Active",
+      "noAccounts": "No accounts found",
+      "noAccountsDescription": "Begin by making a new signum account\nor import an existing one!",
+      "removeAccount": "Account removal",
+      "removeAccountDescription": "Are you sure you want to remove the following account?\n\n{{walletName}}\n\nYou can always re-import the account. No data is lost",
+      "confirm": "Yes, remove that account",
+      "accountRemoved": "Account removed successfully!",
+      "addAccount": "Add account",
+      "swipeToLeft": "Swipe left to delete account",
+      "unsecuredAccount": "Unsecured account"
+    },
     "language": {
       "title": "App Language",
       "description": "Change the app language"
@@ -140,5 +155,6 @@
     "activate": "Activate account",
     "activating": "Activation is pending...",
     "accountActivationIsPending": "Account activation is pending\nPlease wait..."
-  }
+  },
+  "accountSwitcher": {}
 }

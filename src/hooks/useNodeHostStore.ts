@@ -1,4 +1,5 @@
 import { nodeHostStore } from "@/states/nodeHostStore";
+import { type networks } from "@/types/networks";
 
 export const useNodeHostStore = () => {
   const connectionType = nodeHostStore((state) => state.connectionType);
@@ -47,6 +48,10 @@ export const useNodeHostStore = () => {
 
   const resetNodeHostStore = nodeHostStore((state) => state.reset);
 
+  const isTestnet = activeNodeHost.isTestnet;
+
+  const currentNetwork: networks = isTestnet ? "testnet" : "mainnet";
+
   return {
     connectionType,
     activeNodeHost,
@@ -56,7 +61,8 @@ export const useNodeHostStore = () => {
     reliableNodeHost,
     testnetReliableNodeHost,
     customNodeHost,
-    isTestnet: activeNodeHost.isTestnet,
+    isTestnet,
+    currentNetwork,
     resetNodeHostStore,
     setConnectionType,
     setActiveNodeHost,
