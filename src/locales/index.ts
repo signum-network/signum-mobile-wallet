@@ -10,6 +10,10 @@ import ptTranslation from "./pt.json";
 export type locales = "en" | "es" | "pt";
 const supportedLngs: locales[] = ["en", "es", "pt"];
 
+export const lngCards: { lng: locales; label: string }[] = [
+  { lng: "en", label: "English" },
+];
+
 export const getDefaultLocale = (): locales => {
   // Get device language
   const deviceLanguage = getLocales();
