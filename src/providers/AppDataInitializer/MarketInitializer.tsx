@@ -16,8 +16,7 @@ export const MarketInitializer = () => {
     queryKey: ["fetchMarketRate", activeCurrency],
     queryFn: async () => {
       // Check if the last request happened 7 minutes ago
-
-      if (currentMarket.lastUpdated) {
+      if (!!currentMarket && !!currentMarket.lastUpdated) {
         const currentDate = new Date();
         const lastRequestDate = new Date(currentMarket.lastUpdated);
 

@@ -38,6 +38,13 @@ export const SettingsScreen = () => {
             description={t("settings.node.description")}
             href="/dashboard/settings/nodes"
           />
+
+          <NavLink
+            icon={<Ionicons name="cash" size={24} color={iconColor.default} />}
+            title={t("settings.currency.title")}
+            description={t("settings.currency.description")}
+            href="/dashboard/settings/currency"
+          />
         </View>
       </SettingScreenContainer>
     </ScrollView>

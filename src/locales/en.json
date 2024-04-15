@@ -147,6 +147,10 @@
       "customNodeOptions": "Custom node options",
       "customNodeOptionsDescription": "What do you want to do with {{name}}?",
       "useThisCustomNode": "Use this custom node"
+    },
+    "currency": {
+      "title": "Currency",
+      "description": "Pick the currency of your preference"
     }
   },
   "unsafeAccount": {
