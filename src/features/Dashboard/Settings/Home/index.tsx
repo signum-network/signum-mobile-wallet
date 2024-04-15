@@ -45,6 +45,19 @@ export const SettingsScreen = () => {
             description={t("settings.currency.description")}
             href="/dashboard/settings/currency"
           />
+
+          <NavLink
+            icon={
+              <Ionicons
+                name="extension-puzzle"
+                size={24}
+                color={iconColor.default}
+              />
+            }
+            title={t("settings.about.title")}
+            description={t("settings.about.description")}
+            href="/dashboard/settings/about"
+          />
         </View>
       </SettingScreenContainer>
     </ScrollView>

@@ -151,6 +151,15 @@
     "currency": {
       "title": "Currency",
       "description": "Pick the currency of your preference"
+    },
+    "about": {
+      "title": "About",
+      "description": "View information about this wallet",
+      "version": "Version: {{version}}",
+      "repository": "Repository",
+      "privacyPolicy": "Privacy Policy",
+      "contact": "Contact",
+      "links": "Links"
     }
   },
   "unsafeAccount": {
