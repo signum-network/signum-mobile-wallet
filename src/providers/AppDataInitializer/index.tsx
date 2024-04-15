@@ -3,6 +3,7 @@ import type { ChildrenProps } from "@/types/childrenProps";
 import { NodeHostInitializer } from "./NodeHostInitializer";
 import { AccountInitializer } from "./AccountInitializer";
 import { OnlineManagerInitializer } from "./OnlineManagerInitializer";
+import { MarketInitializer } from "./MarketInitializer";
 
 const queryClient = new QueryClient();
 
@@ -12,6 +13,8 @@ export const AppDataInitializer = ({ children }: ChildrenProps) => {
       <NodeHostInitializer />
       <AccountInitializer />
       <OnlineManagerInitializer />
+      <MarketInitializer />
+
       {children}
     </QueryClientProvider>
   );
