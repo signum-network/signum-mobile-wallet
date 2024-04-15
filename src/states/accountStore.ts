@@ -63,7 +63,7 @@ export const accountStore = create<State & Actions>()(
         set(() => ({
           activeAccount: publicKey,
         })),
-      addAccount: async ({ publicKey, type, walletName }) =>
+      addAccount: ({ publicKey, type, walletName }) =>
         set(() => {
           const { accounts } = get();
 

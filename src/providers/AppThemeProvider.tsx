@@ -19,6 +19,7 @@ export const AppThemeProvider = ({ children }: ChildrenProps) => {
 
       case "/dashboard/settings/account":
       case "/dashboard/settings/language":
+      case "/dashboard/settings/currency":
       case "/dashboard/settings/nodes":
         return 0;
 
