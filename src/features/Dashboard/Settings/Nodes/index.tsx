@@ -6,7 +6,7 @@ import { Text } from "@/components/Text";
 import { Button } from "@/components/Button";
 import { KeyboardAvoidingView } from "@/components/Form/KeyboardAvoidingView";
 import { AnimatedSlideContainer } from "@/components/AnimatedSlideContainer";
-import { SettingScreenContainer } from "@/features/Dashboard/Settings/components/SettingScreenContainer";
+import { DashboardScreenContainer } from "@/features/Dashboard/components/DashboardScreenContainer";
 import { CurrentNode } from "./sections/CurrentNode";
 import { ManualNodeWizard } from "./sections/ManualNodeWizard";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -29,7 +29,7 @@ export const NodeSettingsScreen = () => {
   return (
     <KeyboardAvoidingView>
       <ScrollView>
-        <SettingScreenContainer>
+        <DashboardScreenContainer>
           <View className="flex flex-col items-center justify-center w-full gap-4 px-4">
             <Text size="large" className="font-bold text-center mt-8">
               {t("settings.node.connectionType")}
@@ -81,7 +81,7 @@ export const NodeSettingsScreen = () => {
               </Text>
             )}
           </View>
-        </SettingScreenContainer>
+        </DashboardScreenContainer>
       </ScrollView>
     </KeyboardAvoidingView>
   );
