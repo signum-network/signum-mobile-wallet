@@ -168,6 +168,11 @@
       "links": "Links"
     }
   },
+  "deposit": {
+    "title": "Receive",
+    "copiedAccountID": "Account ID copied successfully!",
+    "copy": "Copy address"
+  },
   "unsafeAccount": {
     "title": "Account is unsafe",
     "description": "This account is not yet fully registered on the blockchain. Please activate your account to ensure its security and make it fully usable for all services, including exchanges",
