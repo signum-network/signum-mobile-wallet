@@ -6,6 +6,7 @@ import { AccountSwitcher } from "@/components/Account/Switcher";
 import { BottomButtonsContainer } from "../components/BottomButtonsContainer";
 import { DashboardScreenContainer } from "../components/DashboardScreenContainer";
 import { Balance } from "./sections/Balance";
+import { Activity } from "./sections/Activity";
 
 export const OverviewScreen = () => {
   const { t } = useTranslation();
@@ -14,10 +15,12 @@ export const OverviewScreen = () => {
     <Fragment>
       <ScrollView>
         <DashboardScreenContainer>
-          <View className="flex flex-col items-start justify-center w-full p-4 gap-4">
+          <View className="flex flex-col items-start justify-center w-full px-4 pt-4 pb-20 gap-4">
             <AccountSwitcher href="/dashboard/account" />
 
             <Balance />
+
+            <Activity />
           </View>
         </DashboardScreenContainer>
       </ScrollView>

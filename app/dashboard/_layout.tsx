@@ -7,7 +7,7 @@ export default function Layout() {
 
   return (
     <Tabs
-      initialRouteName="overview"
+      initialRouteName="overview/index"
       screenOptions={{
         headerShown: false,
         tabBarStyle: { height: 80, paddingTop: 15, paddingBottom: 15 },
@@ -21,7 +21,7 @@ export default function Layout() {
           ),
           tabBarLabelStyle: { fontSize: 12 },
         }}
-        name="overview"
+        name="overview/index"
       />
 
       <Tabs.Screen
@@ -57,6 +57,7 @@ export default function Layout() {
         name="settings"
       />
 
+      <Tabs.Screen name="overview/activity" options={{ href: null }} />
       <Tabs.Screen name="account" options={{ href: null }} />
       <Tabs.Screen name="deposit" options={{ href: null }} />
       <Tabs.Screen name="transfer" options={{ href: null }} />

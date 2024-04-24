@@ -5,6 +5,8 @@
   "cancel": "Cancel",
   "add": "Add",
   "use": "Use",
+  "transaction": "Transaction",
+  "transaction_other": "Transactions",
   "delete": "Delete",
   "balance": "Balance",
   "availableBalance": "Available balance",
@@ -180,5 +182,9 @@
     "activating": "Activation is pending...",
     "accountActivationIsPending": "Account activation is pending\nPlease wait..."
   },
-  "accountSwitcher": {}
+  "overview": {
+    "inProgress": "In progress",
+    "received": "Received",
+    "sent": "Sent"
+  }
 }

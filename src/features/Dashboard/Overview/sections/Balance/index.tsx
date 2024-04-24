@@ -52,8 +52,8 @@ export const Balance = () => {
           </View>
 
           <View className="w-full flex flex-row items-center gap-2">
-            <Text size="large" className="font-bold">
-              {formatNumber({ value: totalBalance })}
+            <Text className="font-medium text-xl">
+              Ꞩ{formatNumber({ value: totalBalance })}
             </Text>
 
             <Text size="large" color="muted" className="font-medium">
