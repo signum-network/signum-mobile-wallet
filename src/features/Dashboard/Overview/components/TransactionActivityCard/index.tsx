@@ -1,29 +1,23 @@
 import { View, Pressable } from "react-native";
-import {
-  Transaction,
-  TransactionArbitrarySubtype,
-  TransactionAssetSubtype,
-  TransactionEscrowSubtype,
-  TransactionLeasingSubtype,
-  TransactionMarketplaceSubtype,
-  TransactionMiningSubtype,
-  TransactionPaymentSubtype,
-  TransactionSmartContractSubtype,
-  TransactionType,
-} from "@signumjs/core";
 import { useTranslation } from "react-i18next";
 import { useTicker } from "@/hooks/useTicker";
 import { Text } from "@/components/Text";
 import { formatNumber } from "@/utils/formatNumber";
+import {
+  transactionTypeReader,
+  type AvailableTransactionString,
+} from "./utils/transactionTypeReader";
 import Feather from "@expo/vector-icons/Feather";
 
 export const TransactionActivityCard = () => {
   const { t } = useTranslation();
   const { NativeTicker } = useTicker();
 
-  const isReceive = false;
+  const isReceive = true;
 
   const pickOptions = () => alert("Options clicked");
+
+  console.log(transactionTypeReader(1, 1));
 
   return (
     <Pressable
@@ -66,7 +60,9 @@ export const TransactionActivityCard = () => {
           size="small"
           color={isReceive ? "success" : "error"}
         >
-          {`${isReceive ? "+" : "-"} ${formatNumber({ value: 10000000 })} TRT`}
+          {`${isReceive ? "+" : "-"} ${formatNumber({
+            value: 100000000,
+          })} TRT`}
         </Text>
       </View>
     </Pressable>
