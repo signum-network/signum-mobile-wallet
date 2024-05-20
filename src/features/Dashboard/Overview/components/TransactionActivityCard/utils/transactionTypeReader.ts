@@ -10,8 +10,9 @@ import {
 
 export type AvailableTransactionString =
   // Payment
-  | "OrdinaryPayment"
-  | "MultipleRecipients"
+  | "Ordinary"
+  | "MultiOut"
+  | "MultiOutSameAmount"
 
   // Arbitrary
   | "Message"
@@ -35,9 +36,9 @@ export type AvailableTransactionString =
   | "AssetTransferOwnership"
 
   // Mining
+  | "RewardRecipientAssignment"
   | "AddCommitment"
   | "RemoveCommitment"
-  | "RewardRecipientAssignment"
 
   // Subscription
   | "SubscriptionSubscribe"
@@ -55,8 +56,8 @@ export type AvailableTransactionString =
 const convertedTransactionStrings = {
   [TransactionType.Payment]: {
     [TransactionPaymentSubtype.Ordinary]: "Ordinary",
-    [TransactionPaymentSubtype.MultiOut]: "MultipleRecipients",
-    [TransactionPaymentSubtype.MultiOutSameAmount]: "MultipleRecipients",
+    [TransactionPaymentSubtype.MultiOut]: "MultiOut",
+    [TransactionPaymentSubtype.MultiOutSameAmount]: "MultiOutSameAmount",
   },
   [TransactionType.Arbitrary]: {
     [TransactionArbitrarySubtype.Message]: "Message",
@@ -85,10 +86,10 @@ const convertedTransactionStrings = {
   //   [TransactionType.Marketplace]: {},
   //   [TransactionType.Leasing]: {},
   [TransactionType.Mining]: {
-    [TransactionMiningSubtype.AddCommitment]: "AddCommitment",
-    [TransactionMiningSubtype.RemoveCommitment]: "RemoveCommitment",
     [TransactionMiningSubtype.RewardRecipientAssignment]:
       "RewardRecipientAssignment",
+    [TransactionMiningSubtype.AddCommitment]: "AddCommitment",
+    [TransactionMiningSubtype.RemoveCommitment]: "RemoveCommitment",
   },
   [TransactionType.Escrow]: {
     [TransactionEscrowSubtype.SubscriptionSubscribe]: "SubscriptionSubscribe",
