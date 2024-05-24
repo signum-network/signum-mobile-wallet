@@ -1,18 +1,28 @@
 import { useMemo } from "react";
 import { View, Pressable } from "react-native";
 import { useTranslation } from "react-i18next";
-import { TransactionType } from "@signumjs/core";
+import { Transaction, TransactionType } from "@signumjs/core";
+import { ChainTime } from "@signumjs/util";
 import { useAccount } from "@/hooks/useAccount";
+import { useDateLocale } from "@/hooks/useDateLocale";
+import { formatDistanceToNow } from "date-fns";
 import { Text } from "@/components/Text";
 import { asRSAddress } from "@/utils/account/asRSAddress";
-import { transactionTypeReader } from "./utils/transactionTypeReader";
-import { AmountLabel } from "./components/AmountLabel";
+import { transactionTypeReader } from "../../sections/Activity/utils/transactionTypeReader";
+import { SummaryLabel } from "./components/SummaryLabel";
 
 import Feather from "@expo/vector-icons/Feather";
 
-export const TransactionActivityCard = () => {
+export const ITEM_HEIGHT = 100;
+
+export const TransactionActivityCard = (props: Transaction) => {
   const { t } = useTranslation();
   const { accountId } = useAccount();
+  const dateLocale = useDateLocale();
+
+  const { transaction, type, subtype, confirmations, timestamp } = props;
+
+  const transactionReadableType = transactionTypeReader(type, subtype);
 
   // TODO: Have the following options:
   // View transaction in block explorer
@@ -20,30 +30,30 @@ export const TransactionActivityCard = () => {
   // Copy Transaction ID
   const pickOptions = () => alert("Options clicked");
 
-  const transaction = "0000";
-  const type: number = 2;
-  const subtype: number = 10;
-  const confirmations = 2;
-  const sender: string = "11224962117215913721";
-  const recipient: string = "8629824288351884182";
-  const attachment: any = {};
-
-  const transactionReadableType = transactionTypeReader(type, subtype);
+  const timestampToDate = ChainTime.fromChainTimestamp(timestamp).getDate();
+  const transactionDate = formatDistanceToNow(timestampToDate, {
+    addSuffix: true,
+    locale: dateLocale,
+  });
 
   const transactionReadableData = useMemo(() => {
+    const { sender, recipient, attachment } = props;
+
     const isSender = sender === accountId;
-    const isRecipient = recipient === accountId;
+    const isRecipient = !!(recipient && recipient === accountId);
+
+    const readableRecipient: string = !!(recipient && recipient !== "0")
+      ? `${asRSAddress(recipient)}`
+      : t("burningAddress");
 
     const getReadableMetadata = () => {
       const getDefaultTitle = () =>
         t(isSender ? "overview.sent" : "overview.received");
 
-      const getDefaultSource = () =>
+      const getDefaultDescription = () =>
         isSender
           ? t("overview.activityTransactions.OrdinaryTo", {
-              account: isRecipient
-                ? t("overview.activityTransactions.yourself")
-                : asRSAddress(recipient),
+              account: isRecipient ? t("overview.yourself") : readableRecipient,
             })
           : t("overview.activityTransactions.Ordinary", {
               account: asRSAddress(sender),
@@ -62,13 +72,13 @@ export const TransactionActivityCard = () => {
         case "SmartContractPayment":
           return {
             title: getDefaultTitle(),
-            source: getDefaultSource(),
+            description: getDefaultDescription(),
           };
 
         case "Message":
           return {
             title: `${getDefaultTitle()} ${t("message")}`,
-            source: getDefaultSource(),
+            description: getDefaultDescription(),
           };
 
         case "AliasAssignment":
@@ -88,9 +98,9 @@ export const TransactionActivityCard = () => {
                 ? "overview.activityTransactions.AliasTransfer"
                 : "overview.activityTransactions.AliasSale"
             ),
-            source: recipient
+            description: recipient
               ? t("overview.activityTransactions.OrdinaryTo", {
-                  account: asRSAddress(recipient),
+                  account: readableRecipient,
                 })
               : t("overview.activityTransactions.AliasPublicSale"),
           };
@@ -98,8 +108,8 @@ export const TransactionActivityCard = () => {
         case "AliasBuy":
           return {
             title: t("overview.activityTransactions.AliasBuy"),
-            source: t("overview.activityTransactions.Ordinary", {
-              account: asRSAddress(recipient),
+            description: t("overview.activityTransactions.Ordinary", {
+              account: readableRecipient,
             }),
           };
 
@@ -112,14 +122,14 @@ export const TransactionActivityCard = () => {
         case "AssetIssuance":
           return {
             title: t("overview.activityTransactions.AssetIssuance"),
-            source: attachment?.name ?? undefined,
+            description: attachment?.name ?? undefined,
           };
 
         // TODO: Read Token metadata
         case "AskOrderPlacement":
           return {
             title: t("overview.activityTransactions.AskOrderPlacement"),
-            source: t(
+            description: t(
               "overview.activityTransactions.AskOrderPlacementDescription"
             ),
           };
@@ -128,7 +138,7 @@ export const TransactionActivityCard = () => {
         case "BidOrderPlacement":
           return {
             title: t("overview.activityTransactions.BidOrderPlacement"),
-            source: t(
+            description: t(
               "overview.activityTransactions.BidOrderPlacementDescription"
             ),
           };
@@ -137,7 +147,7 @@ export const TransactionActivityCard = () => {
         case "AskOrderCancellation":
           return {
             title: t("overview.activityTransactions.AskOrderCancellation"),
-            source: t(
+            description: t(
               "overview.activityTransactions.AskOrderCancellationDescription"
             ),
           };
@@ -146,7 +156,7 @@ export const TransactionActivityCard = () => {
         case "BidOrderCancellation":
           return {
             title: t("overview.activityTransactions.BidOrderCancellation"),
-            source: t(
+            description: t(
               "overview.activityTransactions.BidOrderCancellationDescription"
             ),
           };
@@ -161,9 +171,9 @@ export const TransactionActivityCard = () => {
         case "AssetAddTreasureyAccount":
           return {
             title: t("overview.activityTransactions.AssetAddTreasureyAccount"),
-            source: t(
+            description: t(
               "overview.activityTransactions.AssetAddTreasureyAccountDescription",
-              { account: asRSAddress(recipient) }
+              { account: readableRecipient }
             ),
           };
 
@@ -172,7 +182,7 @@ export const TransactionActivityCard = () => {
         case "AssetDistributeToHolders":
           return {
             title: getDefaultTitle(),
-            source: t(
+            description: t(
               "overview.activityTransactions.AssetDistributeToHoldersDescription",
               { token: "NOTNOW" }
             ),
@@ -182,16 +192,16 @@ export const TransactionActivityCard = () => {
         case "AssetTransferOwnership":
           return {
             title: t("overview.activityTransactions.AssetTransferOwnership"),
-            source: t(
+            description: t(
               "overview.activityTransactions.AssetTransferOwnershipDescription",
-              { account: asRSAddress(recipient) }
+              { account: readableRecipient }
             ),
           };
 
         case "RewardRecipientAssignment":
           return {
             title: t("overview.activityTransactions.RewardRecipientAssignment"),
-            source: !!recipient && asRSAddress(recipient),
+            description: !!recipient && readableRecipient,
           };
 
         // TODO: Show SIGNA amount
@@ -209,8 +219,8 @@ export const TransactionActivityCard = () => {
         case "SubscriptionSubscribe":
           return {
             title: t("overview.activityTransactions.SubscriptionSubscribe"),
-            source: t("overview.activityTransactions.OrdinaryTo", {
-              account: asRSAddress(recipient),
+            description: t("overview.activityTransactions.OrdinaryTo", {
+              account: readableRecipient,
             }),
           };
 
@@ -229,7 +239,7 @@ export const TransactionActivityCard = () => {
             title: `${t(
               isRecipient ? "overview.received" : "overview.sent"
             )} ${t("overview.activityTransactions.SubscriptionPayment")}`,
-            source: getDefaultSource(),
+            description: getDefaultDescription(),
           };
 
         case "SmartContractCreation":
@@ -239,51 +249,73 @@ export const TransactionActivityCard = () => {
 
         default:
           return {
+            icon: <View></View>,
             title: "",
-            source: "",
+            description: "",
             invalid: true,
           };
       }
     };
 
-    const isNeutral =
-      !recipient ||
+    const isNeutral = !!(
       transactionReadableType === "AliasAssignment" ||
       transactionReadableType === "AccountInfo" ||
       transactionReadableType === "AliasSale" ||
       transactionReadableType === "AliasBuy" ||
       transactionReadableType === "AssetIssuance" ||
+      transactionReadableType === "AskOrderPlacement" ||
+      transactionReadableType === "BidOrderPlacement" ||
+      transactionReadableType === "AskOrderCancellation" ||
+      transactionReadableType === "BidOrderCancellation" ||
       transactionReadableType === "AssetMint" ||
-      transactionReadableType === "TopLevelDomainAssignment" ||
       transactionReadableType === "AssetAddTreasureyAccount" ||
+      transactionReadableType === "TopLevelDomainAssignment" ||
       transactionReadableType === "AssetTransferOwnership" ||
       type === TransactionType.Mining ||
       transactionReadableType === "SubscriptionCancel" ||
-      transactionReadableType === "SmartContractCreation";
+      transactionReadableType === "SmartContractCreation"
+    );
+
+    const icon =
+      type === TransactionType.Mining ? (
+        <View>
+          <Feather name="cpu" size={28} className="opacity-50" />
+        </View>
+      ) : transactionReadableType === "Message" ? (
+        <View>
+          <Feather name="message-circle" size={28} className="opacity-50" />
+        </View>
+      ) : isNeutral ? (
+        <View>
+          <Feather name="box" size={28} className="opacity-50" />
+        </View>
+      ) : isRecipient ? (
+        <View style={{ transform: [{ rotate: "45deg" }] }}>
+          <Feather name="arrow-down-circle" size={28} color="#22C55E" />
+        </View>
+      ) : (
+        <View style={{ transform: [{ rotate: "-135deg" }] }}>
+          <Feather name="arrow-down-circle" size={28} color="#EF4444" />
+        </View>
+      );
+
+    const hasAttachment =
+      ((attachment?.message && attachment?.messageIsText) ||
+        (attachment?.encryptedMessage && attachment?.encryptedMessage?.data)) &&
+      transactionReadableType !== "Message";
 
     return {
+      icon,
       isNeutral,
-      titleLabel: getReadableMetadata().title,
-      sourceLabel: getReadableMetadata().source,
-      dateLabel: "13 hours ago",
+      title: getReadableMetadata().title,
+      description: getReadableMetadata().description,
       memo: "",
       isRecipient,
       isSender,
-      isPending: confirmations < 2,
-      hasAttachment: false,
+      hasAttachment,
       isInvalid: getReadableMetadata()?.invalid,
     };
-  }, [
-    accountId,
-    transaction,
-    type,
-    subtype,
-    sender,
-    recipient,
-    attachment,
-    confirmations,
-    transactionReadableType,
-  ]);
+  }, [accountId, transaction, transactionReadableType]);
 
   if (transactionReadableData.isInvalid) {
     return (
@@ -301,47 +333,30 @@ export const TransactionActivityCard = () => {
       className="w-full flex flex-row items-center justify-between gap-2 py-4 ripple-[#333] ripple-bordered"
     >
       <View className="flex flex-row items-center justify-start gap-2 flex-1 w-8/12">
-        {transactionReadableData.isNeutral ? (
-          <View>
-            <Feather name="box" size={28} className="opacity-50" />
-          </View>
-        ) : transactionReadableData.isRecipient ? (
-          <View style={{ transform: [{ rotate: "45deg" }] }}>
-            <Feather name="arrow-down-circle" size={28} color="#22C55E" />
-          </View>
-        ) : (
-          <View style={{ transform: [{ rotate: "-135deg" }] }}>
-            <Feather name="arrow-down-circle" size={28} color="#EF4444" />
-          </View>
-        )}
+        {transactionReadableData.icon}
 
         <View className="flex-1 flex flex-col">
           <View className="flex flex-row items-center gap-1">
-            <Text className="font-medium">
-              {transactionReadableData.titleLabel}
-            </Text>
+            <Text className="font-medium">{transactionReadableData.title}</Text>
 
-            {!!(
-              transactionReadableData.hasAttachment &&
-              transactionReadableType !== "Message"
-            ) && (
+            {transactionReadableData.hasAttachment && (
               <Text color="muted" className="text-xs">
                 💬 {t("overview.hasMessage")}
               </Text>
             )}
           </View>
 
-          {transactionReadableData.sourceLabel && (
+          {transactionReadableData.description && (
             <Text size="small" color="muted">
-              {transactionReadableData.sourceLabel}
+              {transactionReadableData.description}
             </Text>
           )}
 
           <Text size="small" color="muted">
-            {transactionReadableData.dateLabel}
+            {transactionDate}
           </Text>
 
-          {transactionReadableData.isPending && (
+          {!!(confirmations && confirmations < 2) && (
             <Text size="small" color="muted" className="text-xs">
               {t("overview.inProgress")}
             </Text>
@@ -350,7 +365,12 @@ export const TransactionActivityCard = () => {
       </View>
 
       <View className="flex flex-col items-end gap-1 w-4/12">
-        <AmountLabel isRecipient isNeutral value="Token: NOTNOW" />
+        <SummaryLabel
+          {...props}
+          transactionReadableType={transactionReadableType}
+          isNeutral={transactionReadableData.isNeutral}
+          isRecipient={transactionReadableData.isRecipient}
+        />
       </View>
     </Pressable>
   );
