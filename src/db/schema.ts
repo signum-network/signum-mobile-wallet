@@ -1,7 +1,7 @@
 import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
 
-// Token
-export const token = sqliteTable("diaries", {
+// Tokens
+export const tokens = sqliteTable("tokens", {
   id: text("id").primaryKey(),
   ticker: text("ticker").notNull(),
   description: text("description").notNull(),
@@ -10,5 +10,5 @@ export const token = sqliteTable("diaries", {
   isMintable: integer("isMintable", { mode: "boolean" }).notNull(),
 });
 
-export type Token = typeof token.$inferSelect;
-export type InsertToken = typeof token.$inferInsert;
+export type Token = typeof tokens.$inferSelect;
+export type InsertToken = typeof tokens.$inferInsert;

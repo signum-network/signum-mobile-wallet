@@ -1,4 +1,4 @@
-CREATE TABLE `diaries` (
+CREATE TABLE `tokens` (
 	`id` text PRIMARY KEY NOT NULL,
 	`ticker` text NOT NULL,
 	`description` text NOT NULL,

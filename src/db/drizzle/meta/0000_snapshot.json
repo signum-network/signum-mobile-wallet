@@ -1,11 +1,11 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "c23246f8-1dbe-44c7-9a8f-4cae1395135d",
+  "id": "43d5dfc1-2e19-462a-8c3a-dea9d3b1b678",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
-    "diaries": {
-      "name": "diaries",
+    "tokens": {
+      "name": "tokens",
       "columns": {
         "id": {
           "name": "id",
