@@ -7,7 +7,7 @@ import { MarketInitializer } from "./MarketInitializer";
 
 const queryClient = new QueryClient();
 
-export const AppDataInitializer = ({ children }: ChildrenProps) => {
+export const DataInitializer = ({ children }: ChildrenProps) => {
   return (
     <QueryClientProvider client={queryClient}>
       <NodeHostInitializer />

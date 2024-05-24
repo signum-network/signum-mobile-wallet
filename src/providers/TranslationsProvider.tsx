@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { appStore } from "@/states/appStore";
 import type { ChildrenProps } from "@/types/childrenProps";
 
-export const AppTranslationsProvider = ({ children }: ChildrenProps) => {
+export const TranslationsProvider = ({ children }: ChildrenProps) => {
   const { i18n } = useTranslation();
   const language = appStore((state) => state.language);
 
