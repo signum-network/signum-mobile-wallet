@@ -7,12 +7,12 @@ import type { ChildrenProps } from "@/types/childrenProps";
 
 export const AppProviders = ({ children }: ChildrenProps) => (
   <Suspense>
-    <DatabaseProvider>
-      <TranslationsProvider>
-        <ThemeProvider>
-          <DataInitializer>{children}</DataInitializer>
-        </ThemeProvider>
-      </TranslationsProvider>
-    </DatabaseProvider>
+    <TranslationsProvider>
+      <ThemeProvider>
+        <DataInitializer>
+          <DatabaseProvider>{children}</DatabaseProvider>
+        </DataInitializer>
+      </ThemeProvider>
+    </TranslationsProvider>
   </Suspense>
 );

@@ -9,11 +9,13 @@ interface Args {
   maximumFractionDigits?: number;
 }
 
+export const defaultMaximumFractionDigits = 8;
+
 export const formatNumber = ({
   value,
   disableDecimal = false,
   isFiat = false,
-  maximumFractionDigits = 8,
+  maximumFractionDigits = defaultMaximumFractionDigits,
 }: Args) => {
   if (value === 0 || value === "0" || !value) return "0";
 

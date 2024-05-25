@@ -3,6 +3,6 @@ CREATE TABLE `tokens` (
 	`ticker` text NOT NULL,
 	`description` text NOT NULL,
 	`decimals` integer NOT NULL,
-	`issuerId` text NOT NULL,
-	`isMintable` integer NOT NULL
+	`issuer` text NOT NULL,
+	`mintable` integer NOT NULL
 );
