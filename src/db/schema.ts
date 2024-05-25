@@ -4,7 +4,7 @@ import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
 export const tokens = sqliteTable("tokens", {
   id: text("id").primaryKey(),
   ticker: text("ticker").notNull(),
-  description: text("description").notNull(),
+  description: text("description"),
   decimals: integer("decimals").notNull(),
   issuer: text("issuer").notNull(),
   mintable: integer("mintable", { mode: "boolean" }).notNull(),

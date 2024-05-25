@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "583c74a5-dba1-4494-ac4a-20fde5a43bd3",
+  "id": "595688a5-e387-4a90-b047-a19a892dcede",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "tokens": {
@@ -25,7 +25,7 @@
           "name": "description",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
         "decimals": {
