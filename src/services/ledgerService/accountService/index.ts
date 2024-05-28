@@ -1,7 +1,8 @@
-import { type Account, type Balance } from "@signumjs/core";
-import { type LedgerServiceContext } from "../ledgerServiceContext";
+import type { Account, Balance } from "@signumjs/core";
+import type { LedgerServiceContext } from "../ledgerServiceContext";
 import { LedgerSubService } from "../ledgerSubService";
 import { handleError } from "../handleError";
+import { AccountInstanceService } from "./AccountInstanceService";
 import { nodeHostStore } from "@/states/nodeHostStore";
 import {
   PUBLIC_SIGNUM_ACCOUNT_ACTIVATOR_MAINNET_URL,
@@ -82,5 +83,9 @@ export class AccountService extends LedgerSubService {
     } catch (e) {
       return false;
     }
+  }
+
+  with(accountId: string) {
+    return new AccountInstanceService(accountId, this.context);
   }
 }

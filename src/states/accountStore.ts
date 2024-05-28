@@ -7,7 +7,7 @@ import {
   type AccountBalance,
   defaultAccountNetworkData,
 } from "@/types/account";
-import { type networks } from "@/types/networks";
+import type { networks } from "@/types/networks";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type addAccountParams = {

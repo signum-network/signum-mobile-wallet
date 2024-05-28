@@ -74,8 +74,6 @@ export const TransactionActivityCard = (props: Transaction) => {
         case "Ordinary":
         case "MultiOut":
         case "MultiOutSameAmount":
-
-        // TODO: Detect SIGNA and Token amount, decimals, quantities
         case "AssetTransfer":
         case "AssetMultiTransfer":
         case "SmartContractPayment":
@@ -127,14 +125,11 @@ export const TransactionActivityCard = (props: Transaction) => {
             title: t("overview.activityTransactions.TopLevelDomainAssignment"),
           };
 
-        // TODO: Read Token metadata
         case "AssetIssuance":
           return {
             title: t("overview.activityTransactions.AssetIssuance"),
-            description: attachment?.name ?? undefined,
           };
 
-        // TODO: Read Token metadata
         case "AskOrderPlacement":
           return {
             title: t("overview.activityTransactions.AskOrderPlacement"),
@@ -143,7 +138,6 @@ export const TransactionActivityCard = (props: Transaction) => {
             ),
           };
 
-        // TODO: Read Token metadata
         case "BidOrderPlacement":
           return {
             title: t("overview.activityTransactions.BidOrderPlacement"),
@@ -152,7 +146,6 @@ export const TransactionActivityCard = (props: Transaction) => {
             ),
           };
 
-        // TODO: Read Token metadata
         case "AskOrderCancellation":
           return {
             title: t("overview.activityTransactions.AskOrderCancellation"),
@@ -161,7 +154,6 @@ export const TransactionActivityCard = (props: Transaction) => {
             ),
           };
 
-        // TODO: Read Token metadata
         case "BidOrderCancellation":
           return {
             title: t("overview.activityTransactions.BidOrderCancellation"),
@@ -170,13 +162,11 @@ export const TransactionActivityCard = (props: Transaction) => {
             ),
           };
 
-        // TODO: Read Token metadata
         case "AssetMint":
           return {
             title: t("overview.activityTransactions.AssetMint"),
           };
 
-        // TODO: Read Token metadata
         case "AssetAddTreasureyAccount":
           return {
             title: t("overview.activityTransactions.AssetAddTreasureyAccount"),
@@ -186,14 +176,13 @@ export const TransactionActivityCard = (props: Transaction) => {
             ),
           };
 
-        // TODO: Read Token metadata
-        // TODO: Read appropiate metadata (SIGNA sent or/and Token sent)
         case "AssetDistributeToHolders":
           return {
             title: getDefaultTitle(),
             description: t(
-              "overview.activityTransactions.AssetDistributeToHoldersDescription",
-              { token: "NOTNOW" }
+              isSender
+                ? "overview.activityTransactions.AssetDistributeToHoldersDescription"
+                : "overview.activityTransactions.FromAssetDistributeToHoldersDescription"
             ),
           };
 
@@ -288,7 +277,7 @@ export const TransactionActivityCard = (props: Transaction) => {
     const icon =
       type === TransactionType.Mining ? (
         <View>
-          <Feather name="cpu" size={28} className="opacity-50" />
+          <Feather name="hard-drive" size={28} className="opacity-50" />
         </View>
       ) : transactionReadableType === "Message" ? (
         <View>
@@ -369,7 +358,7 @@ export const TransactionActivityCard = (props: Transaction) => {
             </Text>
           )}
 
-          <Text size="small" color="muted">
+          <Text size="extraSmall" color="muted">
             {transactionDate}
           </Text>
 

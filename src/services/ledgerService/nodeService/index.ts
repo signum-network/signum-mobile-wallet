@@ -1,4 +1,4 @@
-import { type LedgerServiceContext } from "../ledgerServiceContext";
+import type { LedgerServiceContext } from "../ledgerServiceContext";
 import { LedgerSubService } from "../ledgerSubService";
 import { handleError } from "../handleError";
 

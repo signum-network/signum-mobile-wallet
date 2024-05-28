@@ -1,5 +1,5 @@
 import { type Ledger, LedgerClientFactory } from "@signumjs/core";
-import { type LedgerServiceContext } from "./ledgerServiceContext";
+import type { LedgerServiceContext } from "./ledgerServiceContext";
 import { AccountService } from "./accountService";
 import { NodeService } from "./nodeService";
 import { TokenService } from "./tokenService";

@@ -11,7 +11,7 @@
     "prebuild": "npx expo prebuild --clean",
     "expo-fix": "npx expo install --fix",
     "expo-doctor": "npx expo-doctor@latest",
-    "ts:check": "tsc",
+    "ts-check": "tsc",
     "db-generate": "npx drizzle-kit generate"
   },
   "dependencies": {

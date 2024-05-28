@@ -1,7 +1,7 @@
-import { type LedgerServiceContext } from "../ledgerServiceContext";
+import type { Token } from "@/db/schema";
+import type { LedgerServiceContext } from "../ledgerServiceContext";
 import { LedgerSubService } from "../ledgerSubService";
 import { handleError } from "../handleError";
-import { type Token } from "@/db/schema";
 
 export class TokenService extends LedgerSubService {
   constructor(context: LedgerServiceContext) {

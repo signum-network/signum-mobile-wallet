@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { FlashList } from "@shopify/flash-list";
-import { type Transaction } from "@signumjs/core";
+import type { Transaction } from "@signumjs/core";
 import { Card } from "@/components/Card";
 import { Text } from "@/components/Text";
 import { useAccount } from "@/hooks/useAccount";

@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { router } from "expo-router";
 import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { type BarcodeScanningResult } from "expo-camera/next";
+import type { BarcodeScanningResult } from "expo-camera/next";
 import { accountImportSchema } from "./utils/schemas";
 import type { AccountImport } from "./utils/types";
 import { AccountWizardContainer } from "../components/AccountWizardContainer";
