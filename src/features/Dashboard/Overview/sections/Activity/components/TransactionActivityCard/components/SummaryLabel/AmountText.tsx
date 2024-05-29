@@ -10,7 +10,12 @@ import {
 import type { TextProps } from "./types";
 import { NeutralText } from "./NeutralText";
 
-export const AmountText = ({ isSender, tokenId, value }: TextProps) => {
+export const AmountText = ({
+  isSigna,
+  isSender,
+  tokenId,
+  value,
+}: TextProps) => {
   const { t } = useTranslation();
   const { NativeTicker } = useTicker();
   const { ticker: tokenTicker, decimals } = useToken(tokenId);
@@ -22,6 +27,17 @@ export const AmountText = ({ isSender, tokenId, value }: TextProps) => {
   const readableTicker = tokenId ? tokenTicker : NativeTicker;
 
   if (tokenId && !tokenTicker) return <NeutralText value={`${t("loading")}`} />;
+
+  if (isSigna) {
+    return (
+      <NeutralText
+        value={`${formatNumber({
+          value: readableValue,
+          maximumFractionDigits: readableDecimals,
+        })} ${readableTicker}`}
+      />
+    );
+  }
 
   return (
     <Text

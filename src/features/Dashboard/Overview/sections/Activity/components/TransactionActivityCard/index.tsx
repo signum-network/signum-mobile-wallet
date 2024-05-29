@@ -186,7 +186,6 @@ export const TransactionActivityCard = (props: Transaction) => {
             ),
           };
 
-        // TODO: Read Token metadata
         case "AssetTransferOwnership":
           return {
             title: t("overview.activityTransactions.AssetTransferOwnership"),
@@ -202,18 +201,17 @@ export const TransactionActivityCard = (props: Transaction) => {
             description: !!recipient && readableRecipient,
           };
 
-        // TODO: Show SIGNA amount
         case "AddCommitment":
           return {
             title: t("overview.activityTransactions.AddCommitment"),
           };
 
-        // TODO: Show SIGNA amount
         case "RemoveCommitment":
           return {
             title: t("overview.activityTransactions.RemoveCommitment"),
           };
 
+        // TODO: See metadata
         case "SubscriptionSubscribe":
           return {
             title: t("overview.activityTransactions.SubscriptionSubscribe"),

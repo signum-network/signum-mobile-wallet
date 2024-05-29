@@ -134,16 +134,6 @@ export const SummaryLabel = ({
         );
       }
 
-      case "Message":
-      case "AccountInfo":
-      case "TopLevelDomainAssignment":
-      case "AskOrderCancellation":
-      case "BidOrderCancellation":
-      case "AssetAddTreasureyAccount": {
-        return <SettingsLabel />;
-      }
-
-      // Try to read Distributions when sending and when receiving
       case "AssetDistributeToHolders": {
         let content = (
           <>
@@ -180,8 +170,13 @@ export const SummaryLabel = ({
         );
       }
 
+      case "AddCommitment":
+      case "RemoveCommitment": {
+        return <AmountText isSigna value={attachment.amountNQT} />;
+      }
+
       default:
-        return null;
+        return <SettingsLabel />;
     }
   }, [
     transactionReadableType,
