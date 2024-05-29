@@ -18,4 +18,10 @@ export class NodeService extends LedgerSubService {
       this.context.ledger.network.getBlockchainStatus()
     );
   }
+
+  fetchTopLevelDomains() {
+    return handleError(async () =>
+      this.context.ledger.alias.getTopLevelDomains({})
+    );
+  }
 }

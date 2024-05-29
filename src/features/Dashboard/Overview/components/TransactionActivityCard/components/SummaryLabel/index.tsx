@@ -9,6 +9,7 @@ import { NeutralText } from "./NeutralText";
 import { SettingsLabel } from "./SettingsLabel";
 import { TokenLabel } from "./TokenLabel";
 import { DistributionLabel } from "./DistributionLabel";
+import { AliasLabel } from "./AliasLabel";
 
 interface Props extends Transaction {
   transactionReadableType?: AvailableTransactionString;
@@ -108,9 +109,13 @@ export const SummaryLabel = ({
         );
       }
 
-      // TODO: Show TLD
       case "AliasAssignment": {
-        return <NeutralText value={attachment?.alias ?? ""} />;
+        return (
+          <AliasLabel
+            aliasName={attachment?.alias ?? ""}
+            tldId={attachment?.tld ?? ""}
+          />
+        );
       }
 
       case "AssetIssuance": {

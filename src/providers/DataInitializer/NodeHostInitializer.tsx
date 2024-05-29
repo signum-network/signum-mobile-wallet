@@ -131,7 +131,7 @@ export const NodeHostInitializer = () => {
 
         return true;
       } catch (error) {
-        // Node is unavailable, reset chosen node if connectionType === automatic
+        // Node is unavailable, reset active node if connectionType === automatic
         if (isOnline && connectionType === "automatic") resetActiveNodeHost();
 
         setIsActiveNodeAvailable(false);
