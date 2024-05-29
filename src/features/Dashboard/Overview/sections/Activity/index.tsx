@@ -10,7 +10,7 @@ import { NoAccountsFoundCard } from "@/components/Account/NoAccountsFoundCard";
 import {
   TransactionActivityCard,
   ITEM_HEIGHT,
-} from "../../components/TransactionActivityCard";
+} from "./components/TransactionActivityCard";
 
 import dummyData from "./utils/dummy-transactions.json";
 
