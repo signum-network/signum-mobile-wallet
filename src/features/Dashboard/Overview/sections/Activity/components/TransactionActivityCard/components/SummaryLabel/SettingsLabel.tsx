@@ -9,7 +9,7 @@ export const SettingsLabel = () => {
       name="menu"
       size={24}
       color={iconColor.default}
-      style={{ opacity: 0.5 }}
+      className="opacity-50"
     />
   );
 };

@@ -20,7 +20,9 @@ export const AccountSwitcher = ({ href }: Props) => {
   const { accountId, isWatchOnly, walletName } = useAccount();
   const { accountPublicKeys } = useAccountStore();
 
-  const goToAccountSettings = () => router.push(href);
+  const goToAccountSettings = () => {
+    href === "/dashboard/account" ? router.replace(href) : router.push(href);
+  };
 
   if (!accountPublicKeys.length) return <NoAccountsFoundCard />;
 

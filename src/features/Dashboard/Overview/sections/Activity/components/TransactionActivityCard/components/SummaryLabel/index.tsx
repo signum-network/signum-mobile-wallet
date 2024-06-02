@@ -35,7 +35,8 @@ export const SummaryLabel = ({
   const Summary = useMemo(() => {
     switch (transactionReadableType) {
       case "Ordinary":
-      case "SmartContractPayment": {
+      case "SmartContractPayment":
+      case "SubscriptionPayment": {
         return <AmountText isSender={isSender} value={amountNQT} />;
       }
 

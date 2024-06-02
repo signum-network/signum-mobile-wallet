@@ -17,6 +17,7 @@
   "copyToClipboard": "Copy to clipboard",
   "loading": "Loading",
   "mnemonic": "Mnemonic",
+  "encrypted": "Encrypted",
   "message": "Message",
   "accounts": "Accounts",
   "fullAccount": "Full Account",
@@ -191,8 +192,20 @@
     "sent": "Sent",
     "yourself": "yourself",
     "hasMessage": "Message included",
+    "hasEncryptedMessage": "Encrypted",
     "options": "Options",
+    "description": "What would you like to do?",
     "holders": "holders",
+    "copyTransactionId": "Copy transaction ID",
+    "copiedTransactionId": "Transaction ID copied successfully!",
+    "viewMessage": "View message or memo",
+    "viewEncryptedMessage": "View encrypted memo",
+    "viewTransactionInExplorer": "View transaction in block explorer",
+    "watchOnlyAccountEncryptedMessageNotice": "Watch only accounts can not see encrypted content",
+    "noTransactionsFound": {
+      "title": "No transactions",
+      "description": "Nothing here, yet..."
+    },
     "activityTransactions": {
       "Ordinary": "From {{account}}",
       "OrdinaryTo": "To {{account}}",

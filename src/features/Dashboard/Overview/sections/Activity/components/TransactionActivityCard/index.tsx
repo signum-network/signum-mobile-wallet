@@ -1,25 +1,26 @@
 import { useMemo } from "react";
-import { View, Pressable } from "react-native";
+import { View, Pressable, Alert } from "react-native";
 import { useTranslation } from "react-i18next";
 import { Transaction, TransactionType } from "@signumjs/core";
 import { ChainTime } from "@signumjs/util";
 import { useAccount } from "@/hooks/useAccount";
 import { useDateLocale } from "@/hooks/useDateLocale";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { formatDistanceToNow } from "date-fns";
 import { Text } from "@/components/Text";
 import { asRSAddress } from "@/utils/account/asRSAddress";
+import { openTransactionLink } from "@/utils/explorer/openLink";
 import { transactionTypeReader } from "../../utils/transactionTypeReader";
 import { SummaryLabel } from "./components/SummaryLabel";
 
+import * as Clipboard from "expo-clipboard";
 import Feather from "@expo/vector-icons/Feather";
 
 export const ITEM_HEIGHT = 100;
 
-// TODO: Detect if user is on a watch-only account, is possible the message is encrypted
-// This TODO is related to reading memo/messages
-
 export const TransactionActivityCard = (props: Transaction) => {
   const { t } = useTranslation();
+  const { iconColor } = useAppTheme();
   const { accountId } = useAccount();
   const dateLocale = useDateLocale();
 
@@ -36,18 +37,21 @@ export const TransactionActivityCard = (props: Transaction) => {
 
   const transactionReadableType = transactionTypeReader(type, subtype);
 
-  // TODO: Have the following options:
-  // View transaction in block explorer
-  // View message or memo
-  // Copy Transaction ID
-  const pickOptions = () => alert("Options clicked");
-
   const isPending = !confirmations || confirmations < 2;
   const timestampToDate = ChainTime.fromChainTimestamp(timestamp).getDate();
   const transactionDate = formatDistanceToNow(timestampToDate, {
     addSuffix: true,
     locale: dateLocale,
   });
+
+  const hasPublicText = !!(attachment?.message && attachment?.messageIsText);
+  const hasEncryptedText = !!(
+    attachment?.encryptedMessage &&
+    attachment?.encryptedMessage?.data &&
+    attachment?.encryptedMessage?.isText
+  );
+
+  const hasAttachment = hasPublicText || hasEncryptedText;
 
   const transactionReadableData = useMemo(() => {
     const isSender = sender === accountId;
@@ -211,7 +215,6 @@ export const TransactionActivityCard = (props: Transaction) => {
             title: t("overview.activityTransactions.RemoveCommitment"),
           };
 
-        // TODO: See metadata
         case "SubscriptionSubscribe":
           return {
             title: t("overview.activityTransactions.SubscriptionSubscribe"),
@@ -275,15 +278,39 @@ export const TransactionActivityCard = (props: Transaction) => {
     const icon =
       type === TransactionType.Mining ? (
         <View>
-          <Feather name="hard-drive" size={28} className="opacity-50" />
+          <Feather
+            name="hard-drive"
+            size={28}
+            className="opacity-50"
+            color={iconColor.default}
+          />
+        </View>
+      ) : transactionReadableType === "SmartContractCreation" ? (
+        <View>
+          <Feather
+            name="cpu"
+            size={28}
+            className="opacity-50"
+            color={iconColor.default}
+          />
         </View>
       ) : transactionReadableType === "Message" ? (
         <View>
-          <Feather name="message-circle" size={28} className="opacity-50" />
+          <Feather
+            name="message-circle"
+            size={28}
+            className="opacity-50"
+            color={iconColor.default}
+          />
         </View>
       ) : isNeutral ? (
         <View>
-          <Feather name="box" size={28} className="opacity-50" />
+          <Feather
+            name="box"
+            size={28}
+            className="opacity-50"
+            color={iconColor.default}
+          />
         </View>
       ) : isSender ? (
         <View style={{ transform: [{ rotate: "-135deg" }] }}>
@@ -295,9 +322,11 @@ export const TransactionActivityCard = (props: Transaction) => {
         </View>
       );
 
-    const hasAttachment =
-      !!(attachment?.message && attachment?.messageIsText) ||
-      !!(attachment?.encryptedMessage && attachment?.encryptedMessage?.data);
+    let memo = "";
+
+    if (hasPublicText) {
+      memo = attachment.message;
+    }
 
     return {
       icon,
@@ -309,7 +338,9 @@ export const TransactionActivityCard = (props: Transaction) => {
       showAttachmentBadge: !!(
         hasAttachment && transactionReadableType !== "Message"
       ),
-      memo: "",
+      memo,
+      hasPublicText,
+      hasEncryptedText,
       isInvalid: getReadableMetadata()?.invalid,
     };
   }, [
@@ -319,7 +350,45 @@ export const TransactionActivityCard = (props: Transaction) => {
     sender,
     recipient,
     attachment,
+    iconColor,
   ]);
+
+  const pickOptions = () => {
+    const defaultOptions = [
+      {
+        text: t("overview.copyTransactionId"),
+        onPress: async () => {
+          await Clipboard.setStringAsync(transaction).then(() =>
+            alert(t("overview.copiedTransactionId"))
+          );
+        },
+      },
+      {
+        text: t("overview.viewTransactionInExplorer"),
+        onPress: () => {
+          openTransactionLink(transaction);
+        },
+      },
+    ];
+
+    if (transactionReadableData.hasPublicText) {
+      defaultOptions[2] = {
+        text: t("overview.viewMessage"),
+        onPress: () => {
+          Alert.alert(t("message"), transactionReadableData.memo);
+        },
+      };
+    }
+
+    Alert.alert(
+      t("overview.options"),
+      t("overview.description"),
+      [...defaultOptions],
+      {
+        cancelable: true,
+      }
+    );
+  };
 
   if (transactionReadableData.isInvalid) {
     return (
@@ -343,10 +412,16 @@ export const TransactionActivityCard = (props: Transaction) => {
           <View className="flex flex-row items-center gap-1">
             <Text className="font-medium">{transactionReadableData.title}</Text>
 
-            {transactionReadableData.showAttachmentBadge && (
-              <Text size="extraSmall" color="muted">
-                💬 {t("overview.hasMessage")}
+            {transactionReadableData.hasEncryptedText ? (
+              <Text size="extraSmall" color="success">
+                🔒 {t("overview.hasEncryptedMessage")}
               </Text>
+            ) : (
+              transactionReadableData.showAttachmentBadge && (
+                <Text size="extraSmall" color="muted">
+                  💬 {t("overview.hasMessage")}
+                </Text>
+              )
             )}
           </View>
 

@@ -6,7 +6,7 @@ import type { Transaction } from "@signumjs/core";
 import { Card } from "@/components/Card";
 import { Text } from "@/components/Text";
 import { useAccount } from "@/hooks/useAccount";
-import { NoAccountsFoundCard } from "@/components/Account/NoAccountsFoundCard";
+import { NoTransactionsFoundCard } from "@/components/Account/NoTransactionsFoundCard";
 import {
   TransactionActivityCard,
   ITEM_HEIGHT,
@@ -30,7 +30,7 @@ export const Activity = () => {
         style={{
           flex: 1,
           flexGrow: 1,
-          minHeight: 50,
+          minHeight: ITEM_HEIGHT,
           width: "100%",
         }}
       >
@@ -39,7 +39,7 @@ export const Activity = () => {
           keyExtractor={({ transaction }) => transaction}
           renderItem={({ item }) => <TransactionActivityCard {...item} />}
           estimatedItemSize={ITEM_HEIGHT}
-          ListEmptyComponent={<NoAccountsFoundCard />}
+          ListEmptyComponent={<NoTransactionsFoundCard />}
         />
       </View>
     </Card>
