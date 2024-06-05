@@ -19,6 +19,14 @@ export const PUBLIC_SIGNUM_ACCOUNT_ACTIVATOR_TESTNET_URL =
 
 export const PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MILLISECONDS = 240_000;
 
+export const PUBLIC_SIGNUM_FETCH_ACCOUNT_DATA_INTERVAL = 60_000;
+
+export const PUBLIC_SIGNUM_EXPLORER_MAINNET_URL =
+  "https://explorer.signum.network";
+
+export const PUBLIC_SIGNUM_EXPLORER_TESTNET_URL =
+  "https://testnet.explorer.signum.network";
+
 // Constants of predefined keys for Expo Secure Store
 
 export const SECURE_STORE_PIN_KEY = "PIN_KEY";

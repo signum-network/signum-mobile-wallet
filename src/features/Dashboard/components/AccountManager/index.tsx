@@ -8,11 +8,11 @@ import { Text } from "@/components/Text";
 import { Button } from "@/components/Button";
 import { NoAccountsFoundCard } from "@/components/Account/NoAccountsFoundCard";
 import { BottomButtonsContainer } from "../../components/BottomButtonsContainer";
-import { SettingScreenContainer } from "../components/SettingScreenContainer";
+import { DashboardScreenContainer } from "../../components/DashboardScreenContainer";
 import { AccountCard, ITEM_HEIGHT } from "./components/AccountCard";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
-export const AccountSettingsScreen = () => {
+export const AccountManager = () => {
   const { t } = useTranslation();
   const { accounts } = useAccountStore();
   const { iconColor } = useAppTheme();
@@ -24,7 +24,7 @@ export const AccountSettingsScreen = () => {
   return (
     <Fragment>
       <ScrollView ref={scrollRef} className="flex-1">
-        <SettingScreenContainer>
+        <DashboardScreenContainer>
           <View className="flex flex-col items-start justify-center w-full px-4">
             <View className="w-full flex flex-col items-start justify-start mt-8 gap-2">
               <Text size="large" className="font-bold text-center">
@@ -67,7 +67,7 @@ export const AccountSettingsScreen = () => {
               />
             </View>
           </View>
-        </SettingScreenContainer>
+        </DashboardScreenContainer>
       </ScrollView>
 
       <BottomButtonsContainer>

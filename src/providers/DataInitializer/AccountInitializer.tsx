@@ -4,6 +4,7 @@ import { useAccountStore } from "@/hooks/useAccountStore";
 import { useNodeHostStore } from "@/hooks/useNodeHostStore";
 import { useLedgerService } from "@/hooks/useLedgerService";
 import { getBalancesFromAccount } from "@/utils/account/getBalancesFromAccount";
+import { PUBLIC_SIGNUM_FETCH_ACCOUNT_DATA_INTERVAL } from "@/types/constants";
 
 export const AccountInitializer = () => {
   const { ledgerService } = useLedgerService();
@@ -15,7 +16,7 @@ export const AccountInitializer = () => {
   useQuery({
     queryKey: ["fetchAccount", publicKey, currentNetwork],
     queryFn: async () => {
-      if (!ledgerService) return false;
+      if (!ledgerService) return;
 
       try {
         const {
@@ -51,8 +52,8 @@ export const AccountInitializer = () => {
         return false;
       }
     },
-    refetchInterval: 60_000,
-    staleTime: 60_000,
+    refetchInterval: PUBLIC_SIGNUM_FETCH_ACCOUNT_DATA_INTERVAL,
+    staleTime: PUBLIC_SIGNUM_FETCH_ACCOUNT_DATA_INTERVAL,
     enabled: isAuthenticated && isActiveNodeSynced && !!ledgerService,
   });
 

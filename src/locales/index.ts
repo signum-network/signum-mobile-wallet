@@ -15,11 +15,10 @@ export const lngCards: { lng: locales; label: string }[] = [
 ];
 
 export const getDefaultLocale = (): locales => {
-  // Get device language
   const deviceLanguage = getLocales();
   const languageCode = deviceLanguage[0]?.languageCode;
 
-  // @ts-expect-error If device language is not on the support language list, fallback to english
+  // @ts-expect-error If device language is not on the supported language list, fallback to english
   if (!languageCode || !supportedLngs.includes(languageCode)) {
     return "en";
   }
@@ -29,7 +28,6 @@ export const getDefaultLocale = (): locales => {
 };
 
 i18n.use(initReactI18next).init({
-  // debug: process.env.NODE_ENV === "development",
   fallbackLng: getDefaultLocale(),
   supportedLngs,
   resources: {

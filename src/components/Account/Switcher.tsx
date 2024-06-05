@@ -10,13 +10,19 @@ import { asRSAddress } from "@/utils/account/asRSAddress";
 import { NoAccountsFoundCard } from "./NoAccountsFoundCard";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 
-export const AccountSwitcher = () => {
+interface Props {
+  href: "/dashboard/settings/account" | "/dashboard/account";
+}
+
+export const AccountSwitcher = ({ href }: Props) => {
   const { t } = useTranslation();
   const { iconColor } = useAppTheme();
   const { accountId, isWatchOnly, walletName } = useAccount();
   const { accountPublicKeys } = useAccountStore();
 
-  const goToAccountSettings = () => router.push("/dashboard/settings/account");
+  const goToAccountSettings = () => {
+    href === "/dashboard/account" ? router.replace(href) : router.push(href);
+  };
 
   if (!accountPublicKeys.length) return <NoAccountsFoundCard />;
 

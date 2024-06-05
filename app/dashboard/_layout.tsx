@@ -57,6 +57,7 @@ export default function Layout() {
         name="settings"
       />
 
+      <Tabs.Screen name="account" options={{ href: null }} />
       <Tabs.Screen name="deposit" options={{ href: null }} />
       <Tabs.Screen name="transfer" options={{ href: null }} />
     </Tabs>

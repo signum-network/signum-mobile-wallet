@@ -1,5 +1,5 @@
 import { nodeHostStore } from "@/states/nodeHostStore";
-import { type networks } from "@/types/networks";
+import type { networks } from "@/types/networks";
 
 export const useNodeHostStore = () => {
   const connectionType = nodeHostStore((state) => state.connectionType);

@@ -1,4 +1,4 @@
-import { type LedgerServiceContext } from "../ledgerServiceContext";
+import type { LedgerServiceContext } from "../ledgerServiceContext";
 import { LedgerSubService } from "../ledgerSubService";
 import { handleError } from "../handleError";
 
@@ -16,6 +16,12 @@ export class NodeService extends LedgerSubService {
   fetchBlockchainStatus() {
     return handleError(async () =>
       this.context.ledger.network.getBlockchainStatus()
+    );
+  }
+
+  fetchTopLevelDomains() {
+    return handleError(async () =>
+      this.context.ledger.alias.getTopLevelDomains({})
     );
   }
 }

@@ -63,7 +63,7 @@ export const CameraDialog = ({ onCodeScanned }: Props) => {
                 name="camera"
                 size={65}
                 color={iconColor.default}
-                style={{ opacity: 0.5 }}
+                className="opacity-50"
               />
 
               <Text className="text-center font-medium">

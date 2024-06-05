@@ -4,7 +4,7 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import { HorizontalDivider } from "@/components/HorizontalDivider";
 import { AccountSwitcher } from "@/components/Account/Switcher";
 import { NavLink } from "./components/NavLink";
-import { SettingScreenContainer } from "../components/SettingScreenContainer";
+import { DashboardScreenContainer } from "../../components/DashboardScreenContainer";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 export const SettingsScreen = () => {
@@ -13,9 +13,9 @@ export const SettingsScreen = () => {
 
   return (
     <ScrollView>
-      <SettingScreenContainer>
+      <DashboardScreenContainer>
         <View className="w-full max-w-md mx-auto px-4 pt-4">
-          <AccountSwitcher />
+          <AccountSwitcher href="/dashboard/settings/account" />
         </View>
 
         <HorizontalDivider />
@@ -59,7 +59,7 @@ export const SettingsScreen = () => {
             href="/dashboard/settings/about"
           />
         </View>
-      </SettingScreenContainer>
+      </DashboardScreenContainer>
     </ScrollView>
   );
 };
