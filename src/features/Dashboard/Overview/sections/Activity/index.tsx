@@ -15,7 +15,7 @@ import { NoTransactionsFoundCard } from "@/components/Account/NoTransactionsFoun
 import {
   TransactionActivityCard,
   ITEM_HEIGHT,
-} from "./components/TransactionActivityCard";
+} from "../../components/TransactionActivityCard";
 import { PUBLIC_SIGNUM_FETCH_ACCOUNT_DATA_INTERVAL } from "@/types/constants";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
@@ -99,14 +99,19 @@ export const Activity = () => {
             />
           </View>
 
-          <Button
-            title={t("overview.loadMore")}
-            type="secondary"
-            icon={
-              <Ionicons name="search" size={24} color={iconColor.blackout} />
-            }
-            linkProps={{ href: "/dashboard/overview/activity" }}
-          />
+          {!!transactions.length && (
+            <Button
+              title={t("overview.loadMore")}
+              type="secondary"
+              icon={
+                <Ionicons name="search" size={24} color={iconColor.blackout} />
+              }
+              linkProps={{
+                href: "/dashboard/overview/activity",
+                push: true,
+              }}
+            />
+          )}
         </View>
       )}
     </Card>

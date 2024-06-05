@@ -10,7 +10,7 @@ import { formatDistanceToNow } from "date-fns";
 import { Text } from "@/components/Text";
 import { asRSAddress } from "@/utils/account/asRSAddress";
 import { openTransactionLink } from "@/utils/explorer/openLink";
-import { transactionTypeReader } from "../../utils/transactionTypeReader";
+import { transactionTypeReader } from "./utils/transactionTypeReader";
 import { SummaryLabel } from "./components/SummaryLabel";
 
 import * as Clipboard from "expo-clipboard";

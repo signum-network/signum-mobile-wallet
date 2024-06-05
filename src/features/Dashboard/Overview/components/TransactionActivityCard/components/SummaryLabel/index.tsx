@@ -2,7 +2,7 @@ import { Fragment, useMemo } from "react";
 import { Transaction } from "@signumjs/core";
 import { Amount } from "@signumjs/util";
 import { useAccount } from "@/hooks/useAccount";
-import type { AvailableTransactionString } from "../../../../utils/transactionTypeReader";
+import type { AvailableTransactionString } from "../../utils/transactionTypeReader";
 import type { TextProps } from "./types";
 import { AmountText } from "./AmountText";
 import { NeutralText } from "./NeutralText";

@@ -1,18 +1,18 @@
 import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
-import { Tabs } from "expo-router/tabs";
-import { Text } from "@/components/Text";
-import { ProtectedScreen } from "@/features/Dashboard/components/ProtectedScreen";
+import { Stack } from "expo-router/stack";
 import { getHeaderTitle } from "@/utils/getHeaderTitle";
+import { ProtectedScreen } from "@/features/Dashboard/components/ProtectedScreen";
+import { ActivityScreen } from "@/features/Dashboard/Overview/Activity";
 
 export default function Screen() {
   const { t } = useTranslation();
 
   return (
     <Fragment>
-      <Tabs.Screen options={getHeaderTitle(t("transaction_other"))} />
+      <Stack.Screen options={getHeaderTitle(t("transaction_other"))} />
       <ProtectedScreen>
-        <Text>Account Activity Screen</Text>
+        <ActivityScreen />
       </ProtectedScreen>
     </Fragment>
   );
