@@ -202,6 +202,7 @@
     "viewEncryptedMessage": "View encrypted memo",
     "viewTransactionInExplorer": "View transaction in block explorer",
     "watchOnlyAccountEncryptedMessageNotice": "Watch only accounts can not see encrypted content",
+    "loadMore": "Load more",
     "noTransactionsFound": {
       "title": "No transactions",
       "description": "Nothing here, yet..."

@@ -14,7 +14,7 @@ export const TopLevelDomainInitializer = () => {
   useQuery({
     queryKey: ["fetchTopLevelDomains", currentNetwork],
     queryFn: async () => {
-      if (!ledgerService) return false;
+      if (!ledgerService) return;
 
       const currentDate = new Date();
 

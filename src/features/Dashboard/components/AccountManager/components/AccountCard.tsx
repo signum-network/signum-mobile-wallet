@@ -167,7 +167,7 @@ export const AccountCard = ({ publicKey, type, walletName }: Props) => {
   useQuery({
     queryKey: ["fetchAccountData", publicKey, currentNetwork],
     queryFn: async () => {
-      if (!ledgerService) return false;
+      if (!ledgerService) return;
 
       try {
         const accountId = Address.fromPublicKey(publicKey).getNumericId();

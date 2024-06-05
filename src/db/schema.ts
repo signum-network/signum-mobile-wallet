@@ -21,9 +21,9 @@ export const defaultToken: Token = {
   mintable: false,
 };
 
-// Distribution Amounts of a distribute to holders transaction per account
+// Distribution Amounts of a "distribute to holders" transaction per account
 export const distributionAmounts = sqliteTable("distribution-amounts", {
-  id: text("id").primaryKey(), // The id of a distribution transaction or multiple payout
+  id: text("id").primaryKey(), // The id of a distribution transaction
   account: text("account").notNull(), // The account identifier
   amountNQT: text("amountNQT").notNull(), // SIGNA amount
   quantityQNT: text("quantityQNT"), // Optional AssetToDistribute quantity

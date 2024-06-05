@@ -17,6 +17,8 @@ export const ThemeProvider = ({ children }: ChildrenProps) => {
       case "/account-wizard/create":
       case "/account-wizard/import":
 
+      case "/dashboard/overview/activity":
+
       case "/dashboard/settings/account":
       case "/dashboard/settings/language":
       case "/dashboard/settings/currency":

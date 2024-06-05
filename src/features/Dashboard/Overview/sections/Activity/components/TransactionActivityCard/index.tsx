@@ -403,7 +403,9 @@ export const TransactionActivityCard = (props: Transaction) => {
   return (
     <Pressable
       onPress={pickOptions}
-      className="w-full flex flex-row items-center justify-between gap-2 py-4 ripple-[#333] ripple-bordered"
+      className={`w-full flex flex-row items-center justify-between gap-2 py-4 ripple-[#333] ripple-bordered ${
+        isPending && "opacity-80"
+      }`}
     >
       <View className="flex flex-row items-center justify-start gap-2 flex-1 w-7/12">
         {transactionReadableData.icon}
