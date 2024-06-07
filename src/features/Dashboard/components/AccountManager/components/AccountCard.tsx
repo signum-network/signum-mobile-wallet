@@ -19,6 +19,7 @@ import { deleteSecretKey } from "@/utils/sec/handleSecretKeys";
 import { formatNumber } from "@/utils/formatNumber";
 import { useLedgerService } from "@/hooks/useLedgerService";
 import { getBalancesFromAccount } from "@/utils/account/getBalancesFromAccount";
+import { getTokenBalancesFromAccount } from "@/utils/account/getTokenBalancesFromAccount";
 import { PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MILLISECONDS } from "@/types/constants";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
@@ -84,7 +85,7 @@ export const AccountCard = ({ publicKey, type, walletName }: Props) => {
 
   const isCurrentAccount = activeAccount === publicKey;
 
-  // TODO: Remove "asset balances", "transactions history", "subscription" from account
+  // TODO: Remove "transactions history", "subscription" from account
   const removeAccount = async () => {
     itemHeight.value = withTiming(0);
 
@@ -178,6 +179,8 @@ export const AccountCard = ({ publicKey, type, walletName }: Props) => {
           balanceNQT,
           unconfirmedBalanceNQT,
           committedBalanceNQT,
+          assetBalances,
+          unconfirmedAssetBalances,
         } = await ledgerService.account.fetchAccount(accountId, true);
 
         const balance = getBalancesFromAccount(
@@ -186,11 +189,17 @@ export const AccountCard = ({ publicKey, type, walletName }: Props) => {
           committedBalanceNQT
         );
 
+        const tokenBalance = getTokenBalancesFromAccount(
+          assetBalances,
+          unconfirmedAssetBalances
+        );
+
         updateAccountData(publicKey, currentNetwork, {
           isSecured: true,
           name: name || "",
           description: description || "",
           balance,
+          tokenBalance,
         });
 
         return true;

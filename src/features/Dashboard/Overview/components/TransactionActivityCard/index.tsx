@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { View, Pressable, Alert } from "react-native";
 import { useTranslation } from "react-i18next";
-import { Transaction, TransactionType } from "@signumjs/core";
+import { type Transaction, TransactionType } from "@signumjs/core";
 import { ChainTime } from "@signumjs/util";
 import { useAccount } from "@/hooks/useAccount";
 import { useDateLocale } from "@/hooks/useDateLocale";
@@ -364,7 +364,7 @@ export const TransactionActivityCard = (props: Transaction) => {
         },
       },
       {
-        text: t("overview.viewTransactionInExplorer"),
+        text: t("overview.viewInExplorer"),
         onPress: () => {
           openTransactionLink(transaction);
         },

@@ -20,7 +20,7 @@ export class TokenService extends LedgerSubService {
   fetchMetaData(tokenId: string): Promise<Token> {
     return handleError<Token>(async () => {
       const { ledger } = this.context;
-      const { asset, name, description, decimals, issuer, mintable } =
+      const { asset, name, description, decimals, account, issuer, mintable } =
         await ledger.asset.getAsset({
           assetId: tokenId,
         });
@@ -30,9 +30,26 @@ export class TokenService extends LedgerSubService {
         ticker: name,
         description,
         decimals,
+        account,
         issuer,
         mintable,
       };
+    });
+  }
+
+  fetchTokenPriceNQT(tokenId: string) {
+    return handleError<string>(async () => {
+      const { ledger } = this.context;
+
+      const { trades } = await ledger.asset.getAssetTrades({
+        assetId: tokenId,
+        firstIndex: 0,
+        lastIndex: 0,
+      });
+
+      if (!trades || !trades.length) return "0";
+
+      return trades[0].price;
     });
   }
 }

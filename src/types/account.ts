@@ -12,11 +12,18 @@ export interface AccountBalance {
   availableBalance: Amount;
 }
 
+export interface TokenBalance {
+  asset: string;
+  balanceQNT: string;
+  unconfirmedBalanceQNT: string;
+}
+
 export interface AccountNetworkData {
   isSecured: boolean;
   name: string;
   description: string;
   balance: AccountBalance;
+  tokenBalance: TokenBalance[];
 }
 
 export interface WalletAccount {
@@ -38,4 +45,5 @@ export const defaultAccountNetworkData: AccountNetworkData = {
     availableBalance: Amount.Zero(),
     reservedBalance: Amount.Zero(),
   },
+  tokenBalance: [],
 };
