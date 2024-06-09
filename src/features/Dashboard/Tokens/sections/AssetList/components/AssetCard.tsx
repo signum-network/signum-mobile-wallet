@@ -14,9 +14,6 @@ import * as Clipboard from "expo-clipboard";
 
 export const ITEM_HEIGHT = 70;
 
-// Try to sort token by estimated value
-// Try to show avatar
-
 export const AssetCard = ({
   asset,
   balanceQNT,

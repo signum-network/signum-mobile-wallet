@@ -2,18 +2,19 @@ import { View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { FlashList } from "@shopify/flash-list";
 import { Card } from "@/components/Card";
-import { useAccount } from "@/hooks/useAccount";
 import { useTicker } from "@/hooks/useTicker";
 import { Text } from "@/components/Text";
+import type { TokenBalance } from "@/types/account";
 import { NoTokensFoundCard } from "@/components/Account/NoTokensFoundCard";
 import { AssetCard, ITEM_HEIGHT } from "./components/AssetCard";
 
-export const AssetList = () => {
+interface Props {
+  list: TokenBalance[];
+}
+
+export const AssetList = ({ list }: Props) => {
   const { t } = useTranslation();
   const { NativeTicker } = useTicker();
-  const {
-    accountData: { tokenBalance },
-  } = useAccount();
 
   return (
     <Card>
@@ -36,7 +37,7 @@ export const AssetList = () => {
         }}
       >
         <FlashList
-          data={tokenBalance}
+          data={list}
           keyExtractor={({ asset }) => asset}
           renderItem={({ item }) => <AssetCard {...item} />}
           estimatedItemSize={ITEM_HEIGHT}

@@ -6,12 +6,17 @@ import { formatNumber } from "@/utils/formatNumber";
 import { useTicker } from "@/hooks/useTicker";
 import { useActiveMarketRate } from "@/hooks/useActiveMarketRate";
 
-export const AssetSummary = () => {
+interface Props {
+  estimatedValue: number;
+}
+
+export const AssetSummary = ({ estimatedValue }: Props) => {
   const { t } = useTranslation();
   const { NativeTicker } = useTicker();
   const { price, symbol } = useActiveMarketRate();
 
-  // return null;
+  const estimatedMarketValue =
+    estimatedValue && price ? estimatedValue * price : 0;
 
   return (
     <Card>
@@ -23,7 +28,7 @@ export const AssetSummary = () => {
         <View>
           <View className="w-full flex flex-row items-center gap-1">
             <Text className="font-medium" size="large">
-              {formatNumber({ value: 7500000 })}
+              {formatNumber({ value: estimatedValue })}
             </Text>
 
             <Text color="muted" className="font-medium">
@@ -33,7 +38,7 @@ export const AssetSummary = () => {
 
           <Text size="large" color="muted" className="font-medium">
             {`${symbol}${formatNumber({
-              value: 15000,
+              value: estimatedMarketValue,
               isFiat: true,
             })}`}
           </Text>

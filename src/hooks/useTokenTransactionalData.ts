@@ -1,6 +1,7 @@
 import { eq } from "drizzle-orm";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { differenceInMinutes } from "date-fns";
+import { useAccount } from "@/hooks/useAccount";
 import { useDatabaseContext } from "@/hooks/useDatabaseContext";
 import { useNodeHostStore } from "@/hooks/useNodeHostStore";
 import { useLedgerService } from "@/hooks/useLedgerService";
@@ -14,13 +15,16 @@ import {
 // I used the long polling method
 // Fetch token transactional data every 4 minutes
 // Insert or Update the transactional data
+// Last, revalidate the token UI list, so it is sorted by estimated signa value
 
 export const useTokenTransactionalData = (
   tokenId = ""
 ): TokenTransactionalData => {
+  const { accountId } = useAccount();
   const { ledgerService } = useLedgerService();
-  const { isActiveNodeSynced } = useNodeHostStore();
+  const { isActiveNodeSynced, currentNetwork } = useNodeHostStore();
   const db = useDatabaseContext();
+  const queryClient = useQueryClient();
 
   const { data } = useQuery({
     queryKey: ["fetchTokenTransactionalData", tokenId],
@@ -37,6 +41,12 @@ export const useTokenTransactionalData = (
 
       const getTokenPriceNQT = async () => {
         return await ledgerService.token.fetchTokenPriceNQT(tokenId);
+      };
+
+      const invalidateTokenQuery = async () => {
+        await queryClient.invalidateQueries({
+          queryKey: ["fetchAccountTokenHoldings", accountId, currentNetwork],
+        });
       };
 
       // Update the existing row
@@ -62,6 +72,8 @@ export const useTokenTransactionalData = (
           return updatePayload;
         } catch (e) {
           return row;
+        } finally {
+          await invalidateTokenQuery();
         }
       }
 
@@ -80,6 +92,8 @@ export const useTokenTransactionalData = (
         return insertPayload;
       } catch (e) {
         return defaultTokenTransactionalData;
+      } finally {
+        await invalidateTokenQuery();
       }
     },
     refetchInterval: 120_000,
