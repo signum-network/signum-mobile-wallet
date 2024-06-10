@@ -91,7 +91,8 @@ export const AssetCard = ({
       className="w-full flex flex-row items-center justify-between gap-2 py-4 ripple-[#333] ripple-bordered"
     >
       <View className="flex flex-row items-center justify-start gap-2 flex-1 w-6/12">
-        <View className="w-10 h-10 bg-slate-300 rounded-lg"></View>
+        {/* TODO: Show token avatar */}
+        {/* <View className="w-10 h-10 bg-slate-300 rounded-lg"></View> */}
 
         <View className="flex-1 flex items-start flex-col gap-1">
           {isLoadingMetadata ? (

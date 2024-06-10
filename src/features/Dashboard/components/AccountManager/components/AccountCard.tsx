@@ -255,7 +255,8 @@ export const AccountCard = ({ publicKey, type, walletName }: Props) => {
             className="flex flex-row items-center justify-between p-4 ripple-[#333] ripple-bordered !rounded-lg w-full"
           >
             <View className="flex flex-row gap-4 items-center justify-start flex-1">
-              <View className="w-10 h-10 bg-slate-300 rounded-lg"></View>
+              {/* TODO: Show account avatar */}
+              {/* <View className="w-10 h-10 bg-slate-300 rounded-lg"></View> */}
 
               <View className="flex flex-col gap-1">
                 <Text className="font-bold">{walletName}</Text>
