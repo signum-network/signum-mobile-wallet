@@ -15,6 +15,8 @@
   "resetApp": "A reset is happening, and all accounts will be erased from the app",
   "or": "OR",
   "copyToClipboard": "Copy to clipboard",
+  "coin": "Coin",
+  "estimatedValue": "Estimated Value",
   "loading": "Loading",
   "mnemonic": "Mnemonic",
   "encrypted": "Encrypted",
@@ -200,7 +202,7 @@
     "copiedTransactionId": "Transaction ID copied successfully!",
     "viewMessage": "View message or memo",
     "viewEncryptedMessage": "View encrypted memo",
-    "viewTransactionInExplorer": "View transaction in block explorer",
+    "viewInExplorer": "View in block explorer",
     "watchOnlyAccountEncryptedMessageNotice": "Watch only accounts can not see encrypted content",
     "loadMore": "Load more",
     "noTransactionsFound": {
@@ -241,6 +243,14 @@
       "SubscriptionSubscribe": "Subscription Created",
       "SubscriptionCancel": "Subscription Cancelled",
       "SubscriptionPayment": "Auto Payment"
+    },
+    "tokens": {
+      "totalValue": "Total assets value",
+      "noTokenFoundTitle": "No tokens",
+      "noTokenFoundDescription": "Nothing here, yet...",
+      "admin": "Admin",
+      "copyTokenId": "Copy token ID",
+      "copiedTokenId": "Token ID copied successfully!"
     }
   }
 }

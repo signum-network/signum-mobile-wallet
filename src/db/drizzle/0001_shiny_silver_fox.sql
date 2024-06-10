@@ -1,0 +1,1 @@
+ALTER TABLE `tokens-transactional-data` ADD `lastUpdated` text NOT NULL;

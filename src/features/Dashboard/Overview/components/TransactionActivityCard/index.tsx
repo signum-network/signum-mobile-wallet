@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { View, Pressable, Alert } from "react-native";
 import { useTranslation } from "react-i18next";
-import { Transaction, TransactionType } from "@signumjs/core";
+import { type Transaction, TransactionType } from "@signumjs/core";
 import { ChainTime } from "@signumjs/util";
 import { useAccount } from "@/hooks/useAccount";
 import { useDateLocale } from "@/hooks/useDateLocale";
@@ -280,7 +280,7 @@ export const TransactionActivityCard = (props: Transaction) => {
         <View>
           <Feather
             name="hard-drive"
-            size={28}
+            size={24}
             className="opacity-50"
             color={iconColor.default}
           />
@@ -289,7 +289,7 @@ export const TransactionActivityCard = (props: Transaction) => {
         <View>
           <Feather
             name="cpu"
-            size={28}
+            size={24}
             className="opacity-50"
             color={iconColor.default}
           />
@@ -298,7 +298,7 @@ export const TransactionActivityCard = (props: Transaction) => {
         <View>
           <Feather
             name="message-circle"
-            size={28}
+            size={24}
             className="opacity-50"
             color={iconColor.default}
           />
@@ -307,18 +307,18 @@ export const TransactionActivityCard = (props: Transaction) => {
         <View>
           <Feather
             name="box"
-            size={28}
+            size={24}
             className="opacity-50"
             color={iconColor.default}
           />
         </View>
       ) : isSender ? (
         <View style={{ transform: [{ rotate: "-135deg" }] }}>
-          <Feather name="arrow-down-circle" size={28} color="#EF4444" />
+          <Feather name="arrow-down-circle" size={24} color="#EF4444" />
         </View>
       ) : (
         <View style={{ transform: [{ rotate: "45deg" }] }}>
-          <Feather name="arrow-down-circle" size={28} color="#22C55E" />
+          <Feather name="arrow-down-circle" size={24} color="#22C55E" />
         </View>
       );
 
@@ -364,7 +364,7 @@ export const TransactionActivityCard = (props: Transaction) => {
         },
       },
       {
-        text: t("overview.viewTransactionInExplorer"),
+        text: t("overview.viewInExplorer"),
         onPress: () => {
           openTransactionLink(transaction);
         },

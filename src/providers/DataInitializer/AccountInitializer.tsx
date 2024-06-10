@@ -4,6 +4,7 @@ import { useAccountStore } from "@/hooks/useAccountStore";
 import { useNodeHostStore } from "@/hooks/useNodeHostStore";
 import { useLedgerService } from "@/hooks/useLedgerService";
 import { getBalancesFromAccount } from "@/utils/account/getBalancesFromAccount";
+import { getTokenBalancesFromAccount } from "@/utils/account/getTokenBalancesFromAccount";
 import { PUBLIC_SIGNUM_FETCH_ACCOUNT_DATA_INTERVAL } from "@/types/constants";
 
 export const AccountInitializer = () => {
@@ -25,6 +26,8 @@ export const AccountInitializer = () => {
           balanceNQT,
           unconfirmedBalanceNQT,
           committedBalanceNQT,
+          assetBalances,
+          unconfirmedAssetBalances,
         } = await ledgerService.account.fetchAccount(accountId, true);
 
         const balance = getBalancesFromAccount(
@@ -33,11 +36,17 @@ export const AccountInitializer = () => {
           committedBalanceNQT
         );
 
+        const tokenBalance = getTokenBalancesFromAccount(
+          assetBalances,
+          unconfirmedAssetBalances
+        );
+
         updateAccountData(publicKey, currentNetwork, {
           isSecured: true,
           name: name || "",
           description: description || "",
           balance,
+          tokenBalance,
         });
 
         return true;

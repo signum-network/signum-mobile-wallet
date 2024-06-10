@@ -34,7 +34,8 @@ export const AccountSwitcher = ({ href }: Props) => {
       <Card>
         <View className="w-full flex flex-row justify-between items-center">
           <View className="flex flex-row gap-2 items-center justify-start flex-1">
-            <View className="w-10 h-10 bg-slate-300 rounded-lg"></View>
+            {/* TODO: Show account avatar */}
+            {/* <View className="w-10 h-10 bg-slate-300 rounded-lg"></View> */}
 
             <View className="flex flex-col">
               <Text className="font-medium">{walletName}</Text>

@@ -6,6 +6,7 @@ export const tokens = sqliteTable("tokens", {
   ticker: text("ticker").notNull(),
   description: text("description"),
   decimals: integer("decimals").notNull(),
+  account: text("account").notNull(),
   issuer: text("issuer").notNull(),
   mintable: integer("mintable", { mode: "boolean" }).notNull(),
 });
@@ -17,8 +18,29 @@ export const defaultToken: Token = {
   ticker: "",
   description: "",
   decimals: 0,
+  account: "",
   issuer: "",
   mintable: false,
+};
+
+// Tokens Transacional Data
+export const tokensTransactionalData = sqliteTable(
+  "tokens-transactional-data",
+  {
+    id: text("id").references(() => tokens.id, { onDelete: "cascade" }),
+    priceNQT: text("priceNQT").notNull(),
+    lastUpdated: text("lastUpdated").notNull(),
+  }
+);
+
+export type TokenTransactionalData =
+  typeof tokensTransactionalData.$inferSelect;
+export type InsertTokenTransactionalData =
+  typeof tokensTransactionalData.$inferInsert;
+export const defaultTokenTransactionalData: TokenTransactionalData = {
+  id: "",
+  priceNQT: "0",
+  lastUpdated: "",
 };
 
 // Distribution Amounts of a "distribute to holders" transaction per account

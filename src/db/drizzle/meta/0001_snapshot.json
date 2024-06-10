@@ -1,8 +1,8 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "53b794ab-1f59-422e-a1ff-9c110de8b81c",
-  "prevId": "595688a5-e387-4a90-b047-a19a892dcede",
+  "id": "574815b7-c051-48cb-b8ba-f84db30d8847",
+  "prevId": "a9742f53-25fc-4121-bbe3-b7ae7f5ed250",
   "tables": {
     "distribution-amounts": {
       "name": "distribution-amounts",
@@ -72,6 +72,13 @@
           "notNull": true,
           "autoincrement": false
         },
+        "account": {
+          "name": "account",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
         "issuer": {
           "name": "issuer",
           "type": "text",
@@ -89,6 +96,50 @@
       },
       "indexes": {},
       "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "tokens-transactional-data": {
+      "name": "tokens-transactional-data",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "priceNQT": {
+          "name": "priceNQT",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "lastUpdated": {
+          "name": "lastUpdated",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "tokens-transactional-data_id_tokens_id_fk": {
+          "name": "tokens-transactional-data_id_tokens_id_fk",
+          "tableFrom": "tokens-transactional-data",
+          "tableTo": "tokens",
+          "columnsFrom": [
+            "id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     }
