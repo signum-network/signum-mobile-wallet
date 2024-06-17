@@ -106,7 +106,12 @@ export const AccountCard = ({ publicKey, type, walletName }: Props) => {
   const requestDelete = () => {
     Alert.alert(
       t("settings.account.removeAccount"),
-      t("settings.account.removeAccountDescription", { walletName }),
+      t(
+        type === AccountType.mnemonic
+          ? "settings.account.removeFullAccountDescription"
+          : "settings.account.removeWatchOnlyAccountDescription",
+        { walletName }
+      ),
       [
         {
           text: t("cancel"),

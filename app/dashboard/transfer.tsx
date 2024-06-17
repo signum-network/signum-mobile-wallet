@@ -1,10 +1,10 @@
 import { ProtectedScreen } from "@/features/Dashboard/components/ProtectedScreen";
-import { Text } from "@/components/Text";
+import { TransferScreen } from "@/features/Dashboard/Transfer";
 
 export default function Screen() {
   return (
     <ProtectedScreen>
-      <Text>Transfer Screen</Text>
+      <TransferScreen />
     </ProtectedScreen>
   );
 }

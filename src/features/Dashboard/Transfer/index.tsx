@@ -1,0 +1,75 @@
+import { useState, useRef, useEffect, type RefObject } from "react";
+import { ScrollView, View, ActivityIndicator } from "react-native";
+import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
+import { useTranslation } from "react-i18next";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { AnimatedSlideContainer } from "@/components/AnimatedSlideContainer";
+import { KeyboardAvoidingView } from "@/components/Form/KeyboardAvoidingView";
+import { DashboardScreenContainer } from "../components/DashboardScreenContainer";
+import { transactionCreationSchema } from "./utils/schemas";
+import { Steps, type TransactionCreation } from "./utils/types";
+import { Recipient } from "./sections/Recipient";
+import { HoldingsSelection } from "./sections/HoldingsSelection";
+import { FormNavigation } from "./components/FormNavigation";
+
+export const TransferScreen = () => {
+  const { t } = useTranslation();
+
+  const scrollRef: RefObject<ScrollView> = useRef(null);
+
+  const methods = useForm<TransactionCreation>({
+    mode: "onChange",
+    resolver: yupResolver(transactionCreationSchema),
+    defaultValues: {
+      activeStep: Steps.Recipient,
+      recipient: "",
+      amount: 0,
+      asset: "",
+      assetDecimals: 0,
+      includeMemo: false,
+      memo: "",
+      isMemoEncrypted: false,
+      isMemoBinary: false,
+      fee: "",
+    },
+  });
+
+  const activeStep = methods.watch("activeStep");
+
+  useEffect(() => {
+    if (!scrollRef.current) return;
+
+    scrollRef.current?.scrollTo({
+      y: 0,
+      animated: true,
+    });
+  }, [activeStep]);
+
+  const onSubmit: SubmitHandler<TransactionCreation> = async (data) => {
+    console.log(data);
+  };
+
+  return (
+    <FormProvider {...methods}>
+      <FormNavigation onSubmit={methods.handleSubmit(onSubmit)} />
+
+      <KeyboardAvoidingView>
+        <ScrollView ref={scrollRef}>
+          <DashboardScreenContainer>
+            {activeStep === Steps.Recipient && (
+              <AnimatedSlideContainer>
+                <Recipient />
+              </AnimatedSlideContainer>
+            )}
+
+            {activeStep === Steps.HoldingsSelection && (
+              <AnimatedSlideContainer>
+                <HoldingsSelection />
+              </AnimatedSlideContainer>
+            )}
+          </DashboardScreenContainer>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </FormProvider>
+  );
+};
