@@ -1,6 +1,13 @@
-import { useState, useRef, useEffect, type RefObject } from "react";
+import {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  type RefObject,
+} from "react";
 import { ScrollView, View, ActivityIndicator } from "react-native";
 import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
+import { useFocusEffect } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { AnimatedSlideContainer } from "@/components/AnimatedSlideContainer";
@@ -45,6 +52,14 @@ export const TransferScreen = () => {
     });
   }, [activeStep]);
 
+  useFocusEffect(
+    useCallback(() => {
+      return () => {
+        methods.reset();
+      };
+    }, [])
+  );
+
   const onSubmit: SubmitHandler<TransactionCreation> = async (data) => {
     console.log(data);
   };
@@ -56,17 +71,19 @@ export const TransferScreen = () => {
       <KeyboardAvoidingView>
         <ScrollView ref={scrollRef}>
           <DashboardScreenContainer>
-            {activeStep === Steps.Recipient && (
-              <AnimatedSlideContainer>
-                <Recipient />
-              </AnimatedSlideContainer>
-            )}
+            <View className="flex flex-col items-start justify-center w-full px-4 pt-8 pb-20 gap-4">
+              {activeStep === Steps.Recipient && (
+                <AnimatedSlideContainer>
+                  <Recipient />
+                </AnimatedSlideContainer>
+              )}
 
-            {activeStep === Steps.HoldingsSelection && (
-              <AnimatedSlideContainer>
-                <HoldingsSelection />
-              </AnimatedSlideContainer>
-            )}
+              {activeStep === Steps.HoldingsSelection && (
+                <AnimatedSlideContainer>
+                  <HoldingsSelection />
+                </AnimatedSlideContainer>
+              )}
+            </View>
           </DashboardScreenContainer>
         </ScrollView>
       </KeyboardAvoidingView>

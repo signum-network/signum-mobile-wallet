@@ -13,6 +13,7 @@
   "committedBalance": "Committed balance",
   "reservedBalance": "Reserved balance",
   "resetApp": "A reset is happening, and all accounts will be erased from the app",
+  "recipient": "Recipient",
   "or": "OR",
   "copyToClipboard": "Copy to clipboard",
   "coin": "Coin",
@@ -180,7 +181,7 @@
   },
   "deposit": {
     "title": "Receive",
-    "copiedAccountID": "Account ID copied successfully!",
+    "copiedAddress": "Address copied successfully!",
     "copy": "Copy address"
   },
   "unsafeAccount": {
@@ -254,5 +255,13 @@
       "copyTokenId": "Copy token ID",
       "copiedTokenId": "Token ID copied successfully!"
     }
+  },
+  "transfer": {
+    "recipientDescription": "Set the recipient for the payment",
+    "resolvedRecipientAddress": "Account address: {{address}}",
+    "resolvedRecipientAddressHint": "Use this suggestion as a helpful tool to ensure you send to the correct account",
+    "recipientBurnAddress": "Burn Address",
+    "recipientBurnAddressHint": "Funds sent to this address will be burned forever",
+    "yourSelfRecipientHint": "You are trying to send to yourself"
   }
 }

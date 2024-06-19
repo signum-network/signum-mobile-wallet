@@ -16,9 +16,11 @@ export const DepositScreen = () => {
   const { accountId } = useAccount();
   const { iconColor } = useAppTheme();
 
+  const rsAddress = `${asRSAddress(accountId)}`;
+
   const copyToClipboard = async () => {
-    await Clipboard.setStringAsync(accountId).then(() =>
-      alert(t("deposit.copiedAccountID"))
+    await Clipboard.setStringAsync(rsAddress).then(() =>
+      alert(t("deposit.copiedAddress"))
     );
   };
 
@@ -37,7 +39,7 @@ export const DepositScreen = () => {
           />
 
           <Text size="large" className="font-bold">
-            {asRSAddress(accountId)}
+            {rsAddress}
           </Text>
 
           <Button

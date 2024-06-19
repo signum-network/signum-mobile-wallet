@@ -11,7 +11,6 @@ export enum Steps {
 export type TransactionCreation = {
   activeStep: Steps;
   recipient: string;
-  isRecipientValid: boolean;
   amount: number;
   asset: string;
   assetDecimals: number;

@@ -4,7 +4,6 @@ export const transactionCreationSchema = yup
   .object({
     activeStep: yup.number().default(0),
     recipient: yup.string().trim().required(),
-    isRecipientValid: yup.boolean().required(),
     amount: yup.number().required().positive(),
     asset: yup.string().required(),
     assetDecimals: yup.number().default(0),
