@@ -191,6 +191,10 @@
     "activating": "Activation is pending...",
     "accountActivationIsPending": "Account activation is pending\nPlease wait..."
   },
+  "watchOnlyAccount": {
+    "title": "Watch-only account detected",
+    "description": "You can not make transactions on watch-only accounts\nmake sure to switch to a full account"
+  },
   "overview": {
     "inProgress": "In progress...",
     "received": "Received",
@@ -257,11 +261,20 @@
     }
   },
   "transfer": {
+    "title": "Transfer",
     "recipientDescription": "Set the recipient for the payment",
     "resolvedRecipientAddress": "Account address: {{address}}",
     "resolvedRecipientAddressHint": "Use this suggestion as a helpful tool to ensure you send to the correct account",
     "recipientBurnAddress": "Burn Address",
     "recipientBurnAddressHint": "Funds sent to this address will be burned forever",
-    "yourSelfRecipientHint": "You are trying to send to yourself"
+    "yourSelfRecipientHint": "You are trying to send to yourself",
+    "stepper": {
+      "goBackwards": "Press to go back",
+      "recipientStepTitle": "Set the recipient",
+      "holdingsStepTitle": "Pick an asset",
+      "memoStepTitle": "Memo",
+      "feeSelectionStepTitle": "Fee selection",
+      "confirmationStepTitle": "Confirmation"
+    }
   }
 }

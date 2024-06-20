@@ -11,6 +11,8 @@ import { useFocusEffect } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { AnimatedSlideContainer } from "@/components/AnimatedSlideContainer";
+import { useAccount } from "@/hooks/useAccount";
+import { WatchOnlyAccountCard } from "@/components/Account/WatchOnlyAccountCard";
 import { KeyboardAvoidingView } from "@/components/Form/KeyboardAvoidingView";
 import { DashboardScreenContainer } from "../components/DashboardScreenContainer";
 import { transactionCreationSchema } from "./utils/schemas";
@@ -18,9 +20,11 @@ import { Steps, type TransactionCreation } from "./utils/types";
 import { Recipient } from "./sections/Recipient";
 import { HoldingsSelection } from "./sections/HoldingsSelection";
 import { FormNavigation } from "./components/FormNavigation";
+import { FormStepper } from "./components/FormStepper";
 
 export const TransferScreen = () => {
   const { t } = useTranslation();
+  const { isWatchOnly } = useAccount();
 
   const scrollRef: RefObject<ScrollView> = useRef(null);
 
@@ -64,14 +68,17 @@ export const TransferScreen = () => {
     console.log(data);
   };
 
+  if (isWatchOnly) return <WatchOnlyAccountCard />;
+
   return (
     <FormProvider {...methods}>
+      <FormStepper />
       <FormNavigation onSubmit={methods.handleSubmit(onSubmit)} />
 
       <KeyboardAvoidingView>
         <ScrollView ref={scrollRef}>
           <DashboardScreenContainer>
-            <View className="flex flex-col items-start justify-center w-full px-4 pt-8 pb-20 gap-4">
+            <View className="flex flex-col items-start justify-center w-full px-4 mt-8 pb-20 gap-4">
               {activeStep === Steps.Recipient && (
                 <AnimatedSlideContainer>
                   <Recipient />

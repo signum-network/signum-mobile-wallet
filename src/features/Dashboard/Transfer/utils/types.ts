@@ -6,6 +6,8 @@ export enum Steps {
   Confirmation,
 }
 
+export const StepsAmount = 5;
+
 // Form Schemas
 
 export type TransactionCreation = {

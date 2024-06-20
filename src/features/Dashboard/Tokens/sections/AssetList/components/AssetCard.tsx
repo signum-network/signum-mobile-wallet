@@ -20,7 +20,7 @@ export const AssetCard = ({
   unconfirmedBalanceQNT,
 }: TokenBalance) => {
   const { t } = useTranslation();
-  const { accountId } = useAccount();
+  const { accountId, isWatchOnly } = useAccount();
   const { ticker, decimals, account } = useToken(asset);
   const { priceNQT, lastUpdated } = useTokenTransactionalData(asset);
   const { price, ticker: marketTicker } = useActiveMarketRate();
@@ -46,6 +46,31 @@ export const AssetCard = ({
   const isAdmin = account === accountId;
 
   const pickOptions = () => {
+    const alertOptions = [
+      {
+        text: t("transfer.title"),
+        onPress: () => {
+          alert("TBD");
+        },
+      },
+      {
+        text: t("overview.tokens.copyTokenId"),
+        onPress: async () => {
+          await Clipboard.setStringAsync(asset).then(() =>
+            alert(t("overview.tokens.copiedTokenId"))
+          );
+        },
+      },
+      {
+        text: t("overview.viewInExplorer"),
+        onPress: () => {
+          openTokenLink(asset);
+        },
+      },
+    ];
+
+    if (isWatchOnly) alertOptions.shift();
+
     Alert.alert(
       `(${ticker}) ${t("overview.options")}`,
       `${t("overview.description")}\n\n${t("availableBalance")}: ${formatNumber(
@@ -57,28 +82,7 @@ export const AssetCard = ({
         value: reservedBalance.getCompound(),
         maximumFractionDigits: decimals,
       })}`,
-      [
-        {
-          text: t("transfer"),
-          onPress: () => {
-            alert("TBD");
-          },
-        },
-        {
-          text: t("overview.tokens.copyTokenId"),
-          onPress: async () => {
-            await Clipboard.setStringAsync(asset).then(() =>
-              alert(t("overview.tokens.copiedTokenId"))
-            );
-          },
-        },
-        {
-          text: t("overview.viewInExplorer"),
-          onPress: () => {
-            openTokenLink(asset);
-          },
-        },
-      ],
+      alertOptions,
       {
         cancelable: true,
       }
