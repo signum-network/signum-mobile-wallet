@@ -1,10 +1,4 @@
-import {
-  useState,
-  useRef,
-  useEffect,
-  useCallback,
-  type RefObject,
-} from "react";
+import { useRef, useEffect, useCallback, type RefObject } from "react";
 import { ScrollView, View, ActivityIndicator } from "react-native";
 import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
 import { useFocusEffect } from "expo-router";
@@ -35,7 +29,8 @@ export const TransferScreen = () => {
       activeStep: Steps.Recipient,
       recipient: "",
       amount: 0,
-      asset: "",
+      maxAmount: 0,
+      asset: "0",
       assetDecimals: 0,
       includeMemo: false,
       memo: "",

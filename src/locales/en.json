@@ -271,10 +271,15 @@
     "stepper": {
       "goBackwards": "Press to go back",
       "recipientStepTitle": "Set the recipient",
-      "holdingsStepTitle": "Pick an asset",
+      "holdingsStepTitle": "Asset",
       "memoStepTitle": "Memo",
       "feeSelectionStepTitle": "Fee selection",
       "confirmationStepTitle": "Confirmation"
-    }
+    },
+    "assetAvailableBalanceHint": "Available {{ticker}} balance",
+    "changeAsset": "Change Asset",
+    "pickAnAsset": "Pick an Asset",
+    "picked": "Picked",
+    "enterAmount": "Enter Amount"
   }
 }

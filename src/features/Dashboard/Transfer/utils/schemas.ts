@@ -5,6 +5,7 @@ export const transactionCreationSchema = yup
     activeStep: yup.number().default(0),
     recipient: yup.string().trim().required(),
     amount: yup.number().required().positive(),
+    maxAmount: yup.number().required(),
     asset: yup.string().required(),
     assetDecimals: yup.number().default(0),
     includeMemo: yup.boolean().default(false),

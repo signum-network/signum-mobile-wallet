@@ -13,7 +13,7 @@ export const useToken = (tokenId = ""): Token => {
   const { data } = useQuery({
     queryKey: ["fetchToken", tokenId],
     queryFn: async () => {
-      if (!ledgerService) return defaultToken;
+      if (!ledgerService || tokenId === "0") return defaultToken;
 
       const query = await db
         .select()

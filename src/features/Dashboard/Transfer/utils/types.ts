@@ -14,6 +14,7 @@ export type TransactionCreation = {
   activeStep: Steps;
   recipient: string;
   amount: number;
+  maxAmount: number;
   asset: string;
   assetDecimals: number;
   includeMemo: boolean;
