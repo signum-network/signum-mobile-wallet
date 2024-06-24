@@ -19,11 +19,14 @@ export const FormNavigation = ({ onSubmit }: Props) => {
 
   const activeStep = watch("activeStep");
   const recipient = watch("recipient");
+  const amount = watch("amount");
+  const maxAmount = watch("maxAmount");
 
   const isRecipientBurningAddress =
     recipient === "0" || recipient.includes("2222-2222-2222-2222");
 
   const canCompleteFirstStep = recipient || isRecipientBurningAddress;
+  const canCompleteSecondStep = amount && amount <= maxAmount;
 
   const getRecipientValidity = async () => {
     if (!ledgerService) return;
@@ -55,6 +58,14 @@ export const FormNavigation = ({ onSubmit }: Props) => {
           },
         };
 
+      case Steps.HoldingsSelection:
+        return {
+          disabled: !canCompleteSecondStep,
+          pressableProps: {
+            onPress: () => {},
+          },
+        };
+
       // Steps.Confirmation
       default:
         return {
@@ -66,7 +77,7 @@ export const FormNavigation = ({ onSubmit }: Props) => {
           },
         };
     }
-  }, [activeStep, canCompleteFirstStep]);
+  }, [activeStep, canCompleteFirstStep, canCompleteSecondStep]);
 
   return (
     <FormNavButton

@@ -28,10 +28,7 @@ export const TransferScreen = () => {
     defaultValues: {
       activeStep: Steps.Recipient,
       recipient: "",
-      amount: 0,
-      maxAmount: 0,
       asset: "0",
-      assetDecimals: 0,
       includeMemo: false,
       memo: "",
       isMemoEncrypted: false,

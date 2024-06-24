@@ -22,7 +22,7 @@ export const HoldingsSelection = () => {
   const {
     accountData: { balance, tokenBalance },
   } = useAccount();
-  const { watch } = useFormContext<TransactionCreation>();
+  const { watch, setValue } = useFormContext<TransactionCreation>();
 
   const asset = watch("asset");
   const { ticker: tokenTicker, decimals } = useToken(asset);
@@ -56,6 +56,14 @@ export const HoldingsSelection = () => {
   useEffect(() => {
     hideDialog();
   }, [asset]);
+
+  useEffect(() => {
+    if (isAssetSigna) {
+      setValue("maxAmount", signaAvailableBalance);
+    } else {
+      setValue("maxAmount", tokenAvailableBalance);
+    }
+  }, [isAssetSigna, signaAvailableBalance, tokenAvailableBalance]);
 
   const readableTicker = isAssetSigna ? NativeTicker : tokenTicker;
 

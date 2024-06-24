@@ -7,12 +7,21 @@ import enTranslation from "./en.json";
 import esTranslation from "./es.json";
 import ptTranslation from "./pt.json";
 
-export type locales = "en" | "es" | "pt";
-const supportedLngs: locales[] = ["en", "es", "pt"];
+export type locales = "en" | "es" | "pt" | "de";
+const supportedLngs: locales[] = ["en", "es", "pt", "de"];
 
 export const lngCards: { lng: locales; label: string }[] = [
   { lng: "en", label: "English" },
 ];
+
+export const defaultSeparator = { thousand: ",", decimal: "." };
+const europeanSeparator = { thousand: ".", decimal: "," };
+export const languageSeparators = new Map<locales, typeof defaultSeparator>([
+  ["en", defaultSeparator],
+  ["es", defaultSeparator],
+  ["pt", defaultSeparator],
+  ["de", europeanSeparator],
+]);
 
 export const getDefaultLocale = (): locales => {
   const deviceLanguage = getLocales();

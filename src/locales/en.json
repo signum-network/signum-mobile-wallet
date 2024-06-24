@@ -39,7 +39,10 @@
   "youAreOffline": "You are offline. Check your data or wifi connection",
   "nodeUnavailable": "The node you selected is unavailable",
   "send": "Send",
+  "amount": "Amount",
+  "notEnoguhFunds": "Not enough funds",
   "receive": "Receive",
+  "maxButton": "Use all available balance",
   "terms": {
     "requestFirstLine": "Before you start using this wallet",
     "requestSecondLine": "Please read and agree the following terms",
