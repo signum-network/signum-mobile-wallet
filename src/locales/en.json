@@ -283,6 +283,12 @@
     "changeAsset": "Change Asset",
     "pickAnAsset": "Pick an Asset",
     "picked": "Picked",
-    "enterAmount": "Enter Amount"
+    "enterAmount": "Enter Amount",
+    "addMemoTitle": "Add additional text or memo",
+    "addMemoDescription": "Activate this if you want to attach some text to this transaction. Additionally, you may use this field to input the memo required by many exchanges",
+    "addMemoHint": "Enter the text message or memo",
+    "addEncryptedMemoTitle": "Encrypt this content",
+    "addEncryptedMemoDescription": "The attached content will be end-to-end encrypted and is only readable by you and the recipient. Mind that smart contracts do not understand encrypted messages",
+    "errorTransferingFunds": "Error transfering funds"
   }
 }

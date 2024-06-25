@@ -29,7 +29,7 @@ export const AssetPickerDialog = ({
       <View
         style={{
           width: "100%",
-          height: "95%",
+          height: "98%",
           gap: 8,
           display: "flex",
           justifyContent: "space-between",

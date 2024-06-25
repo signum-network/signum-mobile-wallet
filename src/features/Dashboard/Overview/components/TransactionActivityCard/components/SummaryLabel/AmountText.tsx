@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { Amount, ChainValue } from "@signumjs/util";
 import { Text } from "@/components/Text";
-import { useToken } from "@/hooks/useToken";
+import { useTokenMetadata } from "@/hooks/useTokenMetadata";
 import { useTicker } from "@/hooks/useTicker";
 import {
   formatNumber,
@@ -18,7 +18,7 @@ export const AmountText = ({
 }: TextProps) => {
   const { t } = useTranslation();
   const { NativeTicker } = useTicker();
-  const { ticker: tokenTicker, decimals } = useToken(tokenId);
+  const { ticker: tokenTicker, decimals } = useTokenMetadata(tokenId);
 
   const readableValue = tokenId
     ? ChainValue.create(decimals).setAtomic(value).getCompound()

@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { useToken } from "@/hooks/useToken";
+import { useTokenMetadata } from "@/hooks/useTokenMetadata";
 import { Text } from "@/components/Text";
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
 
 export const TokenLabel = ({ tokenId, action }: Props) => {
   const { t } = useTranslation();
-  const { ticker } = useToken(tokenId);
+  const { ticker } = useTokenMetadata(tokenId);
 
   const label = tokenId && !ticker ? t("loading") : `${ticker} ${t(action)}`;
 

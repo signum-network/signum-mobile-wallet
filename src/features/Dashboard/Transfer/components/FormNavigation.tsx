@@ -5,7 +5,7 @@ import { useAccount } from "@/hooks/useAccount";
 import { useLedgerService } from "@/hooks/useLedgerService";
 import { FormNavButton } from "@/components/Form/NavButton";
 import { asAddress } from "@/utils/account/asAddress";
-import { type TransactionCreation, Steps } from "../utils/types";
+import { type TransactionCreation, Steps, maxMemoLength } from "../utils/types";
 
 interface Props {
   onSubmit: () => void;
@@ -21,12 +21,17 @@ export const FormNavigation = ({ onSubmit }: Props) => {
   const recipient = watch("recipient");
   const amount = watch("amount");
   const maxAmount = watch("maxAmount");
+  const includeMemo = watch("includeMemo");
+  const memo = watch("memo");
 
   const isRecipientBurningAddress =
     recipient === "0" || recipient.includes("2222-2222-2222-2222");
 
   const canCompleteFirstStep = recipient || isRecipientBurningAddress;
   const canCompleteSecondStep = amount && amount <= maxAmount;
+  const canCompleteThirdStep =
+    !includeMemo ||
+    !!(includeMemo && memo.trim() && memo.length <= maxMemoLength);
 
   const getRecipientValidity = async () => {
     if (!ledgerService) return;
@@ -62,7 +67,15 @@ export const FormNavigation = ({ onSubmit }: Props) => {
         return {
           disabled: !canCompleteSecondStep,
           pressableProps: {
-            onPress: () => {},
+            onPress: () => setValue("activeStep", Steps.MemoOptions),
+          },
+        };
+
+      case Steps.MemoOptions:
+        return {
+          disabled: !canCompleteThirdStep,
+          pressableProps: {
+            onPress: onSubmit,
           },
         };
 
@@ -71,13 +84,16 @@ export const FormNavigation = ({ onSubmit }: Props) => {
         return {
           disabled: true,
           pressableProps: {
-            onPress: () => {
-              onSubmit();
-            },
+            onPress: onSubmit,
           },
         };
     }
-  }, [activeStep, canCompleteFirstStep, canCompleteSecondStep]);
+  }, [
+    activeStep,
+    canCompleteFirstStep,
+    canCompleteSecondStep,
+    canCompleteThirdStep,
+  ]);
 
   return (
     <FormNavButton

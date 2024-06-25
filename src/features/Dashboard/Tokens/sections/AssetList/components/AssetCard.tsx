@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { Alert, ActivityIndicator, View, Pressable } from "react-native";
 import { Amount, ChainValue } from "@signumjs/util";
 import { useAccount } from "@/hooks/useAccount";
-import { useToken } from "@/hooks/useToken";
+import { useTokenMetadata } from "@/hooks/useTokenMetadata";
 import { useTokenTransactionalData } from "@/hooks/useTokenTransactionalData";
 import { useActiveMarketRate } from "@/hooks/useActiveMarketRate";
 import { formatNumber } from "@/utils/formatNumber";
@@ -21,7 +21,7 @@ export const AssetCard = ({
 }: TokenBalance) => {
   const { t } = useTranslation();
   const { accountId, isWatchOnly } = useAccount();
-  const { ticker, decimals, account } = useToken(asset);
+  const { ticker, decimals, account } = useTokenMetadata(asset);
   const { priceNQT, lastUpdated } = useTokenTransactionalData(asset);
   const { price, ticker: marketTicker } = useActiveMarketRate();
 

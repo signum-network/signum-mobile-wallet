@@ -20,6 +20,7 @@ export const AmountBox = () => {
   const maxAmount = watch("maxAmount");
 
   const notEnoughFunds = !!(amount && amount > maxAmount);
+  const noFundsAvailable = !maxAmount;
 
   const setMaxAvailableBalance = () => {
     setValue("amount", asset === "0" ? maxAmount - 0.5 : maxAmount);
@@ -69,6 +70,7 @@ export const AmountBox = () => {
 
           <Button
             type="secondary"
+            disabled={noFundsAvailable}
             title={t("maxButton")}
             size="small"
             extraClassNames="mt-2"

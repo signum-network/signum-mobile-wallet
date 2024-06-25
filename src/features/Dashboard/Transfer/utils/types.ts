@@ -8,6 +8,8 @@ export enum Steps {
 
 export const StepsAmount = 5;
 
+export const maxMemoLength = 1000;
+
 // Form Schemas
 
 export type TransactionCreation = {

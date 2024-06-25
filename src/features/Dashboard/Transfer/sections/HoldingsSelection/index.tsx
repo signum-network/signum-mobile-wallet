@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
 import { Text } from "@/components/Text";
 import { Card } from "@/components/Card";
-import { useToken } from "@/hooks/useToken";
+import { useTokenMetadata } from "@/hooks/useTokenMetadata";
 import { useAccount } from "@/hooks/useAccount";
 import { useTicker } from "@/hooks/useTicker";
 import { useAppTheme } from "@/hooks/useAppTheme";
@@ -25,7 +25,7 @@ export const HoldingsSelection = () => {
   const { watch, setValue } = useFormContext<TransactionCreation>();
 
   const asset = watch("asset");
-  const { ticker: tokenTicker, decimals } = useToken(asset);
+  const { ticker: tokenTicker, decimals } = useTokenMetadata(asset);
 
   const [isDialogVisible, setIsDialogVisible] = useState(false);
   const showDialog = () => setIsDialogVisible(true);
@@ -62,8 +62,9 @@ export const HoldingsSelection = () => {
       setValue("maxAmount", signaAvailableBalance);
     } else {
       setValue("maxAmount", tokenAvailableBalance);
+      setValue("assetDecimals", decimals);
     }
-  }, [isAssetSigna, signaAvailableBalance, tokenAvailableBalance]);
+  }, [isAssetSigna, signaAvailableBalance, tokenAvailableBalance, decimals]);
 
   const readableTicker = isAssetSigna ? NativeTicker : tokenTicker;
 

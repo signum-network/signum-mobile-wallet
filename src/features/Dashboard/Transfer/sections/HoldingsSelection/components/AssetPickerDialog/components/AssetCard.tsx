@@ -2,7 +2,7 @@ import { View, Pressable } from "react-native";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { ChainValue } from "@signumjs/util";
-import { useToken } from "@/hooks/useToken";
+import { useTokenMetadata } from "@/hooks/useTokenMetadata";
 import { useTicker } from "@/hooks/useTicker";
 import { formatNumber } from "@/utils/formatNumber";
 import { Text } from "@/components/Text";
@@ -24,7 +24,7 @@ export const AssetCard = ({
 }: Props) => {
   const { t } = useTranslation();
   const { NativeTicker } = useTicker();
-  const { ticker: tokenTicker, decimals } = useToken(asset);
+  const { ticker: tokenTicker, decimals } = useTokenMetadata(asset);
   const { watch, setValue } = useFormContext<TransactionCreation>();
 
   const formAsset = watch("asset");

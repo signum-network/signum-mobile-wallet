@@ -37,7 +37,7 @@ export const FormStepper = () => {
   const goBackwards = () => setValue("activeStep", activeStep - 1);
 
   return (
-    <View className="w-full px-4 pt-8 gap-4">
+    <View className="w-full px-4 pt-4 gap-4">
       <Pressable
         className="w-full rounded-lg active:opacity-80 ripple-[#333] ripple-bordered"
         disabled={isRecipientStep}
