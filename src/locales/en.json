@@ -289,6 +289,10 @@
     "addMemoHint": "Enter the text message or memo",
     "addEncryptedMemoTitle": "Encrypt this content",
     "addEncryptedMemoDescription": "The attached content will be end-to-end encrypted and is only readable by you and the recipient. Mind that smart contracts do not understand encrypted messages",
-    "errorTransferingFunds": "Error transfering funds"
+    "errorTransferingFunds": "Error transfering funds",
+    "feeSelectionDescription": "Higher fees may speed up the confirmation",
+    "feeMinimal": "Minimal",
+    "feeFast": "Fast",
+    "feePriority": "Rocket"
   }
 }

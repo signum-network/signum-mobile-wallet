@@ -46,6 +46,9 @@ export const useNodeHostStore = () => {
   const addCustomNode = nodeHostStore((state) => state.addCustomNode);
   const removeCustomNode = nodeHostStore((state) => state.removeCustomNode);
 
+  const networkFees = nodeHostStore((state) => state.networkFees);
+  const setNetworkFees = nodeHostStore((state) => state.setNetworkFees);
+
   const resetNodeHostStore = nodeHostStore((state) => state.reset);
 
   const isTestnet = activeNodeHost.isTestnet;
@@ -63,6 +66,7 @@ export const useNodeHostStore = () => {
     customNodeHost,
     isTestnet,
     currentNetwork,
+    networkFees,
     resetNodeHostStore,
     setConnectionType,
     setActiveNodeHost,
@@ -74,5 +78,6 @@ export const useNodeHostStore = () => {
     setIsActiveNodeAvailable,
     setIsActiveNodeSynced,
     setActiveNodeSyncedPercentage,
+    setNetworkFees,
   };
 };

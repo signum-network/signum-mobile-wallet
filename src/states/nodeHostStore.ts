@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { type nodeHost, defaultNodeHost } from "@/types/nodeHost";
 import type { nodeConnectionTypes } from "@/types/nodeConnectionTypes";
+import { type networkFees, defaultNetworkFees } from "@/types/networkFees";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface State {
@@ -13,6 +14,7 @@ interface State {
   reliableNodeHost: nodeHost[];
   testnetReliableNodeHost: nodeHost[];
   customNodeHost: nodeHost[];
+  networkFees: networkFees;
 }
 
 interface Actions {
@@ -27,6 +29,7 @@ interface Actions {
   setTestnetReliableNodeHost: (value: nodeHost[]) => void;
   addCustomNode: (value: nodeHost) => void;
   removeCustomNode: (value: string) => void; // remove custom node by name
+  setNetworkFees: (value: networkFees) => void;
 }
 
 const initialState: State = {
@@ -38,6 +41,7 @@ const initialState: State = {
   reliableNodeHost: [],
   testnetReliableNodeHost: [],
   customNodeHost: [],
+  networkFees: defaultNetworkFees,
 };
 
 export const nodeHostStore = create<State & Actions>()(
@@ -99,6 +103,10 @@ export const nodeHostStore = create<State & Actions>()(
             customNodeHost: newValue,
           };
         }),
+      setNetworkFees: (value) =>
+        set(() => ({
+          networkFees: value,
+        })),
     }),
     {
       name: "node-storage",

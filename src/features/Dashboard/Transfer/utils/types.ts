@@ -23,5 +23,5 @@ export type TransactionCreation = {
   memo: string;
   isMemoEncrypted: boolean;
   isMemoBinary: boolean;
-  fee: string;
+  fee: number;
 };

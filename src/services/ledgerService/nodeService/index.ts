@@ -24,4 +24,10 @@ export class NodeService extends LedgerSubService {
       this.context.ledger.alias.getTopLevelDomains({})
     );
   }
+
+  fetchSuggestedFees() {
+    return handleError(async () =>
+      this.context.ledger.network.getSuggestedFees()
+    );
+  }
 }

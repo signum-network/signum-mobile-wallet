@@ -12,6 +12,6 @@ export const transactionCreationSchema = yup
     memo: yup.string().trim().default(""),
     isMemoEncrypted: yup.boolean().default(false),
     isMemoBinary: yup.boolean().default(false),
-    fee: yup.string().required(),
+    fee: yup.number().required().default(0),
   })
   .required();

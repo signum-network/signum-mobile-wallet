@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useFormContext, Controller } from "react-hook-form";
@@ -7,7 +8,8 @@ import { FormCheckbox } from "@/components/Form/Checkbox";
 import { TextInput } from "@/components/TextInput";
 import { type TransactionCreation, maxMemoLength } from "../../utils/types";
 
-// TODO: Send encrypted attachments
+// TODO: Support encrypted attachments
+// TODO: Support binary attachments
 export const MemoOptions = () => {
   const { t } = useTranslation();
   const { watch, setValue, control } = useFormContext<TransactionCreation>();
@@ -25,6 +27,10 @@ export const MemoOptions = () => {
   const toggleEncryptedMemoAvailability = () => {
     setValue("isMemoEncrypted", !isMemoEncrypted);
   };
+
+  useEffect(() => {
+    setValue("fee", 0);
+  }, [memo, includeMemo, isMemoEncrypted]);
 
   return (
     <View className="gap-4 w-full">

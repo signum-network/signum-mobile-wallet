@@ -1,5 +1,5 @@
 import { useRef, useEffect, useCallback, type RefObject } from "react";
-import { ScrollView, View, ActivityIndicator } from "react-native";
+import { ScrollView, View } from "react-native";
 import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
 import { useFocusEffect } from "expo-router";
 import { useTranslation } from "react-i18next";
@@ -7,7 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Amount, ChainValue } from "@signumjs/util";
 import { AttachmentMessage, AttachmentEncryptedMessage } from "@signumjs/core";
 import { encryptMessage } from "@signumjs/crypto";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { AnimatedSlideContainer } from "@/components/AnimatedSlideContainer";
 import { useAccount } from "@/hooks/useAccount";
 import { useLedgerService } from "@/hooks/useLedgerService";
@@ -22,6 +22,7 @@ import { Steps, type TransactionCreation } from "./utils/types";
 import { Recipient } from "./sections/Recipient";
 import { HoldingsSelection } from "./sections/HoldingsSelection";
 import { MemoOptions } from "./sections/MemoOptions";
+import { FeeSelection } from "./sections/FeeSelection";
 import { FormNavigation } from "./components/FormNavigation";
 import { FormStepper } from "./components/FormStepper";
 
@@ -46,7 +47,7 @@ export const TransferScreen = () => {
       memo: "",
       isMemoEncrypted: false,
       isMemoBinary: false,
-      fee: "",
+      fee: 0,
     },
   });
 
@@ -90,7 +91,7 @@ export const TransferScreen = () => {
 
         const recipientId = asAddress(recipient).getNumericId();
 
-        const feePlanck = Amount.fromSigna(fee).getPlanck();
+        const feePlanck = Amount.fromPlanck(fee).getPlanck();
 
         let attachment = undefined;
 
@@ -178,6 +179,12 @@ export const TransferScreen = () => {
               {activeStep === Steps.MemoOptions && (
                 <AnimatedSlideContainer>
                   <MemoOptions />
+                </AnimatedSlideContainer>
+              )}
+
+              {activeStep === Steps.FeeSelection && (
+                <AnimatedSlideContainer>
+                  <FeeSelection />
                 </AnimatedSlideContainer>
               )}
             </View>

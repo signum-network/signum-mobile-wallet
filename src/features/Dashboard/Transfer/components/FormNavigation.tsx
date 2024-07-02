@@ -23,6 +23,7 @@ export const FormNavigation = ({ onSubmit }: Props) => {
   const maxAmount = watch("maxAmount");
   const includeMemo = watch("includeMemo");
   const memo = watch("memo");
+  const fee = watch("fee");
 
   const isRecipientBurningAddress =
     recipient === "0" || recipient.includes("2222-2222-2222-2222");
@@ -32,6 +33,7 @@ export const FormNavigation = ({ onSubmit }: Props) => {
   const canCompleteThirdStep =
     !includeMemo ||
     !!(includeMemo && memo.trim() && memo.length <= maxMemoLength);
+  const canCompleteFourthStep = !!fee;
 
   const getRecipientValidity = async () => {
     if (!ledgerService) return;
@@ -75,7 +77,15 @@ export const FormNavigation = ({ onSubmit }: Props) => {
         return {
           disabled: !canCompleteThirdStep,
           pressableProps: {
-            onPress: onSubmit,
+            onPress: () => setValue("activeStep", Steps.FeeSelection),
+          },
+        };
+
+      case Steps.FeeSelection:
+        return {
+          disabled: !canCompleteFourthStep,
+          pressableProps: {
+            onPress: () => setValue("activeStep", Steps.Confirmation),
           },
         };
 
@@ -93,6 +103,7 @@ export const FormNavigation = ({ onSubmit }: Props) => {
     canCompleteFirstStep,
     canCompleteSecondStep,
     canCompleteThirdStep,
+    canCompleteFourthStep,
   ]);
 
   return (
