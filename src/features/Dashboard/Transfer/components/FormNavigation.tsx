@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { Alert } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
 import { useAccount } from "@/hooks/useAccount";
@@ -7,11 +8,7 @@ import { FormNavButton } from "@/components/Form/NavButton";
 import { asAddress } from "@/utils/account/asAddress";
 import { type TransactionCreation, Steps, maxMemoLength } from "../utils/types";
 
-interface Props {
-  onSubmit: () => void;
-}
-
-export const FormNavigation = ({ onSubmit }: Props) => {
+export const FormNavigation = () => {
   const { t } = useTranslation();
   const { accountId } = useAccount();
   const { ledgerService } = useLedgerService();
@@ -44,8 +41,9 @@ export const FormNavigation = ({ onSubmit }: Props) => {
     try {
       const recipientAccountID = asAddress(recipient).getNumericId();
 
-      if (accountId === recipientAccountID)
-        return alert(t("transfer.yourSelfRecipientHint"));
+      if (accountId === recipientAccountID) {
+        return Alert.alert(`${t("transfer.yourSelfRecipientHint")} 😉`);
+      }
 
       await ledgerService.account.fetchAccountPublicKey(recipientAccountID);
 
@@ -93,9 +91,6 @@ export const FormNavigation = ({ onSubmit }: Props) => {
       default:
         return {
           disabled: true,
-          pressableProps: {
-            onPress: onSubmit,
-          },
         };
     }
   }, [
@@ -110,6 +105,7 @@ export const FormNavigation = ({ onSubmit }: Props) => {
     <FormNavButton
       type="primary"
       title={t("continue")}
+      hidden={activeStep === Steps.Confirmation}
       {...FormNavButtonProps}
     />
   );

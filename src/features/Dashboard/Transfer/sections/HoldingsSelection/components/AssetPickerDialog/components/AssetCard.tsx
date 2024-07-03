@@ -44,6 +44,8 @@ export const AssetCard = ({
   const readableDecimals = !isSigna ? decimals : undefined;
 
   const changeAsset = () => {
+    if (!readableBalance) return;
+
     setValue("amount", 0);
     setValue("maxAmount", readableBalance || 0);
     setValue("asset", asset || "0");

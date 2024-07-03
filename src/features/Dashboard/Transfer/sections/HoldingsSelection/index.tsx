@@ -51,7 +51,7 @@ export const HoldingsSelection = () => {
             .getCompound()
         )
       : 0;
-  }, [tokenBalance, decimals]);
+  }, [asset, tokenBalance, decimals]);
 
   useEffect(() => {
     hideDialog();

@@ -1,4 +1,10 @@
-import { useRef, useEffect, useCallback, type RefObject } from "react";
+import {
+  useRef,
+  useEffect,
+  useCallback,
+  useState,
+  type RefObject,
+} from "react";
 import { ScrollView, View } from "react-native";
 import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
 import { useFocusEffect } from "expo-router";
@@ -23,14 +29,19 @@ import { Recipient } from "./sections/Recipient";
 import { HoldingsSelection } from "./sections/HoldingsSelection";
 import { MemoOptions } from "./sections/MemoOptions";
 import { FeeSelection } from "./sections/FeeSelection";
+import { Confirmation } from "./sections/Confirmation";
 import { FormNavigation } from "./components/FormNavigation";
 import { FormStepper } from "./components/FormStepper";
+import { SigningDialog } from "./components/SigningDialog";
 
 export const TransferScreen = () => {
   const { t } = useTranslation();
   const { ledgerService } = useLedgerService();
   const { isWatchOnly, publicKey, accountId } = useAccount();
   const { currentNetwork } = useNodeHostStore();
+
+  const [isSigningTransaction, setIsSigningTransaction] = useState(false);
+  const [isComplete, setIsComplete] = useState(false);
 
   const queryClient = useQueryClient();
 
@@ -66,6 +77,8 @@ export const TransferScreen = () => {
     useCallback(() => {
       return () => {
         methods.reset();
+        setIsSigningTransaction(false);
+        setIsComplete(false);
       };
     }, [])
   );
@@ -86,6 +99,8 @@ export const TransferScreen = () => {
     await readSecretKey(publicKey)
       .then(async (data) => {
         if (!data || !ledgerService) throw new Error("invalid data");
+
+        setIsSigningTransaction(true);
 
         const { signPrivateKey, agreementPrivateKey } = data;
 
@@ -139,26 +154,32 @@ export const TransferScreen = () => {
             attachment,
           });
         }
+
+        setIsComplete(true);
       })
       .catch((e) => console.error(e))
-      .finally(
-        async () =>
-          await queryClient.invalidateQueries({
-            queryKey: [
-              "fetchAccountTransactionsBasicOverview",
-              accountId,
-              currentNetwork,
-            ],
-          })
-      );
+      .finally(() => {
+        queryClient.invalidateQueries({
+          queryKey: [
+            "fetchAccountTransactionsBasicOverview",
+            accountId,
+            currentNetwork,
+          ],
+        });
+
+        setIsSigningTransaction(false);
+      });
   };
 
   if (isWatchOnly) return <WatchOnlyAccountCard />;
 
   return (
     <FormProvider {...methods}>
-      <FormStepper />
-      <FormNavigation onSubmit={methods.handleSubmit(onSubmit)} />
+      <SigningDialog visible={isSigningTransaction} />
+
+      {!isComplete && <FormStepper />}
+
+      <FormNavigation />
 
       <KeyboardAvoidingView>
         <ScrollView ref={scrollRef}>
@@ -185,6 +206,16 @@ export const TransferScreen = () => {
               {activeStep === Steps.FeeSelection && (
                 <AnimatedSlideContainer>
                   <FeeSelection />
+                </AnimatedSlideContainer>
+              )}
+
+              {activeStep === Steps.Confirmation && (
+                <AnimatedSlideContainer>
+                  <Confirmation
+                    onSubmit={methods.handleSubmit(onSubmit)}
+                    isComplete={isComplete}
+                    disableOnSubmit={isSigningTransaction || isComplete}
+                  />
                 </AnimatedSlideContainer>
               )}
             </View>

@@ -7,12 +7,15 @@ import { Card } from "@/components/Card";
 import { Button } from "@/components/Button";
 import { Text } from "@/components/Text";
 import { TextInput } from "@/components/TextInput";
+import { formatNumber } from "@/utils/formatNumber";
 import { useNumberSeparator } from "@/hooks/useNumberSeparator";
+import { useActiveMarketRate } from "@/hooks/useActiveMarketRate";
 import type { TransactionCreation } from "../../../../utils/types";
 
 export const AmountBox = () => {
   const { t } = useTranslation();
   const { watch, setValue } = useFormContext<TransactionCreation>();
+  const { price, symbol } = useActiveMarketRate();
   const numberSeparator = useNumberSeparator();
 
   const asset = watch("asset");
@@ -22,9 +25,13 @@ export const AmountBox = () => {
   const notEnoughFunds = !!(amount && amount > maxAmount);
   const noFundsAvailable = !maxAmount;
 
-  const setMaxAvailableBalance = () => {
-    setValue("amount", asset === "0" ? maxAmount - 0.5 : maxAmount);
-  };
+  const isAssetSigna = asset === "0";
+
+  const setMaxAvailableBalance = () =>
+    setValue("amount", isAssetSigna ? maxAmount - 0.5 : maxAmount);
+
+  const signaAmountMarketValue =
+    isAssetSigna && amount && price ? amount * price : 0;
 
   return (
     <Fragment>
@@ -61,6 +68,15 @@ export const AmountBox = () => {
               />
             )}
           />
+
+          {!!(!notEnoughFunds && signaAmountMarketValue) && (
+            <Text size="large" color="muted" className="font-medium">
+              {`${symbol}${formatNumber({
+                value: signaAmountMarketValue,
+                isFiat: true,
+              })}`}
+            </Text>
+          )}
 
           {notEnoughFunds && (
             <Text color="error" className="font-medium">

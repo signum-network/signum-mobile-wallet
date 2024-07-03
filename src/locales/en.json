@@ -7,6 +7,7 @@
   "use": "Use",
   "transaction": "Transaction",
   "transaction_other": "Transactions",
+  "fees": "Fees",
   "delete": "Delete",
   "balance": "Balance",
   "availableBalance": "Available balance",
@@ -43,6 +44,7 @@
   "notEnoguhFunds": "Not enough funds",
   "receive": "Receive",
   "maxButton": "Use all available balance",
+  "textOrMemo": "Text or Memo",
   "terms": {
     "requestFirstLine": "Before you start using this wallet",
     "requestSecondLine": "Please read and agree the following terms",
@@ -270,14 +272,14 @@
     "resolvedRecipientAddressHint": "Use this suggestion as a helpful tool to ensure you send to the correct account",
     "recipientBurnAddress": "Burn Address",
     "recipientBurnAddressHint": "Funds sent to this address will be burned forever",
-    "yourSelfRecipientHint": "You are trying to send to yourself",
+    "yourSelfRecipientHint": "You are trying to send to yourself, you can't do that here",
     "stepper": {
       "goBackwards": "Press to go back",
       "recipientStepTitle": "Set the recipient",
       "holdingsStepTitle": "Asset",
       "memoStepTitle": "Memo",
       "feeSelectionStepTitle": "Fee selection",
-      "confirmationStepTitle": "Confirmation"
+      "confirmationStepTitle": "Payment Confirmation"
     },
     "assetAvailableBalanceHint": "Available {{ticker}} balance",
     "changeAsset": "Change Asset",
@@ -293,6 +295,14 @@
     "feeSelectionDescription": "Higher fees may speed up the confirmation",
     "feeMinimal": "Minimal",
     "feeFast": "Fast",
-    "feePriority": "Rocket"
+    "feePriority": "Rocket",
+    "memoIsBinary": "Attached data is binary",
+    "memoIsEncrypted": "Content will be encrypted",
+    "pressTheButtonLonger": "Press the button for 2 seconds to confirm",
+    "confirmTransaction": "Confirm",
+    "signingTransactionTitle": "Creating transaction...",
+    "signingTransactionDescription": "Kindly hold on while the transaction is being created and signed, let the blockchain do everything for you",
+    "signedTransactionTitle": "Success",
+    "signedTransactionDescription": "Your transaction request has been successfully sent! Please wait for confirmation..."
   }
 }

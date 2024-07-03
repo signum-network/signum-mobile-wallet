@@ -4,7 +4,6 @@ import { useFormContext } from "react-hook-form";
 import { Amount } from "@signumjs/util";
 import { AttachmentMessage } from "@signumjs/core";
 import { useNetworkFees } from "@/hooks/useNetworkFees";
-import { useTicker } from "@/hooks/useTicker";
 import { Text } from "@/components/Text";
 import { Card } from "@/components/Card";
 import { FormCheckbox } from "@/components/Form/Checkbox";
@@ -12,7 +11,6 @@ import { type TransactionCreation } from "../../utils/types";
 
 export const FeeSelection = () => {
   const { t } = useTranslation();
-  const { NativeTicker } = useTicker();
   const { watch, setValue } = useFormContext<TransactionCreation>();
 
   const fee = watch("fee");
