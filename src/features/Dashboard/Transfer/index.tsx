@@ -42,6 +42,7 @@ export const TransferScreen = () => {
 
   const [isSigningTransaction, setIsSigningTransaction] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
+  const [transactionId, setTransactionId] = useState("");
 
   const queryClient = useQueryClient();
 
@@ -58,7 +59,6 @@ export const TransferScreen = () => {
       memo: "",
       isMemoEncrypted: false,
       isMemoBinary: false,
-      fee: 0,
     },
   });
 
@@ -79,6 +79,7 @@ export const TransferScreen = () => {
         methods.reset();
         setIsSigningTransaction(false);
         setIsComplete(false);
+        setTransactionId("");
       };
     }, [])
   );
@@ -130,29 +131,40 @@ export const TransferScreen = () => {
           }
         }
 
+        let confirmation;
+
         if (asset === "0") {
-          await ledgerService.ledgerInstance.transaction.sendAmountToSingleRecipient(
+          confirmation =
+            await ledgerService.ledgerInstance.transaction.sendAmountToSingleRecipient(
+              {
+                recipientId,
+                amountPlanck: Amount.fromSigna(amount).getPlanck(),
+                feePlanck,
+                senderPrivateKey: signPrivateKey,
+                senderPublicKey: publicKey,
+                attachment,
+              }
+            );
+        } else {
+          confirmation = await ledgerService.ledgerInstance.asset.transferAsset(
             {
               recipientId,
-              amountPlanck: Amount.fromSigna(amount).getPlanck(),
+              assetId: asset,
+              quantity: ChainValue.create(assetDecimals)
+                .setCompound(amount)
+                .getAtomic(),
               feePlanck,
               senderPrivateKey: signPrivateKey,
               senderPublicKey: publicKey,
               attachment,
             }
           );
-        } else {
-          await ledgerService.ledgerInstance.asset.transferAsset({
-            recipientId,
-            assetId: asset,
-            quantity: ChainValue.create(assetDecimals)
-              .setCompound(amount)
-              .getAtomic(),
-            feePlanck,
-            senderPrivateKey: signPrivateKey,
-            senderPublicKey: publicKey,
-            attachment,
-          });
+        }
+
+        // @ts-expect-error typing issue between choosing <TransactionId | UnsignedTransaction>
+        if (confirmation?.transaction) {
+          // @ts-ignore
+          setTransactionId(confirmation.transaction);
         }
 
         setIsComplete(true);
@@ -214,6 +226,7 @@ export const TransferScreen = () => {
                   <Confirmation
                     onSubmit={methods.handleSubmit(onSubmit)}
                     isComplete={isComplete}
+                    transactionId={transactionId}
                     disableOnSubmit={isSigningTransaction || isComplete}
                   />
                 </AnimatedSlideContainer>

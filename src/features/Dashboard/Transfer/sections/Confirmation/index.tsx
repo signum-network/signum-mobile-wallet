@@ -10,20 +10,25 @@ import { Text } from "@/components/Text";
 import { Card } from "@/components/Card";
 import { formatNumber } from "@/utils/formatNumber";
 import { useActiveMarketRate } from "@/hooks/useActiveMarketRate";
+import { openTransactionLink } from "@/utils/explorer/openLink";
 import { type TransactionCreation } from "../../utils/types";
 import { ResolvedAccountCard } from "../../components/ResolvedAccountCard";
 import Ionicons from "@expo/vector-icons/Ionicons";
+
+import * as Clipboard from "expo-clipboard";
 
 interface Props {
   onSubmit: () => void;
   isComplete: boolean;
   disableOnSubmit: boolean;
+  transactionId: string;
 }
 
 export const Confirmation = ({
   onSubmit,
   isComplete,
   disableOnSubmit,
+  transactionId,
 }: Props) => {
   const { t } = useTranslation();
   const { iconColor } = useAppTheme();
@@ -52,6 +57,14 @@ export const Confirmation = ({
 
   const signaFeesMarketValue = signaFees && price ? signaFees * price : 0;
 
+  const copyTransactionId = async () => {
+    await Clipboard.setStringAsync(transactionId).then(() =>
+      alert(t("overview.copiedTransactionId"))
+    );
+  };
+
+  const openTransactionInExplorer = () => openTransactionLink(transactionId);
+
   return (
     <View className="gap-4 w-full">
       <Card>
@@ -73,6 +86,34 @@ export const Confirmation = ({
                 {t("transfer.signedTransactionDescription")}
               </Text>
             </View>
+
+            {transactionId && (
+              <View className="w-full flex flex-col items-center justify-center gap-4">
+                <Button
+                  type="blackout"
+                  title={t("overview.copyTransactionId")}
+                  pressableProps={{ onPress: copyTransactionId }}
+                  size="small"
+                  icon={
+                    <Ionicons
+                      name="copy"
+                      size={18}
+                      color={iconColor.blackout}
+                    />
+                  }
+                  wide
+                />
+
+                <Button
+                  type="primary"
+                  title={t("overview.viewInExplorer")}
+                  pressableProps={{ onPress: openTransactionInExplorer }}
+                  size="small"
+                  icon={<Ionicons name="link" size={18} color="white" />}
+                  wide
+                />
+              </View>
+            )}
           </Card>
         )}
 
