@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { Alert, ActivityIndicator, View, Pressable } from "react-native";
+import { router } from "expo-router";
 import { Amount, ChainValue } from "@signumjs/util";
 import { useAccount } from "@/hooks/useAccount";
 import { useTokenMetadata } from "@/hooks/useTokenMetadata";
@@ -50,7 +51,7 @@ export const AssetCard = ({
       {
         text: t("transfer.title"),
         onPress: () => {
-          alert("TBD");
+          router.push({ pathname: "/dashboard/transfer", params: { asset } });
         },
       },
       {

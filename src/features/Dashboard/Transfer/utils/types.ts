@@ -10,6 +10,10 @@ export const StepsAmount = 5;
 
 export const maxMemoLength = 1000;
 
+export type LocalSearchParams = {
+  asset?: string;
+};
+
 // Form Schemas
 
 export type TransactionCreation = {

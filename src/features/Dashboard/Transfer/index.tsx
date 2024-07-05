@@ -6,6 +6,7 @@ import {
   type RefObject,
 } from "react";
 import { ScrollView, View } from "react-native";
+import { useLocalSearchParams } from "expo-router";
 import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
 import { useFocusEffect } from "expo-router";
 import { useTranslation } from "react-i18next";
@@ -24,7 +25,11 @@ import { readSecretKey } from "@/utils/sec/handleSecretKeys";
 import { asAddress } from "@/utils/account/asAddress";
 import { DashboardScreenContainer } from "../components/DashboardScreenContainer";
 import { transactionCreationSchema } from "./utils/schemas";
-import { Steps, type TransactionCreation } from "./utils/types";
+import {
+  Steps,
+  type TransactionCreation,
+  type LocalSearchParams,
+} from "./utils/types";
 import { Recipient } from "./sections/Recipient";
 import { HoldingsSelection } from "./sections/HoldingsSelection";
 import { MemoOptions } from "./sections/MemoOptions";
@@ -39,6 +44,7 @@ export const TransferScreen = () => {
   const { ledgerService } = useLedgerService();
   const { isWatchOnly, publicKey, accountId } = useAccount();
   const { currentNetwork } = useNodeHostStore();
+  const { asset } = useLocalSearchParams<LocalSearchParams>();
 
   const [isSigningTransaction, setIsSigningTransaction] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
@@ -54,7 +60,7 @@ export const TransferScreen = () => {
     defaultValues: {
       activeStep: Steps.Recipient,
       recipient: "",
-      asset: "0",
+      asset: asset || "0",
       includeMemo: false,
       memo: "",
       isMemoEncrypted: false,

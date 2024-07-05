@@ -30,7 +30,7 @@
   "token": "Token",
   "example": "E.g.",
   "download": "Download",
-  "accountDoesNotExists": "Account does not exists",
+  "accountDoesNotExists": "This account either doesn't exist or hasn't been activated yet",
   "scanQRCode": "Scan QR Code",
   "permissionRejected": "Permission Rejected",
   "requestCameraPermission": "Request Camera Permission",
