@@ -5,7 +5,7 @@ import { useNodeHostStore } from "@/hooks/useNodeHostStore";
 import { useLedgerService } from "@/hooks/useLedgerService";
 import { tokens, defaultToken, type Token } from "@/db/schema";
 
-export const useToken = (tokenId = ""): Token => {
+export const useTokenMetadata = (tokenId = ""): Token => {
   const { ledgerService } = useLedgerService();
   const { isActiveNodeSynced } = useNodeHostStore();
   const db = useDatabaseContext();
@@ -13,7 +13,7 @@ export const useToken = (tokenId = ""): Token => {
   const { data } = useQuery({
     queryKey: ["fetchToken", tokenId],
     queryFn: async () => {
-      if (!ledgerService) return defaultToken;
+      if (!ledgerService || tokenId === "0") return defaultToken;
 
       const query = await db
         .select()

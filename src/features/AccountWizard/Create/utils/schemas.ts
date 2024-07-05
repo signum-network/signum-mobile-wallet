@@ -8,7 +8,7 @@ export const accountCreationSchema = yup
     thirdTerm: yup.boolean().required(),
     seedPhrase: yup.string().required(),
     seedPhraseVerificationIndex: yup.number().default(0),
-    seedPhraseVerificationWord: yup.string().required(),
+    seedPhraseVerificationWord: yup.string().trim().required(),
     walletName: yup.string().trim().required(),
   })
   .required();

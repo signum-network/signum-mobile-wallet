@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
 import { Text } from "@/components/Text";
 import { Button } from "@/components/Button";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { generateSeed, pickRandomKeySeedIndex } from "@/utils/sec/generateSeed";
 import { generateSecretKeys } from "@/utils/sec/handleSecretKeys";
 import { downloadSeed } from "@/utils/sec/downloadSeed";
@@ -15,6 +16,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 
 export const SecretPhraseGeneration = () => {
   const { t } = useTranslation();
+  const { iconColor } = useAppTheme();
   const { watch, setValue } = useFormContext<AccountCreation>();
 
   const QrCodeRef: RefObject<QRCode> & RefObject<SVGSVGElement> = useRef(null);
@@ -128,7 +130,13 @@ export const SecretPhraseGeneration = () => {
       <Text color="muted">{t("or")}</Text>
 
       <Button
-        icon={<Ionicons name="cloud-download" size={24} color="white" />}
+        icon={
+          <Ionicons
+            name="cloud-download"
+            size={24}
+            color={iconColor.blackout}
+          />
+        }
         type="blackout"
         title={t("download")}
         wide

@@ -5,7 +5,11 @@ import Animated, { useSharedValue } from "react-native-reanimated";
 
 const DEFAULT_HEIGHT = 81.4;
 
-export const FormNavButton = (props: ButtonProps) => {
+interface Props extends ButtonProps {
+  hidden?: boolean;
+}
+
+export const FormNavButton = (props: Props) => {
   const height = useSharedValue(DEFAULT_HEIGHT);
   const display = useSharedValue<"none" | "flex">("flex");
 
@@ -35,7 +39,7 @@ export const FormNavButton = (props: ButtonProps) => {
   return (
     <Animated.View
       style={{
-        display,
+        display: props.hidden ? "none" : display,
         zIndex: 250,
         position: "absolute",
         left: 0,

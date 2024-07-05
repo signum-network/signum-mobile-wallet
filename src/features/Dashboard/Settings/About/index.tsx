@@ -33,7 +33,7 @@ export const AboutScreen = () => {
     <View className="flex flex-1 flex-col items-center justify-center w-full px-4 gap-4 pt-8">
       <Card>
         <View className="flex flex-col items-center justify-center w-full gap-2">
-          <View className="items-center justify-center gap-2 mb-4">
+          <View className="items-center justify-center gap-2 mb-2">
             <Image
               source={{ uri: signumBlueSymbolPicture }}
               style={{ width: 75, height: 75 }}
@@ -47,6 +47,14 @@ export const AboutScreen = () => {
               {t("settings.about.version", {
                 version: Application.nativeApplicationVersion ?? "unknown",
               })}
+            </Text>
+
+            <Text
+              className="w-full text-center font-medium"
+              color="muted"
+              size="small"
+            >
+              {t("settings.about.nonCustodial")}
             </Text>
           </View>
 

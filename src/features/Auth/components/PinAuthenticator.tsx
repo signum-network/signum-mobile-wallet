@@ -102,7 +102,8 @@ export const PinAuthenticator = ({
 
   const playSuccessSound = async () => {
     const { sound } = await Audio.Sound.createAsync(
-      require("../../../assets/audio/success-ringtone.mp3")
+      require("../../../assets/audio/success-ringtone.mp3"),
+      { volume: 0.5 }
     );
 
     setSuccessSound(sound);
@@ -112,7 +113,7 @@ export const PinAuthenticator = ({
   const playErrorSound = async () => {
     const { sound } = await Audio.Sound.createAsync(
       require("../../../assets/audio/error-ringtone.mp3"),
-      { positionMillis: 550 }
+      { positionMillis: 550, volume: 0.5 }
     );
 
     setErrorSound(sound);

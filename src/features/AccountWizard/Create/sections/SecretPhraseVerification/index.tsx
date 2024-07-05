@@ -51,7 +51,8 @@ export const SecretPhraseVerification = () => {
               onChangeText={onChange}
               value={value}
               size="large"
-              extraClassNames="font-medium text-center"
+              textAlign="center"
+              extraClassNames="font-medium"
             />
           )}
           name="seedPhraseVerificationWord"
@@ -83,7 +84,8 @@ export const SecretPhraseVerification = () => {
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
-                extraClassNames="font-medium text-center"
+                extraClassNames="font-medium"
+                textAlign="center"
                 maxLength={30}
               />
             )}

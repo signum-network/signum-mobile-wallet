@@ -7,12 +7,14 @@
   "use": "Use",
   "transaction": "Transaction",
   "transaction_other": "Transactions",
+  "fees": "Fees",
   "delete": "Delete",
   "balance": "Balance",
   "availableBalance": "Available balance",
   "committedBalance": "Committed balance",
   "reservedBalance": "Reserved balance",
   "resetApp": "A reset is happening, and all accounts will be erased from the app",
+  "recipient": "Recipient",
   "or": "OR",
   "copyToClipboard": "Copy to clipboard",
   "coin": "Coin",
@@ -28,7 +30,7 @@
   "token": "Token",
   "example": "E.g.",
   "download": "Download",
-  "accountDoesNotExists": "Account does not exists",
+  "accountDoesNotExists": "This account either doesn't exist or hasn't been activated yet",
   "scanQRCode": "Scan QR Code",
   "permissionRejected": "Permission Rejected",
   "requestCameraPermission": "Request Camera Permission",
@@ -38,7 +40,11 @@
   "youAreOffline": "You are offline. Check your data or wifi connection",
   "nodeUnavailable": "The node you selected is unavailable",
   "send": "Send",
+  "amount": "Amount",
+  "notEnoguhFunds": "Not enough funds",
   "receive": "Receive",
+  "maxButton": "Use all available balance",
+  "textOrMemo": "Text or Memo",
   "terms": {
     "requestFirstLine": "Before you start using this wallet",
     "requestSecondLine": "Please read and agree the following terms",
@@ -122,7 +128,8 @@
       "noAccounts": "No accounts found",
       "noAccountsDescription": "Begin by making a new signum account\nor import an existing one!",
       "removeAccount": "Account removal",
-      "removeAccountDescription": "Are you sure you want to remove the following account?\n\n{{walletName}}\n\nYou can always re-import the account. No data is lost",
+      "removeFullAccountDescription": "Are you sure you want to remove the following account?\n\n{{walletName}}\n\nYou can always re-import the account, no data is lost.\n\nYou understand that you previously wrote down the secret phrase for this account and that you cannot recover the account without it.",
+      "removeWatchOnlyAccountDescription": "Are you sure you want to remove the following account?\n\n{{walletName}}\n\nYou can always re-import the account, no data is lost.",
       "confirm": "Yes, remove that account",
       "accountRemoved": "Account removed successfully!",
       "addAccount": "Add account",
@@ -173,12 +180,13 @@
       "repository": "Repository",
       "privacyPolicy": "Privacy Policy",
       "contact": "Contact",
-      "links": "Links"
+      "links": "Links",
+      "nonCustodial": "Non-custodial"
     }
   },
   "deposit": {
     "title": "Receive",
-    "copiedAccountID": "Account ID copied successfully!",
+    "copiedAddress": "Address copied successfully!",
     "copy": "Copy address"
   },
   "unsafeAccount": {
@@ -187,6 +195,10 @@
     "activate": "Activate account",
     "activating": "Activation is pending...",
     "accountActivationIsPending": "Account activation is pending\nPlease wait..."
+  },
+  "watchOnlyAccount": {
+    "title": "Watch-only account detected",
+    "description": "You can not make transactions on watch-only accounts\nmake sure to switch to a full account"
   },
   "overview": {
     "inProgress": "In progress...",
@@ -252,5 +264,45 @@
       "copyTokenId": "Copy token ID",
       "copiedTokenId": "Token ID copied successfully!"
     }
+  },
+  "transfer": {
+    "title": "Transfer",
+    "recipientDescription": "Set the recipient for the payment",
+    "resolvedRecipientAddress": "Account address: {{address}}",
+    "resolvedRecipientAddressHint": "Use this suggestion as a helpful tool to ensure you send to the correct account",
+    "recipientBurnAddress": "Burn Address",
+    "recipientBurnAddressHint": "Funds sent to this address will be burned forever",
+    "yourSelfRecipientHint": "You are trying to send to yourself, you can't do that here",
+    "stepper": {
+      "goBackwards": "Press to go back",
+      "recipientStepTitle": "Set the recipient",
+      "holdingsStepTitle": "Asset",
+      "memoStepTitle": "Memo",
+      "feeSelectionStepTitle": "Fee selection",
+      "confirmationStepTitle": "Payment Confirmation"
+    },
+    "assetAvailableBalanceHint": "Available {{ticker}} balance",
+    "changeAsset": "Change Asset",
+    "pickAnAsset": "Pick an Asset",
+    "picked": "Picked",
+    "enterAmount": "Enter Amount",
+    "addMemoTitle": "Add additional text or memo",
+    "addMemoDescription": "Activate this if you want to attach some text to this transaction. Additionally, you may use this field to input the memo required by many exchanges",
+    "addMemoHint": "Enter the text message or memo",
+    "addEncryptedMemoTitle": "Encrypt this content",
+    "addEncryptedMemoDescription": "The attached content will be end-to-end encrypted and is only readable by you and the recipient. Mind that smart contracts do not understand encrypted messages",
+    "errorTransferingFunds": "Error transfering funds",
+    "feeSelectionDescription": "Higher fees may speed up the confirmation",
+    "feeMinimal": "Minimal",
+    "feeFast": "Fast",
+    "feePriority": "Rocket",
+    "memoIsBinary": "Attached data is binary",
+    "memoIsEncrypted": "Content will be encrypted",
+    "pressTheButtonLonger": "Press the button for 2 seconds to confirm",
+    "confirmTransaction": "Confirm",
+    "signingTransactionTitle": "Creating transaction...",
+    "signingTransactionDescription": "Kindly hold on while the transaction is being created and signed, let the blockchain do everything for you",
+    "signedTransactionTitle": "Success",
+    "signedTransactionDescription": "Your transaction request has been successfully sent! Please wait for confirmation..."
   }
 }

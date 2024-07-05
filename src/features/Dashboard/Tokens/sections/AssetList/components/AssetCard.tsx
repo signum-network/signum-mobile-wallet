@@ -1,8 +1,9 @@
 import { useTranslation } from "react-i18next";
 import { Alert, ActivityIndicator, View, Pressable } from "react-native";
+import { router } from "expo-router";
 import { Amount, ChainValue } from "@signumjs/util";
 import { useAccount } from "@/hooks/useAccount";
-import { useToken } from "@/hooks/useToken";
+import { useTokenMetadata } from "@/hooks/useTokenMetadata";
 import { useTokenTransactionalData } from "@/hooks/useTokenTransactionalData";
 import { useActiveMarketRate } from "@/hooks/useActiveMarketRate";
 import { formatNumber } from "@/utils/formatNumber";
@@ -20,8 +21,8 @@ export const AssetCard = ({
   unconfirmedBalanceQNT,
 }: TokenBalance) => {
   const { t } = useTranslation();
-  const { accountId } = useAccount();
-  const { ticker, decimals, account } = useToken(asset);
+  const { accountId, isWatchOnly } = useAccount();
+  const { ticker, decimals, account } = useTokenMetadata(asset);
   const { priceNQT, lastUpdated } = useTokenTransactionalData(asset);
   const { price, ticker: marketTicker } = useActiveMarketRate();
 
@@ -46,6 +47,31 @@ export const AssetCard = ({
   const isAdmin = account === accountId;
 
   const pickOptions = () => {
+    const alertOptions = [
+      {
+        text: t("transfer.title"),
+        onPress: () => {
+          router.push({ pathname: "/dashboard/transfer", params: { asset } });
+        },
+      },
+      {
+        text: t("overview.tokens.copyTokenId"),
+        onPress: async () => {
+          await Clipboard.setStringAsync(asset).then(() =>
+            alert(t("overview.tokens.copiedTokenId"))
+          );
+        },
+      },
+      {
+        text: t("overview.viewInExplorer"),
+        onPress: () => {
+          openTokenLink(asset);
+        },
+      },
+    ];
+
+    if (isWatchOnly) alertOptions.shift();
+
     Alert.alert(
       `(${ticker}) ${t("overview.options")}`,
       `${t("overview.description")}\n\n${t("availableBalance")}: ${formatNumber(
@@ -57,28 +83,7 @@ export const AssetCard = ({
         value: reservedBalance.getCompound(),
         maximumFractionDigits: decimals,
       })}`,
-      [
-        {
-          text: t("transfer"),
-          onPress: () => {
-            alert("TBD");
-          },
-        },
-        {
-          text: t("overview.tokens.copyTokenId"),
-          onPress: async () => {
-            await Clipboard.setStringAsync(asset).then(() =>
-              alert(t("overview.tokens.copiedTokenId"))
-            );
-          },
-        },
-        {
-          text: t("overview.viewInExplorer"),
-          onPress: () => {
-            openTokenLink(asset);
-          },
-        },
-      ],
+      alertOptions,
       {
         cancelable: true,
       }

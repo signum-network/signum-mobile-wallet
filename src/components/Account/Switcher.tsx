@@ -41,11 +41,11 @@ export const AccountSwitcher = ({ href }: Props) => {
               <Text className="font-medium">{walletName}</Text>
               <Text color="muted">{asRSAddress(accountId)}</Text>
 
-              {isWatchOnly && (
-                <Text color="primary" size="small">
-                  🕵️ {t("watchOnly")}
-                </Text>
-              )}
+              <Text color="primary" size="small">
+                {isWatchOnly
+                  ? `🕵️ ${t("watchOnly")}`
+                  : `🤖 ${t("fullAccount")}`}
+              </Text>
             </View>
           </View>
 

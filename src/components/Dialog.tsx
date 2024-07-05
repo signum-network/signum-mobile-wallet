@@ -12,13 +12,16 @@ interface Props extends ChildrenProps {
 export const Dialog = ({ visible, variant, onClose, children }: Props) => {
   const { theme } = useAppTheme();
 
-  const backDropBackgroundColor =
-    variant === "transparent" ? "rgba(0,0,0,0.85)" : theme.colors.card;
+  const isTransparent = variant === "transparent";
+
+  const backDropBackgroundColor = isTransparent
+    ? "rgba(0,0,0,0.85)"
+    : theme.colors.card;
 
   return (
     <Modal
       animationType="fade"
-      transparent={variant === "transparent"}
+      transparent={isTransparent}
       visible={visible}
       onRequestClose={onClose}
     >

@@ -7,9 +7,11 @@ import { BottomButtonsContainer } from "../components/BottomButtonsContainer";
 import { DashboardScreenContainer } from "../components/DashboardScreenContainer";
 import { Balance } from "./sections/Balance";
 import { Activity } from "./sections/Activity";
+import { useAccount } from "@/hooks/useAccount";
 
 export const OverviewScreen = () => {
   const { t } = useTranslation();
+  const { isWatchOnly } = useAccount();
 
   return (
     <Fragment>
@@ -26,17 +28,20 @@ export const OverviewScreen = () => {
       </ScrollView>
 
       <BottomButtonsContainer>
-        <Button
-          title={t("send")}
-          type="primary"
-          wide
-          linkProps={{ href: "/dashboard/transfer" }}
-        />
+        {!isWatchOnly && (
+          <Button
+            title={t("send")}
+            type="primary"
+            wide
+            linkProps={{ href: "/dashboard/transfer" }}
+          />
+        )}
 
         <Button
           title={t("receive")}
           type="blackout"
-          wide
+          wide={!isWatchOnly}
+          fullWidth={isWatchOnly}
           linkProps={{ href: "/dashboard/deposit" }}
         />
       </BottomButtonsContainer>

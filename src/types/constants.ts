@@ -25,7 +25,7 @@ export const PUBLIC_SIGNUM_EXPLORER_MAINNET_URL =
   "https://explorer.signum.network";
 
 export const PUBLIC_SIGNUM_EXPLORER_TESTNET_URL =
-  "https://testnet.explorer.signum.network";
+  "https://t-chain.signum.network";
 
 // Constants of predefined keys for Expo Secure Store
 
