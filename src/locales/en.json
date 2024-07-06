@@ -173,6 +173,13 @@
       "title": "Currency",
       "description": "Pick the currency of your preference"
     },
+    "features": {
+      "title": "Features",
+      "description": "Manage app features",
+      "deviceAuth": "Device Authentication",
+      "deviceAuthDescription": "Use device authentication for quicker access into the wallet",
+      "deviceAuthUnsupported": "This device does not have biometric authentication"
+    },
     "about": {
       "title": "About",
       "description": "View information about this wallet",

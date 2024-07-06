@@ -6,7 +6,7 @@ import {
   type RefObject,
 } from "react";
 import { ScrollView, View } from "react-native";
-import { useLocalSearchParams } from "expo-router";
+import { useGlobalSearchParams } from "expo-router";
 import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
 import { useFocusEffect } from "expo-router";
 import { useTranslation } from "react-i18next";
@@ -28,7 +28,7 @@ import { transactionCreationSchema } from "./utils/schemas";
 import {
   Steps,
   type TransactionCreation,
-  type LocalSearchParams,
+  type GlobalSearchParams,
 } from "./utils/types";
 import { Recipient } from "./sections/Recipient";
 import { HoldingsSelection } from "./sections/HoldingsSelection";
@@ -44,7 +44,7 @@ export const TransferScreen = () => {
   const { ledgerService } = useLedgerService();
   const { isWatchOnly, publicKey, accountId } = useAccount();
   const { currentNetwork } = useNodeHostStore();
-  const { asset } = useLocalSearchParams<LocalSearchParams>();
+  const { asset } = useGlobalSearchParams<GlobalSearchParams>();
 
   const [isSigningTransaction, setIsSigningTransaction] = useState(false);
   const [isComplete, setIsComplete] = useState(false);

@@ -22,6 +22,7 @@ export const ThemeProvider = ({ children }: ChildrenProps) => {
       case "/dashboard/settings/account":
       case "/dashboard/settings/language":
       case "/dashboard/settings/currency":
+      case "/dashboard/settings/features":
       case "/dashboard/settings/nodes":
       case "/dashboard/settings/about":
         return 0;
