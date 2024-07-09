@@ -4,6 +4,7 @@
   "no": "No",
   "cancel": "Cancel",
   "add": "Add",
+  "remove": "Remove",
   "use": "Use",
   "transaction": "Transaction",
   "transaction_other": "Transactions",
@@ -118,7 +119,8 @@
     "home": "Home",
     "subscriptions": "Subscriptions",
     "tokens": "Tokens",
-    "settings": "Settings"
+    "settings": "Settings",
+    "miner": "Miner"
   },
   "settings": {
     "account": {
@@ -176,9 +178,12 @@
     "features": {
       "title": "Features",
       "description": "Manage app features",
-      "deviceAuth": "Device Authentication",
+      "deviceAuth": "Biometric Authentication",
       "deviceAuthDescription": "Use device authentication for quicker access into the wallet",
-      "deviceAuthUnsupported": "This device does not have biometric authentication"
+      "deviceAuthUnsupported": "This device does not have biometric authentication",
+      "minerMode": "Miner Mode",
+      "minerModeActive": "Manage your signum commitment by visiting the miner screen. It is located on the bottom tabs!",
+      "minerModeDescription": "Miner mode allows you to easily add or remove your signum commitment"
     },
     "about": {
       "title": "About",
@@ -311,5 +316,11 @@
     "signingTransactionDescription": "Kindly hold on while the transaction is being created and signed, let the blockchain do everything for you",
     "signedTransactionTitle": "Success",
     "signedTransactionDescription": "Your transaction request has been successfully sent! Please wait for confirmation..."
+  },
+  "commitment": {
+    "amountIsCommited": "{{percentage}}% of the balance is committed",
+    "howMuchToCommit": "Enter how much {{ticker}} you will commit?",
+    "howMuchToUnCommit": "Enter how much {{ticker}} you will uncommit?",
+    "useAllCommittedBalance": "Use all committed balance"
   }
 }

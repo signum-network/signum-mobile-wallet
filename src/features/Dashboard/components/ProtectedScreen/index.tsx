@@ -18,6 +18,7 @@ import { AppAlert } from "../AppAlert";
 // Subscriptions
 // Tokens
 // Transfer funds
+// Commitment management
 
 export const ProtectedScreen = ({ children }: ChildrenProps) => {
   const { publicKey, isAuthenticated } = useAccount();

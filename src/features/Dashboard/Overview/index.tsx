@@ -2,12 +2,12 @@ import { Fragment } from "react";
 import { ScrollView, View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/Button";
+import { useAccount } from "@/hooks/useAccount";
 import { AccountSwitcher } from "@/components/Account/Switcher";
 import { BottomButtonsContainer } from "../components/BottomButtonsContainer";
 import { DashboardScreenContainer } from "../components/DashboardScreenContainer";
 import { Balance } from "./sections/Balance";
 import { Activity } from "./sections/Activity";
-import { useAccount } from "@/hooks/useAccount";
 
 export const OverviewScreen = () => {
   const { t } = useTranslation();

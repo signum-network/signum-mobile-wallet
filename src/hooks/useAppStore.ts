@@ -21,6 +21,9 @@ export const useAppStore = () => {
   const isOnline = appStore((state) => state.isOnline);
   const setIsOnline = appStore((state) => state.setIsOnline);
 
+  const minerMode = appStore((state) => state.minerMode);
+  const setMinerMode = appStore((state) => state.setMinerMode);
+
   const resetAppStore = appStore((state) => state.reset);
 
   return {
@@ -30,12 +33,14 @@ export const useAppStore = () => {
     authMethod,
     failedAuthAttempts,
     isOnline,
+    minerMode,
     setIsTermAgreed,
     setLanguage,
     setIsAuthEnrolled,
     setAuthMethod,
     setFailedAuthAttempts,
     setIsOnline,
+    setMinerMode,
     resetAppStore,
   };
 };

@@ -1,9 +1,34 @@
+import { useMemo } from "react";
 import { Tabs } from "expo-router";
 import { useTranslation } from "react-i18next";
+import { useAppStore } from "@/hooks/useAppStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 export default function Layout() {
   const { t } = useTranslation();
+  const { minerMode } = useAppStore();
+
+  const tabBarIconSize = 28;
+  const tabBarLabelStyle = { fontSize: 12 };
+
+  const minerTab = useMemo(
+    () =>
+      minerMode ? (
+        <Tabs.Screen
+          options={{
+            title: t("bottomBar.miner"),
+            tabBarIcon: ({ color }) => (
+              <Ionicons name="cog" size={tabBarIconSize} color={color} />
+            ),
+            tabBarLabelStyle,
+          }}
+          name="commitment"
+        />
+      ) : (
+        <Tabs.Screen name="commitment" options={{ href: null }} />
+      ),
+    [minerMode]
+  );
 
   return (
     <Tabs
@@ -17,9 +42,9 @@ export default function Layout() {
         options={{
           title: t("bottomBar.home"),
           tabBarIcon: ({ color }) => (
-            <Ionicons name="home" size={28} color={color} />
+            <Ionicons name="home" size={tabBarIconSize} color={color} />
           ),
-          tabBarLabelStyle: { fontSize: 12 },
+          tabBarLabelStyle,
         }}
         name="overview"
       />
@@ -28,9 +53,9 @@ export default function Layout() {
         options={{
           title: t("bottomBar.tokens"),
           tabBarIcon: ({ color }) => (
-            <Ionicons name="apps" size={28} color={color} />
+            <Ionicons name="apps" size={tabBarIconSize} color={color} />
           ),
-          tabBarLabelStyle: { fontSize: 12 },
+          tabBarLabelStyle,
         }}
         name="tokens"
       />
@@ -39,20 +64,22 @@ export default function Layout() {
         options={{
           title: t("bottomBar.subscriptions"),
           tabBarIcon: ({ color }) => (
-            <Ionicons name="albums" size={28} color={color} />
+            <Ionicons name="albums" size={tabBarIconSize} color={color} />
           ),
-          tabBarLabelStyle: { fontSize: 12 },
+          tabBarLabelStyle,
         }}
         name="subscriptions"
       />
+
+      {minerTab}
 
       <Tabs.Screen
         options={{
           title: t("bottomBar.settings"),
           tabBarIcon: ({ color }) => (
-            <Ionicons name="settings" size={28} color={color} />
+            <Ionicons name="settings" size={tabBarIconSize} color={color} />
           ),
-          tabBarLabelStyle: { fontSize: 12 },
+          tabBarLabelStyle,
         }}
         name="settings"
       />

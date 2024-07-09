@@ -28,7 +28,7 @@ export const Balance = () => {
       : "0";
   }, [balance]);
 
-  const comittedBalance = useMemo(() => {
+  const committedBalance = useMemo(() => {
     return balance && balance?.committedBalance?.getSigna
       ? balance?.committedBalance?.getSigna()
       : "0";
@@ -72,7 +72,7 @@ export const Balance = () => {
 
           <Text color="muted">
             {`${t("committedBalance")}: ${formatNumber({
-              value: comittedBalance,
+              value: committedBalance,
             })}`}
           </Text>
         </View>
