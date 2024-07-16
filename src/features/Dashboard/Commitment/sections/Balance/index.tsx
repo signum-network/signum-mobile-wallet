@@ -1,11 +1,13 @@
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
+import { useFormContext } from "react-hook-form";
 import { Card } from "@/components/Card";
 import { Text } from "@/components/Text";
 import { useAccount } from "@/hooks/useAccount";
 import { useTicker } from "@/hooks/useTicker";
 import { formatNumber } from "@/utils/formatNumber";
+import { type ManageCommitment } from "../../utils/types";
 
 export const Balance = () => {
   const { t } = useTranslation();
@@ -13,27 +15,31 @@ export const Balance = () => {
   const {
     accountData: { balance },
   } = useAccount();
+  const { setValue } = useFormContext<ManageCommitment>();
 
   const availableBalance = useMemo(() => {
-    return balance && balance?.availableBalance?.getSigna
+    return balance?.availableBalance?.getSigna
       ? Number(balance?.availableBalance?.getSigna())
       : 0;
   }, [balance]);
 
   const committedBalance = useMemo(() => {
-    return balance && balance?.committedBalance?.getSigna
+    return balance?.committedBalance?.getSigna
       ? Number(balance?.committedBalance?.getSigna())
       : 0;
   }, [balance]);
 
   const percentageCommitted = useMemo(() => {
-    const totalBalance =
-      balance && balance?.totalBalance?.getSigna
-        ? Number(balance?.totalBalance?.getSigna())
-        : 0;
+    const totalBalance = balance?.totalBalance?.getSigna
+      ? Number(balance?.totalBalance?.getSigna())
+      : 0;
 
     return (committedBalance / totalBalance) * 100 || 0;
   }, [committedBalance]);
+
+  useEffect(() => {
+    setValue("maxAmount", availableBalance);
+  }, [availableBalance]);
 
   return (
     <Card>

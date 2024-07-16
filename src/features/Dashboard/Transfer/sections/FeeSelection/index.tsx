@@ -1,7 +1,6 @@
 import { View, ActivityIndicator } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
-import { Amount } from "@signumjs/util";
 import { AttachmentMessage } from "@signumjs/core";
 import { useNetworkFees } from "@/hooks/useNetworkFees";
 import { Text } from "@/components/Text";
@@ -27,9 +26,17 @@ export const FeeSelection = () => {
 
   const { cheap, standard, priority } = useNetworkFees({ attachment });
 
-  const setCheapFees = () => setValue("fee", cheap);
-  const setStandardFees = () => setValue("fee", standard);
-  const setPriorityFees = () => setValue("fee", priority);
+  const cheapPlanck = cheap.getPlanck();
+  const standardPlanck = standard.getPlanck();
+  const priorityPlanck = priority.getPlanck();
+
+  const cheapSigna = cheap.getSigna();
+  const standardSigna = standard.getSigna();
+  const prioritySigna = priority.getSigna();
+
+  const setCheapFees = () => setValue("fee", cheapPlanck);
+  const setStandardFees = () => setValue("fee", standardPlanck);
+  const setPriorityFees = () => setValue("fee", priorityPlanck);
 
   return (
     <View className="gap-4 w-full">
@@ -45,36 +52,30 @@ export const FeeSelection = () => {
             </Text>
           </View>
 
-          {!cheap ? (
+          {!Number(cheapSigna) ? (
             <ActivityIndicator size={32} />
           ) : (
             <>
               <FormCheckbox
-                value={fee === cheap}
+                value={fee === cheapPlanck}
                 onPress={setCheapFees}
-                title={`🕤 ${t("transfer.feeMinimal")} (${Amount.fromPlanck(
-                  cheap
-                ).getSigna()} Ꞩ)`}
+                title={`🕤 ${t("transfer.feeMinimal")} (${cheapSigna} Ꞩ)`}
                 fullWidth
                 bordered
               />
 
               <FormCheckbox
-                value={fee === standard}
+                value={fee === standardPlanck}
                 onPress={setStandardFees}
-                title={`⏩ ${t("transfer.feeFast")} (${Amount.fromPlanck(
-                  standard
-                ).getSigna()} Ꞩ)`}
+                title={`⏩ ${t("transfer.feeFast")} (${standardSigna} Ꞩ)`}
                 fullWidth
                 bordered
               />
 
               <FormCheckbox
-                value={fee === priority}
+                value={fee === priorityPlanck}
                 onPress={setPriorityFees}
-                title={`🚀 ${t("transfer.feePriority")} (${Amount.fromPlanck(
-                  priority
-                ).getSigna()} Ꞩ)`}
+                title={`🚀 ${t("transfer.feePriority")} (${prioritySigna} Ꞩ)`}
                 fullWidth
                 bordered
               />

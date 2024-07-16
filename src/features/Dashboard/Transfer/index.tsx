@@ -9,7 +9,6 @@ import { ScrollView, View } from "react-native";
 import { useGlobalSearchParams } from "expo-router";
 import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
 import { useFocusEffect } from "expo-router";
-import { useTranslation } from "react-i18next";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Amount, ChainValue } from "@signumjs/util";
 import { AttachmentMessage, AttachmentEncryptedMessage } from "@signumjs/core";
@@ -40,7 +39,6 @@ import { FormStepper } from "./components/FormStepper";
 import { SigningDialog } from "./components/SigningDialog";
 
 export const TransferScreen = () => {
-  const { t } = useTranslation();
   const { ledgerService } = useLedgerService();
   const { isWatchOnly, publicKey, accountId } = useAccount();
   const { currentNetwork } = useNodeHostStore();
@@ -70,14 +68,16 @@ export const TransferScreen = () => {
 
   const activeStep = methods.watch("activeStep");
 
-  useEffect(() => {
+  const scrollToTop = () => {
     if (!scrollRef.current) return;
 
     scrollRef.current?.scrollTo({
       y: 0,
       animated: true,
     });
-  }, [activeStep]);
+  };
+
+  useEffect(() => scrollToTop(), [activeStep]);
 
   useFocusEffect(
     useCallback(() => {
@@ -172,6 +172,8 @@ export const TransferScreen = () => {
           // @ts-ignore
           setTransactionId(confirmation.transaction);
         }
+
+        scrollToTop();
 
         setIsComplete(true);
       })

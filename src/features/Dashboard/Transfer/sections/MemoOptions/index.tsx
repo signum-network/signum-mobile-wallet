@@ -29,7 +29,7 @@ export const MemoOptions = () => {
   };
 
   useEffect(() => {
-    setValue("fee", 0);
+    setValue("fee", "");
   }, [memo, includeMemo, isMemoEncrypted]);
 
   return (

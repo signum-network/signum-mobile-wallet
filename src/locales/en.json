@@ -180,7 +180,7 @@
       "description": "Manage app features",
       "deviceAuth": "Biometric Authentication",
       "deviceAuthDescription": "Use device authentication for quicker access into the wallet",
-      "deviceAuthUnsupported": "This device does not have biometric authentication",
+      "deviceAuthUnsupported": "This device does not offer strong biometric security",
       "minerMode": "Miner Mode",
       "minerModeActive": "Manage your signum commitment by visiting the miner screen. It is located on the bottom tabs!",
       "minerModeDescription": "Miner mode allows you to easily add or remove your signum commitment"
