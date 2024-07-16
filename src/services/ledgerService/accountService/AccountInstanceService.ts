@@ -40,4 +40,31 @@ export class AccountInstanceService extends LedgerSubService {
       )
     );
   }
+
+  fetchLastBlockFound() {
+    return handleError(async () =>
+      this.context.ledger.account
+        .getAccountBlocks({
+          accountId: this.accountId,
+          firstIndex: 0,
+          lastIndex: 0,
+          includeTransactions: false,
+        })
+        .then((data) => data.blocks[0] ?? undefined)
+    );
+  }
+
+  fetchLastAddCommitmentTransaction() {
+    return handleError(async () =>
+      this.context.ledger.account
+        .getAccountTransactions({
+          accountId: this.accountId,
+          firstIndex: 0,
+          lastIndex: 0,
+          type: 20, // Mining-related transactions
+          subtype: 1, // Add commitment sub-type
+        })
+        .then((data) => data.transactions[0] ?? undefined)
+    );
+  }
 }

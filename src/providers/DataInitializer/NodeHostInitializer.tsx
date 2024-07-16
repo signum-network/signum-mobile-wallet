@@ -23,6 +23,7 @@ export const NodeHostInitializer = () => {
     setIsActiveNodeAvailable,
     setIsActiveNodeSynced,
     setActiveNodeSyncedPercentage,
+    setActiveNodeNumberOfBlocks,
     resetActiveNodeHost,
   } = useNodeHostStore();
 
@@ -128,6 +129,8 @@ export const NodeHostInitializer = () => {
         );
 
         setIsActiveNodeAvailable(true);
+
+        setActiveNodeNumberOfBlocks(numberOfBlocks);
 
         return true;
       } catch (error) {

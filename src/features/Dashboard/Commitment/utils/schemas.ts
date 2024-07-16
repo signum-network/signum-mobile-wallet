@@ -5,6 +5,5 @@ export const manageCommitmentSchema = yup
   .object({
     type: yup.string().oneOf(Object.values(OperationType)).required(),
     amount: yup.number().required().positive(),
-    maxAmount: yup.number().required(),
   })
   .required();

@@ -11,6 +11,7 @@ interface State {
   isActiveNodeAvailable: boolean;
   isActiveNodeSynced: boolean;
   activeNodeSyncedPercentage: number;
+  activeNodeNumberOfBlocks: number;
   reliableNodeHost: nodeHost[];
   testnetReliableNodeHost: nodeHost[];
   customNodeHost: nodeHost[];
@@ -24,6 +25,7 @@ interface Actions {
   setIsActiveNodeAvailable: (value: boolean) => void;
   setIsActiveNodeSynced: (value: boolean) => void;
   setActiveNodeSyncedPercentage: (value: number) => void;
+  setActiveNodeNumberOfBlocks: (value: number) => void;
   resetActiveNodeHost: () => void;
   setReliableNodeHost: (value: nodeHost[]) => void;
   setTestnetReliableNodeHost: (value: nodeHost[]) => void;
@@ -38,6 +40,7 @@ const initialState: State = {
   isActiveNodeAvailable: false,
   isActiveNodeSynced: false,
   activeNodeSyncedPercentage: 0,
+  activeNodeNumberOfBlocks: 0,
   reliableNodeHost: [],
   testnetReliableNodeHost: [],
   customNodeHost: [],
@@ -70,6 +73,10 @@ export const nodeHostStore = create<State & Actions>()(
       setActiveNodeSyncedPercentage: (value) =>
         set(() => ({
           activeNodeSyncedPercentage: value,
+        })),
+      setActiveNodeNumberOfBlocks: (value) =>
+        set(() => ({
+          activeNodeNumberOfBlocks: value,
         })),
       resetActiveNodeHost: () =>
         set(() => ({

@@ -8,5 +8,4 @@ export enum OperationType {
 export type ManageCommitment = {
   type: OperationType;
   amount: number;
-  maxAmount: number;
 };
