@@ -101,6 +101,7 @@ export const accountStore = create<State & Actions>()(
 
           const newValue = accounts;
           newValue[publicKey][accountNetwork].isSecured = value;
+          newValue[publicKey][accountNetwork].loading = false;
 
           return {
             accounts: { ...newValue },
