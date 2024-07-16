@@ -20,6 +20,7 @@ import { useLedgerService } from "@/hooks/useLedgerService";
 import { useNodeHostStore } from "@/hooks/useNodeHostStore";
 import { WatchOnlyAccountCard } from "@/components/Account/WatchOnlyAccountCard";
 import { KeyboardAvoidingView } from "@/components/Form/KeyboardAvoidingView";
+import { SigningDialog } from "@/components/SigningDialog";
 import { readSecretKey } from "@/utils/sec/handleSecretKeys";
 import { asAddress } from "@/utils/account/asAddress";
 import { DashboardScreenContainer } from "../components/DashboardScreenContainer";
@@ -36,7 +37,6 @@ import { FeeSelection } from "./sections/FeeSelection";
 import { Confirmation } from "./sections/Confirmation";
 import { FormNavigation } from "./components/FormNavigation";
 import { FormStepper } from "./components/FormStepper";
-import { SigningDialog } from "./components/SigningDialog";
 
 export const TransferScreen = () => {
   const { ledgerService } = useLedgerService();

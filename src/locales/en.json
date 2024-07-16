@@ -330,6 +330,8 @@
     "removeUpdatingCommitmentFeedbackDescription": "You can not remove commitment because you added commitment less than 4 days ago. You will be able to remove commitment in approximately:",
     "removeCommitmentLockedForgedBlockTitle": "Notice: Mined block in less than 4 days",
     "removeCommitmentLockedForgedBlockDescription": "You can not remove commitment because you had mined a block in less than 4 days. You will be able to remove commitment in approximately:",
-    "removeCommitmentLockedForgedBlockSecondDescription": "If your miner does not find a block or add commitment in 4 days, you can remove commitment. Reminder: the commitment funds will always be on your account"
+    "removeCommitmentLockedForgedBlockSecondDescription": "If your miner does not find a block or add commitment in 4 days, you can remove commitment. Reminder: the commitment funds will always be on your account",
+    "addedCommitmentSuccessFeedback": "The committed balance is getting updated, newly added commitment becomes active for mining after 1,440 blocks (around 4 days)",
+    "removedCommitmentSuccessFeedback": "Congrats, the committed balance is being updated"
   }
 }
