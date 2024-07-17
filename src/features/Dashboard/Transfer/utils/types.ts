@@ -10,7 +10,7 @@ export const StepsAmount = 5;
 
 export const maxMemoLength = 1000;
 
-export type LocalSearchParams = {
+export type GlobalSearchParams = {
   asset?: string;
 };
 
@@ -27,5 +27,5 @@ export type TransactionCreation = {
   memo: string;
   isMemoEncrypted: boolean;
   isMemoBinary: boolean;
-  fee: number;
+  fee: string;
 };

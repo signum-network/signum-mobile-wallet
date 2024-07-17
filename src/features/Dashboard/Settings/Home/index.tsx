@@ -47,6 +47,13 @@ export const SettingsScreen = () => {
           />
 
           <NavLink
+            icon={<Ionicons name="apps" size={24} color={iconColor.default} />}
+            title={t("settings.features.title")}
+            description={t("settings.features.description")}
+            href="/dashboard/settings/features"
+          />
+
+          <NavLink
             icon={
               <Ionicons
                 name="extension-puzzle"

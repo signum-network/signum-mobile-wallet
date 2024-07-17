@@ -33,9 +33,9 @@ export const useNetworkFees = ({ attachment }: Props): networkFees => {
           await ledgerService.node.fetchSuggestedFees();
 
         const payload: networkFees = {
-          cheap,
-          standard,
-          priority,
+          cheap: Amount.fromPlanck(cheap),
+          standard: Amount.fromPlanck(standard),
+          priority: Amount.fromPlanck(priority),
         };
 
         setNetworkFees(payload);
@@ -51,7 +51,9 @@ export const useNetworkFees = ({ attachment }: Props): networkFees => {
   });
 
   return useMemo(() => {
-    if (!networkFees.cheap) return defaultNetworkFees;
+    if (!networkFees?.cheap?.getSigna) {
+      return defaultNetworkFees;
+    }
 
     if (attachment) {
       const byteLength = attachment.messageIsText
@@ -63,14 +65,12 @@ export const useNetworkFees = ({ attachment }: Props): networkFees => {
       const amountMultiply = Math.min(Math.floor(byteLength / 160) + 1, 6);
 
       const payload: networkFees = {
-        cheap: Number(
-          Amount.fromPlanck(cheap).multiply(amountMultiply).getPlanck()
+        cheap: Amount.fromPlanck(cheap.getPlanck()).multiply(amountMultiply),
+        standard: Amount.fromPlanck(standard.getPlanck()).multiply(
+          amountMultiply
         ),
-        standard: Number(
-          Amount.fromPlanck(standard).multiply(amountMultiply).getPlanck()
-        ),
-        priority: Number(
-          Amount.fromPlanck(priority).multiply(amountMultiply).getPlanck()
+        priority: Amount.fromPlanck(priority.getPlanck()).multiply(
+          amountMultiply
         ),
       };
 

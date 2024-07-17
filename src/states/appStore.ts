@@ -12,7 +12,8 @@ interface State {
   isAuthEnrolled: boolean; // Determine whether the user has enrolled for authentication.
   authMethod: authMethod; // Determine the method the user will use for authentication (PIN or Biometric)
   failedAuthAttempts: number;
-  isOnline: boolean; // Determine wheter the user has internet access
+  isOnline: boolean; // Determine whether the user has internet access
+  minerMode: boolean; // Determine whether the user has enabled miner mode for handling commitment
 }
 
 interface Actions {
@@ -24,6 +25,7 @@ interface Actions {
   setAuthMethod: (value: authMethod) => void;
   setFailedAuthAttempts: (value: number) => void;
   setIsOnline: (value: boolean) => void;
+  setMinerMode: (value: boolean) => void;
 }
 
 const initialState: State = {
@@ -34,6 +36,7 @@ const initialState: State = {
   authMethod: "PIN",
   failedAuthAttempts: 0,
   isOnline: true,
+  minerMode: false,
 };
 
 export const appStore = create<State & Actions>()(
@@ -70,6 +73,10 @@ export const appStore = create<State & Actions>()(
       setIsOnline: (value) =>
         set(() => ({
           isOnline: value,
+        })),
+      setMinerMode: (value) =>
+        set(() => ({
+          minerMode: value,
         })),
     }),
     {

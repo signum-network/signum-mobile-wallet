@@ -17,19 +17,19 @@ export const Balance = () => {
   } = useAccount();
 
   const totalBalance = useMemo(() => {
-    return balance && balance?.totalBalance?.getSigna
+    return balance?.totalBalance?.getSigna
       ? Number(balance?.totalBalance?.getSigna())
       : 0;
   }, [balance]);
 
   const availableBalance = useMemo(() => {
-    return balance && balance?.availableBalance?.getSigna
+    return balance?.availableBalance?.getSigna
       ? balance?.availableBalance?.getSigna()
       : "0";
   }, [balance]);
 
-  const comittedBalance = useMemo(() => {
-    return balance && balance?.committedBalance?.getSigna
+  const committedBalance = useMemo(() => {
+    return balance?.committedBalance?.getSigna
       ? balance?.committedBalance?.getSigna()
       : "0";
   }, [balance]);
@@ -72,7 +72,7 @@ export const Balance = () => {
 
           <Text color="muted">
             {`${t("committedBalance")}: ${formatNumber({
-              value: comittedBalance,
+              value: committedBalance,
             })}`}
           </Text>
         </View>

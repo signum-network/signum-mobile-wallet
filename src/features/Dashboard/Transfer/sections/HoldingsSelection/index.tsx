@@ -34,7 +34,7 @@ export const HoldingsSelection = () => {
   const isAssetSigna = asset === "0";
 
   const signaAvailableBalance = useMemo(() => {
-    return balance && balance?.availableBalance?.getSigna
+    return balance?.availableBalance?.getSigna
       ? Number(balance?.availableBalance?.getSigna())
       : 0;
   }, [balance]);

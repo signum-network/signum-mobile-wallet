@@ -4,6 +4,7 @@
   "no": "No",
   "cancel": "Cancel",
   "add": "Add",
+  "remove": "Remove",
   "use": "Use",
   "transaction": "Transaction",
   "transaction_other": "Transactions",
@@ -18,6 +19,7 @@
   "or": "OR",
   "copyToClipboard": "Copy to clipboard",
   "coin": "Coin",
+  "blocks": "Blocks",
   "estimatedValue": "Estimated Value",
   "loading": "Loading",
   "mnemonic": "Mnemonic",
@@ -118,7 +120,8 @@
     "home": "Home",
     "subscriptions": "Subscriptions",
     "tokens": "Tokens",
-    "settings": "Settings"
+    "settings": "Settings",
+    "miner": "Miner"
   },
   "settings": {
     "account": {
@@ -172,6 +175,16 @@
     "currency": {
       "title": "Currency",
       "description": "Pick the currency of your preference"
+    },
+    "features": {
+      "title": "Features",
+      "description": "Manage app features",
+      "deviceAuth": "Biometric Authentication",
+      "deviceAuthDescription": "Use device authentication for quicker access into the wallet",
+      "deviceAuthUnsupported": "This device does not offer strong biometric security",
+      "minerMode": "Miner Mode",
+      "minerModeActive": "Manage your signum commitment by visiting the miner screen. It is located on the bottom tabs!",
+      "minerModeDescription": "Miner mode allows you to easily add or remove your signum commitment"
     },
     "about": {
       "title": "About",
@@ -304,5 +317,21 @@
     "signingTransactionDescription": "Kindly hold on while the transaction is being created and signed, let the blockchain do everything for you",
     "signedTransactionTitle": "Success",
     "signedTransactionDescription": "Your transaction request has been successfully sent! Please wait for confirmation..."
+  },
+  "commitment": {
+    "amountIsCommited": "{{percentage}}% of the balance is committed",
+    "howMuchToCommit": "Enter how much {{ticker}} you will commit?",
+    "howMuchToUnCommit": "Enter how much {{ticker}} you will uncommit?",
+    "useAllCommittedBalance": "Use all committed balance",
+    "noCommitment": "Not committed balance",
+    "noCommitmentDescription": "There is no effective committed balance in this account",
+    "updatingCommitmentTitle": "Commitment funds are getting updated",
+    "updatingCommitmentDescription": "We have detected that you added commitment recently. The Signum blockchain will update the effective committed balance in approximately:",
+    "removeUpdatingCommitmentFeedbackDescription": "You can not remove commitment because you added commitment less than 4 days ago. You will be able to remove commitment in approximately:",
+    "removeCommitmentLockedForgedBlockTitle": "Notice: Mined block in less than 4 days",
+    "removeCommitmentLockedForgedBlockDescription": "You can not remove commitment because you had mined a block in less than 4 days. You will be able to remove commitment in approximately:",
+    "removeCommitmentLockedForgedBlockSecondDescription": "If your miner does not find a block or add commitment in 4 days, you can remove commitment. Reminder: the commitment funds will always be on your account",
+    "addedCommitmentSuccessFeedback": "The committed balance is getting updated, newly added commitment becomes active for mining after 1,440 blocks (around 4 days)",
+    "removedCommitmentSuccessFeedback": "Congrats, the committed balance is being updated"
   }
 }

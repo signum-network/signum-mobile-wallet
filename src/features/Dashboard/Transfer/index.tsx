@@ -6,10 +6,9 @@ import {
   type RefObject,
 } from "react";
 import { ScrollView, View } from "react-native";
-import { useLocalSearchParams } from "expo-router";
+import { useGlobalSearchParams } from "expo-router";
 import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
 import { useFocusEffect } from "expo-router";
-import { useTranslation } from "react-i18next";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Amount, ChainValue } from "@signumjs/util";
 import { AttachmentMessage, AttachmentEncryptedMessage } from "@signumjs/core";
@@ -21,6 +20,7 @@ import { useLedgerService } from "@/hooks/useLedgerService";
 import { useNodeHostStore } from "@/hooks/useNodeHostStore";
 import { WatchOnlyAccountCard } from "@/components/Account/WatchOnlyAccountCard";
 import { KeyboardAvoidingView } from "@/components/Form/KeyboardAvoidingView";
+import { SigningDialog } from "@/components/SigningDialog";
 import { readSecretKey } from "@/utils/sec/handleSecretKeys";
 import { asAddress } from "@/utils/account/asAddress";
 import { DashboardScreenContainer } from "../components/DashboardScreenContainer";
@@ -28,7 +28,7 @@ import { transactionCreationSchema } from "./utils/schemas";
 import {
   Steps,
   type TransactionCreation,
-  type LocalSearchParams,
+  type GlobalSearchParams,
 } from "./utils/types";
 import { Recipient } from "./sections/Recipient";
 import { HoldingsSelection } from "./sections/HoldingsSelection";
@@ -37,14 +37,12 @@ import { FeeSelection } from "./sections/FeeSelection";
 import { Confirmation } from "./sections/Confirmation";
 import { FormNavigation } from "./components/FormNavigation";
 import { FormStepper } from "./components/FormStepper";
-import { SigningDialog } from "./components/SigningDialog";
 
 export const TransferScreen = () => {
-  const { t } = useTranslation();
   const { ledgerService } = useLedgerService();
   const { isWatchOnly, publicKey, accountId } = useAccount();
   const { currentNetwork } = useNodeHostStore();
-  const { asset } = useLocalSearchParams<LocalSearchParams>();
+  const { asset } = useGlobalSearchParams<GlobalSearchParams>();
 
   const [isSigningTransaction, setIsSigningTransaction] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
@@ -70,14 +68,16 @@ export const TransferScreen = () => {
 
   const activeStep = methods.watch("activeStep");
 
-  useEffect(() => {
+  const scrollToTop = () => {
     if (!scrollRef.current) return;
 
     scrollRef.current?.scrollTo({
       y: 0,
       animated: true,
     });
-  }, [activeStep]);
+  };
+
+  useEffect(() => scrollToTop(), [activeStep]);
 
   useFocusEffect(
     useCallback(() => {
@@ -172,6 +172,8 @@ export const TransferScreen = () => {
           // @ts-ignore
           setTransactionId(confirmation.transaction);
         }
+
+        scrollToTop();
 
         setIsComplete(true);
       })

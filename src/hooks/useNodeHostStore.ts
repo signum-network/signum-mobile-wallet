@@ -30,6 +30,13 @@ export const useNodeHostStore = () => {
     (state) => state.setActiveNodeSyncedPercentage
   );
 
+  const activeNodeNumberOfBlocks = nodeHostStore(
+    (state) => state.activeNodeNumberOfBlocks
+  );
+  const setActiveNodeNumberOfBlocks = nodeHostStore(
+    (state) => state.setActiveNodeNumberOfBlocks
+  );
+
   const reliableNodeHost = nodeHostStore((state) => state.reliableNodeHost);
   const setReliableNodeHost = nodeHostStore(
     (state) => state.setReliableNodeHost
@@ -61,6 +68,7 @@ export const useNodeHostStore = () => {
     isActiveNodeAvailable,
     isActiveNodeSynced,
     activeNodeSyncedPercentage,
+    activeNodeNumberOfBlocks,
     reliableNodeHost,
     testnetReliableNodeHost,
     customNodeHost,
@@ -78,6 +86,7 @@ export const useNodeHostStore = () => {
     setIsActiveNodeAvailable,
     setIsActiveNodeSynced,
     setActiveNodeSyncedPercentage,
+    setActiveNodeNumberOfBlocks,
     setNetworkFees,
   };
 };
