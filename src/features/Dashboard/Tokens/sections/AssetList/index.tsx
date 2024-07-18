@@ -18,15 +18,17 @@ export const AssetList = ({ list }: Props) => {
 
   return (
     <Card>
-      <View className="w-full flex flex-row items-center justify-between">
-        <Text color="muted" className="font-medium">
-          {t("coin")}
-        </Text>
+      {!!list.length && (
+        <View className="w-full flex flex-row items-center justify-between">
+          <Text color="muted" className="font-medium">
+            {t("coin")}
+          </Text>
 
-        <Text color="muted" className="font-medium">
-          {`${t("estimatedValue")} (${NativeTicker})`}
-        </Text>
-      </View>
+          <Text color="muted" className="font-medium">
+            {`${t("estimatedValue")} (${NativeTicker})`}
+          </Text>
+        </View>
+      )}
 
       <View
         style={{

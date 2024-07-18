@@ -87,17 +87,19 @@ export const HoldingsSelection = () => {
                 readableAvailableBalance={readableAvailableBalance}
               />
 
-              <View className="border rounded-lg border-card-border dark:border-card-border-dark px-2 py-4 opacity-80 flex flex-col items-center gap-1">
-                <MaterialIcons
-                  name="currency-exchange"
-                  size={28}
-                  color={iconColor.primary}
-                />
+              {!!tokenBalance.length && (
+                <View className="border rounded-lg border-card-border dark:border-card-border-dark px-2 py-4 opacity-80 flex flex-col items-center gap-1">
+                  <MaterialIcons
+                    name="currency-exchange"
+                    size={28}
+                    color={iconColor.primary}
+                  />
 
-                <Text size="extraSmall" color="primary">
-                  {t("transfer.changeAsset")}
-                </Text>
-              </View>
+                  <Text size="extraSmall" color="primary">
+                    {t("transfer.changeAsset")}
+                  </Text>
+                </View>
+              )}
             </View>
           </Card>
         </Pressable>

@@ -37,8 +37,8 @@ export const AccountInitializer = () => {
         );
 
         const tokenBalance = getTokenBalancesFromAccount(
-          assetBalances,
-          unconfirmedAssetBalances
+          assetBalances || [],
+          unconfirmedAssetBalances || []
         );
 
         updateAccountData(publicKey, currentNetwork, {
