@@ -6,6 +6,11 @@ The new 🚀 Signum Mobile Wallet - Better than ever before 🤘
 
 ## Development Tips
 
+### How to start hacking
+
+- `npm i` Install dependencies
+- `npm run android` or `npm run ios` Start expo development client
+
 ### What to do when new libraries are installed
 
 Execute `npm run prebuild`
@@ -37,3 +42,10 @@ https://www.nativewind.dev/v4/guides/troubleshooting
 #### Wallet will be available only on `Android` and `iOS`
 
 https://docs.expo.dev/versions/latest/#support-for-android-and-ios-versions
+
+### Builds
+
+#### Create a build using the `preview` profile
+
+`eas build -p android --profile preview`
+This builds an `.apk` file to allow you to test the build app on any physical android device
