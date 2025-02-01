@@ -1,4 +1,4 @@
-import { openDatabaseSync } from "expo-sqlite/next";
+import { openDatabaseSync } from "expo-sqlite";
 import { drizzle } from "drizzle-orm/expo-sqlite";
 
 const expoDb = openDatabaseSync("database.db");

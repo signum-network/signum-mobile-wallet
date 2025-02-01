@@ -1,7 +1,7 @@
 import { View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useFormContext, Controller } from "react-hook-form";
-import type { BarcodeScanningResult } from "expo-camera/next";
+import type { BarcodeScanningResult } from "expo-camera";
 import { Text } from "@/components/Text";
 import { Card } from "@/components/Card";
 import { TextInput } from "@/components/TextInput";

@@ -68,7 +68,7 @@ export const EnrollAuthScreen = () => {
     const goToWizard = () => {
       setTimeout(() => {
         setIsAuthEnrolled(true);
-        router.replace("/account-wizard/");
+        router.replace("/account-wizard");
       }, 2700); // Timeout is assigned because of ringtone duration
     };
 

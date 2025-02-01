@@ -39,7 +39,7 @@ export const FormNavButton = (props: Props) => {
   return (
     <Animated.View
       style={{
-        display: props.hidden ? "none" : display,
+        display: props.hidden ? "none" : display.value,
         zIndex: 250,
         position: "absolute",
         left: 0,

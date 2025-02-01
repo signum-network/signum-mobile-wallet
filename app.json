@@ -11,9 +11,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#0099ff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "scheme": "signum",
     "experiments": {
       "typedRoutes": true
@@ -55,7 +53,9 @@
           "recordAudioAndroid": false
         }
       ],
-      "expo-localization"
+      "expo-localization",
+      "expo-asset",
+      "expo-sqlite"
     ],
     "extra": {
       "router": {

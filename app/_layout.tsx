@@ -1,6 +1,5 @@
 import "../global.css";
 import "@/locales";
-import "fast-text-encoding";
 import * as Crypto from "expo-crypto";
 import * as SplashScreen from "expo-splash-screen";
 import { Stack } from "expo-router/stack";

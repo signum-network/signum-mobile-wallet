@@ -11,6 +11,11 @@ The new 🚀 Signum Mobile Wallet - Better than ever before 🤘
 - `npm i` Install dependencies
 - `npm run android` or `npm run ios` Start expo development client
 
+### Create Development Builds without cache
+
+- `npx expo run:android --no-build-cache`
+- `npx expo run:ios --no-build-cache`
+
 ### What to do when new libraries are installed
 
 Execute `npm run prebuild`
