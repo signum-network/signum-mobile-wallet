@@ -20,9 +20,9 @@ d) In - Wallet behavioral information such as without limitation Your visits of 
 
 2. We _may_ share some personal information with certain providers that perform services on our behalf. We only share the personal information which is necessary for them to perform those services. We require any provider with which we may share personal information to protect that data in a manner consistent with this policy and to limit the use of such personal information to the performance of services for the Mobile Wallet. Please note that those providers have their own privacy policies which will govern the shared information and which are available at the links below. In particular, we may share some information with:
 
-| Who           | Shared Information | Purpose                                                          | Privacy Policy                     |
-| ------------- | ------------------ | ---------------------------------------------------------------- | ---------------------------------- |
-| CoinMarketCap | None               | Used for making API calls to retrieve current price information. | https://coinmarketcap.com/privacy/ |
+| Who       | Shared Information | Purpose                                                          | Privacy Policy                   |
+| --------- | ------------------ | ---------------------------------------------------------------- | -------------------------------- |
+| CoinGecko | None               | Used for making API calls to retrieve current price information. | https://www.coingecko.com/en/api |
 
 1. We implement a variety of security measures when You enter, submit, or access to our Wallet in order to maintain the safety of Your personal information. Your wallet passphrases are used to dervice your private key which is encrypted with a hashed PIN, and they are stored on the device's sensitive KeyChain, which is usually protected memory on the device.
 
