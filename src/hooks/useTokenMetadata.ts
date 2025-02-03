@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { useQuery } from "@tanstack/react-query";
-import { useDatabaseContext } from "@/hooks/useDatabaseContext";
+import { useDatabase } from "@/hooks/useDatabase";
 import { useNodeHostStore } from "@/hooks/useNodeHostStore";
 import { useLedgerService } from "@/hooks/useLedgerService";
 import { tokens, defaultToken, type Token } from "@/db/schema";
@@ -8,7 +8,7 @@ import { tokens, defaultToken, type Token } from "@/db/schema";
 export const useTokenMetadata = (tokenId = ""): Token => {
   const { ledgerService } = useLedgerService();
   const { isActiveNodeSynced } = useNodeHostStore();
-  const db = useDatabaseContext();
+  const db = useDatabase();
 
   const { data } = useQuery({
     queryKey: ["fetchToken", tokenId],

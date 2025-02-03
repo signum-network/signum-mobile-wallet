@@ -54,3 +54,14 @@ https://docs.expo.dev/versions/latest/#support-for-android-and-ios-versions
 
 `eas build -p android --profile preview`
 This builds an `.apk` file to allow you to test the build app on any physical android device
+
+### How to inspect SQLite File With Drizzle
+
+- Start Development Client
+
+- Open devtools menu from the terminal with "start" process and choose
+  - `expo-drizzle-studio-plugin`
+
+```cmd
+shift + m
+```

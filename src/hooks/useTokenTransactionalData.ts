@@ -2,7 +2,7 @@ import { eq } from "drizzle-orm";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { differenceInMinutes } from "date-fns";
 import { useAccount } from "@/hooks/useAccount";
-import { useDatabaseContext } from "@/hooks/useDatabaseContext";
+import { useDatabase } from "@/hooks/useDatabase";
 import { useNodeHostStore } from "@/hooks/useNodeHostStore";
 import { useLedgerService } from "@/hooks/useLedgerService";
 import {
@@ -23,7 +23,7 @@ export const useTokenTransactionalData = (
   const { accountId } = useAccount();
   const { ledgerService } = useLedgerService();
   const { isActiveNodeSynced, currentNetwork } = useNodeHostStore();
-  const db = useDatabaseContext();
+  const db = useDatabase();
   const queryClient = useQueryClient();
 
   const { data } = useQuery({

@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Amount, ChainValue } from "@signumjs/util";
 import { useAccount } from "@/hooks/useAccount";
 import { useNodeHostStore } from "@/hooks/useNodeHostStore";
-import { useDatabaseContext } from "@/hooks/useDatabaseContext";
+import { useDatabase } from "@/hooks/useDatabase";
 import { DashboardScreenContainer } from "../components/DashboardScreenContainer";
 import { AssetSummary } from "./sections/AssetSummary";
 import { AssetList } from "./sections/AssetList";
@@ -21,7 +21,7 @@ export const TokensScreen = () => {
     accountId,
     accountData: { tokenBalance },
   } = useAccount();
-  const db = useDatabaseContext();
+  const db = useDatabase();
   const { isActiveNodeSynced, currentNetwork } = useNodeHostStore();
 
   const getTokenBalanceToSignaValue = async (

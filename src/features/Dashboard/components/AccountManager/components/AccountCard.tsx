@@ -87,7 +87,7 @@ export const AccountCard = ({ publicKey, type, walletName }: Props) => {
 
   // TODO: Remove "transactions history", "subscription" from account
   const removeAccount = async () => {
-    itemHeight.value = withTiming(0);
+    itemHeight.set(0);
 
     if (isCurrentAccount) {
       const newAccountPublicKeys = accountPublicKeys.filter(
@@ -136,26 +136,28 @@ export const AccountCard = ({ publicKey, type, walletName }: Props) => {
 
   const pan = Gesture.Pan()
     .onBegin(() => {
-      pressed.value = true;
+      pressed.set(true);
     })
     .onChange((event) => {
       if (event.translationX < 0) {
-        swipeTranslateX.value = event.translationX;
+        swipeTranslateX.set(event.translationX);
       }
     })
     .onFinalize(() => {
       const isShouldDismiss = swipeTranslateX.value < -WIDTH_SCREEN * 0.5;
 
       if (isShouldDismiss) {
-        swipeTranslateX.value = withTiming(0, undefined, (isDone) => {
-          if (isDone) {
-            runOnJS(requestDelete)();
-          }
-        });
+        swipeTranslateX.set(
+          withTiming(0, undefined, (isDone) => {
+            if (isDone) {
+              runOnJS(requestDelete)();
+            }
+          })
+        );
       } else {
-        swipeTranslateX.value = withSpring(0);
+        swipeTranslateX.set(withSpring(0));
       }
-      pressed.value = false;
+      pressed.set(false);
     });
 
   const transformStyle = useAnimatedStyle(() => ({

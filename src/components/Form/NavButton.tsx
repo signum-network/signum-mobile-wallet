@@ -17,16 +17,16 @@ export const FormNavButton = (props: Props) => {
     const keyboardDidShowListener = Keyboard.addListener(
       "keyboardDidShow",
       () => {
-        height.value = 0;
-        display.value = "none";
+        height.set(0);
+        display.set("none");
       }
     );
 
     const keyboardDidHideListener = Keyboard.addListener(
       "keyboardDidHide",
       () => {
-        height.value = DEFAULT_HEIGHT;
-        display.value = "flex";
+        height.set(DEFAULT_HEIGHT);
+        display.set("flex");
       }
     );
 
@@ -39,7 +39,8 @@ export const FormNavButton = (props: Props) => {
   return (
     <Animated.View
       style={{
-        display: props.hidden ? "none" : display.value,
+        // @ts-expect-error This is the proper usage of the useShareValue hook, there are type issues on react-native-reanimated, if you use display.value; You will get warnings of incorrect API usage
+        display: props.hidden ? "none" : display,
         zIndex: 250,
         position: "absolute",
         left: 0,
