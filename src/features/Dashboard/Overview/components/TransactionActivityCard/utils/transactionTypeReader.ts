@@ -4,7 +4,7 @@ import {
   TransactionArbitrarySubtype,
   TransactionAssetSubtype,
   TransactionMiningSubtype,
-  TransactionEscrowSubtype,
+  TransactionAdvancedPaymentSubtype,
   TransactionSmartContractSubtype,
 } from "@signumjs/core";
 
@@ -91,12 +91,15 @@ const convertedTransactionStrings = {
     [TransactionMiningSubtype.AddCommitment]: "AddCommitment",
     [TransactionMiningSubtype.RemoveCommitment]: "RemoveCommitment",
   },
-  [TransactionType.Escrow]: {
-    [TransactionEscrowSubtype.SubscriptionSubscribe]: "SubscriptionSubscribe",
-    [TransactionEscrowSubtype.SubscriptionCancel]: "SubscriptionCancel",
-    [TransactionEscrowSubtype.SubscriptionPayment]: "SubscriptionPayment",
+  [TransactionType.AdvancedPayment]: {
+    [TransactionAdvancedPaymentSubtype.SubscriptionSubscribe]:
+      "SubscriptionSubscribe",
+    [TransactionAdvancedPaymentSubtype.SubscriptionCancel]:
+      "SubscriptionCancel",
+    [TransactionAdvancedPaymentSubtype.SubscriptionPayment]:
+      "SubscriptionPayment",
   },
-  [TransactionType.AT]: {
+  [TransactionType.SmartContract]: {
     [TransactionSmartContractSubtype.SmartContractCreation]:
       "SmartContractCreation",
     [TransactionSmartContractSubtype.SmartContractPayment]:

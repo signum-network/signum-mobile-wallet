@@ -1,10 +1,10 @@
 import * as SecureStore from "expo-secure-store";
-import { generateMasterKeys } from "@signumjs/crypto";
+import { generateSignKeys } from "@signumjs/crypto";
 import { options } from "./storageOptions";
 
 export const generateSecretKeys = (seed: string) => {
   const { publicKey, agreementPrivateKey, signPrivateKey } =
-    generateMasterKeys(seed);
+    generateSignKeys(seed);
 
   return { publicKey, agreementPrivateKey, signPrivateKey };
 };

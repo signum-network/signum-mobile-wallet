@@ -125,10 +125,11 @@ export const TransferScreen = () => {
               agreementPrivateKey
             );
 
-            attachment = new AttachmentEncryptedMessage({
-              ...encryptedPayload,
-              isText: !isMemoBinary,
-            });
+            // TODO: Implement proper encrypting attachment
+            // attachment = new AttachmentEncryptedMessage({
+            //   ...encryptedPayload,
+            //   isText: !isMemoBinary,
+            // });
           } else {
             attachment = new AttachmentMessage({
               messageIsText: !isMemoBinary,
