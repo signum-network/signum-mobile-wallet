@@ -67,8 +67,8 @@ export const ImportScreen = () => {
     setValue("mnemonicAccountAgreement", false);
   }, [type]);
 
-  const onCodeScanned = (data: BarcodeScanningResult) => {
-    setValue("account", data.data);
+  const onCodeScanned = (code: BarcodeScanningResult) => {
+    setValue("account", code.data);
   };
 
   const onSubmit: SubmitHandler<AccountImport> = async (data) => {
