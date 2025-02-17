@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import { Keyboard, Platform } from "react-native";
+import { Keyboard } from "react-native";
+import { PUBLIC_CURRENT_OS } from "@/types/constants";
 import { Button, type Props as ButtonProps } from "../Button";
 import Animated, { useSharedValue } from "react-native-reanimated";
 
@@ -45,7 +46,7 @@ export const FormNavButton = (props: Props) => {
         position: "absolute",
         left: 0,
         bottom: 0,
-        elevation: Platform.OS === "android" ? 50 : 0,
+        elevation: PUBLIC_CURRENT_OS === "android" ? 50 : 0,
         height,
       }}
       className="flex justify-center items-center flex-1 w-full p-4 bg-card-foreground dark:bg-card-foreground-dark border-t border-card-border dark:border-card-border-dark"

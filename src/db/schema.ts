@@ -43,7 +43,6 @@ export const defaultTokenTransactionalData: TokenTransactionalData = {
   lastUpdated: "",
 };
 
-// TODO: Fix Unique Transaction ID due to wallet's multi-account management nature
 // Distribution Amounts of a "distribute to holders" transaction per account
 export const distributionAmounts = sqliteTable("distribution-amounts", {
   id: text("id").primaryKey(), // The id of a distribution transaction

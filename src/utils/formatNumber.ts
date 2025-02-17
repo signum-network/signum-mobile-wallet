@@ -9,7 +9,7 @@ interface Args {
   maximumFractionDigits?: number;
 }
 
-export const defaultMaximumFractionDigits = 8;
+export const defaultMaximumFractionDigits = 4;
 
 export const formatNumber = ({
   value,

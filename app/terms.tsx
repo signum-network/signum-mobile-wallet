@@ -1,13 +1,13 @@
 import { Fragment } from "react";
-import { Platform } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { TermsScreen } from "@/features/Terms";
+import { PUBLIC_CURRENT_OS } from "@/types/constants";
 
 export default function Screen() {
   return (
     <Fragment>
       <StatusBar
-        style={Platform.OS === "ios" ? "dark" : "light"}
+        style={PUBLIC_CURRENT_OS === "ios" ? "dark" : "light"}
         backgroundColor="#0099ff"
         translucent
       />

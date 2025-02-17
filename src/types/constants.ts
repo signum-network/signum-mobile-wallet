@@ -29,6 +29,8 @@ export const PUBLIC_SIGNUM_EXPLORER_MAINNET_URL =
 export const PUBLIC_SIGNUM_EXPLORER_TESTNET_URL =
   "https://t-chain.signum.network";
 
+export const PUBLIC_CURRENT_OS = process.env.EXPO_OS as "ios" | "android";
+
 // Constants of predefined keys for Expo Secure Store
 
 export const SECURE_STORE_PIN_KEY = "PIN_KEY";

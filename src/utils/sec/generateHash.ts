@@ -1,6 +1,8 @@
 import * as Crypto from "expo-crypto";
-import { Platform } from "react-native";
-import { PUBLIC_PIN_HASH_ITERATIONS } from "@/types/constants";
+import {
+  PUBLIC_PIN_HASH_ITERATIONS,
+  PUBLIC_CURRENT_OS,
+} from "@/types/constants";
 import { Buffer } from "buffer/"; // Note: the trailing slash is important!
 
 export const generateHash = async (secret: string, saltBase64?: string) => {
@@ -17,7 +19,7 @@ export const generateHash = async (secret: string, saltBase64?: string) => {
 
     let hash = await Crypto.digest(Crypto.CryptoDigestAlgorithm.SHA512, merged);
 
-    if (Platform.OS === "android") {
+    if (PUBLIC_CURRENT_OS === "android") {
       for (let i = 0; i < PUBLIC_PIN_HASH_ITERATIONS - 1; ++i) {
         hash = await Crypto.digest(
           Crypto.CryptoDigestAlgorithm.SHA512,
