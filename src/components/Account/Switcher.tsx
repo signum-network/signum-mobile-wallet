@@ -8,6 +8,7 @@ import { Text } from "@/components/Text";
 import { Card } from "@/components/Card";
 import { asRSAddress } from "@/utils/account/asRSAddress";
 import { NoAccountsFoundCard } from "./NoAccountsFoundCard";
+import AccountAvatar from "@/components/Account/Avatar";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 
 interface Props {
@@ -34,8 +35,9 @@ export const AccountSwitcher = ({ href }: Props) => {
       <Card>
         <View className="w-full flex flex-row justify-between items-center">
           <View className="flex flex-row gap-2 items-center justify-start flex-1">
-            {/* TODO: Show account avatar */}
-            {/* <View className="w-10 h-10 bg-slate-300 rounded-lg"></View> */}
+            <View className="size-10 overflow-hidden rounded-lg">
+              <AccountAvatar accountId={accountId} />
+            </View>
 
             <View className="flex flex-col">
               <Text className="font-medium">{walletName}</Text>
