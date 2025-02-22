@@ -12,6 +12,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { Text } from "@/components/Text";
+import { AccountAvatar } from "@/components/Account/Avatar";
 import { useTicker } from "@/hooks/useTicker";
 import { useAccountStore } from "@/hooks/useAccountStore";
 import { AccountType } from "@/types/account";
@@ -48,6 +49,7 @@ export const AccountCard = ({ publicKey, type, walletName }: Props) => {
   } = useAccountStore();
 
   const currentAccount = accounts[publicKey];
+  const accountId = Address.fromPublicKey(publicKey).getNumericId();
 
   const isMainnetSecured = currentAccount
     ? currentAccount.mainnet.isSecured
@@ -178,8 +180,6 @@ export const AccountCard = ({ publicKey, type, walletName }: Props) => {
       if (!ledgerService) return;
 
       try {
-        const accountId = Address.fromPublicKey(publicKey).getNumericId();
-
         const {
           name,
           description,
@@ -263,8 +263,11 @@ export const AccountCard = ({ publicKey, type, walletName }: Props) => {
             className="flex flex-row items-center justify-between p-4 ripple-[#333] ripple-bordered !rounded-lg w-full"
           >
             <View className="flex flex-row gap-4 items-center justify-start flex-1">
-              {/* TODO: Show account avatar */}
-              {/* <View className="w-10 h-10 bg-slate-300 rounded-lg"></View> */}
+              <AccountAvatar
+                loading={!isSecured}
+                accountId={accountId}
+                description={currentAccount[currentNetwork].description}
+              />
 
               <View className="flex flex-col gap-1">
                 <Text className="font-bold">{walletName}</Text>

@@ -7,8 +7,8 @@ import { useAccountStore } from "@/hooks/useAccountStore";
 import { Text } from "@/components/Text";
 import { Card } from "@/components/Card";
 import { asRSAddress } from "@/utils/account/asRSAddress";
+import { AccountAvatar } from "@/components/Account/Avatar";
 import { NoAccountsFoundCard } from "./NoAccountsFoundCard";
-import AccountAvatar from "@/components/Account/Avatar";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 
 interface Props {
@@ -18,7 +18,12 @@ interface Props {
 export const AccountSwitcher = ({ href }: Props) => {
   const { t } = useTranslation();
   const { iconColor } = useAppTheme();
-  const { accountId, isWatchOnly, walletName } = useAccount();
+  const {
+    accountId,
+    isWatchOnly,
+    walletName,
+    accountData: { loading, description },
+  } = useAccount();
   const { accountPublicKeys } = useAccountStore();
 
   const goToAccountSettings = () => {
@@ -35,9 +40,11 @@ export const AccountSwitcher = ({ href }: Props) => {
       <Card>
         <View className="w-full flex flex-row justify-between items-center">
           <View className="flex flex-row gap-2 items-center justify-start flex-1">
-            <View className="size-10 overflow-hidden rounded-lg">
-              <AccountAvatar accountId={accountId} />
-            </View>
+            <AccountAvatar
+              loading={loading}
+              accountId={accountId}
+              description={description}
+            />
 
             <View className="flex flex-col">
               <Text className="font-medium">{walletName}</Text>

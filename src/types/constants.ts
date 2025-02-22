@@ -31,6 +31,8 @@ export const PUBLIC_SIGNUM_EXPLORER_TESTNET_URL =
 
 export const PUBLIC_CURRENT_OS = process.env.EXPO_OS as "ios" | "android";
 
+export const PUBLIC_IPFS_GATEWAY = "https://ipfs.io/ipfs";
+
 // Constants of predefined keys for Expo Secure Store
 
 export const SECURE_STORE_PIN_KEY = "PIN_KEY";
