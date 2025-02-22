@@ -7,6 +7,7 @@ import { DATABASE_NAME } from "./name";
 import migrations from "@/db/drizzle/migrations";
 import * as SplashScreen from "expo-splash-screen";
 
+// Connection used only INSIDE hooks
 const expoDb = openDatabaseSync(DATABASE_NAME);
 
 export const DatabaseProvider = ({ children }: { children: ReactNode }) => {

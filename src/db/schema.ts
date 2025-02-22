@@ -59,3 +59,16 @@ export const defaultDistributionAmount: DistributionAmount = {
   amountNQT: "0",
   quantityQNT: "0",
 };
+
+// Store public keys of an account
+export const accountPublicKeys = sqliteTable("account-public-keys", {
+  account: text("account").primaryKey(),
+  publicKey: text("publicKey").notNull(),
+});
+
+export type AccountPublicKey = typeof accountPublicKeys.$inferSelect;
+export type InsertAccountPublicKey = typeof accountPublicKeys.$inferInsert;
+export const defaultAccountPublicKey: AccountPublicKey = {
+  account: "",
+  publicKey: "",
+};

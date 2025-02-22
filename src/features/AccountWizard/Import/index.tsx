@@ -10,7 +10,6 @@ import type { AccountImport } from "./utils/types";
 import { AccountWizardContainer } from "../components/AccountWizardContainer";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useAccountStore } from "@/hooks/useAccountStore";
-import { useLedgerService } from "@/hooks/useLedgerService";
 import { AnimatedSlideContainer } from "@/components/AnimatedSlideContainer";
 import { Text } from "@/components/Text";
 import { Button } from "@/components/Button";
@@ -18,6 +17,7 @@ import { AccountType } from "@/types/account";
 import { HorizontalDivider } from "@/components/HorizontalDivider";
 import { KeyboardAvoidingView } from "@/components/Form/KeyboardAvoidingView";
 import { CameraDialog } from "@/components/CameraDialog";
+import { getAccountPublicKey } from "@/utils/account/getAccountPublicKey";
 import { FormNavigation } from "./components/FormNavigation";
 import { WalletNameField } from "./sections/WalletNameField";
 import { SeedPhraseField } from "./sections/SeedPhraseField";
@@ -26,13 +26,11 @@ import {
   generateSecretKeys,
   saveSecretKey,
 } from "@/utils/sec/handleSecretKeys";
-import { asAddress } from "@/utils/account/asAddress";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 export const ImportScreen = () => {
   const { t } = useTranslation();
   const { iconColor } = useAppTheme();
-  const { ledgerService } = useLedgerService();
   const {
     accountWalletNames,
     accountPublicKeys,
@@ -108,12 +106,11 @@ export const ImportScreen = () => {
       // Get account request to active node
       default:
         try {
-          if (!ledgerService) return;
+          const watchAccountPublicKey = await getAccountPublicKey(account);
 
-          const watchAccountID = asAddress(account).getNumericId();
-
-          const watchAccountPublicKey =
-            await ledgerService.account.fetchAccountPublicKey(watchAccountID);
+          if (!watchAccountPublicKey) {
+            return alert(t("accountDoesNotExists"));
+          }
 
           if (accountPublicKeys.includes(watchAccountPublicKey)) {
             return alert(

@@ -12,6 +12,7 @@ import { formatDistanceToNow } from "date-fns";
 import { Text } from "@/components/Text";
 import { readSecretKey } from "@/utils/sec/handleSecretKeys";
 import { asRSAddress } from "@/utils/account/asRSAddress";
+import { getAccountPublicKey } from "@/utils/account/getAccountPublicKey";
 import { openTransactionLink } from "@/utils/explorer/openLink";
 import { transactionTypeReader } from "./utils/transactionTypeReader";
 import { SummaryLabel } from "./components/SummaryLabel";
@@ -377,18 +378,20 @@ export const TransactionActivityCard = (props: Transaction) => {
           );
         }
 
-        // TODO: Decrypt own sent message
-        // if (accountId === tx.sender) {
-        //   const recipient = await SignumClient.account.getAccount({
-        //     accountId: tx.recipient!,
-        //   });
+        // Decrypt as sender
+        if (accountId === tx.sender) {
+          if (!tx.recipient) throw new Error("Invalid Account");
 
-        //   return decryptMessage(
-        //     tx.attachment.encryptedMessage,
-        //     recipient.publicKey,
-        //     keys.agreementPrivateKey
-        //   );
-        // }
+          const recipientPublicKey = await getAccountPublicKey(tx.recipient);
+
+          if (!recipientPublicKey) throw new Error("Invalid Account");
+
+          decryptedMessage = await decryptMessage(
+            attachment.encryptedMessage,
+            recipientPublicKey,
+            agreementPrivateKey
+          );
+        }
 
         Alert.alert(t("message"), decryptedMessage);
       })
