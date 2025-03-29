@@ -28,6 +28,7 @@ export const tokensTransactionalData = sqliteTable(
   "tokens-transactional-data",
   {
     id: text("id").references(() => tokens.id, { onDelete: "cascade" }),
+    avatarIpfsHash: text("avatarIpfsHash"),
     priceNQT: text("priceNQT").notNull(),
     lastUpdated: text("lastUpdated").notNull(),
   }
@@ -39,6 +40,7 @@ export type InsertTokenTransactionalData =
   typeof tokensTransactionalData.$inferInsert;
 export const defaultTokenTransactionalData: TokenTransactionalData = {
   id: "",
+  avatarIpfsHash: "",
   priceNQT: "0",
   lastUpdated: "",
 };

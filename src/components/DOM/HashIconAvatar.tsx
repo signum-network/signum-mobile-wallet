@@ -3,8 +3,8 @@
 // @ts-ignore
 import hashicon from "hashicon";
 
-export default function DOMComponent({ accountId }: { accountId: string }) {
-  const imageSrcUrl = hashicon(accountId, { size: 20 }).toDataURL();
+export default function DOMComponent({ id }: { id: string }) {
+  const imageSrcUrl = hashicon(id, { size: 20 }).toDataURL();
 
   return (
     <div

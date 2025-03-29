@@ -1,4 +1,5 @@
 import type { Token } from "@/db/schema";
+import { src44 } from "@signumjs/standards";
 import type { LedgerServiceContext } from "../ledgerServiceContext";
 import { LedgerSubService } from "../ledgerSubService";
 import { handleError } from "../handleError";
@@ -50,6 +51,17 @@ export class TokenService extends LedgerSubService {
       if (!trades || !trades.length) return "0";
 
       return trades[0].price;
+    });
+  }
+
+  fetchTokenBrandLogoHash(tokenId: string) {
+    return handleError<string>(async () => {
+      const { ledger } = this.context;
+
+      const client = new src44.DescriptorDataClient(ledger);
+      const brandingList = await client.getAssetBranding(tokenId);
+      const branding = brandingList?.[0] ?? "";
+      return branding?.avatar?.ipfsCid ? branding.avatar?.ipfsCid : "";
     });
   }
 }

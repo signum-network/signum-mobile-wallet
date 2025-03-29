@@ -1,42 +1,39 @@
 import { useMemo } from "react";
 import { View } from "react-native";
 import { Image } from "expo-image";
-import { src44 } from "@signumjs/standards";
 import { PUBLIC_IPFS_GATEWAY } from "@/types/constants";
 import clsx from "clsx";
 import DOMComponent from "@/components/DOM/HashIconAvatar";
 
 interface Props {
   loading: boolean;
-  accountId: string;
-  description: string;
+  tokenId: string;
+  avatarIpfsHash?: string;
   extraClassNames?: string;
 }
 
-export const AccountAvatar = ({
+export const TokenAvatar = ({
   loading,
-  accountId,
-  description,
+  tokenId,
+  avatarIpfsHash,
   extraClassNames,
 }: Props) => {
   const ipfsImage = useMemo(() => {
     if (loading) return null;
 
     try {
-      const descriptor = src44.DescriptorData.parse(description, false);
-
-      if (descriptor.avatar) {
-        return `${PUBLIC_IPFS_GATEWAY}/${descriptor.avatar.ipfsCid}`;
+      if (avatarIpfsHash) {
+        return `${PUBLIC_IPFS_GATEWAY}/${avatarIpfsHash}`;
       }
     } catch {
       return null;
     }
-  }, [loading, description]);
+  }, [loading, avatarIpfsHash]);
 
   return (
     <View
       className={clsx([
-        "size-11 overflow-hidden rounded-md",
+        "size-10 overflow-hidden rounded-lg",
         !ipfsImage && "pr-1",
         extraClassNames && extraClassNames,
       ])}
@@ -51,7 +48,7 @@ export const AccountAvatar = ({
           }}
         />
       ) : (
-        <DOMComponent id={accountId} />
+        <DOMComponent id={tokenId} />
       )}
     </View>
   );

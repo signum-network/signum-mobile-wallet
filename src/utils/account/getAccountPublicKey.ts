@@ -26,7 +26,7 @@ export const getAccountPublicKey = async (account: string) => {
 
     await db
       .insert(accountPublicKeys)
-      .values({ account, publicKey: accountPublicKey });
+      .values({ account: accountID, publicKey: accountPublicKey });
 
     return accountPublicKey;
   } catch (_e) {

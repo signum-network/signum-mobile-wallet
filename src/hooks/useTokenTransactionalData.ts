@@ -43,6 +43,10 @@ export const useTokenTransactionalData = (
         return await ledgerService.token.fetchTokenPriceNQT(tokenId);
       };
 
+      const getAvatarIpfsHash = async () => {
+        return await ledgerService.token.fetchTokenBrandLogoHash(tokenId);
+      };
+
       const invalidateTokenQuery = async () => {
         await queryClient.invalidateQueries({
           queryKey: ["fetchAccountTokenHoldings", accountId, currentNetwork],
@@ -57,9 +61,11 @@ export const useTokenTransactionalData = (
 
         try {
           const tokenPriceNQT = await getTokenPriceNQT();
+          const avatarIpfsHash = await getAvatarIpfsHash();
 
           const updatePayload: TokenTransactionalData = {
             id: tokenId,
+            avatarIpfsHash,
             priceNQT: tokenPriceNQT,
             lastUpdated: currentDate.toString(),
           };
@@ -80,9 +86,11 @@ export const useTokenTransactionalData = (
       // Insert the new row
       try {
         const tokenPriceNQT = await getTokenPriceNQT();
+        const avatarIpfsHash = await getAvatarIpfsHash();
 
         const insertPayload: TokenTransactionalData = {
           id: tokenId,
+          avatarIpfsHash,
           priceNQT: tokenPriceNQT,
           lastUpdated: currentDate.toString(),
         };
