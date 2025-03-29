@@ -96,7 +96,7 @@ export const AssetCard = ({
       className="w-full flex flex-row items-center justify-between gap-2 py-4 ripple-[#333] ripple-bordered"
     >
       <View className="flex flex-row items-center justify-start gap-2 flex-1 w-6/12">
-        {/* TODO: Show token avatar */}
+        {/* TODO: Show asset avatar (SIGNA or Token) */}
         {/* <View className="w-10 h-10 bg-slate-300 rounded-lg"></View> */}
 
         <View className="flex-1 flex items-start flex-col gap-1">

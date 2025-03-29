@@ -62,12 +62,12 @@ export const ActivityScreen = () => {
 
     setIsLoadingAccountTransactions(true);
 
-    // TODO: Add includeIndirect = true once node version is officially released
     const { transactions, nextIndex } = await ledgerService.account
       .with(accountId)
       .fetchTransactions({
         firstIndex,
         lastIndex,
+        includeIndirect: true,
       });
 
     if (!firstIndex) {

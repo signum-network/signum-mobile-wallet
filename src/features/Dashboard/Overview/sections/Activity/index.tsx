@@ -35,17 +35,16 @@ export const Activity = () => {
     queryFn: async () => {
       if (!ledgerService) return;
 
-      // TODO: Add includeIndirect = true once node version is officially released
       const { unconfirmedTransactions } = await ledgerService.account
         .with(accountId)
         .fetchPendingTransactions(true);
 
-      // TODO: Add includeIndirect = true once node version is officially released
       const { transactions } = await ledgerService.account
         .with(accountId)
         .fetchTransactions({
           firstIndex: 0,
           lastIndex: 9,
+          includeIndirect: true,
         });
 
       return { transactions, unconfirmedTransactions };
