@@ -5,6 +5,7 @@ import {
   useState,
   type RefObject,
 } from "react";
+import { useTranslation } from "react-i18next";
 import { ScrollView, View } from "react-native";
 import { useGlobalSearchParams } from "expo-router";
 import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
@@ -23,6 +24,7 @@ import { KeyboardAvoidingView } from "@/components/Form/KeyboardAvoidingView";
 import { SigningDialog } from "@/components/SigningDialog";
 import { readSecretKey } from "@/utils/sec/handleSecretKeys";
 import { asAddress } from "@/utils/account/asAddress";
+import { getAccountPublicKey } from "@/utils/account/getAccountPublicKey";
 import { DashboardScreenContainer } from "../components/DashboardScreenContainer";
 import { transactionCreationSchema } from "./utils/schemas";
 import {
@@ -39,6 +41,7 @@ import { FormNavigation } from "./components/FormNavigation";
 import { FormStepper } from "./components/FormStepper";
 
 export const TransferScreen = () => {
+  const { t } = useTranslation();
   const { ledgerService } = useLedgerService();
   const { isWatchOnly, publicKey, accountId } = useAccount();
   const { currentNetwork } = useNodeHostStore();
@@ -112,6 +115,9 @@ export const TransferScreen = () => {
         const { signPrivateKey, agreementPrivateKey } = data;
 
         const recipientId = asAddress(recipient).getNumericId();
+        const recipientPublicKey = await getAccountPublicKey(recipientId);
+
+        if (!recipientPublicKey) return alert(t("accountDoesNotExists"));
 
         const feePlanck = Amount.fromPlanck(fee).getPlanck();
 
@@ -119,16 +125,13 @@ export const TransferScreen = () => {
 
         if (includeMemo) {
           if (isMemoEncrypted) {
-            const encryptedPayload = encryptMessage(
+            const encryptedPayload = await encryptMessage(
               memo,
-              publicKey,
+              recipientPublicKey,
               agreementPrivateKey
             );
 
-            attachment = new AttachmentEncryptedMessage({
-              ...encryptedPayload,
-              isText: !isMemoBinary,
-            });
+            attachment = new AttachmentEncryptedMessage(encryptedPayload);
           } else {
             attachment = new AttachmentMessage({
               messageIsText: !isMemoBinary,
@@ -149,6 +152,7 @@ export const TransferScreen = () => {
                 senderPrivateKey: signPrivateKey,
                 senderPublicKey: publicKey,
                 attachment,
+                recipientPublicKey,
               }
             );
         } else {
@@ -163,6 +167,7 @@ export const TransferScreen = () => {
               senderPrivateKey: signPrivateKey,
               senderPublicKey: publicKey,
               attachment,
+              recipientPublicKey,
             }
           );
         }

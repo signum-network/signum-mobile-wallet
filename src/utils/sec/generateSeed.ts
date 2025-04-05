@@ -1,12 +1,7 @@
-import * as bip39 from "@scure/bip39";
-import { wordlist } from "@scure/bip39/wordlists/english";
+import { generateMnemonic } from "@signumjs/crypto";
 
-export const generateSeed = async () => {
-  try {
-    return bip39.generateMnemonic(wordlist, 192);
-  } catch (error) {
-    console.error(error);
-  }
+export const generateSeed = () => {
+  return generateMnemonic();
 };
 
 export const pickRandomKeySeedIndex = () => {

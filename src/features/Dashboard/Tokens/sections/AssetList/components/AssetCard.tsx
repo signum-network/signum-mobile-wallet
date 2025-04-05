@@ -6,6 +6,7 @@ import { useAccount } from "@/hooks/useAccount";
 import { useTokenMetadata } from "@/hooks/useTokenMetadata";
 import { useTokenTransactionalData } from "@/hooks/useTokenTransactionalData";
 import { useActiveMarketRate } from "@/hooks/useActiveMarketRate";
+import { TokenAvatar } from "@/components/Token/Avatar";
 import { formatNumber } from "@/utils/formatNumber";
 import { openTokenLink } from "@/utils/explorer/openLink";
 import { Text } from "@/components/Text";
@@ -23,7 +24,8 @@ export const AssetCard = ({
   const { t } = useTranslation();
   const { accountId, isWatchOnly } = useAccount();
   const { ticker, decimals, account } = useTokenMetadata(asset);
-  const { priceNQT, lastUpdated } = useTokenTransactionalData(asset);
+  const { priceNQT, avatarIpfsHash, lastUpdated } =
+    useTokenTransactionalData(asset);
   const { price, ticker: marketTicker } = useActiveMarketRate();
 
   const isLoadingMetadata = !ticker;
@@ -44,7 +46,7 @@ export const AssetCard = ({
   const estimatedMarketValue =
     estimatedSignaValue && price ? estimatedSignaValue * price : 0;
 
-  const isAdmin = account === accountId;
+  const isTokenAdmin = account === accountId;
 
   const pickOptions = () => {
     const alertOptions = [
@@ -96,8 +98,11 @@ export const AssetCard = ({
       className="w-full flex flex-row items-center justify-between gap-2 py-4 ripple-[#333] ripple-bordered"
     >
       <View className="flex flex-row items-center justify-start gap-2 flex-1 w-6/12">
-        {/* TODO: Show token avatar */}
-        {/* <View className="w-10 h-10 bg-slate-300 rounded-lg"></View> */}
+        <TokenAvatar
+          loading={isLoadingMetadata}
+          tokenId={asset}
+          avatarIpfsHash={avatarIpfsHash || undefined}
+        />
 
         <View className="flex-1 flex items-start flex-col gap-1">
           {isLoadingMetadata ? (
@@ -107,7 +112,7 @@ export const AssetCard = ({
               <View className="flex flex-row items-center gap-1">
                 <Text className="font-medium">{ticker}</Text>
 
-                {isAdmin && (
+                {isTokenAdmin && (
                   <Text size="extraSmall" color="success">
                     ✅ {t("overview.tokens.admin")}
                   </Text>

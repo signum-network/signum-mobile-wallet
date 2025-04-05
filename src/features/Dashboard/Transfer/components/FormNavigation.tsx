@@ -3,15 +3,14 @@ import { Alert } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
 import { useAccount } from "@/hooks/useAccount";
-import { useLedgerService } from "@/hooks/useLedgerService";
 import { FormNavButton } from "@/components/Form/NavButton";
 import { asAddress } from "@/utils/account/asAddress";
+import { getAccountPublicKey } from "@/utils/account/getAccountPublicKey";
 import { type TransactionCreation, Steps, maxMemoLength } from "../utils/types";
 
 export const FormNavigation = () => {
   const { t } = useTranslation();
   const { accountId } = useAccount();
-  const { ledgerService } = useLedgerService();
   const { watch, setValue } = useFormContext<TransactionCreation>();
 
   const activeStep = watch("activeStep");
@@ -33,8 +32,6 @@ export const FormNavigation = () => {
   const canCompleteFourthStep = !!fee;
 
   const getRecipientValidity = async () => {
-    if (!ledgerService) return;
-
     if (isRecipientBurningAddress)
       return setValue("activeStep", Steps.HoldingsSelection);
 
@@ -45,7 +42,7 @@ export const FormNavigation = () => {
         return Alert.alert(`${t("transfer.yourSelfRecipientHint")} 😉`);
       }
 
-      await ledgerService.account.fetchAccountPublicKey(recipientAccountID);
+      await getAccountPublicKey(recipientAccountID);
 
       setValue("activeStep", Steps.HoldingsSelection);
     } catch (error) {

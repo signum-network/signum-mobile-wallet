@@ -3,12 +3,16 @@ import { View, Pressable, Alert } from "react-native";
 import { useTranslation } from "react-i18next";
 import { type Transaction, TransactionType } from "@signumjs/core";
 import { ChainTime } from "@signumjs/util";
+import { decryptMessage } from "@signumjs/crypto";
 import { useAccount } from "@/hooks/useAccount";
+import { useLedgerService } from "@/hooks/useLedgerService";
 import { useDateLocale } from "@/hooks/useDateLocale";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { formatDistanceToNow } from "date-fns";
 import { Text } from "@/components/Text";
+import { readSecretKey } from "@/utils/sec/handleSecretKeys";
 import { asRSAddress } from "@/utils/account/asRSAddress";
+import { getAccountPublicKey } from "@/utils/account/getAccountPublicKey";
 import { openTransactionLink } from "@/utils/explorer/openLink";
 import { transactionTypeReader } from "./utils/transactionTypeReader";
 import { SummaryLabel } from "./components/SummaryLabel";
@@ -20,8 +24,9 @@ export const ITEM_HEIGHT = 100;
 
 export const TransactionActivityCard = (props: Transaction) => {
   const { t } = useTranslation();
+  const { ledgerService } = useLedgerService();
   const { iconColor } = useAppTheme();
-  const { accountId } = useAccount();
+  const { publicKey, accountId } = useAccount();
   const dateLocale = useDateLocale();
 
   const {
@@ -353,6 +358,51 @@ export const TransactionActivityCard = (props: Transaction) => {
     iconColor,
   ]);
 
+  const readEncryptedAttachment = async () => {
+    const tx = props;
+
+    await readSecretKey(publicKey)
+      .then(async (data) => {
+        if (!data || !ledgerService) throw new Error("invalid data");
+
+        const { agreementPrivateKey } = data;
+
+        let decryptedMessage = "";
+
+        // Decrypt as recipient
+        if (accountId === tx.recipient) {
+          decryptedMessage = await decryptMessage(
+            attachment.encryptedMessage,
+            tx.senderPublicKey,
+            agreementPrivateKey
+          );
+        }
+
+        // Decrypt as sender
+        if (accountId === tx.sender) {
+          if (!tx.recipient) throw new Error("Invalid Account");
+
+          const recipientPublicKey = await getAccountPublicKey(tx.recipient);
+
+          if (!recipientPublicKey) throw new Error("Invalid Account");
+
+          decryptedMessage = await decryptMessage(
+            attachment.encryptedMessage,
+            recipientPublicKey,
+            agreementPrivateKey
+          );
+        }
+
+        Alert.alert(t("message"), decryptedMessage);
+      })
+      .catch((e) => {
+        Alert.alert(
+          t("message"),
+          "Invalid Attachment, Make sure to have internet connection"
+        );
+      });
+  };
+
   const pickOptions = () => {
     const defaultOptions = [
       {
@@ -377,6 +427,13 @@ export const TransactionActivityCard = (props: Transaction) => {
         onPress: () => {
           Alert.alert(t("message"), transactionReadableData.memo);
         },
+      };
+    }
+
+    if (transactionReadableData.hasEncryptedText) {
+      defaultOptions[2] = {
+        text: t("overview.viewEncryptedMessage"),
+        onPress: readEncryptedAttachment,
       };
     }
 

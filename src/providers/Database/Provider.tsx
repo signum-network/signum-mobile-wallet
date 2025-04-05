@@ -1,13 +1,18 @@
 import { useEffect, type ReactNode } from "react";
+import { drizzle } from "drizzle-orm/expo-sqlite";
+import { SQLiteProvider, openDatabaseSync } from "expo-sqlite";
 import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
+import { DATABASE_NAME } from "./name";
 
-import { DatabaseContext } from "@/contexts/DatabaseContext";
-import { db } from "@/db";
 import migrations from "@/db/drizzle/migrations";
-
 import * as SplashScreen from "expo-splash-screen";
 
+// Connection used only INSIDE hooks
+const expoDb = openDatabaseSync(DATABASE_NAME);
+
 export const DatabaseProvider = ({ children }: { children: ReactNode }) => {
+  const db = drizzle(expoDb);
+
   const { success, error } = useMigrations(db, migrations);
 
   useEffect(() => {
@@ -17,6 +22,11 @@ export const DatabaseProvider = ({ children }: { children: ReactNode }) => {
   }, [success]);
 
   return (
-    <DatabaseContext.Provider value={db}>{children}</DatabaseContext.Provider>
+    <SQLiteProvider
+      databaseName={DATABASE_NAME}
+      options={{ enableChangeListener: true }}
+    >
+      {children}
+    </SQLiteProvider>
   );
 };

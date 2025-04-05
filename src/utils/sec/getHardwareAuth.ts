@@ -10,7 +10,7 @@ export const getHardwareAuth = async () => {
   const canUseHardwareAuth = !!(
     hasHardwareAsync &&
     isEnrolledAsync &&
-    enrolledLevelAsync === LocalAuthentication.SecurityLevel.BIOMETRIC &&
+    enrolledLevelAsync === LocalAuthentication.SecurityLevel.BIOMETRIC_STRONG &&
     supportedAuthenticationTypesAsync.length
   );
 

@@ -14,6 +14,7 @@ import { AvailableBalanceSummary } from "./components/AvailableBalanceSummary";
 import { AssetPickerDialog } from "./components/AssetPickerDialog";
 import { AmountBox } from "./components/AmountBox";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { useTokenTransactionalData } from "@/hooks/useTokenTransactionalData";
 
 export const HoldingsSelection = () => {
   const { t } = useTranslation();
@@ -26,6 +27,7 @@ export const HoldingsSelection = () => {
 
   const asset = watch("asset");
   const { ticker: tokenTicker, decimals } = useTokenMetadata(asset);
+  const { avatarIpfsHash } = useTokenTransactionalData(asset);
 
   const [isDialogVisible, setIsDialogVisible] = useState(false);
   const showDialog = () => setIsDialogVisible(true);
@@ -83,8 +85,11 @@ export const HoldingsSelection = () => {
           <Card>
             <View className="w-full flex flex-row justify-between items-center">
               <AvailableBalanceSummary
+                asset={asset}
+                isAssetSigna={isAssetSigna}
                 readableTicker={readableTicker}
                 readableAvailableBalance={readableAvailableBalance}
+                avatarIpfsHash={avatarIpfsHash || null}
               />
 
               {!!tokenBalance.length && (

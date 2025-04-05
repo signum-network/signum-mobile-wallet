@@ -23,10 +23,10 @@ export const SecretPhraseGeneration = () => {
 
   const seedPhrase = watch("seedPhrase");
 
-  const generateSeedPhrase = async () => {
+  const generateSeedPhrase = () => {
     try {
       const randomIndex = pickRandomKeySeedIndex();
-      const passphrase = await generateSeed();
+      const passphrase = generateSeed();
 
       if (!passphrase) return alert("Error: Passphrase Generation");
 

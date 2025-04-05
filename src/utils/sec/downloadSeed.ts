@@ -1,7 +1,7 @@
 import * as Print from "expo-print";
 import { Asset } from "expo-asset";
 import { shareAsync } from "expo-sharing";
-import { manipulateAsync } from "expo-image-manipulator";
+import { useImageManipulator } from "expo-image-manipulator";
 
 const signumBlackLogoAsset = Asset.fromModule(
   require("../../assets/signum_logo_black.png")
@@ -24,11 +24,9 @@ export const downloadSeed = async ({
   secondDescription,
   qrCodePaths,
 }: Params) => {
-  const image = await manipulateAsync(
-    signumBlackLogoAsset.localUri ?? signumBlackLogoAsset.uri,
-    [],
-    { base64: true }
-  );
+  const image = await useImageManipulator(signumBlackLogoAsset.uri)
+    .renderAsync()
+    .then(async (data) => await data.saveAsync({ base64: true }));
 
   const html = `
     <html>

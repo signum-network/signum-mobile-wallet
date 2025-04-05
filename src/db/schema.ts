@@ -28,6 +28,7 @@ export const tokensTransactionalData = sqliteTable(
   "tokens-transactional-data",
   {
     id: text("id").references(() => tokens.id, { onDelete: "cascade" }),
+    avatarIpfsHash: text("avatarIpfsHash"),
     priceNQT: text("priceNQT").notNull(),
     lastUpdated: text("lastUpdated").notNull(),
   }
@@ -39,6 +40,7 @@ export type InsertTokenTransactionalData =
   typeof tokensTransactionalData.$inferInsert;
 export const defaultTokenTransactionalData: TokenTransactionalData = {
   id: "",
+  avatarIpfsHash: "",
   priceNQT: "0",
   lastUpdated: "",
 };
@@ -58,4 +60,17 @@ export const defaultDistributionAmount: DistributionAmount = {
   account: "",
   amountNQT: "0",
   quantityQNT: "0",
+};
+
+// Store public keys of an account
+export const accountPublicKeys = sqliteTable("account-public-keys", {
+  account: text("account").primaryKey(),
+  publicKey: text("publicKey").notNull(),
+});
+
+export type AccountPublicKey = typeof accountPublicKeys.$inferSelect;
+export type InsertAccountPublicKey = typeof accountPublicKeys.$inferInsert;
+export const defaultAccountPublicKey: AccountPublicKey = {
+  account: "",
+  publicKey: "",
 };

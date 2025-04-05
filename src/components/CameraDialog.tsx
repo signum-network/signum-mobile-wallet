@@ -6,7 +6,7 @@ import {
   useCameraPermissions,
   PermissionStatus,
   type BarcodeScanningResult,
-} from "expo-camera/next";
+} from "expo-camera";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { Text } from "./Text";
 import { Button } from "./Button";

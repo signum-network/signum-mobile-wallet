@@ -53,7 +53,6 @@ export const Button = ({
 
   if (linkProps) {
     return (
-      // @ts-expect-error Routes are statically typed
       <Link {...linkProps} asChild>
         <Pressable
           disabled={disabled}

@@ -10,6 +10,9 @@ web-build/
 android
 ios
 
+# IDEs
+.idea/
+
 # Native
 *.orig.*
 *.jks

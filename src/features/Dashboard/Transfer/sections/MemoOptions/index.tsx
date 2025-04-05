@@ -8,8 +8,6 @@ import { FormCheckbox } from "@/components/Form/Checkbox";
 import { TextInput } from "@/components/TextInput";
 import { type TransactionCreation, maxMemoLength } from "../../utils/types";
 
-// TODO: Support encrypted attachments
-// TODO: Support binary attachments
 export const MemoOptions = () => {
   const { t } = useTranslation();
   const { watch, setValue, control } = useFormContext<TransactionCreation>();
@@ -77,14 +75,14 @@ export const MemoOptions = () => {
             </Text>
           </Card>
 
-          {/* <FormCheckbox
+          <FormCheckbox
             value={isMemoEncrypted}
             onPress={toggleEncryptedMemoAvailability}
             title={"🔐 " + t("transfer.addEncryptedMemoTitle")}
             description={t("transfer.addEncryptedMemoDescription")}
             fullWidth
             bordered
-          /> */}
+          />
         </>
       )}
     </View>

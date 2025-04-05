@@ -1,10 +1,10 @@
 import { useState, useEffect, Fragment } from "react";
-import { View, Alert, Platform } from "react-native";
+import { View, Alert } from "react-native";
 import { useTranslation } from "react-i18next";
 import { router } from "expo-router";
 import { useAppStore } from "@/hooks/useAppStore";
 import { PinAuthenticator } from "@/features/Auth/components/PinAuthenticator";
-import { PUBLIC_PIN_LENGTH } from "@/types/constants";
+import { PUBLIC_PIN_LENGTH, PUBLIC_CURRENT_OS } from "@/types/constants";
 import { Button } from "@/components/Button";
 import { getHardwareAuth } from "@/utils/sec/getHardwareAuth";
 import { generateHash } from "@/utils/sec/generateHash";
@@ -68,7 +68,7 @@ export const EnrollAuthScreen = () => {
     const goToWizard = () => {
       setTimeout(() => {
         setIsAuthEnrolled(true);
-        router.replace("/account-wizard/");
+        router.replace("/account-wizard");
       }, 2700); // Timeout is assigned because of ringtone duration
     };
 
@@ -76,7 +76,7 @@ export const EnrollAuthScreen = () => {
       Alert.alert(
         `${t("auth.askHardwareAuthTitle")} 🔐`,
         t(
-          Platform.OS === "android"
+          PUBLIC_CURRENT_OS === "android"
             ? "auth.androidAskHardwareAuthDescription"
             : "auth.iOSAskHardwareAuthDescription"
         ),

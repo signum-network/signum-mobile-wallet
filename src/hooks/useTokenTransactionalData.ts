@@ -2,7 +2,7 @@ import { eq } from "drizzle-orm";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { differenceInMinutes } from "date-fns";
 import { useAccount } from "@/hooks/useAccount";
-import { useDatabaseContext } from "@/hooks/useDatabaseContext";
+import { useDatabase } from "@/hooks/useDatabase";
 import { useNodeHostStore } from "@/hooks/useNodeHostStore";
 import { useLedgerService } from "@/hooks/useLedgerService";
 import {
@@ -23,7 +23,7 @@ export const useTokenTransactionalData = (
   const { accountId } = useAccount();
   const { ledgerService } = useLedgerService();
   const { isActiveNodeSynced, currentNetwork } = useNodeHostStore();
-  const db = useDatabaseContext();
+  const db = useDatabase();
   const queryClient = useQueryClient();
 
   const { data } = useQuery({
@@ -43,6 +43,10 @@ export const useTokenTransactionalData = (
         return await ledgerService.token.fetchTokenPriceNQT(tokenId);
       };
 
+      const getAvatarIpfsHash = async () => {
+        return await ledgerService.token.fetchTokenBrandLogoHash(tokenId);
+      };
+
       const invalidateTokenQuery = async () => {
         await queryClient.invalidateQueries({
           queryKey: ["fetchAccountTokenHoldings", accountId, currentNetwork],
@@ -57,9 +61,11 @@ export const useTokenTransactionalData = (
 
         try {
           const tokenPriceNQT = await getTokenPriceNQT();
+          const avatarIpfsHash = await getAvatarIpfsHash();
 
           const updatePayload: TokenTransactionalData = {
             id: tokenId,
+            avatarIpfsHash,
             priceNQT: tokenPriceNQT,
             lastUpdated: currentDate.toString(),
           };
@@ -80,9 +86,11 @@ export const useTokenTransactionalData = (
       // Insert the new row
       try {
         const tokenPriceNQT = await getTokenPriceNQT();
+        const avatarIpfsHash = await getAvatarIpfsHash();
 
         const insertPayload: TokenTransactionalData = {
           id: tokenId,
+          avatarIpfsHash,
           priceNQT: tokenPriceNQT,
           lastUpdated: currentDate.toString(),
         };
@@ -98,7 +106,12 @@ export const useTokenTransactionalData = (
     },
     refetchInterval: 120_000,
     staleTime: 120_000,
-    enabled: !!(isActiveNodeSynced && !!ledgerService && !!tokenId),
+    enabled: !!(
+      isActiveNodeSynced &&
+      !!ledgerService &&
+      !!tokenId &&
+      tokenId !== "0"
+    ),
   });
 
   return data ?? defaultTokenTransactionalData;

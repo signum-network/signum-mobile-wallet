@@ -1,7 +1,7 @@
 import { eq, and } from "drizzle-orm";
 import { useQuery } from "@tanstack/react-query";
 import { useAccount } from "@/hooks/useAccount";
-import { useDatabaseContext } from "@/hooks/useDatabaseContext";
+import { useDatabase } from "@/hooks/useDatabase";
 import { useLedgerService } from "@/hooks/useLedgerService";
 import { useNodeHostStore } from "@/hooks/useNodeHostStore";
 import { distributionAmounts, defaultDistributionAmount } from "@/db/schema";
@@ -19,7 +19,7 @@ export const DistributionLabel = ({
   const { accountId } = useAccount();
   const { ledgerService } = useLedgerService();
   const { isActiveNodeSynced } = useNodeHostStore();
-  const db = useDatabaseContext();
+  const db = useDatabase();
 
   const { data } = useQuery({
     queryKey: ["fetchDistributionAmount", accountId, transaction],

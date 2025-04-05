@@ -1,7 +1,7 @@
-import { Platform } from "react-native";
+import { PUBLIC_CURRENT_OS } from "@/types/constants";
 
 export const getHeaderTitle = (title: string) => {
-  switch (Platform.OS) {
+  switch (PUBLIC_CURRENT_OS) {
     case "android":
       return {
         headerBackTitle: "",

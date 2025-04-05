@@ -10,7 +10,7 @@ export const NoAccountsFoundCard = () => {
   const { iconColor } = useAppTheme();
 
   return (
-    <View className="flex-1 justify-center items-center gap-2 py-8">
+    <View className="flex-1 justify-center items-center gap-2 py-8 w-full">
       <Ionicons
         name="barcode-outline"
         size={50}

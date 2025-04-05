@@ -1,11 +1,14 @@
 import "../global.css";
 import "@/locales";
-import "fast-text-encoding";
-import * as Crypto from "expo-crypto";
+import * as ExpoCrypto from "expo-crypto";
+import { Crypto } from "@signumjs/crypto";
+import { ReactNativeExpoCryptoAdapter } from "@signumjs/react-native-expo-crypto-adapter";
 import * as SplashScreen from "expo-splash-screen";
 import { Stack } from "expo-router/stack";
 import { AppProviders } from "@/providers";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+
+Crypto.init(new ReactNativeExpoCryptoAdapter());
 
 if (__DEV__) {
   // @ts-expect-error importing modules typing issue
@@ -16,7 +19,7 @@ if (__DEV__) {
 
 if (!global.crypto) {
   // @ts-expect-error typing issue
-  global.crypto = Crypto;
+  global.crypto = ExpoCrypto;
 }
 
 export {
