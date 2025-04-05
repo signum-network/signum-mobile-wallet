@@ -17,12 +17,14 @@
       "typedRoutes": true
     },
     "ios": {
+      "buildNumber": "1",
       "supportsTablet": true,
       "infoPlist": {
         "NSFaceIDUsageDescription": "Allow $(PRODUCT_NAME) to use Face ID for wallet authentication"
       }
     },
     "android": {
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#0099ff"
