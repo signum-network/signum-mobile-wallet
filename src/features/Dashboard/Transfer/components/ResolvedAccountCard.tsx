@@ -6,6 +6,7 @@ import { Text } from "@/components/Text";
 import { Card } from "@/components/Card";
 import { asAddress } from "@/utils/account/asAddress";
 import type { TransactionCreation } from "../utils/types";
+import { useAccount } from "@/hooks/useAccount";
 
 interface Props {
   simple?: boolean;
@@ -14,6 +15,7 @@ interface Props {
 export const ResolvedAccountCard = ({ simple }: Props) => {
   const { t } = useTranslation();
   const { watch } = useFormContext<TransactionCreation>();
+  const { accountId } = useAccount();
 
   const recipient = watch("recipient");
 
@@ -38,6 +40,16 @@ export const ResolvedAccountCard = ({ simple }: Props) => {
 
           <Text fullWidth color="muted">
             {t("transfer.recipientBurnAddressHint")}
+          </Text>
+        </View>
+      </Card>
+    );
+  } else if (resolvedAccount && resolvedAccount.getNumericId() === accountId) {
+    return (
+      <Card>
+        <View className="w-full">
+          <Text fullWidth color="muted">
+            {t("transfer.yourSelfRecipientHint")} 🫣
           </Text>
         </View>
       </Card>

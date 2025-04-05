@@ -106,7 +106,12 @@ export const useTokenTransactionalData = (
     },
     refetchInterval: 120_000,
     staleTime: 120_000,
-    enabled: !!(isActiveNodeSynced && !!ledgerService && !!tokenId),
+    enabled: !!(
+      isActiveNodeSynced &&
+      !!ledgerService &&
+      !!tokenId &&
+      tokenId !== "0"
+    ),
   });
 
   return data ?? defaultTokenTransactionalData;

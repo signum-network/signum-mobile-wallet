@@ -46,7 +46,7 @@ export const AssetCard = ({
   const estimatedMarketValue =
     estimatedSignaValue && price ? estimatedSignaValue * price : 0;
 
-  const isAdmin = account === accountId;
+  const isTokenAdmin = account === accountId;
 
   const pickOptions = () => {
     const alertOptions = [
@@ -112,7 +112,7 @@ export const AssetCard = ({
               <View className="flex flex-row items-center gap-1">
                 <Text className="font-medium">{ticker}</Text>
 
-                {isAdmin && (
+                {isTokenAdmin && (
                   <Text size="extraSmall" color="success">
                     ✅ {t("overview.tokens.admin")}
                   </Text>

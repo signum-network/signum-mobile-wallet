@@ -11,8 +11,6 @@ interface Props {
   attachment?: AttachmentMessage;
 }
 
-// TODO: Support encrypted attachments
-// TODO: Support binary attachments
 export const useNetworkFees = ({ attachment }: Props): networkFees => {
   const { ledgerService } = useLedgerService();
   const {

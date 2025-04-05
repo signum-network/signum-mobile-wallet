@@ -5,12 +5,16 @@ import { Amount } from "@signumjs/util";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useTicker } from "@/hooks/useTicker";
 import { useTokenMetadata } from "@/hooks/useTokenMetadata";
+import { useTokenTransactionalData } from "@/hooks/useTokenTransactionalData";
 import { Button } from "@/components/Button";
 import { Text } from "@/components/Text";
 import { Card } from "@/components/Card";
 import { formatNumber } from "@/utils/formatNumber";
 import { useActiveMarketRate } from "@/hooks/useActiveMarketRate";
 import { openTransactionLink } from "@/utils/explorer/openLink";
+import { TokenAvatar } from "@/components/Token/Avatar";
+import { Image } from "expo-image";
+import { signumBlueSymbolPicture } from "@/assets";
 import { type TransactionCreation } from "../../utils/types";
 import { ResolvedAccountCard } from "../../components/ResolvedAccountCard";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -45,6 +49,7 @@ export const Confirmation = ({
   const fee = watch("fee");
 
   const { ticker: tokenTicker } = useTokenMetadata(asset);
+  const { avatarIpfsHash } = useTokenTransactionalData(asset);
 
   const isAssetSigna = asset === "0";
 
@@ -131,8 +136,21 @@ export const Confirmation = ({
           </Text>
 
           <View className="flex flex-row items-center justify-start gap-2 w-full">
-            {/* TODO: Show asset avatar (SIGNA or Token) */}
-            {/* <View className="w-10 h-10 bg-slate-300 rounded-lg"></View> */}
+            {isAssetSigna ? (
+              <View className="size-10">
+                <Image
+                  source={{ uri: signumBlueSymbolPicture }}
+                  style={{ width: "100%", height: "100%", borderRadius: 8 }}
+                />
+              </View>
+            ) : (
+              <TokenAvatar
+                loading={!readableTicker}
+                tokenId={asset}
+                avatarIpfsHash={avatarIpfsHash || undefined}
+                extraClassNames="size-10"
+              />
+            )}
 
             <View className="flex-1 flex items-start flex-col gap-1">
               <Text className="font-medium">

@@ -40,7 +40,12 @@ export const useTokenMetadata = (tokenId = ""): Token => {
     refetchOnReconnect: false,
     refetchInterval: false,
     staleTime: Infinity,
-    enabled: !!(isActiveNodeSynced && !!ledgerService && !!tokenId),
+    enabled: !!(
+      isActiveNodeSynced &&
+      !!ledgerService &&
+      !!tokenId &&
+      tokenId !== "0"
+    ),
   });
 
   return data ?? defaultToken;
