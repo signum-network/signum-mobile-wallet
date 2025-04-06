@@ -93,11 +93,12 @@ export const Confirmation = ({
             </View>
 
             {transactionId && (
-              <View className="w-full flex flex-col items-center justify-center gap-4">
+              <View className="w-full flex flex-col items-center justify-center gap-4 px-4">
                 <Button
                   type="blackout"
                   title={t("overview.copyTransactionId")}
                   pressableProps={{ onPress: copyTransactionId }}
+                  fullWidth
                   size="small"
                   icon={
                     <Ionicons
@@ -113,6 +114,7 @@ export const Confirmation = ({
                   type="primary"
                   title={t("overview.viewInExplorer")}
                   pressableProps={{ onPress: openTransactionInExplorer }}
+                  fullWidth
                   size="small"
                   icon={<Ionicons name="link" size={18} color="white" />}
                   wide
