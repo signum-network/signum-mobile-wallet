@@ -93,7 +93,7 @@ export const TransferScreen = () => {
     }, [])
   );
 
-  const onSubmit: SubmitHandler<TransactionCreation> = async (data) => {
+  const onSubmit: SubmitHandler<TransactionCreation> = (data) => {
     const {
       amount,
       asset,
@@ -106,7 +106,7 @@ export const TransferScreen = () => {
       isMemoBinary,
     } = data;
 
-    await readSecretKey(publicKey)
+    readSecretKey(publicKey)
       .then(async (data) => {
         if (!data || !ledgerService) throw new Error("invalid data");
 

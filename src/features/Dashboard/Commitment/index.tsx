@@ -66,10 +66,10 @@ export const CommitmentScreen = () => {
     }, [])
   );
 
-  const onSubmit: SubmitHandler<ManageCommitment> = async (data) => {
+  const onSubmit: SubmitHandler<ManageCommitment> = (data) => {
     const { type, amount } = data;
 
-    await readSecretKey(publicKey)
+    readSecretKey(publicKey)
       .then(async (data) => {
         if (!data || !ledgerService) throw new Error("invalid data");
 
