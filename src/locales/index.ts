@@ -4,8 +4,8 @@ import { initReactI18next } from "react-i18next";
 import { getLocales } from "expo-localization";
 
 import enTranslation from "./en.json";
-import esTranslation from "./es.json";
-import ptTranslation from "./pt.json";
+// import esTranslation from "./es.json";
+// import ptTranslation from "./pt.json";
 
 export type locales = "en" | "es" | "pt" | "de";
 const supportedLngs: locales[] = ["en", "es", "pt", "de"];
@@ -15,12 +15,13 @@ export const lngCards: { lng: locales; label: string }[] = [
 ];
 
 export const defaultSeparator = { thousand: ",", decimal: "." };
-const europeanSeparator = { thousand: ".", decimal: "," };
+// const europeanSeparator = { thousand: ".", decimal: "," };
 export const languageSeparators = new Map<locales, typeof defaultSeparator>([
   ["en", defaultSeparator],
   ["es", defaultSeparator],
   ["pt", defaultSeparator],
-  ["de", europeanSeparator],
+  ["de", defaultSeparator],
+  // ["de", europeanSeparator],
 ]);
 
 export const getDefaultLocale = (): locales => {
@@ -44,10 +45,13 @@ i18n.use(initReactI18next).init({
       translation: enTranslation,
     },
     es: {
-      translation: esTranslation,
+      translation: enTranslation,
     },
     pt: {
-      translation: ptTranslation,
+      translation: enTranslation,
+    },
+    de: {
+      translation: enTranslation,
     },
   },
 });

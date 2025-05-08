@@ -358,10 +358,10 @@ export const TransactionActivityCard = (props: Transaction) => {
     iconColor,
   ]);
 
-  const readEncryptedAttachment = async () => {
+  const readEncryptedAttachment = () => {
     const tx = props;
 
-    await readSecretKey(publicKey)
+    readSecretKey(publicKey)
       .then(async (data) => {
         if (!data || !ledgerService) throw new Error("invalid data");
 
