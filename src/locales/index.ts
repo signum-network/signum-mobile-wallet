@@ -6,6 +6,11 @@ import { getLocales } from "expo-localization";
 import enTranslation from "./en.json";
 // import esTranslation from "./es.json";
 // import ptTranslation from "./pt.json";
+// import deTranslation from "./de.json";
+
+// TODO: THE UNIQUE LANGUAGE SUPPORTED IS ENGLISH
+// WE DO HAVE THESE MULTIPLE LANGUAGES FOR DOCUMENT PURPOSES ONLY
+// IN THE FUTURE WE MAY MOVE THIS CONTENT INTO A .MD FILE
 
 export type locales = "en" | "es" | "pt" | "de";
 const supportedLngs: locales[] = ["en", "es", "pt", "de"];
