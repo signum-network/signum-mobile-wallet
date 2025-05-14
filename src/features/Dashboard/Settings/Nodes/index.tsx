@@ -48,7 +48,7 @@ export const NodeSettingsScreen = () => {
                 }
                 type={isConnectionTypeAutomatic ? "primary" : undefined}
                 title={t("settings.node.auto")}
-                extraClassNames="!rounded-r-none w-1/2"
+                extraClassNames="!rounded-r-none w-1/2 px-0"
                 size="large"
                 pressableProps={{ onPress: setAutomaticMode }}
               />
@@ -63,7 +63,7 @@ export const NodeSettingsScreen = () => {
                 }
                 type={isConnectionTypeManual ? "primary" : undefined}
                 title={t("settings.node.manual")}
-                extraClassNames="!rounded-l-none w-1/2"
+                extraClassNames="!rounded-l-none w-1/2 px-0"
                 size="large"
                 pressableProps={{ onPress: setManualMode }}
               />

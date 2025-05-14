@@ -24,17 +24,13 @@ export const SecretPhraseGeneration = () => {
   const seedPhrase = watch("seedPhrase");
 
   const generateSeedPhrase = () => {
-    try {
-      const randomIndex = pickRandomKeySeedIndex();
-      const passphrase = generateSeed();
+    const randomIndex = pickRandomKeySeedIndex();
+    const passphrase = generateSeed();
 
-      if (!passphrase) return alert("Error: Passphrase Generation");
+    if (!passphrase) return alert("Error: Passphrase Generation");
 
-      setValue("seedPhrase", passphrase);
-      setValue("seedPhraseVerificationIndex", randomIndex);
-    } catch (error) {
-      console.log("Error generating seed");
-    }
+    setValue("seedPhrase", passphrase);
+    setValue("seedPhraseVerificationIndex", randomIndex);
   };
 
   const copyToClipboard = async () => {
@@ -83,9 +79,7 @@ export const SecretPhraseGeneration = () => {
   };
 
   useEffect(() => {
-    (async () => {
-      await generateSeedPhrase();
-    })();
+    generateSeedPhrase();
   }, []);
 
   return (
@@ -118,31 +112,33 @@ export const SecretPhraseGeneration = () => {
         />
       </View>
 
-      <Button
-        icon={<Ionicons name="copy" size={24} color="white" />}
-        type="secondary"
-        title={t("copyToClipboard")}
-        wide
-        pressableProps={{ onPress: copyToClipboard }}
-        disabled={!seedPhrase}
-      />
+      <View className="flex flex-col justify-center w-full gap-4 items-center px-8">
+        <Button
+          icon={<Ionicons name="copy" size={24} color="white" />}
+          type="secondary"
+          title={t("copyToClipboard")}
+          fullWidth
+          pressableProps={{ onPress: copyToClipboard }}
+          disabled={!seedPhrase}
+        />
 
-      <Text color="muted">{t("or")}</Text>
+        <Text color="muted">{t("or")}</Text>
 
-      <Button
-        icon={
-          <Ionicons
-            name="cloud-download"
-            size={24}
-            color={iconColor.blackout}
-          />
-        }
-        type="blackout"
-        title={t("download")}
-        wide
-        pressableProps={{ onPress: download }}
-        disabled={!seedPhrase}
-      />
+        <Button
+          icon={
+            <Ionicons
+              name="cloud-download"
+              size={24}
+              color={iconColor.blackout}
+            />
+          }
+          type="blackout"
+          title={t("download")}
+          fullWidth
+          pressableProps={{ onPress: download }}
+          disabled={!seedPhrase}
+        />
+      </View>
 
       <Text className="text-center">
         {t("accountWizard.createAccount.secondStepSeedPhraseSecondTip")}
