@@ -70,23 +70,32 @@ export const AccountActivationCard = () => {
               {t("unsafeAccount.description")}
             </Text>
 
-            {!activationInProgress ? (
+            <View className="w-full flex items-center justify-center flex-col gap-4 mt-4">
+              {!activationInProgress ? (
+                <Button
+                  icon={<Ionicons name="lock-closed" size={24} color="white" />}
+                  type="primary"
+                  title={t("unsafeAccount.activate")}
+                  fullWidth
+                  disabled={activationInProgress}
+                  pressableProps={{ onPress: requestActivation }}
+                />
+              ) : (
+                <Text className="text-center">
+                  {t("unsafeAccount.accountActivationIsPending", {
+                    blocktime: PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MINUTES,
+                  })}
+                </Text>
+              )}
+
               <Button
-                icon={<Ionicons name="lock-closed" size={24} color="white" />}
+                title={t("unsafeAccount.visitAccountManager")}
                 type="secondary"
-                title={t("unsafeAccount.activate")}
-                wide
-                extraClassNames="mt-4"
-                disabled={activationInProgress}
-                pressableProps={{ onPress: requestActivation }}
+                size="small"
+                fullWidth
+                linkProps={{ href: "/dashboard/account" }}
               />
-            ) : (
-              <Text className="text-center">
-                {t("unsafeAccount.accountActivationIsPending", {
-                  blocktime: PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MINUTES,
-                })}
-              </Text>
-            )}
+            </View>
           </View>
         </Card>
       )}

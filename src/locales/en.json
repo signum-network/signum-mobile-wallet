@@ -207,7 +207,8 @@
     "description": "This account is not yet fully registered on the blockchain. Please activate your account to ensure its security and make it fully usable for all services, including exchanges",
     "activate": "Activate account",
     "activating": "Account activation is pending",
-    "accountActivationIsPending": "It may take up to {{blocktime}} minutes"
+    "accountActivationIsPending": "It may take up to {{blocktime}} minutes",
+    "visitAccountManager": "Visit account manager"
   },
   "watchOnlyAccount": {
     "title": "Watch-only account detected",
