@@ -358,49 +358,47 @@ export const TransactionActivityCard = (props: Transaction) => {
     iconColor,
   ]);
 
-  const readEncryptedAttachment = () => {
+  const readEncryptedAttachment = async () => {
     const tx = props;
 
-    readSecretKey(publicKey)
-      .then(async (data) => {
-        if (!data || !ledgerService) throw new Error("invalid data");
+    try {
+      const secretKeys = await readSecretKey(publicKey);
 
-        const { agreementPrivateKey } = data;
+      if (!ledgerService || !secretKeys) throw new Error("invalid data");
 
-        let decryptedMessage = "";
+      const { agreementPrivateKey } = secretKeys;
 
-        // Decrypt as recipient
-        if (accountId === tx.recipient) {
-          decryptedMessage = await decryptMessage(
-            attachment.encryptedMessage,
-            tx.senderPublicKey,
-            agreementPrivateKey
-          );
-        }
+      let decryptedMessage = "";
 
-        // Decrypt as sender
-        if (accountId === tx.sender) {
-          if (!tx.recipient) throw new Error("Invalid Account");
-
-          const recipientPublicKey = await getAccountPublicKey(tx.recipient);
-
-          if (!recipientPublicKey) throw new Error("Invalid Account");
-
-          decryptedMessage = await decryptMessage(
-            attachment.encryptedMessage,
-            recipientPublicKey,
-            agreementPrivateKey
-          );
-        }
-
-        Alert.alert(t("message"), decryptedMessage);
-      })
-      .catch((e) => {
-        Alert.alert(
-          t("message"),
-          "Invalid Attachment, Make sure to have internet connection"
+      // Decrypt as recipient
+      if (accountId === tx.recipient) {
+        decryptedMessage = await decryptMessage(
+          attachment.encryptedMessage,
+          tx.senderPublicKey,
+          agreementPrivateKey
         );
-      });
+      }
+
+      // Decrypt as sender
+      if (accountId === tx.sender) {
+        if (!tx.recipient) throw new Error("Invalid Account");
+
+        const recipientPublicKey = await getAccountPublicKey(tx.recipient);
+
+        if (!recipientPublicKey) throw new Error("Invalid Account");
+
+        decryptedMessage = await decryptMessage(
+          attachment.encryptedMessage,
+          recipientPublicKey,
+          agreementPrivateKey
+        );
+      }
+
+      Alert.alert(t("message"), decryptedMessage);
+    } catch (error) {
+      Alert.alert("Error:", JSON.stringify(error));
+      console.error(error);
+    }
   };
 
   const pickOptions = () => {

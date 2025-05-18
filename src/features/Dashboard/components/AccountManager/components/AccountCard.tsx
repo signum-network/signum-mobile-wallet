@@ -204,6 +204,7 @@ export const AccountCard = ({ publicKey, type, walletName }: Props) => {
         updateAccountData(publicKey, currentNetwork, {
           loading: false,
           isSecured: true,
+          activationInProgress: false,
           name: name || "",
           description: description || "",
           balance,

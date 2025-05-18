@@ -61,6 +61,7 @@ export class TokenService extends LedgerSubService {
       const client = new src44.DescriptorDataClient(ledger);
       const brandingList = await client.getAssetBranding(tokenId);
       const branding = brandingList?.[0] ?? "";
+
       return branding?.avatar?.ipfsCid ? branding.avatar?.ipfsCid : "";
     });
   }

@@ -1,13 +1,15 @@
-import { useState } from "react";
 import { View, ActivityIndicator } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useLedgerService } from "@/hooks/useLedgerService";
 import { useAccount } from "@/hooks/useAccount";
+import { useAccountStore } from "@/hooks/useAccountStore";
+import { useNodeHostStore } from "@/hooks/useNodeHostStore";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { Text } from "@/components/Text";
 import { Card } from "@/components/Card";
 import { Button } from "@/components/Button";
 import { asRSAddress } from "@/utils/account/asRSAddress";
+import { PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MINUTES } from "@/types/constants";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 export const AccountActivationCard = () => {
@@ -18,19 +20,18 @@ export const AccountActivationCard = () => {
     walletName,
     accountId,
     publicKey,
-    accountData: { loading },
+    accountData: { loading, activationInProgress },
   } = useAccount();
-
-  const [activationPending, setActivationPending] = useState(false);
+  const { updateAccountPublicKeyActivationStatus } = useAccountStore();
+  const { currentNetwork } = useNodeHostStore();
 
   const requestActivation = async () => {
     if (!ledgerService) return;
 
-    await ledgerService.account
-      .activate(accountId, publicKey)
-      .then(() => alert(t("unsafeAccount.accountActivationIsPending")))
-      .catch(() => alert(t("unsafeAccount.accountActivationIsPending")))
-      .finally(() => setActivationPending(true));
+    ledgerService.account.activate(accountId, publicKey).finally(() => {
+      alert(t("unsafeAccount.activating"));
+      updateAccountPublicKeyActivationStatus(publicKey, currentNetwork, true);
+    });
   };
 
   return (
@@ -57,7 +58,11 @@ export const AccountActivationCard = () => {
               />
 
               <Text size="large" className="font-medium" color="error">
-                {t("unsafeAccount.title")}
+                {t(
+                  !activationInProgress
+                    ? "unsafeAccount.title"
+                    : "unsafeAccount.activating"
+                )}
               </Text>
             </View>
 
@@ -65,19 +70,23 @@ export const AccountActivationCard = () => {
               {t("unsafeAccount.description")}
             </Text>
 
-            <Button
-              icon={<Ionicons name="lock-closed" size={24} color="white" />}
-              type="secondary"
-              title={t(
-                activationPending
-                  ? "unsafeAccount.activating"
-                  : "unsafeAccount.activate"
-              )}
-              wide
-              extraClassNames="mt-4"
-              disabled={activationPending}
-              pressableProps={{ onPress: requestActivation }}
-            />
+            {!activationInProgress ? (
+              <Button
+                icon={<Ionicons name="lock-closed" size={24} color="white" />}
+                type="secondary"
+                title={t("unsafeAccount.activate")}
+                wide
+                extraClassNames="mt-4"
+                disabled={activationInProgress}
+                pressableProps={{ onPress: requestActivation }}
+              />
+            ) : (
+              <Text className="text-center">
+                {t("unsafeAccount.accountActivationIsPending", {
+                  blocktime: PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MINUTES,
+                })}
+              </Text>
+            )}
           </View>
         </Card>
       )}

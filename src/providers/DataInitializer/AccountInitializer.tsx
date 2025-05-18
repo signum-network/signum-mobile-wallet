@@ -44,6 +44,7 @@ export const AccountInitializer = () => {
         updateAccountData(publicKey, currentNetwork, {
           loading: false,
           isSecured: true,
+          activationInProgress: false,
           name: name || "",
           description: description || "",
           balance,

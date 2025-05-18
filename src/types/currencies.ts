@@ -72,6 +72,7 @@ export const DefaultAllowedTickers: SupportedTickerSymbol[] = [
   SupportedTickerSymbol.CAD,
   SupportedTickerSymbol.IDR,
   SupportedTickerSymbol.THB,
+  SupportedTickerSymbol.UAH,
 ];
 
 const defaultFIATDecimals = 2;
@@ -87,6 +88,7 @@ export const AllowedTickersDecimals = new Map([
   [SupportedTickerSymbol.CAD, defaultFIATDecimals],
   [SupportedTickerSymbol.IDR, 0],
   [SupportedTickerSymbol.THB, defaultFIATDecimals],
+  [SupportedTickerSymbol.UAH, defaultFIATDecimals],
 ]);
 
 export const AllowedTickersSymbol = new Map([
@@ -99,6 +101,7 @@ export const AllowedTickersSymbol = new Map([
   [SupportedTickerSymbol.CAD, "C$"],
   [SupportedTickerSymbol.IDR, "Rp"],
   [SupportedTickerSymbol.THB, "฿"],
+  [SupportedTickerSymbol.UAH, "₴"],
 ]);
 
 export const defaultCurrency: SupportedTickerSymbol = SupportedTickerSymbol.USD;

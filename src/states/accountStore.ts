@@ -35,6 +35,11 @@ interface Actions {
     accountNetwork: networks,
     value: boolean
   ) => void;
+  updateAccountPublicKeyActivationStatus: (
+    publicKey: string,
+    accountNetwork: networks,
+    value: boolean
+  ) => void;
   updateAccountData: (
     publicKey: string,
     accountNetwork: networks,
@@ -102,6 +107,26 @@ export const accountStore = create<State & Actions>()(
           const newValue = accounts;
           newValue[publicKey][accountNetwork].isSecured = value;
           newValue[publicKey][accountNetwork].loading = false;
+
+          if (value) {
+            newValue[publicKey][accountNetwork].activationInProgress = false;
+          }
+
+          return {
+            accounts: { ...newValue },
+          };
+        });
+      },
+      updateAccountPublicKeyActivationStatus: (
+        publicKey,
+        accountNetwork,
+        value
+      ) => {
+        set(() => {
+          const { accounts } = get();
+
+          const newValue = accounts;
+          newValue[publicKey][accountNetwork].activationInProgress = value;
 
           return {
             accounts: { ...newValue },
