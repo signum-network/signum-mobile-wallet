@@ -34,7 +34,7 @@
   "download": "Download",
   "accountDoesNotExists": "This account either doesn't exist or hasn't been activated yet",
   "scanQRCode": "Scan QR Code",
-  "permissionRejected": "Permission Rejected",
+  "cameraPermissionRejected": "Camera access has been denied multiple times. Please go to the phone’s settings and enable camera permission to continue.",
   "requestCameraPermission": "Request Camera Permission",
   "testnetMode": "Testnet Mode",
   "unSyncedNode": "Node is not fully synced ({{percentage}}%), please wait...",
