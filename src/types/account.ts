@@ -21,6 +21,7 @@ export interface TokenBalance {
 export interface AccountNetworkData {
   loading: boolean;
   isSecured: boolean;
+  activationInProgress: boolean;
   name: string;
   description: string;
   balance: AccountBalance;
@@ -39,6 +40,7 @@ export interface WalletAccount {
 export const defaultAccountNetworkData: AccountNetworkData = {
   loading: true,
   isSecured: false,
+  activationInProgress: false,
   name: "",
   description: "",
   balance: {

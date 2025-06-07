@@ -27,7 +27,9 @@ export const CameraDialog = ({ onCodeScanned }: Props) => {
   const hideDialog = () => setVisible(false);
 
   const request = async () => {
-    await requestPermission().catch(() => alert(t("permissionRejected")));
+    await requestPermission().then(({ canAskAgain, granted }) => {
+      if (!canAskAgain && !granted) alert(t("cameraPermissionRejected"));
+    });
   };
 
   const scanEvent = (code: BarcodeScanningResult) => {
@@ -74,7 +76,6 @@ export const CameraDialog = ({ onCodeScanned }: Props) => {
                 icon={<FontAwesome6 name="qrcode" size={24} color="white" />}
                 fullWidth
                 title={t("requestCameraPermission")}
-                disabled={!permission?.canAskAgain}
                 type="primary"
                 pressableProps={{ onPress: request }}
               />

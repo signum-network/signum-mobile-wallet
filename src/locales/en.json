@@ -34,7 +34,7 @@
   "download": "Download",
   "accountDoesNotExists": "This account either doesn't exist or hasn't been activated yet",
   "scanQRCode": "Scan QR Code",
-  "permissionRejected": "Permission Rejected",
+  "cameraPermissionRejected": "Camera access has been denied multiple times. Please go to the phone’s settings and enable camera permission to continue.",
   "requestCameraPermission": "Request Camera Permission",
   "testnetMode": "Testnet Mode",
   "unSyncedNode": "Node is not fully synced ({{percentage}}%), please wait...",
@@ -206,8 +206,9 @@
     "title": "Account is unsafe",
     "description": "This account is not yet fully registered on the blockchain. Please activate your account to ensure its security and make it fully usable for all services, including exchanges",
     "activate": "Activate account",
-    "activating": "Activation is pending...",
-    "accountActivationIsPending": "Account activation is pending\nPlease wait..."
+    "activating": "Account activation is pending",
+    "accountActivationIsPending": "It may take up to {{blocktime}} minutes",
+    "visitAccountManager": "Visit account manager"
   },
   "watchOnlyAccount": {
     "title": "Watch-only account detected",

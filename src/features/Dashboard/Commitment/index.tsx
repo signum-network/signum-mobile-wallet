@@ -66,60 +66,62 @@ export const CommitmentScreen = () => {
     }, [])
   );
 
-  const onSubmit: SubmitHandler<ManageCommitment> = (data) => {
+  const onSubmit: SubmitHandler<ManageCommitment> = async (data) => {
     const { type, amount } = data;
 
-    readSecretKey(publicKey)
-      .then(async (data) => {
-        if (!data || !ledgerService) throw new Error("invalid data");
+    try {
+      const secretKeys = await readSecretKey(publicKey);
 
-        setIsSigningTransaction(true);
+      if (!ledgerService || !secretKeys) throw new Error("invalid data");
 
-        const { signPrivateKey } = data;
+      setIsSigningTransaction(true);
 
-        const amountPlanck = Amount.fromSigna(amount).getPlanck();
-        const feePlanck = cheap.getPlanck();
+      const { signPrivateKey } = secretKeys;
 
-        let confirmation;
+      const amountPlanck = Amount.fromSigna(amount).getPlanck();
+      const feePlanck = cheap.getPlanck();
 
-        if (type === OperationType.Add) {
-          confirmation =
-            await ledgerService.ledgerInstance.account.addCommitment({
-              amountPlanck,
-              feePlanck,
-              senderPrivateKey: signPrivateKey,
-              senderPublicKey: publicKey,
-            });
-        } else {
-          confirmation =
-            await ledgerService.ledgerInstance.account.removeCommitment({
-              amountPlanck,
-              feePlanck,
-              senderPrivateKey: signPrivateKey,
-              senderPublicKey: publicKey,
-            });
-        }
+      let confirmation;
 
-        // @ts-expect-error typing issue between choosing <TransactionId | UnsignedTransaction>
-        if (confirmation?.transaction) {
-          // @ts-ignore
-          setTransactionId(confirmation.transaction);
-        }
+      if (type === OperationType.Add) {
+        confirmation = await ledgerService.ledgerInstance.account.addCommitment(
+          {
+            amountPlanck,
+            feePlanck,
+            senderPrivateKey: signPrivateKey,
+            senderPublicKey: publicKey,
+          }
+        );
+      } else {
+        confirmation =
+          await ledgerService.ledgerInstance.account.removeCommitment({
+            amountPlanck,
+            feePlanck,
+            senderPrivateKey: signPrivateKey,
+            senderPublicKey: publicKey,
+          });
+      }
 
-        setIsComplete(true);
-      })
-      .catch((e) => console.error(e))
-      .finally(() => {
-        queryClient.invalidateQueries({
-          queryKey: [
-            "fetchAccountTransactionsBasicOverview",
-            accountId,
-            currentNetwork,
-          ],
-        });
+      // @ts-expect-error typing issue between choosing <TransactionId | UnsignedTransaction>
+      if (confirmation?.transaction) {
+        // @ts-ignore
+        setTransactionId(confirmation.transaction);
+      }
 
-        setIsSigningTransaction(false);
+      setIsComplete(true);
+    } catch (error) {
+      alert("Error: " + JSON.stringify(error));
+    } finally {
+      queryClient.invalidateQueries({
+        queryKey: [
+          "fetchAccountTransactionsBasicOverview",
+          accountId,
+          currentNetwork,
+        ],
       });
+
+      setIsSigningTransaction(false);
+    }
   };
 
   return (

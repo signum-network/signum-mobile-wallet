@@ -20,6 +20,10 @@ export const useAccountStore = () => {
     (state) => state.updateAccountActivationStatus
   );
 
+  const updateAccountPublicKeyActivationStatus = accountStore(
+    (state) => state.updateAccountPublicKeyActivationStatus
+  );
+
   const updateAccountData = accountStore((state) => state.updateAccountData);
   const updateAccountBalance = accountStore(
     (state) => state.updateAccountBalance
@@ -38,6 +42,7 @@ export const useAccountStore = () => {
     setActiveAccount,
     resetAccountStore,
     updateAccountActivationStatus,
+    updateAccountPublicKeyActivationStatus,
     updateAccountData,
     updateAccountBalance,
   };

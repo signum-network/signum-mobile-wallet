@@ -93,7 +93,7 @@ export const TransferScreen = () => {
     }, [])
   );
 
-  const onSubmit: SubmitHandler<TransactionCreation> = (data) => {
+  const onSubmit: SubmitHandler<TransactionCreation> = async (data) => {
     const {
       amount,
       asset,
@@ -106,63 +106,49 @@ export const TransferScreen = () => {
       isMemoBinary,
     } = data;
 
-    readSecretKey(publicKey)
-      .then(async (data) => {
-        if (!data || !ledgerService) throw new Error("invalid data");
+    try {
+      const secretKeys = await readSecretKey(publicKey);
 
-        setIsSigningTransaction(true);
+      if (!ledgerService || !secretKeys) throw new Error("invalid data");
 
-        const { signPrivateKey, agreementPrivateKey } = data;
+      setIsSigningTransaction(true);
 
-        const recipientId = asAddress(recipient).getNumericId();
-        const recipientPublicKey = await getAccountPublicKey(recipientId);
+      const { signPrivateKey, agreementPrivateKey } = secretKeys;
 
-        if (!recipientPublicKey) return alert(t("accountDoesNotExists"));
+      const recipientId = asAddress(recipient).getNumericId();
+      const recipientPublicKey = await getAccountPublicKey(recipientId);
 
-        const feePlanck = Amount.fromPlanck(fee).getPlanck();
+      if (!recipientPublicKey) return alert(t("accountDoesNotExists"));
 
-        let attachment = undefined;
+      const feePlanck = Amount.fromPlanck(fee).getPlanck();
 
-        if (includeMemo) {
-          if (isMemoEncrypted) {
-            const encryptedPayload = await encryptMessage(
-              memo,
-              recipientPublicKey,
-              agreementPrivateKey
-            );
+      let attachment = undefined;
 
-            attachment = new AttachmentEncryptedMessage(encryptedPayload);
-          } else {
-            attachment = new AttachmentMessage({
-              messageIsText: !isMemoBinary,
-              message: memo,
-            });
-          }
-        }
+      if (includeMemo) {
+        if (isMemoEncrypted) {
+          const encryptedPayload = await encryptMessage(
+            memo,
+            recipientPublicKey,
+            agreementPrivateKey
+          );
 
-        let confirmation;
-
-        if (asset === "0") {
-          confirmation =
-            await ledgerService.ledgerInstance.transaction.sendAmountToSingleRecipient(
-              {
-                recipientId,
-                amountPlanck: Amount.fromSigna(amount).getPlanck(),
-                feePlanck,
-                senderPrivateKey: signPrivateKey,
-                senderPublicKey: publicKey,
-                attachment,
-                recipientPublicKey,
-              }
-            );
+          attachment = new AttachmentEncryptedMessage(encryptedPayload);
         } else {
-          confirmation = await ledgerService.ledgerInstance.asset.transferAsset(
+          attachment = new AttachmentMessage({
+            messageIsText: !isMemoBinary,
+            message: memo,
+          });
+        }
+      }
+
+      let confirmation;
+
+      if (asset === "0") {
+        confirmation =
+          await ledgerService.ledgerInstance.transaction.sendAmountToSingleRecipient(
             {
               recipientId,
-              assetId: asset,
-              quantity: ChainValue.create(assetDecimals)
-                .setCompound(amount)
-                .getAtomic(),
+              amountPlanck: Amount.fromSigna(amount).getPlanck(),
               feePlanck,
               senderPrivateKey: signPrivateKey,
               senderPublicKey: publicKey,
@@ -170,30 +156,43 @@ export const TransferScreen = () => {
               recipientPublicKey,
             }
           );
-        }
-
-        // @ts-expect-error typing issue between choosing <TransactionId | UnsignedTransaction>
-        if (confirmation?.transaction) {
-          // @ts-ignore
-          setTransactionId(confirmation.transaction);
-        }
-
-        scrollToTop();
-
-        setIsComplete(true);
-      })
-      .catch((e) => console.error(e))
-      .finally(() => {
-        queryClient.invalidateQueries({
-          queryKey: [
-            "fetchAccountTransactionsBasicOverview",
-            accountId,
-            currentNetwork,
-          ],
+      } else {
+        confirmation = await ledgerService.ledgerInstance.asset.transferAsset({
+          recipientId,
+          assetId: asset,
+          quantity: ChainValue.create(assetDecimals)
+            .setCompound(amount)
+            .getAtomic(),
+          feePlanck,
+          senderPrivateKey: signPrivateKey,
+          senderPublicKey: publicKey,
+          attachment,
+          recipientPublicKey,
         });
+      }
 
-        setIsSigningTransaction(false);
+      // @ts-expect-error typing issue between choosing <TransactionId | UnsignedTransaction>
+      if (confirmation?.transaction) {
+        // @ts-ignore
+        setTransactionId(confirmation.transaction);
+      }
+
+      scrollToTop();
+
+      setIsComplete(true);
+    } catch (error) {
+      alert("Error: " + JSON.stringify(error));
+    } finally {
+      queryClient.invalidateQueries({
+        queryKey: [
+          "fetchAccountTransactionsBasicOverview",
+          accountId,
+          currentNetwork,
+        ],
       });
+
+      setIsSigningTransaction(false);
+    }
   };
 
   if (isWatchOnly) return <WatchOnlyAccountCard />;
