@@ -59,9 +59,8 @@ export const AssetCard = ({
       {
         text: t("overview.tokens.copyTokenId"),
         onPress: async () => {
-          await Clipboard.setStringAsync(asset).then(() =>
-            alert(t("overview.tokens.copiedTokenId"))
-          );
+          await Clipboard.setStringAsync(asset);
+          alert(t("overview.tokens.copiedTokenId"));
         },
       },
       {

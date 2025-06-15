@@ -103,10 +103,8 @@ export const EnrollAuthScreen = () => {
 
     if (securedPIN) {
       const { key, salt } = securedPIN;
-
-      await savePin(key, salt).then(() => {
-        askHardwareAuthPermission();
-      });
+      await savePin(key, salt);
+      askHardwareAuthPermission();
     }
   };
 

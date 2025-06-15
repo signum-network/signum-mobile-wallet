@@ -27,9 +27,8 @@ export const CameraDialog = ({ onCodeScanned }: Props) => {
   const hideDialog = () => setVisible(false);
 
   const request = async () => {
-    await requestPermission().then(({ canAskAgain, granted }) => {
-      if (!canAskAgain && !granted) alert(t("cameraPermissionRejected"));
-    });
+    const { canAskAgain, granted } = await requestPermission();
+    if (!canAskAgain && !granted) alert(t("cameraPermissionRejected"));
   };
 
   const scanEvent = (code: BarcodeScanningResult) => {

@@ -19,9 +19,8 @@ export const DepositScreen = () => {
   const rsAddress = `${asRSAddress(accountId)}`;
 
   const copyToClipboard = async () => {
-    await Clipboard.setStringAsync(rsAddress).then(() =>
-      alert(t("deposit.copiedAddress"))
-    );
+    await Clipboard.setStringAsync(rsAddress);
+    alert(t("deposit.copiedAddress"));
   };
 
   return (

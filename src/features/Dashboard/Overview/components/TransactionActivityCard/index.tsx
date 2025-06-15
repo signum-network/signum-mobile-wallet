@@ -406,9 +406,8 @@ export const TransactionActivityCard = (props: Transaction) => {
       {
         text: t("overview.copyTransactionId"),
         onPress: async () => {
-          await Clipboard.setStringAsync(transaction).then(() =>
-            alert(t("overview.copiedTransactionId"))
-          );
+          await Clipboard.setStringAsync(transaction);
+          alert(t("overview.copiedTransactionId"));
         },
       },
       {
