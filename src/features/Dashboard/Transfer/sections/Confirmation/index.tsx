@@ -63,9 +63,8 @@ export const Confirmation = ({
   const signaFeesMarketValue = signaFees && price ? signaFees * price : 0;
 
   const copyTransactionId = async () => {
-    await Clipboard.setStringAsync(transactionId).then(() =>
-      alert(t("overview.copiedTransactionId"))
-    );
+    await Clipboard.setStringAsync(transactionId);
+    alert(t("overview.copiedTransactionId"));
   };
 
   const openTransactionInExplorer = () => openTransactionLink(transactionId);

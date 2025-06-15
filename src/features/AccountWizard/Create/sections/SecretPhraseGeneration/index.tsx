@@ -34,9 +34,8 @@ export const SecretPhraseGeneration = () => {
   };
 
   const copyToClipboard = async () => {
-    await Clipboard.setStringAsync(seedPhrase).then(() =>
-      alert(t("accountWizard.createAccount.copiedSeedPhrase"))
-    );
+    await Clipboard.setStringAsync(seedPhrase);
+    alert(t("accountWizard.createAccount.copiedSeedPhrase"));
   };
 
   // Fun topic to share: I Had to convert React Native SVG to a HTML Compatible SVG in order to allow the user to download the QR Code

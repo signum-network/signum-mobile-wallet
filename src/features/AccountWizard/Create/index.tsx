@@ -72,17 +72,17 @@ export const CreateScreen = () => {
       generateSecretKeys(seedPhrase);
 
     try {
-      saveSecretKey(publicKey, signPrivateKey, agreementPrivateKey).then(() => {
-        addAccount({
-          publicKey,
-          type: AccountType.mnemonic,
-          walletName,
-        });
+      await saveSecretKey(publicKey, signPrivateKey, agreementPrivateKey);
 
-        setActiveAccount(publicKey);
-
-        router.replace("/dashboard/overview");
+      addAccount({
+        publicKey,
+        type: AccountType.mnemonic,
+        walletName,
       });
+
+      setActiveAccount(publicKey);
+
+      router.replace("/dashboard/overview");
     } catch (error) {
       console.error(error);
     }

@@ -23,9 +23,8 @@ export const CompleteCard = ({ transactionId }: Props) => {
   const type = watch("type");
 
   const copyTransactionId = async () => {
-    await Clipboard.setStringAsync(transactionId).then(() =>
-      alert(t("overview.copiedTransactionId"))
-    );
+    await Clipboard.setStringAsync(transactionId);
+    alert(t("overview.copiedTransactionId"));
   };
 
   const openTransactionInExplorer = () => openTransactionLink(transactionId);
