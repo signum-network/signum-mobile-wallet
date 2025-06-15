@@ -1,16 +1,12 @@
 import { Fragment } from "react";
-import { StatusBar } from "expo-status-bar";
+import { SystemBars } from "react-native-edge-to-edge";
 import { TermsScreen } from "@/features/Terms";
 import { PUBLIC_CURRENT_OS } from "@/types/constants";
 
 export default function Screen() {
   return (
     <Fragment>
-      <StatusBar
-        style={PUBLIC_CURRENT_OS === "ios" ? "dark" : "light"}
-        backgroundColor="#0099ff"
-        translucent
-      />
+      <SystemBars style={PUBLIC_CURRENT_OS === "ios" ? "dark" : "light"} />
       <TermsScreen />
     </Fragment>
   );

@@ -11,7 +11,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#0099ff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "scheme": "signum",
     "experiments": {
       "typedRoutes": true
@@ -23,6 +25,7 @@
       }
     },
     "android": {
+      "edgeToEdgeEnabled": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#0099ff"
@@ -55,7 +58,8 @@
       ],
       "expo-localization",
       "expo-asset",
-      "expo-sqlite"
+      "expo-sqlite",
+      "expo-audio"
     ],
     "extra": {
       "router": {

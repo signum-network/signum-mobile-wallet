@@ -30,7 +30,7 @@ export const CreateScreen = () => {
 
   const [showDialog, setShowDialog] = useState(false);
 
-  const scrollRef: RefObject<ScrollView> = useRef(null);
+  const scrollRef: RefObject<ScrollView> = useRef(null!);
 
   const methods = useForm<AccountCreation>({
     mode: "onChange",

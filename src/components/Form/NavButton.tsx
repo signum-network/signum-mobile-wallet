@@ -4,7 +4,7 @@ import { PUBLIC_CURRENT_OS } from "@/types/constants";
 import { Button, type Props as ButtonProps } from "../Button";
 import Animated, { useSharedValue } from "react-native-reanimated";
 
-const DEFAULT_HEIGHT = 81.4;
+const DEFAULT_HEIGHT = 95;
 
 interface Props extends ButtonProps {
   hidden?: boolean;

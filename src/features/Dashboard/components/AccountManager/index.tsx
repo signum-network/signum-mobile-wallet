@@ -17,7 +17,7 @@ export const AccountManager = () => {
   const { accounts } = useAccountStore();
   const { iconColor } = useAppTheme();
 
-  const scrollRef: RefObject<ScrollView> = useRef(null);
+  const scrollRef: RefObject<ScrollView> = useRef(null!);
 
   const accountsList = Object.values(accounts);
 

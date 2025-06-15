@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState, useEffect } from "react";
+import { useMemo, useRef, useEffect } from "react";
 import {
   View,
   TextInput,
@@ -11,7 +11,7 @@ import { useTranslation } from "react-i18next";
 import { Image } from "expo-image";
 import { signumBlueSymbolPicture } from "@/assets";
 import { Text } from "@/components/Text";
-import { Audio } from "expo-av";
+import { useAudioPlayer } from "expo-audio";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 interface Props {
@@ -32,6 +32,9 @@ type Nullable<T> = T | null;
 
 const areAllItemsFilled = (array: string[]) => array.every((i) => !!i);
 
+const successAudioSource = require("../../../assets/audio/success-ringtone.mp3");
+const errorAudioSource = require("../../../assets/audio/error-ringtone.mp3");
+
 export const PinAuthenticator = ({
   label,
   complementaryLabel,
@@ -47,8 +50,8 @@ export const PinAuthenticator = ({
 }: Props) => {
   const { t } = useTranslation();
 
-  const [successSound, setSuccessSound] = useState<Audio.Sound>();
-  const [errorSound, setErrorSound] = useState<Audio.Sound>();
+  const successAudio = useAudioPlayer(successAudioSource);
+  const errorAudio = useAudioPlayer(errorAudioSource);
 
   const inputRefs = useRef<Array<Nullable<TextInput>>>([]);
 
@@ -100,54 +103,28 @@ export const PinAuthenticator = ({
     }
   };
 
-  const playSuccessSound = async () => {
-    const { sound } = await Audio.Sound.createAsync(
-      require("../../../assets/audio/success-ringtone.mp3"),
-      { volume: 0.5 }
-    );
-
-    setSuccessSound(sound);
-    await sound.playAsync();
+  const playSuccessSound = () => {
+    successAudio.volume = 0.5;
+    successAudio.seekTo(0);
+    successAudio.play();
   };
 
-  const playErrorSound = async () => {
-    const { sound } = await Audio.Sound.createAsync(
-      require("../../../assets/audio/error-ringtone.mp3"),
-      { positionMillis: 550, volume: 0.5 }
-    );
-
-    setErrorSound(sound);
-    await sound.playAsync();
+  const playErrorSound = () => {
+    errorAudio.volume = 0.5;
+    errorAudio.seekTo(0.55);
+    errorAudio.play();
   };
-
-  useEffect(() => {
-    return successSound
-      ? () => {
-          successSound.unloadAsync();
-        }
-      : undefined;
-  }, [successSound]);
-
-  useEffect(() => {
-    return errorSound
-      ? () => {
-          errorSound.unloadAsync();
-        }
-      : undefined;
-  }, [errorSound]);
 
   useEffect(() => {
     (async () => {
       if (areAllItemsFilled(value)) {
         if (success) {
-          await playSuccessSound().then(() => {
-            inputRefs.current = [];
-            Keyboard.dismiss();
-          });
+          playSuccessSound();
+          inputRefs.current = [];
+          Keyboard.dismiss();
         } else if (error) {
-          await playErrorSound().then(() => {
-            resetValues();
-          });
+          playErrorSound();
+          resetValues();
         }
       }
     })();
