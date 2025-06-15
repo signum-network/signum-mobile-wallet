@@ -16,9 +16,6 @@ export const ThemeProvider = ({ children }: ChildrenProps) => {
     switch (pathname) {
       case "/terms":
 
-      case "/auth/enroll":
-      case "/auth/login":
-
       case "/dashboard/overview/activity":
       case "/dashboard/settings/account":
       case "/dashboard/settings/language":
