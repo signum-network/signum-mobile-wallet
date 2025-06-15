@@ -3,6 +3,7 @@ import { View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "expo-router";
 import { Image } from "expo-image";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { LICENSE } from "./utils/License";
 import { Button } from "@/components/Button";
 import { signumWhiteSymbolPicture } from "@/assets";
@@ -18,6 +19,7 @@ export const TermsScreen = () => {
   const [accepted, setAccepted] = useState(false);
   const toggleTerms = () => setAccepted(!accepted);
   const router = useRouter();
+  const insets = useSafeAreaInsets();
 
   const saveTerms = () => {
     setIsTermAgreed(true);
@@ -26,7 +28,10 @@ export const TermsScreen = () => {
 
   return (
     <View className="flex-1 bg-white gap-4">
-      <View className="items-center justify-center bg-signum pt-8 pb-4 gap-4">
+      <View
+        style={{ paddingTop: insets.top + 24 }}
+        className="items-center justify-center bg-signum pb-4 gap-4"
+      >
         <Image
           source={{ uri: signumWhiteSymbolPicture }}
           style={{ width: 96, height: 96 }}
@@ -35,7 +40,7 @@ export const TermsScreen = () => {
         <Text className="text-white font-bold text-3xl">{t("welcome")}</Text>
       </View>
 
-      <View style={{ flex: 1 }} className="px-4 gap-4">
+      <View style={{ flex: 0.95 }} className="px-4 gap-4">
         <View>
           <Text size="large" color="muted" className="text-center font-medium">
             {t("terms.requestFirstLine")}

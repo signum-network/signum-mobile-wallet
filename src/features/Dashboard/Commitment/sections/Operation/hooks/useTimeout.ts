@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { addSeconds, intervalToDuration, Duration } from "date-fns";
 
 export const useTimeout = (blocksUntilActionEnd: number): string => {
-  let intervalHandle = useRef<ReturnType<typeof setTimeout>>();
+  let intervalHandle = useRef<ReturnType<typeof setTimeout>>(null!);
   const [actionDuration, setActionDuration] = useState<Duration | null>(null);
 
   const resetTimeout = () => {

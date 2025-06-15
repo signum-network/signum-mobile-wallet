@@ -4,6 +4,8 @@ import { useTranslation } from "react-i18next";
 import { useAppStore } from "@/hooks/useAppStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
+type TabBarIconProperties = { color: string };
+
 export default function Layout() {
   const { t } = useTranslation();
   const { minerMode } = useAppStore();
@@ -17,7 +19,7 @@ export default function Layout() {
         <Tabs.Screen
           options={{
             title: t("bottomBar.miner"),
-            tabBarIcon: ({ color }) => (
+            tabBarIcon: ({ color }: TabBarIconProperties) => (
               <Ionicons name="cog" size={tabBarIconSize} color={color} />
             ),
             tabBarLabelStyle,
@@ -35,13 +37,13 @@ export default function Layout() {
       initialRouteName="overview"
       screenOptions={{
         headerShown: false,
-        tabBarStyle: { height: 80, paddingTop: 15, paddingBottom: 15 },
+        tabBarStyle: { height: 85, paddingTop: 15, paddingBottom: 15 },
       }}
     >
       <Tabs.Screen
         options={{
           title: t("bottomBar.home"),
-          tabBarIcon: ({ color }) => (
+          tabBarIcon: ({ color }: TabBarIconProperties) => (
             <Ionicons name="home" size={tabBarIconSize} color={color} />
           ),
           tabBarLabelStyle,
@@ -52,7 +54,7 @@ export default function Layout() {
       <Tabs.Screen
         options={{
           title: t("bottomBar.tokens"),
-          tabBarIcon: ({ color }) => (
+          tabBarIcon: ({ color }: TabBarIconProperties) => (
             <Ionicons name="apps" size={tabBarIconSize} color={color} />
           ),
           tabBarLabelStyle,
@@ -63,7 +65,7 @@ export default function Layout() {
       <Tabs.Screen
         options={{
           title: t("bottomBar.subscriptions"),
-          tabBarIcon: ({ color }) => (
+          tabBarIcon: ({ color }: TabBarIconProperties) => (
             <Ionicons name="albums" size={tabBarIconSize} color={color} />
           ),
           tabBarLabelStyle,
@@ -76,7 +78,7 @@ export default function Layout() {
       <Tabs.Screen
         options={{
           title: t("bottomBar.settings"),
-          tabBarIcon: ({ color }) => (
+          tabBarIcon: ({ color }: TabBarIconProperties) => (
             <Ionicons name="settings" size={tabBarIconSize} color={color} />
           ),
           tabBarLabelStyle,

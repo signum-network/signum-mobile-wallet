@@ -53,7 +53,7 @@ export const TransferScreen = () => {
 
   const queryClient = useQueryClient();
 
-  const scrollRef: RefObject<ScrollView> = useRef(null);
+  const scrollRef: RefObject<ScrollView> = useRef(null!);
 
   const methods = useForm<TransactionCreation>({
     mode: "onChange",

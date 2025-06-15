@@ -5,7 +5,7 @@ import { ThemeProvider as ReactNavigationThemeProvider } from "@react-navigation
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import type { ChildrenProps } from "@/types/childrenProps";
-import { StatusBar } from "expo-status-bar";
+import { SystemBars } from "react-native-edge-to-edge";
 
 export const ThemeProvider = ({ children }: ChildrenProps) => {
   const { isDarkMode, theme } = useAppTheme();
@@ -14,11 +14,12 @@ export const ThemeProvider = ({ children }: ChildrenProps) => {
 
   const dynamicTopInset = useMemo(() => {
     switch (pathname) {
-      case "/account-wizard/create":
-      case "/account-wizard/import":
+      case "/terms":
+
+      case "/auth/enroll":
+      case "/auth/login":
 
       case "/dashboard/overview/activity":
-
       case "/dashboard/settings/account":
       case "/dashboard/settings/language":
       case "/dashboard/settings/currency":
@@ -40,7 +41,7 @@ export const ThemeProvider = ({ children }: ChildrenProps) => {
         backgroundColor: theme.colors.background,
       }}
     >
-      <StatusBar style={isDarkMode ? "light" : "dark"} />
+      <SystemBars style={isDarkMode ? "light" : "dark"} />
       <ReactNavigationThemeProvider value={theme}>
         {children}
       </ReactNavigationThemeProvider>

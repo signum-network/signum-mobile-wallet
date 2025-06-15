@@ -19,7 +19,7 @@ export const SecretPhraseGeneration = () => {
   const { iconColor } = useAppTheme();
   const { watch, setValue } = useFormContext<AccountCreation>();
 
-  const QrCodeRef: RefObject<QRCode> & RefObject<SVGSVGElement> = useRef(null);
+  const QrCodeRef: RefObject<QRCode> & RefObject<SVGSVGElement> = useRef(null!);
 
   const seedPhrase = watch("seedPhrase");
 
