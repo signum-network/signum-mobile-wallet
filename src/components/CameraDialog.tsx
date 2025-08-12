@@ -12,6 +12,7 @@ import { Text } from "./Text";
 import { Button } from "./Button";
 import { Dialog } from "./Dialog";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import { findSignumAddress } from "@/utils/findSignumAddress";
 
 interface Props {
   onCodeScanned: (code: BarcodeScanningResult) => void;
@@ -32,8 +33,17 @@ export const CameraDialog = ({ onCodeScanned }: Props) => {
   };
 
   const scanEvent = (code: BarcodeScanningResult) => {
-    onCodeScanned(code);
-    hideDialog();
+    const scannedData = code.data?.trim();
+    if (!scannedData) return;
+
+    const address = findSignumAddress(scannedData);
+
+    if (address) {
+      onCodeScanned({ ...code, data: address });
+      hideDialog();
+    } else {
+      alert(t("invalidSignumQRCode"));
+    }
   };
 
   const canUseCamera =
