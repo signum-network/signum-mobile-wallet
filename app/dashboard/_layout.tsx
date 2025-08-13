@@ -37,7 +37,7 @@ export default function Layout() {
       initialRouteName="overview"
       screenOptions={{
         headerShown: false,
-        tabBarStyle: { height: 85, paddingTop: 15, paddingBottom: 15 },
+        tabBarStyle: { height: 116, paddingTop: 15, paddingBottom: 56 },
       }}
     >
       <Tabs.Screen
