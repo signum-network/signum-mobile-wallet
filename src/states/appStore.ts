@@ -29,7 +29,7 @@ interface Actions {
 }
 
 const initialState: State = {
-  themeMode: "light",
+  themeMode: null as ColorSchemeName,
   language: getDefaultLocale(),
   isTermAgreed: false,
   isAuthEnrolled: false,
