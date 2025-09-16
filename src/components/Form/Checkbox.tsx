@@ -29,7 +29,7 @@ export const FormCheckbox = ({
 
   return (
     <Pressable className={classNames} onPress={onPress}>
-      <View className="w-1/12  flex justify-center items-center">
+      <View className="w-1/12  flex justify-center items-center" pointerEvents="none">
         <NativeCheckbox value={value} />
       </View>
 
