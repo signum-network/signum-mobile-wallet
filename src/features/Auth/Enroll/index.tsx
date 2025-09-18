@@ -124,49 +124,59 @@ export const EnrollAuthScreen = () => {
   }, [verificationSuccess, verificationError]);
 
   return (
-    <View className="flex-1 flex flex-col items-center justify-center">
-      {step === Steps.enter && (
-        <PinAuthenticator
-          label={t("auth.enrollPassCodeTitle")}
-          complementaryLabel={t("auth.enrollPassCodeDescription")}
-          errorLabel=""
-          successLabel=""
-          error={false}
-          success={false}
-          length={PUBLIC_PIN_LENGTH}
-          value={firstStepvalues}
-          onChange={handleOnChangeFirstStepValues}
-          onReset={() => {}}
+  <View className="flex-1 items-center justify-start pt-12 bg-white dark:bg-black">
+    <View className="max-w-md mb-2 justify-center h-14">
+      {step === Steps.verify ? (
+        <Button
+          type="secondary"
+          title={t("auth.goBack")}
+          pressableProps={{
+            onPress: resetProgress,
+            pointerEvents: verificationSuccess ? "none" : "auto",
+          }}
+          extraClassNames={verificationSuccess ? "opacity-0" : "opacity-100"}
+          wide
+        />
+      ) : (
+        <Button
+          type="secondary"
+          title=" "
+          pressableProps={{ pointerEvents: "none" }}
+          extraClassNames="opacity-0"
+          wide
         />
       )}
-
-      {step === Steps.verify && (
-        <Fragment>
-          {!verificationSuccess && (
-            <View className="flex justify-center items-center">
-              <Button
-                type="secondary"
-                title={t("auth.goBack")}
-                pressableProps={{ onPress: resetProgress }}
-                wide
-              />
-            </View>
-          )}
-
-          <PinAuthenticator
-            label={t("auth.enterPassCodeAgain")}
-            complementaryLabel={t("auth.verifyPassCode")}
-            errorLabel={t("auth.verifyIncorrectPassCode")}
-            successLabel={`${t("auth.verifyLoadingWait")} 🔒`}
-            error={verificationError}
-            success={verificationSuccess}
-            length={PUBLIC_PIN_LENGTH}
-            value={verificationValues}
-            onChange={handleOnChangeVerificationValues}
-            onReset={resetVerificationValues}
-          />
-        </Fragment>
-      )}
     </View>
-  );
+
+    {step === Steps.enter && (
+      <PinAuthenticator
+        label={t("auth.enrollPassCodeTitle")}
+        complementaryLabel={t("auth.enrollPassCodeDescription")}
+        errorLabel=""
+        successLabel=""
+        error={false}
+        success={false}
+        length={PUBLIC_PIN_LENGTH}
+        value={firstStepvalues}
+        onChange={handleOnChangeFirstStepValues}
+        onReset={() => {}}
+      />
+    )}
+
+    {step === Steps.verify && (
+      <PinAuthenticator
+        label={t("auth.enterPassCodeAgain")}
+        complementaryLabel={t("auth.verifyPassCode")}
+        errorLabel={t("auth.verifyIncorrectPassCode")}
+        successLabel={`${t("auth.verifyLoadingWait")} 🔒`}
+        error={verificationError}
+        success={verificationSuccess}
+        length={PUBLIC_PIN_LENGTH}
+        value={verificationValues}
+        onChange={handleOnChangeVerificationValues}
+        onReset={resetVerificationValues}
+      />
+    )}
+  </View>
+);
 };

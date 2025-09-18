@@ -102,7 +102,7 @@ export const PinAuthenticator = ({
       handleChange("", index);
     }
   };
-
+  
   const playSuccessSound = () => {
     successAudio.volume = 0.5;
     successAudio.seekTo(0);
@@ -119,12 +119,14 @@ export const PinAuthenticator = ({
     (async () => {
       if (areAllItemsFilled(value)) {
         if (success) {
-          playSuccessSound();
+          // playSuccessSound();   
           inputRefs.current = [];
           Keyboard.dismiss();
         } else if (error) {
-          playErrorSound();
-          resetValues();
+          // playErrorSound();
+          setTimeout(() => {   //show error message longer
+            resetValues();
+          }, 1500); 
         }
       }
     })();
@@ -132,7 +134,7 @@ export const PinAuthenticator = ({
 
   if (success) {
     return (
-      <View className="flex-1 justify-center items-center gap-4">
+      <View className="flex-1 items-center gap-4 pt-16">
         <View className="items-center justify-center gap-4">
           <Ionicons name="checkmark-circle" size={85} color="green" />
 
@@ -150,14 +152,15 @@ export const PinAuthenticator = ({
   }
 
   return (
-    <View className="flex-1 justify-center items-center gap-4">
+    <View className="flex-1 items-center gap-4 pt-4">
       <View className="items-center justify-center gap-2">
         <Image
           source={{ uri: signumBlueSymbolPicture }}
           style={{ width: 75, height: 75 }}
         />
-
-        <Text className="max-w-xs w-full text-center !text-2xl">{label}</Text>
+        <View className="h-20 justify-center">
+          <Text className="max-w-xs w-full text-center !text-2xl">{label}</Text>
+        </View>
       </View>
 
       <View className="w-full max-w-md mx-auto px-4 flex flex-row items-center justify-center gap-2">
@@ -170,7 +173,7 @@ export const PinAuthenticator = ({
             }}
             key={index}
             autoFocus={index === 0}
-            className={`text-2xl font-bold text-center w-14 h-14 border rounded-md bg-white border-card-border dark:border-card-border-dark ${
+            className={`text-2xl font-bold text-center w-14 h-14 border rounded-md bg-muted dark:bg-muted-dark border-card-border dark:border-card-border-dark text-black dark:text-white ${
               disabled && "opacity-50"
             }`}
             maxLength={1}

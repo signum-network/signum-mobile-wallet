@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Keyboard } from "react-native";
+import { View, Keyboard } from "react-native";
 import { router } from "expo-router";
 import { useAppStore } from "@/hooks/useAppStore";
 import { PinAuthenticator } from "@/features/Auth/components/PinAuthenticator";
@@ -145,18 +145,20 @@ export const LoginAuthScreen = () => {
   }, [failedAuthAttempts]);
 
   return (
-    <PinAuthenticator
-      label={t("auth.loginPassCodeTitle")}
-      complementaryLabel={t("auth.loginPassCodeDescription")}
-      errorLabel={t("auth.verifyIncorrectPassCode")}
-      successLabel={`${t("auth.loginCorrectPassCode")} 😊`}
-      error={error}
-      success={success}
-      length={PUBLIC_PIN_LENGTH}
-      value={value}
-      onChange={handleOnChangeValues}
-      onReset={resetValues}
-      disabled={loading || locked}
-    />
+    <View className="flex-1 items-center justify-start pt-24 bg-white dark:bg-black">
+      <PinAuthenticator
+        label={t("auth.loginPassCodeTitle")}
+        complementaryLabel={t("auth.loginPassCodeDescription")}
+        errorLabel={t("auth.verifyIncorrectPassCode")}
+        successLabel={`${t("auth.loginCorrectPassCode")} 😊`}
+        error={error}
+        success={success}
+        length={PUBLIC_PIN_LENGTH}
+        value={value}
+        onChange={handleOnChangeValues}
+        onReset={resetValues}
+        disabled={loading || locked}
+      />
+    </View>
   );
 };
