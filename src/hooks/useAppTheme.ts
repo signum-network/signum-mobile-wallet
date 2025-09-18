@@ -4,12 +4,12 @@ import { DarkTheme, DefaultTheme } from "@react-navigation/native";
 import { appStore } from "@/states/appStore";
 
 export const useAppTheme = () => {
-  const { setColorScheme } = useColorScheme();
+  const { colorScheme, setColorScheme } = useColorScheme();
   const themeMode = appStore((state) => state.themeMode);
   const toggleThemeMode = appStore((state) => state.toggleThemeMode);
 
-  const isDarkMode = themeMode === "dark";
-
+  const scheme = colorScheme ?? "light";
+  const isDarkMode = scheme === "dark";
   const theme = isDarkMode ? DarkTheme : DefaultTheme;
 
   const iconColor = {
