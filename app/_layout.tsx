@@ -7,6 +7,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { Stack } from "expo-router/stack";
 import { AppProviders } from "@/providers";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { BottomInsetDecor } from "@/components/BottomInsetDecor";
 
 Crypto.init(new ReactNativeExpoCryptoAdapter());
 
@@ -36,6 +37,12 @@ export default function RootLayout() {
       <AppProviders>
         <Stack screenOptions={{ headerShown: false }} />
       </AppProviders>
+      <BottomInsetDecor
+        lightBg="#EFEFF4"
+        darkBg="#1C1C1E"
+        lightLineColor="#e0e0e0"
+        darkLineColor="#444444"
+      />
     </GestureHandlerRootView>
   );
 }
