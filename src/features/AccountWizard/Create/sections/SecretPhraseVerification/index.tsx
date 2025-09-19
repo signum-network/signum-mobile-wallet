@@ -14,7 +14,7 @@ export const SecretPhraseVerification = () => {
   const seedPhraseVerificationIndex = watch("seedPhraseVerificationIndex");
 
   return (
-    <View className="flex justify-center items-center gap-8 pt-8">
+    <View className="flex justify-center items-center gap-8 pt-8 pb-24">
       <View className="gap-4">
         <Text size="extraLarge" className="font-bold text-center">
           {t("accountWizard.createAccount.verification")}

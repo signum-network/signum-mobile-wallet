@@ -56,7 +56,7 @@ export const TermsScreen = () => {
       <View className="flex items-center p-4 gap-4 color-slate-500">
         <View
           className="w-full"
-          style={{ paddingBottom: Math.max(insets.bottom - 24, 0) }}
+          style={{ paddingBottom: insets.bottom }}
         >
           <Button
             type="primary"

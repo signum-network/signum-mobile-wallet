@@ -82,7 +82,7 @@ export const SecretPhraseGeneration = () => {
   }, []);
 
   return (
-    <View className="flex justify-center items-center gap-4 pt-8">
+    <View className="flex justify-center items-center gap-4 pt-8 pb-24">
       <Text size="extraLarge" className="font-bold text-center">
         {t("accountWizard.createAccount.secondStepTitle")}
       </Text>
