@@ -65,18 +65,21 @@ export const AboutScreen = () => {
           </Text>
 
           <Button
+            titleClassName="color-signum"
             wide
             title={t("settings.about.repository")}
             pressableProps={{ onPress: openRepositoryPage }}
           />
 
           <Button
+            titleClassName="color-signum"
             wide
             title={t("settings.about.privacyPolicy")}
             pressableProps={{ onPress: openPrivacyPolicyPage }}
           />
 
           <Button
+            titleClassName="color-signum"
             wide
             title={t("settings.about.contact")}
             pressableProps={{ onPress: contactDeveloper }}

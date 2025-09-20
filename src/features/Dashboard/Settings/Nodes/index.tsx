@@ -50,6 +50,11 @@ export const NodeSettingsScreen = () => {
                 title={t("settings.node.auto")}
                 extraClassNames="!rounded-r-none w-1/2 px-0"
                 size="large"
+                titleClassName={
+                  isConnectionTypeAutomatic
+                    ? "text-white"
+                    : "text-muted-foreground dark:text-muted-foreground-dark"
+                }
                 pressableProps={{ onPress: setAutomaticMode }}
               />
 
@@ -65,6 +70,11 @@ export const NodeSettingsScreen = () => {
                 title={t("settings.node.manual")}
                 extraClassNames="!rounded-l-none w-1/2 px-0"
                 size="large"
+                titleClassName={
+                  isConnectionTypeManual
+                    ? "text-white"
+                    : "text-muted-foreground dark:text-muted-foreground-dark"
+                }
                 pressableProps={{ onPress: setManualMode }}
               />
             </View>

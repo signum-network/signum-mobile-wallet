@@ -34,6 +34,11 @@ export const ButtonTabs = ({
         title={t("add")}
         extraClassNames="!rounded-r-none w-1/2"
         size="large"
+        titleClassName={
+          isOperationTypeAdd
+            ? "text-white"
+            : "text-muted-foreground dark:text-muted-foreground-dark"
+        }
         pressableProps={{ onPress: setAddMode }}
       />
 
@@ -49,6 +54,11 @@ export const ButtonTabs = ({
         title={t("remove")}
         extraClassNames="!rounded-l-none w-1/2"
         size="large"
+        titleClassName={
+          isOperationTypeRemove
+            ? "text-white"
+            : "text-muted-foreground dark:text-muted-foreground-dark"
+        }
         pressableProps={{ onPress: setRemoveMode }}
       />
     </View>

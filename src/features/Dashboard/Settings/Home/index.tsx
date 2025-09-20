@@ -3,9 +3,9 @@ import { useTranslation } from "react-i18next";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { HorizontalDivider } from "@/components/HorizontalDivider";
 import { AccountSwitcher } from "@/components/Account/Switcher";
-import { NavLink } from "./components/NavLink";
 import { DashboardScreenContainer } from "../../components/DashboardScreenContainer";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { SettingsCard } from "./components/SettingsCard";
 
 export const SettingsScreen = () => {
   const { t } = useTranslation();
@@ -20,17 +20,19 @@ export const SettingsScreen = () => {
 
         <HorizontalDivider />
 
-        <View className="flex flex-col w-full px-4">
-          <NavLink
-            icon={
-              <Ionicons name="language" size={24} color={iconColor.default} />
-            }
-            title={t("settings.language.title")}
-            description={t("settings.language.description")}
-            href="/dashboard/settings/language"
-          />
+        <View className="flex flex-col w-full px-4 gap-4">
+          <SettingsCard
+           
+              icon={
+                <Ionicons name="language" size={24} color={iconColor.default} />
+              }
+              title={t("settings.language.title")}
+              description={t("settings.language.description")}
+              href="/dashboard/settings/language"
+            />
+          
 
-          <NavLink
+           <SettingsCard
             icon={
               <Ionicons name="server" size={24} color={iconColor.default} />
             }
@@ -39,21 +41,21 @@ export const SettingsScreen = () => {
             href="/dashboard/settings/nodes"
           />
 
-          <NavLink
+           <SettingsCard
             icon={<Ionicons name="cash" size={24} color={iconColor.default} />}
             title={t("settings.currency.title")}
             description={t("settings.currency.description")}
             href="/dashboard/settings/currency"
           />
-
-          <NavLink
+          {/*
+           <SettingsCard
             icon={<Ionicons name="apps" size={24} color={iconColor.default} />}
             title={t("settings.features.title")}
             description={t("settings.features.description")}
             href="/dashboard/settings/features"
           />
-
-          <NavLink
+          */}
+           <SettingsCard
             icon={
               <Ionicons
                 name="extension-puzzle"

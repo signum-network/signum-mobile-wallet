@@ -96,6 +96,11 @@ export const ManualNodeWizard = () => {
             type={nodeGroup === "mainnet" ? "primary" : undefined}
             title="Mainnet"
             extraClassNames="!rounded-r-none w-4/12"
+            titleClassName={
+              nodeGroup === "mainnet"
+                ? "text-white"
+                : "text-muted-foreground dark:text-muted-foreground-dark"
+            }
             pressableProps={{ onPress: setNodeGroupMainnet }}
           />
 
@@ -103,6 +108,11 @@ export const ManualNodeWizard = () => {
             type={nodeGroup === "testnet" ? "primary" : undefined}
             title="Testnet"
             extraClassNames="w-4/12"
+            titleClassName={
+              nodeGroup === "testnet"
+                ? "text-white"
+                : "text-muted-foreground dark:text-muted-foreground-dark"
+            }
             pressableProps={{ onPress: setNodeGroupTestnet }}
           />
 
@@ -110,6 +120,11 @@ export const ManualNodeWizard = () => {
             type={nodeGroup === "custom" ? "primary" : undefined}
             title={t("settings.node.custom")}
             extraClassNames="!rounded-l-none w-4/12"
+            titleClassName={
+              nodeGroup === "custom"
+                ? "text-white"
+                : "text-muted-foreground dark:text-muted-foreground-dark"
+            }
             pressableProps={{ onPress: setNodeGroupCustom }}
           />
         </View>

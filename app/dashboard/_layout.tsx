@@ -3,41 +3,26 @@ import { Tabs } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { useAppStore } from "@/hooks/useAppStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
-
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 type TabBarIconProperties = { color: string };
 
 export default function Layout() {
   const { t } = useTranslation();
-  const { minerMode } = useAppStore();
 
   const tabBarIconSize = 28;
   const tabBarLabelStyle = { fontSize: 12 };
-
-  const minerTab = useMemo(
-    () =>
-      minerMode ? (
-        <Tabs.Screen
-          options={{
-            title: t("bottomBar.miner"),
-            tabBarIcon: ({ color }: TabBarIconProperties) => (
-              <Ionicons name="cog" size={tabBarIconSize} color={color} />
-            ),
-            tabBarLabelStyle,
-          }}
-          name="commitment"
-        />
-      ) : (
-        <Tabs.Screen name="commitment" options={{ href: null }} />
-      ),
-    [minerMode]
-  );
+  const insets = useSafeAreaInsets();
 
   return (
     <Tabs
-      initialRouteName="overview"
       screenOptions={{
         headerShown: false,
-        tabBarStyle: { height: 85, paddingTop: 15, paddingBottom: 15 },
+        tabBarStyle: {
+          height: 72 + insets.bottom,
+          paddingBottom: 8 + insets.bottom,
+          paddingTop: 8,
+        },
+        tabBarLabelStyle, 
       }}
     >
       <Tabs.Screen
@@ -64,17 +49,14 @@ export default function Layout() {
 
       <Tabs.Screen
         options={{
-          title: t("bottomBar.subscriptions"),
+          title: t("bottomBar.miner"),
           tabBarIcon: ({ color }: TabBarIconProperties) => (
-            <Ionicons name="albums" size={tabBarIconSize} color={color} />
+            <Ionicons name="cog" size={tabBarIconSize} color={color} />
           ),
           tabBarLabelStyle,
         }}
-        name="subscriptions"
+        name="commitment"
       />
-
-      {minerTab}
-
       <Tabs.Screen
         options={{
           title: t("bottomBar.settings"),
@@ -89,6 +71,7 @@ export default function Layout() {
       <Tabs.Screen name="account" options={{ href: null }} />
       <Tabs.Screen name="deposit" options={{ href: null }} />
       <Tabs.Screen name="transfer" options={{ href: null }} />
+      <Tabs.Screen name="subscriptions" options={{ href: null }} />
     </Tabs>
   );
 }

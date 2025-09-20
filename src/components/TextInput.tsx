@@ -3,6 +3,7 @@ import {
   type TextInputProps,
 } from "react-native";
 import clsx from "clsx";
+import { useColorScheme } from "react-native";
 
 interface Props extends Omit<TextInputProps, "className"> {
   extraClassNames?: string;
@@ -10,6 +11,9 @@ interface Props extends Omit<TextInputProps, "className"> {
 }
 
 export const TextInput = (props: Props) => {
+
+  const scheme = useColorScheme();
+
   const classNames = clsx([
     "p-4 rounded-lg border border-card-border dark:border-card-border-dark w-full bg-muted dark:bg-muted-dark color-black dark:color-white",
     props.editable === false && "opacity-80",
@@ -20,6 +24,8 @@ export const TextInput = (props: Props) => {
   ]);
 
   return (
-    <NativeTextInput contextMenuHidden className={classNames} {...props} />
+    <NativeTextInput contextMenuHidden className={classNames}   placeholderTextColor={
+    scheme === "dark" ? "#A1A1AA" : "#71717A"
+  }{...props} />
   );
 };

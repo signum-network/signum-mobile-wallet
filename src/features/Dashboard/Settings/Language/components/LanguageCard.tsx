@@ -1,4 +1,4 @@
-import { View, Pressable } from "react-native";
+import { View, ScrollView ,Pressable } from "react-native";
 import { useTranslation } from "react-i18next";
 import { Text } from "@/components/Text";
 import { Card } from "@/components/Card";
@@ -28,7 +28,7 @@ export const LanguageCard = ({ lng, label }: Props) => {
       className="w-full rounded-lg active:opacity-80 ripple-[#333] ripple-bordered"
     >
       <Card>
-        <View className="w-full flex flex-row justify-between items-center">
+        <View className="h-12 w-full flex flex-row justify-between items-center">
           <View className="flex flex-row gap-1 items-center justify-start">
             <Text className="font-medium" size="large">
               {label}
@@ -40,8 +40,8 @@ export const LanguageCard = ({ lng, label }: Props) => {
           </View>
 
           {isCurrentLanguage && (
-            <View className="flex flex-col items-center justify-center">
-              <Ionicons name="checkbox" size={36} color="green" />
+            <View className="w-20 flex flex-col items-center justify-center">
+              <Ionicons name="checkbox" size={24} color="green" />
 
               <Text color="success" className="font-bold" size="small">
                 {t("settings.account.active")}
