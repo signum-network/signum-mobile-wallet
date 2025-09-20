@@ -8,6 +8,10 @@ import { Stack } from "expo-router/stack";
 import { AppProviders } from "@/providers";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomInsetDecor } from "@/components/BottomInsetDecor";
+import { useFonts } from "expo-font";
+import { useMemo } from "react";
+
+
 
 Crypto.init(new ReactNativeExpoCryptoAdapter());
 
@@ -32,6 +36,14 @@ export {
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+
+   // Load Ꞩ (SIGNA symbol) for iOS
+  const [loaded] = useFonts({
+    SignumSymbols: require("@/assets/fonts/SignumSymbols.ttf"),
+  });
+  // Use a fallback until the font is ready
+  const symbol = useMemo(() => (loaded ? "Ꞩ" : "S"), [loaded]);
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <AppProviders>
