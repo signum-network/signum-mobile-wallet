@@ -12,12 +12,14 @@ import { Text } from "./Text";
 import { Button } from "./Button";
 import { Dialog } from "./Dialog";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import { findSignumAddress } from "@/utils/findSignumAddress";
 
 interface Props {
   onCodeScanned: (code: BarcodeScanningResult) => void;
+  expected: "address" | "passphrase";
 }
 
-export const CameraDialog = ({ onCodeScanned }: Props) => {
+export const CameraDialog = ({ onCodeScanned, expected }: Props) => {
   const { t } = useTranslation();
   const { iconColor } = useAppTheme();
   const [permission, requestPermission] = useCameraPermissions();
@@ -32,8 +34,31 @@ export const CameraDialog = ({ onCodeScanned }: Props) => {
   };
 
   const scanEvent = (code: BarcodeScanningResult) => {
-    onCodeScanned(code);
-    hideDialog();
+    const scannedData = code.data?.trim();
+    if (!scannedData) return;
+
+    if (expected === "address") {
+      const address = findSignumAddress(scannedData);
+      if (address) {
+        onCodeScanned({ ...code, data: address });
+        hideDialog();
+      } else {
+        alert(t("invalidSignumQRCode"));
+      }
+      return;
+    }
+
+    if (expected === "passphrase") {
+      // Simple heuristic: passphrase must contain 10–20 words
+      const words = scannedData.split(/\s+/).filter(Boolean);
+      if (words.length >= 10 && words.length <= 20) {
+        onCodeScanned({ ...code, data: scannedData });
+        hideDialog();
+      } else {
+        alert(t("invalidSignumQRCode"));
+      }
+      return;
+    }
   };
 
   const canUseCamera =
@@ -56,7 +81,7 @@ export const CameraDialog = ({ onCodeScanned }: Props) => {
                 barcodeScannerSettings={{ barcodeTypes: ["qr"] }}
                 onBarcodeScanned={scanEvent}
                 facing="back"
-              ></CameraView>
+              />
             </View>
           ) : (
             <Fragment>

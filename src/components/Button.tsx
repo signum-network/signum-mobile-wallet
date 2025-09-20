@@ -16,6 +16,7 @@ export interface Props {
   children?: ReactNode;
   disabled?: boolean;
   extraClassNames?: string;
+  titleClassName?: string;
 }
 
 export const Button = ({
@@ -30,6 +31,7 @@ export const Button = ({
   children,
   disabled = false,
   extraClassNames,
+  titleClassName,
 }: Props) => {
   const classNames = clsx([
     "flex flex-row justify-center items-center px-4 py-4 rounded-lg active:opacity-80 ripple-[#333] ripple-bordered",
@@ -49,6 +51,7 @@ export const Button = ({
     type === "blackout" && "dark:color-black",
     size === "small" && "text-sm",
     size === "large" && "text-xl",
+    titleClassName,
   ]);
 
   if (linkProps) {

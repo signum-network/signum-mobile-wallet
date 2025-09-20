@@ -15,7 +15,6 @@ import { Text } from "@/components/Text";
 import { Button } from "@/components/Button";
 import { AccountType } from "@/types/account";
 import { HorizontalDivider } from "@/components/HorizontalDivider";
-import { KeyboardAvoidingView } from "@/components/Form/KeyboardAvoidingView";
 import { CameraDialog } from "@/components/CameraDialog";
 import { getAccountPublicKey } from "@/utils/account/getAccountPublicKey";
 import { FormNavigation } from "./components/FormNavigation";
@@ -27,6 +26,7 @@ import {
   saveSecretKey,
 } from "@/utils/sec/handleSecretKeys";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { KeyboardAnimatedContainer } from "@/components/KeyboardAnimatedContainer";
 
 export const ImportScreen = () => {
   const { t } = useTranslation();
@@ -139,7 +139,7 @@ export const ImportScreen = () => {
     <FormProvider {...methods}>
       <FormNavigation onSubmit={handleSubmit(onSubmit)} />
 
-      <KeyboardAvoidingView>
+      <KeyboardAnimatedContainer>
         <ScrollView>
           <AccountWizardContainer>
             <View className="flex flex-col items-center justify-center w-full gap-4">
@@ -164,6 +164,11 @@ export const ImportScreen = () => {
                   title={t("fullAccount")}
                   extraClassNames="!rounded-r-none w-1/2"
                   size="large"
+                  titleClassName={
+                    isAccountypeMnemonic
+                      ? "text-white"
+                      : "text-muted-foreground dark:text-muted-foreground-dark"
+                  }
                   pressableProps={{ onPress: setMnemonicMode }}
                 />
 
@@ -181,29 +186,42 @@ export const ImportScreen = () => {
                   title={t("watchOnly")}
                   extraClassNames="!rounded-l-none w-1/2"
                   size="large"
+                  titleClassName={
+                    isAccountypeWatchOnly
+                      ? "text-white"
+                      : "text-muted-foreground dark:text-muted-foreground-dark"
+                  }
                   pressableProps={{ onPress: setWatchOnlyMode }}
                 />
               </View>
 
-              <Text className="text-center">
-                {t(
-                  isAccountypeMnemonic
-                    ? "accountWizard.importAccount.importMnemonicHint"
-                    : "accountWizard.importAccount.importWatchOnlyHint"
-                )}
-              </Text>
-
-              <CameraDialog onCodeScanned={onCodeScanned} />
-
               {type === AccountType.mnemonic && (
                 <AnimatedSlideContainer>
-                  <SeedPhraseField />
+                  <View className="gap-4">
+                    <Text className="text-center">
+                      {t("accountWizard.importAccount.importMnemonicHint")}
+                    </Text>
+                    <CameraDialog
+                      expected={"passphrase"}
+                      onCodeScanned={onCodeScanned}
+                    />
+                    <SeedPhraseField />
+                  </View>
                 </AnimatedSlideContainer>
               )}
 
               {type === AccountType.watchOnly && (
                 <AnimatedSlideContainer>
-                  <AccountIdField />
+                  <View className="gap-4">
+                    <Text className="text-center">
+                      {t("accountWizard.importAccount.importWatchOnlyHint")}
+                    </Text>
+                    <CameraDialog
+                      expected={"address"}
+                      onCodeScanned={onCodeScanned}
+                    />
+                    <AccountIdField />
+                  </View>
                 </AnimatedSlideContainer>
               )}
             </View>
@@ -213,7 +231,7 @@ export const ImportScreen = () => {
             <WalletNameField />
           </AccountWizardContainer>
         </ScrollView>
-      </KeyboardAvoidingView>
+      </KeyboardAnimatedContainer>
     </FormProvider>
   );
 };

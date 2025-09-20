@@ -48,7 +48,7 @@ export const Recipient = () => {
         <ResolvedAccountCard />
       </Card>
 
-      <CameraDialog onCodeScanned={onCodeScanned} />
+      <CameraDialog expected={"address"} onCodeScanned={onCodeScanned} />
     </View>
   );
 };

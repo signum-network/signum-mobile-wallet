@@ -22,6 +22,7 @@ import {
 import { useAccountStore } from "@/hooks/useAccountStore";
 import { AccountType } from "@/types/account";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { KeyboardAnimatedContainer } from "@/components/KeyboardAnimatedContainer";
 
 export const CreateScreen = () => {
   const { t } = useTranslation();
@@ -90,28 +91,27 @@ export const CreateScreen = () => {
 
   return (
     <FormProvider {...methods}>
-      <Dialog variant="full" visible={showDialog}>
-        <View className="flex flex-col items-center justify-center gap-4 w-full">
-          <Ionicons name="checkmark-circle" size={85} color="green" />
-
-          <Text className="text-center" size="large">
-            {t("accountWizard.createAccount.accountCreated")}
-          </Text>
-
-          <Text className="text-center" color="muted">
-            {t("accountWizard.createAccount.accountCreatedDescription")} ❤️
-          </Text>
-
-          <View className="gap-2 flex flex-row items-center justify-center">
-            <ActivityIndicator />
-            <Text color="muted">{t("auth.loadingWait")}</Text>
-          </View>
-        </View>
-      </Dialog>
-
       <FormNavigation onSubmit={methods.handleSubmit(onSubmit)} />
+      <KeyboardAnimatedContainer>
+        <Dialog variant="full" visible={showDialog}>
+          <View className="flex flex-col items-center justify-center gap-4 w-full">
+            <Ionicons name="checkmark-circle" size={85} color="green" />
 
-      <KeyboardAvoidingView>
+            <Text className="text-center" size="large">
+              {t("accountWizard.createAccount.accountCreated")}
+            </Text>
+
+            <Text className="text-center" color="muted">
+              {t("accountWizard.createAccount.accountCreatedDescription")} ❤️
+            </Text>
+
+            <View className="gap-2 flex flex-row items-center justify-center">
+              <ActivityIndicator />
+              <Text color="muted">{t("auth.loadingWait")}</Text>
+            </View>
+          </View>
+        </Dialog>
+
         <ScrollView ref={scrollRef}>
           <AccountWizardContainer>
             {activeStep === Steps.AccountCreationAgreement && (
@@ -133,7 +133,7 @@ export const CreateScreen = () => {
             )}
           </AccountWizardContainer>
         </ScrollView>
-      </KeyboardAvoidingView>
+      </KeyboardAnimatedContainer>
     </FormProvider>
   );
 };

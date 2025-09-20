@@ -28,7 +28,7 @@ module.exports = {
         "muted-foreground": { DEFAULT: "#71717A", dark: "#A1A1AA" },
         "card-foreground": {
           DEFAULT: "#FFFFFF",
-          dark: "#010101",
+          dark: "#1c1c1e",
         },
         "card-border": {
           DEFAULT: "#E4E4E7",

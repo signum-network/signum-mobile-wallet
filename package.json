@@ -62,6 +62,7 @@
     "i18next": "^23.16.8",
     "intl-pluralrules": "^2.0.1",
     "nativewind": "^4.1.23",
+    "qrcode-generator": "^2.0.4",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-hook-form": "^7.54.2",

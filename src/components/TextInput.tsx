@@ -11,7 +11,7 @@ interface Props extends Omit<TextInputProps, "className"> {
 
 export const TextInput = (props: Props) => {
   const classNames = clsx([
-    "p-4 rounded-lg border border-card-border dark:border-card-border-dark w-full",
+    "p-4 rounded-lg border border-card-border dark:border-card-border-dark w-full bg-muted dark:bg-muted-dark color-black dark:color-white",
     props.editable === false && "opacity-80",
     props.size === "small" && "text-sm",
     props.size === "large" && "text-lg",
