@@ -53,7 +53,7 @@ export const AssetCard = ({
       {
         text: t("transfer.title"),
         onPress: () => {
-          router.push({ pathname: "/dashboard/transfer", params: { asset } });
+          router.push({ pathname: "/transfer/send", params: { asset } });
         },
       },
       {

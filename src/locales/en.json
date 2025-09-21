@@ -118,6 +118,7 @@
   },
   "bottomBar": {
     "home": "Home",
+    "accounts": "Accounts",
     "subscriptions": "Subscriptions",
     "tokens": "Tokens",
     "settings": "Settings",

@@ -9,9 +9,14 @@ const DEFAULT_HEIGHT = 95;
 
 interface Props extends ButtonProps {
   hidden?: boolean;
+  bottomOffset?: number;
 }
 
 export const FormNavButton = (props: Props) => {
+  
+  const { hidden } = props;
+  if (hidden) return null;
+  
   const height = useSharedValue(DEFAULT_HEIGHT);
   const display = useSharedValue<"none" | "flex">("flex");
   const { bottom } = useSafeAreaInsets();
@@ -47,11 +52,11 @@ export const FormNavButton = (props: Props) => {
         zIndex: 250,
         position: "absolute",
         left: 0,
-        bottom: bottom,
+        bottom: props.bottomOffset ?? bottom,
         elevation: PUBLIC_CURRENT_OS === "android" ? 50 : 0,
         height,
       }}
-      className="flex justify-center items-center flex-1 w-full p-4 bg-card-foreground dark:bg-card-foreground-dark border-t border-card-border dark:border-card-border-dark"
+      className="justify-center items-center flex-1 w-full p-4 bg-card-foreground dark:bg-card-foreground-dark border-t border-card-border dark:border-card-border-dark"
     >
       <Button {...props} extraClassNames="max-w-sm" size="large" fullWidth />
     </Animated.View>

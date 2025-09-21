@@ -22,7 +22,7 @@ export default function Layout() {
           paddingBottom: 8 + insets.bottom,
           paddingTop: 8,
         },
-        tabBarLabelStyle, 
+        tabBarLabelStyle,
       }}
     >
       <Tabs.Screen
@@ -34,6 +34,21 @@ export default function Layout() {
           tabBarLabelStyle,
         }}
         name="overview"
+      />
+
+      <Tabs.Screen
+        options={{
+          title: t("bottomBar.accounts"),
+          tabBarIcon: ({ color }: TabBarIconProperties) => (
+            <Ionicons
+              name="people-circle-outline"
+              size={tabBarIconSize}
+              color={color}
+            />
+          ),
+          tabBarLabelStyle,
+        }}
+        name="account"
       />
 
       <Tabs.Screen
@@ -68,9 +83,6 @@ export default function Layout() {
         name="settings"
       />
 
-      <Tabs.Screen name="account" options={{ href: null }} />
-      <Tabs.Screen name="deposit" options={{ href: null }} />
-      <Tabs.Screen name="transfer" options={{ href: null }} />
       <Tabs.Screen name="subscriptions" options={{ href: null }} />
     </Tabs>
   );

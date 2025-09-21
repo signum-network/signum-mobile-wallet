@@ -14,7 +14,7 @@ export const SettingsScreen = () => {
   return (
     <ScrollView>
       <DashboardScreenContainer>
-        <View className="w-full max-w-md mx-auto px-4 pt-4">
+        <View className="w-full mx-auto px-4 pt-4">
           <AccountSwitcher href="/dashboard/settings/account" />
         </View>
 

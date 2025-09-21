@@ -33,7 +33,7 @@ export const OverviewScreen = () => {
             title={t("send")}
             type="primary"
             wide
-            linkProps={{ href: "/dashboard/transfer" }}
+            linkProps={{ href: "/transfer/send" }}
           />
         )}
 
@@ -42,7 +42,7 @@ export const OverviewScreen = () => {
           type="blackout"
           wide={!isWatchOnly}
           fullWidth={isWatchOnly}
-          linkProps={{ href: "/dashboard/deposit" }}
+          linkProps={{ href: "/transfer/receive" }}
         />
       </BottomButtonsContainer>
     </Fragment>
