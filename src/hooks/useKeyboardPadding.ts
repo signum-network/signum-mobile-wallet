@@ -1,9 +1,9 @@
 import { useEffect } from "react";
-import { Platform } from "react-native";
+import { Keyboard, Platform } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Animated, {
+import { useIsFocused } from "@react-navigation/native";
+import {
   Easing,
-  KeyboardState,
   useAnimatedKeyboard,
   useAnimatedStyle,
   useSharedValue,
@@ -11,69 +11,106 @@ import Animated, {
 } from "react-native-reanimated";
 
 type Options = {
-  /** Extra offset at the top (e.g., header) */
-  extraOffset?: number;
-  /** iOS open/close duration in ms */
-  iosDurations?: { open: number; close: number };
-  /** Android open/close duration in ms */
-  androidDurations?: { open: number; close: number };
-  /** If false, first render snaps to target without animation */
+  /** Fixed bottom spacing, e.g. for a sticky button/tab bar */
+  baseBottom?: number;
+  /** If false, first render snaps without animation */
   animateOnMount?: boolean;
+  /** Animation duration when keyboard opens (ms) */
+  openDuration?: number;
+  /** Animation duration when keyboard closes (ms) */
+  closeDuration?: number;
+  /** Ignore very small "ghost" heights (e.g. stale values) */
+  threshold?: number;
 };
 
-export function useKeyboardPadding(opts: Options = {}) {
+/**
+ * Hook that returns an animated style with a bottom padding
+ * that increases when the keyboard is visible.
+ *
+ * Combines reanimated’s useAnimatedKeyboard with real RN Keyboard events
+ * and also uses keyboardDidHide to hard-reset padding.
+ */
+export function useKeyboardPadding({
+  baseBottom = 0,
+  animateOnMount = true,
+  openDuration = 250,
+  closeDuration = 200,
+  threshold = 10,
+}: Options = {}) {
   const insets = useSafeAreaInsets();
-
-  // Default durations feel close to the system keyboard
-  const ios = opts.iosDurations ?? { open: 300, close: 300 };
-  const and = opts.androidDurations ?? { open: 300, close: 300 };
-
+  const isFocused = useIsFocused();
   const kbd = useAnimatedKeyboard();
-  const offset =
-    (opts.extraOffset ?? 0) + (Platform.OS === "ios" ? insets.top + 12 : 0);
 
-  // Correct initialization:
-  // - animateOnMount === false => snap on first paint (hasMounted starts FALSE)
-  // - animateOnMount !== false => animate immediately (hasMounted starts TRUE)
-  const hasMounted = useSharedValue(
-    opts.animateOnMount === false ? false : true
-  );
+  // Track real visibility from RN events (0 = hidden, 1 = visible)
+  const visible = useSharedValue(0);
+
+  // Shared value that holds the current paddingBottom
+  const padding = useSharedValue(baseBottom);
+
+  // Flag to avoid animation on the very first paint
+  const mounted = useSharedValue(animateOnMount ? 1 : 0);
 
   useEffect(() => {
-    // After first commit, allow animations for subsequent updates
-    hasMounted.value = true;
-  }, [hasMounted]);
+    const onShow = () => (visible.value = 1);
+    const onWillHide = () => (visible.value = 0);
+    const onDidHide = () => {
+      // Hard reset padding on full hide
+      padding.value = baseBottom;
+    };
 
-  // Animated style you can spread to any container
-  const containerPadStyle = useAnimatedStyle(() => {
-    // Desired bottom padding: keyboard height minus vertical offset
-    const target = Math.max(0, (kbd.height.value ?? 0) - offset);
-
-    const isOpeningOrOpen =
-      kbd.state.value === KeyboardState.OPEN ||
-      kbd.state.value === KeyboardState.OPENING;
-
-    const duration =
+    const show =
       Platform.OS === "ios"
-        ? isOpeningOrOpen
-          ? ios.open
-          : ios.close
-        : isOpeningOrOpen
-        ? and.open
-        : and.close;
+        ? Keyboard.addListener("keyboardWillShow", onShow)
+        : Keyboard.addListener("keyboardDidShow", onShow);
 
-    // On first paint (when animateOnMount === false), snap without animation
-    if (!hasMounted.value) {
+    const willHide =
+      Platform.OS === "ios"
+        ? Keyboard.addListener("keyboardWillHide", onWillHide)
+        : Keyboard.addListener("keyboardDidHide", onWillHide);
+
+    const didHide = Keyboard.addListener("keyboardDidHide", onDidHide);
+
+    return () => {
+      show.remove();
+      willHide.remove();
+      didHide.remove();
+      visible.value = 0;
+      padding.value = baseBottom;
+    };
+  }, [baseBottom, visible, padding]);
+
+  useEffect(() => {
+    mounted.value = 1;
+  }, [mounted]);
+
+  const style = useAnimatedStyle(() => {
+    const raw = kbd.height.value ?? 0;
+    const safeBottom = Platform.OS === "ios" ? insets.bottom : 0;
+    const height = Math.max(0, raw - safeBottom);
+
+    const active = isFocused && visible.value === 1 && height > threshold;
+    const target = baseBottom + (active ? height : 0);
+    const duration = active ? openDuration : closeDuration;
+
+    if (!mounted.value) {
+      padding.value = target;
       return { paddingBottom: target };
     }
 
-    return {
-      paddingBottom: withTiming(target, {
-        duration,
-        easing: Easing.out(Easing.cubic),
-      }),
-    };
-  }, [offset, ios.open, ios.close, and.open, and.close]);
+    padding.value = withTiming(target, {
+      duration,
+      easing: Easing.out(Easing.cubic),
+    });
 
-  return containerPadStyle;
+    return { paddingBottom: padding.value };
+  }, [
+    baseBottom,
+    insets.bottom,
+    isFocused,
+    openDuration,
+    closeDuration,
+    threshold,
+  ]);
+
+  return style;
 }

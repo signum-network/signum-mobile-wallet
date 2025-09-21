@@ -5,8 +5,8 @@ import { useKeyboardPadding } from "@/hooks/useKeyboardPadding";
 
 type Props = PropsWithChildren<
   ViewProps & {
-    /** Extra vertical offset (e.g., sticky header height) */
-    extraOffset?: number;
+    /** Fixed bottom space (e.g., sticky button / tab bar height) */
+    baseBottom?: number;
     /** If false, first render snaps to target without animation */
     animateOnMount?: boolean;
   }
@@ -15,13 +15,16 @@ type Props = PropsWithChildren<
 export function KeyboardAnimatedContainer({
   children,
   style,
-  extraOffset = 0,
+  baseBottom = 0,
   animateOnMount = true,
   ...rest
 }: Props) {
-  const pad = useKeyboardPadding({ extraOffset, animateOnMount });
+  const pad = useKeyboardPadding({ baseBottom, animateOnMount });
   return (
-    <Animated.View style={[{ flex: 1 }, pad, style]} {...rest}>
+    <Animated.View
+      style={[{ flex: 1 }, pad, style]}
+      {...rest}
+    >
       {children}
     </Animated.View>
   );
