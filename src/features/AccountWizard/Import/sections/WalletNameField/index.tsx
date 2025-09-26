@@ -31,8 +31,8 @@ export const WalletNameField = () => {
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
-              extraClassNames="font-medium"
-              textAlign="center"
+              size="large"
+              extraClassNames="font-bold"
               maxLength={30}
             />
           )}

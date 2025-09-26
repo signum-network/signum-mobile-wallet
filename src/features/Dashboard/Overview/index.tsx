@@ -8,6 +8,8 @@ import { BottomButtonsContainer } from "../components/BottomButtonsContainer";
 import { DashboardScreenContainer } from "../components/DashboardScreenContainer";
 import { Balance } from "./sections/Balance";
 import { Activity } from "./sections/Activity";
+import { AnimatedFadeContainer } from "@/components/AnimatedFadeContainer";
+import { HorizontalDivider } from "@/components/HorizontalDivider";
 
 export const OverviewScreen = () => {
   const { t } = useTranslation();
@@ -15,34 +17,38 @@ export const OverviewScreen = () => {
 
   return (
     <Fragment>
-      <ScrollView>
-        <DashboardScreenContainer>
-          <View className="flex flex-col items-start justify-center w-full px-4 pt-4 pb-20 gap-4">
-            <AccountSwitcher href="/dashboard/account" />
+      <DashboardScreenContainer>
+        <View className="flex flex-col items-start justify-center w-full px-4 pt-4 gap-4">
+          <AccountSwitcher href="/dashboard/account" />
 
-            <Balance />
-
+          <Balance />
+          <HorizontalDivider />
+          <ScrollView className="w-full">
             <Activity />
-          </View>
-        </DashboardScreenContainer>
-      </ScrollView>
+          </ScrollView>
+        </View>
+      </DashboardScreenContainer>
 
       <BottomButtonsContainer>
         {!isWatchOnly && (
           <Button
             title={t("send")}
             type="primary"
+            size="medium"
             wide
             linkProps={{ href: "/transfer/send" }}
+            extraClassNames="h-14 flex-1 px-2"
           />
         )}
 
         <Button
           title={t("receive")}
           type="blackout"
+          size="medium"
           wide={!isWatchOnly}
           fullWidth={isWatchOnly}
           linkProps={{ href: "/transfer/receive" }}
+          extraClassNames="h-14 flex-1 px-2"
         />
       </BottomButtonsContainer>
     </Fragment>

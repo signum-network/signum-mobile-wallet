@@ -5,11 +5,12 @@ import { useNodeHostStore } from "@/hooks/useNodeHostStore";
 import { Text } from "@/components/Text";
 import { Button } from "@/components/Button";
 import { KeyboardAvoidingView } from "@/components/Form/KeyboardAvoidingView";
-import { AnimatedSlideContainer } from "@/components/AnimatedSlideContainer";
+import { AnimatedFadeContainer } from "@/components/AnimatedFadeContainer";
 import { DashboardScreenContainer } from "@/features/Dashboard/components/DashboardScreenContainer";
 import { CurrentNode } from "./sections/CurrentNode";
 import { ManualNodeWizard } from "./sections/ManualNodeWizard";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { AppHeader } from "@/components/AppHeader";
 
 export const NodeSettingsScreen = () => {
   const { t } = useTranslation();
@@ -27,72 +28,72 @@ export const NodeSettingsScreen = () => {
   };
 
   return (
-    <KeyboardAvoidingView>
-      <ScrollView>
-        <DashboardScreenContainer>
-          <View className="flex flex-col items-center justify-center w-full gap-4 px-4">
-            <Text size="large" className="font-bold text-center mt-8">
-              {t("settings.node.connectionType")}
-            </Text>
+    <>
+      <AppHeader title={t("settings.node.title")} />
 
-            <View className="flex flex-row items-center justify-center bg-card-foreground dark:bg-card-foreground-dark border border-card-border dark:border-card-border-dark rounded-lg max-w-md mx-auto w-full">
-              <Button
-                icon={
-                  <Ionicons
-                    name="bulb"
-                    size={24}
-                    color={
-                      isConnectionTypeAutomatic ? "white" : iconColor.default
-                    }
-                  />
-                }
-                type={isConnectionTypeAutomatic ? "primary" : undefined}
-                title={t("settings.node.auto")}
-                extraClassNames="!rounded-r-none w-1/2 px-0"
-                size="large"
-                titleClassName={
-                  isConnectionTypeAutomatic
-                    ? "text-white"
-                    : "text-muted-foreground dark:text-muted-foreground-dark"
-                }
-                pressableProps={{ onPress: setAutomaticMode }}
-              />
+      <DashboardScreenContainer>
+        <View className="flex-1 flex-col items-center w-full gap-4 px-4">
+          <Text size="large" className="font-bold text-center mt-4">
+            {t("settings.node.connectionType")}
+          </Text>
 
-              <Button
-                icon={
-                  <Ionicons
-                    name="options"
-                    size={24}
-                    color={isConnectionTypeManual ? "white" : iconColor.default}
-                  />
-                }
-                type={isConnectionTypeManual ? "primary" : undefined}
-                title={t("settings.node.manual")}
-                extraClassNames="!rounded-l-none w-1/2 px-0"
-                size="large"
-                titleClassName={
-                  isConnectionTypeManual
-                    ? "text-white"
-                    : "text-muted-foreground dark:text-muted-foreground-dark"
-                }
-                pressableProps={{ onPress: setManualMode }}
-              />
-            </View>
+          <View className="flex flex-row items-center justify-center bg-card-foreground dark:bg-card-foreground-dark border border-card-border dark:border-card-border-dark rounded-lg max-w-md mx-auto w-full">
+            <Button
+              icon={
+                <Ionicons
+                  name="bulb"
+                  size={24}
+                  color={
+                    isConnectionTypeAutomatic ? "white" : iconColor.default
+                  }
+                />
+              }
+              type={isConnectionTypeAutomatic ? "primary" : undefined}
+              title={t("settings.node.auto")}
+              extraClassNames="!rounded-r-none w-1/2 px-0"
+              size="large"
+              titleClassName={
+                isConnectionTypeAutomatic
+                  ? "text-white"
+                  : "text-muted-foreground dark:text-muted-foreground-dark"
+              }
+              pressableProps={{ onPress: setAutomaticMode }}
+            />
 
-            <CurrentNode />
-
-            {isConnectionTypeManual ? (
-              <AnimatedSlideContainer>
-                <ManualNodeWizard />
-              </AnimatedSlideContainer>
-            ) : (
-              <Text color="muted" className="font-bold text-center">
-                {t("settings.node.nodeAutomaticSelected")}
-              </Text>
-            )}
+            <Button
+              icon={
+                <Ionicons
+                  name="options"
+                  size={24}
+                  color={isConnectionTypeManual ? "white" : iconColor.default}
+                />
+              }
+              type={isConnectionTypeManual ? "primary" : undefined}
+              title={t("settings.node.manual")}
+              extraClassNames="!rounded-l-none w-1/2 px-0"
+              size="large"
+              titleClassName={
+                isConnectionTypeManual
+                  ? "text-white"
+                  : "text-muted-foreground dark:text-muted-foreground-dark"
+              }
+              pressableProps={{ onPress: setManualMode }}
+            />
           </View>
-        </DashboardScreenContainer>
-      </ScrollView>
-    </KeyboardAvoidingView>
+
+          <CurrentNode />
+
+          {isConnectionTypeManual ? (
+     
+              <ManualNodeWizard />
+
+          ) : (
+            <Text color="muted" className="font-bold text-center">
+              {t("settings.node.nodeAutomaticSelected")}
+            </Text>
+          )}
+        </View>
+      </DashboardScreenContainer>
+    </>
   );
 };

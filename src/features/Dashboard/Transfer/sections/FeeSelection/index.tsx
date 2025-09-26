@@ -42,7 +42,7 @@ export const FeeSelection = () => {
     <View className="gap-4 w-full">
       <Card>
         <View className="w-full gap-4">
-          <View className="flex-col items-center w-full">
+          <View className="flex-col w-full">
             <Text className="font-medium">
               {t("transfer.stepper.feeSelectionStepTitle")}
             </Text>

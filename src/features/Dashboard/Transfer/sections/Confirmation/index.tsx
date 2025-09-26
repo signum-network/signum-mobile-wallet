@@ -123,7 +123,7 @@ export const Confirmation = ({
           </Card>
         )}
 
-        <View className="w-full flex flex-col gap-1">
+        <View className="w-full flex flex-col gap-1 text-left">
           <Text size="large" color="muted" className="font-bold">
             {t("recipient")}
           </Text>

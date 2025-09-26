@@ -22,14 +22,12 @@ export const AccountManager = () => {
   const accountsList = Object.values(accounts);
 
   return (
+
     <Fragment>
       <ScrollView ref={scrollRef} className="flex-1">
         <DashboardScreenContainer>
           <View className="flex flex-col items-start justify-center w-full px-4">
             <View className="w-full flex flex-col items-start justify-start mt-8 gap-2">
-              <Text size="large" className="font-bold text-center">
-                {t("accounts")}
-              </Text>
 
               <View className="flex flex-row items-center gap-1">
                 <MaterialIcons
@@ -74,8 +72,9 @@ export const AccountManager = () => {
         <Button
           title={t("accountWizard.quickStart.createCta")}
           type="primary"
-          size="small"
+          size="medium"
           linkProps={{ href: "/account-wizard/create" }}
+          extraClassNames="h-14 flex-1 min-w-0 px-2"
         />
 
         <Button
@@ -83,8 +82,10 @@ export const AccountManager = () => {
           type="blackout"
           size="small"
           linkProps={{ href: "/account-wizard/import" }}
+          extraClassNames="h-14 flex-1 min-w-0 px-2"
         />
       </BottomButtonsContainer>
     </Fragment>
+
   );
 };

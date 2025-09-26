@@ -12,7 +12,7 @@ export const BottomButtonsContainer = ({ children }: ChildrenProps) => (
       elevation: PUBLIC_CURRENT_OS === "android" ? 50 : 0,
       height: 81.4,
     }}
-    className="flex flex-row justify-around items-center w-full px-4 bg-card-foreground dark:bg-card-foreground-dark border-t border-card-border dark:border-card-border-dark"
+    className="flex flex-row justify-around items-center w-full px-4 bg-white dark:bg-black border-t border-card-border dark:border-card-border-dark gap-2"
   >
     {children}
   </View>

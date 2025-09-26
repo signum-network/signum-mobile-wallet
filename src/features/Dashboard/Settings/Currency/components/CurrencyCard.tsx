@@ -45,7 +45,7 @@ export const CurrencyCard = ({ id }: Props) => {
 
           {isCurrentCurrency && (
             <View className="w-20 flex flex-col items-center justify-center">
-              <Ionicons name="checkbox" size={24} color="green" />
+              <Ionicons name="checkbox" size={20} color="green" />
 
               <Text color="success" className="font-bold" size="small">
                 {t("settings.account.active")}

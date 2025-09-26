@@ -87,6 +87,10 @@ export const AccountCard = ({ publicKey, type, walletName }: Props) => {
 
   const isCurrentAccount = activeAccount === publicKey;
 
+  //Check if account activation is in progress
+  const networkData = currentAccount?.[currentNetwork];
+  const activationInProgress = !!networkData?.activationInProgress;
+
   // TODO: Remove "transactions history", "subscription" from account
   const removeAccount = async () => {
     itemHeight.set(0);
@@ -278,9 +282,15 @@ export const AccountCard = ({ publicKey, type, walletName }: Props) => {
                 </Text>
 
                 {!isSecured ? (
-                  <Text color="error" size="small" className="font-medium">
-                    ⚠️ {t("settings.account.unsecuredAccount")}
-                  </Text>
+                  activationInProgress ? (
+                    <Text color="primary" size="small" className="font-medium">
+                     ⏳ {t("unsafeAccount.activating")}
+                    </Text>
+                  ) : (
+                    <Text color="error" size="small" className="font-medium">
+                      ⚠️ {t("settings.account.unsecuredAccount")}
+                    </Text>
+                  )
                 ) : (
                   <Text color="primary" size="small" className="font-medium">
                     {type === AccountType.watchOnly
@@ -293,7 +303,7 @@ export const AccountCard = ({ publicKey, type, walletName }: Props) => {
 
             {isCurrentAccount && (
               <View className="flex flex-col items-center justify-center">
-                <Ionicons name="checkbox" size={36} color="green" />
+                <Ionicons name="checkbox" size={20} color="green" />
 
                 <Text color="success" className="font-bold" size="small">
                   {t("settings.account.active")}

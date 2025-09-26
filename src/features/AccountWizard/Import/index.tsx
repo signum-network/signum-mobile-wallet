@@ -10,7 +10,7 @@ import type { AccountImport } from "./utils/types";
 import { AccountWizardContainer } from "../components/AccountWizardContainer";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useAccountStore } from "@/hooks/useAccountStore";
-import { AnimatedSlideContainer } from "@/components/AnimatedSlideContainer";
+import { AnimatedFadeContainer } from "@/components/AnimatedFadeContainer";
 import { Text } from "@/components/Text";
 import { Button } from "@/components/Button";
 import { AccountType } from "@/types/account";
@@ -27,6 +27,7 @@ import {
 } from "@/utils/sec/handleSecretKeys";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { KeyboardAnimatedContainer } from "@/components/KeyboardAnimatedContainer";
+import { AppHeader } from "@/components/AppHeader";
 
 export const ImportScreen = () => {
   const { t } = useTranslation();
@@ -135,9 +136,24 @@ export const ImportScreen = () => {
     }
   };
 
+  const { isAccountEnrolled } = useAccountStore();
+  const goBackwards = () => {
+    if (!isAccountEnrolled) {
+      router.replace("/account-wizard");
+      return;
+    } else {
+      router.replace("/dashboard/account");
+    }
+  };
+
   return (
     <FormProvider {...methods}>
       <FormNavigation onSubmit={handleSubmit(onSubmit)} />
+
+      <AppHeader
+        title={t("accountWizard.quickStart.importCta")}
+        onBack={goBackwards}
+      />
 
       <KeyboardAnimatedContainer>
         <ScrollView>
@@ -196,7 +212,7 @@ export const ImportScreen = () => {
               </View>
 
               {type === AccountType.mnemonic && (
-                <AnimatedSlideContainer>
+                <AnimatedFadeContainer>
                   <View className="gap-4">
                     <Text className="text-center">
                       {t("accountWizard.importAccount.importMnemonicHint")}
@@ -207,11 +223,11 @@ export const ImportScreen = () => {
                     />
                     <SeedPhraseField />
                   </View>
-                </AnimatedSlideContainer>
+                </AnimatedFadeContainer>
               )}
 
               {type === AccountType.watchOnly && (
-                <AnimatedSlideContainer>
+                <AnimatedFadeContainer>
                   <View className="gap-4">
                     <Text className="text-center">
                       {t("accountWizard.importAccount.importWatchOnlyHint")}
@@ -222,7 +238,7 @@ export const ImportScreen = () => {
                     />
                     <AccountIdField />
                   </View>
-                </AnimatedSlideContainer>
+                </AnimatedFadeContainer>
               )}
             </View>
 

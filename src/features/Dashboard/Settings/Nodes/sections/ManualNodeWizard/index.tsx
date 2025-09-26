@@ -86,7 +86,7 @@ export const ManualNodeWizard = () => {
     <Fragment>
       <HorizontalDivider />
 
-      <View className="w-full my-4 flex flex-col items-center gap-4">
+      <View className="w-full flex flex-col items-center gap-4">
         <Text size="large" className="font-medium">
           {t("settings.node.selectANode")}
         </Text>

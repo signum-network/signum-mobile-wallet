@@ -10,7 +10,6 @@ export default function Screen() {
 
   return (
     <Fragment>
-      <Stack.Screen options={getHeaderTitle(t("transaction_other"))} />
       <ProtectedScreen>
         <ActivityScreen />
       </ProtectedScreen>

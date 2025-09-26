@@ -15,7 +15,7 @@ import { Amount, ChainValue } from "@signumjs/util";
 import { AttachmentMessage, AttachmentEncryptedMessage } from "@signumjs/core";
 import { encryptMessage } from "@signumjs/crypto";
 import { useQueryClient } from "@tanstack/react-query";
-import { AnimatedSlideContainer } from "@/components/AnimatedSlideContainer";
+import { AnimatedFadeContainer } from "@/components/AnimatedFadeContainer";
 import { useAccount } from "@/hooks/useAccount";
 import { useLedgerService } from "@/hooks/useLedgerService";
 import { useNodeHostStore } from "@/hooks/useNodeHostStore";
@@ -210,38 +210,38 @@ export const TransferScreen = () => {
           <DashboardScreenContainer>
             <View className="flex flex-col items-start justify-center w-full px-4 mt-4 pb-20 gap-4">
               {activeStep === Steps.Recipient && (
-                <AnimatedSlideContainer>
+                <AnimatedFadeContainer fullWidth>
                   <Recipient />
-                </AnimatedSlideContainer>
+                </AnimatedFadeContainer>
               )}
 
               {activeStep === Steps.HoldingsSelection && (
-                <AnimatedSlideContainer>
+                <AnimatedFadeContainer fullWidth>
                   <HoldingsSelection />
-                </AnimatedSlideContainer>
+                </AnimatedFadeContainer>
               )}
 
               {activeStep === Steps.MemoOptions && (
-                <AnimatedSlideContainer>
+                <AnimatedFadeContainer fullWidth>
                   <MemoOptions />
-                </AnimatedSlideContainer>
+                </AnimatedFadeContainer>
               )}
 
               {activeStep === Steps.FeeSelection && (
-                <AnimatedSlideContainer>
+                <AnimatedFadeContainer fullWidth>
                   <FeeSelection />
-                </AnimatedSlideContainer>
+                </AnimatedFadeContainer>
               )}
 
               {activeStep === Steps.Confirmation && (
-                <AnimatedSlideContainer>
+                <AnimatedFadeContainer fullWidth>
                   <Confirmation
                     onSubmit={methods.handleSubmit(onSubmit)}
                     isComplete={isComplete}
                     transactionId={transactionId}
                     disableOnSubmit={isSigningTransaction || isComplete}
                   />
-                </AnimatedSlideContainer>
+                </AnimatedFadeContainer>
               )}
             </View>
           </DashboardScreenContainer>

@@ -100,7 +100,13 @@
       "accountCreated": "Account created successfully!",
       "accountCreatedDescription": "Kindly hold on while the wallet prepares your account to use",
       "secretPhraseCreationDescription": "It is very important that you store this Secret Phrase in a safe place. If you lose it, you will lose the access to your account. You need this Secret Phrase to import your account on other devices and/or alternative Signum Blockchain Wallets",
-      "secretPhraseCreationSecondDescription": "This account is part of the Signum Network, an advanced blockchain platform. You can use this Secret Phrase throughout the entire Signum eco-system, e.g. trade crypto tokens, create/buy NFTs and much more"
+      "secretPhraseCreationSecondDescription": "This account is part of the Signum Network, an advanced blockchain platform. You can use this Secret Phrase throughout the entire Signum eco-system, e.g. trade crypto tokens, create/buy NFTs and much more",
+      "stepper": {
+        "goBackwards": "Press to go back",
+        "agreementStepTitle": "Agreement",
+        "secretPhraseGenerationTitle": "Secret Phrase Generation",
+        "secretPhraseVerificationTitle": "Secret Phrase Verification"
+      }
     },
     "importAccount": {
       "importTitle": "Restore Wallet",

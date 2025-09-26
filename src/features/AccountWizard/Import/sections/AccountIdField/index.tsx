@@ -34,6 +34,7 @@ export const AccountIdField = () => {
               value={value}
               size="large"
               extraClassNames="font-bold"
+              maxLength={30}
             />
           )}
           name="account"

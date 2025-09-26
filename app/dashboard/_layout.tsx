@@ -1,9 +1,9 @@
-import { useMemo } from "react";
+
 import { Tabs } from "expo-router";
 import { useTranslation } from "react-i18next";
-import { useAppStore } from "@/hooks/useAppStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { router } from "expo-router";
 type TabBarIconProperties = { color: string };
 
 export default function Layout() {
@@ -21,6 +21,10 @@ export default function Layout() {
           height: 72 + insets.bottom,
           paddingBottom: 8 + insets.bottom,
           paddingTop: 8,
+          backgroundColor: "transparent",
+          borderTopWidth: 1,
+          elevation: 0,
+          shadowOpacity: 0,
         },
         tabBarLabelStyle,
       }}
@@ -74,6 +78,7 @@ export default function Layout() {
       />
       <Tabs.Screen
         options={{
+          popToTopOnBlur: true,
           title: t("bottomBar.settings"),
           tabBarIcon: ({ color }: TabBarIconProperties) => (
             <Ionicons name="settings" size={tabBarIconSize} color={color} />

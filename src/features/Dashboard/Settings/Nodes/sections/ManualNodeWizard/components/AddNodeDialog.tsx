@@ -135,12 +135,13 @@ export const AddNodeDialog = () => {
             </View>
           </View>
 
-          <View className="w-full flex flex-row items-center justify-between">
+          <View className="w-full flex flex-row items-center justify-center gap-2">
             <Button
               icon={<Ionicons name="close" size={24} color="white" />}
               title={t("cancel")}
               type="error"
               pressableProps={{ onPress: hideDialog }}
+              extraClassNames="w-1/2"
             />
 
             <Button

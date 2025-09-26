@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { View, Pressable, Alert } from "react-native";
+import { View, Pressable, Alert, AlertButton, Platform } from "react-native";
 import { useTranslation } from "react-i18next";
 import { type Transaction, TransactionType } from "@signumjs/core";
 import { ChainTime } from "@signumjs/util";
@@ -401,8 +401,8 @@ export const TransactionActivityCard = (props: Transaction) => {
     }
   };
 
-  const pickOptions = () => {
-    const defaultOptions = [
+   const pickOptions = () => {
+    const defaultOptions: AlertButton[] = [
       {
         text: t("overview.copyTransactionId"),
         onPress: async () => {
@@ -434,10 +434,19 @@ export const TransactionActivityCard = (props: Transaction) => {
       };
     }
 
+    // Add cancel button (only visible on iOS)
+    if (Platform.OS === "ios") {
+      defaultOptions.push({
+        text: t("cancel"),
+        style: "cancel",
+        onPress: () => {},
+      });
+    }
+
     Alert.alert(
       t("overview.options"),
       t("overview.description"),
-      [...defaultOptions],
+      defaultOptions,
       {
         cancelable: true,
       }

@@ -29,7 +29,12 @@ export const AccountActivationCard = () => {
     if (!ledgerService) return;
 
     ledgerService.account.activate(accountId, publicKey).finally(() => {
-      alert(t("unsafeAccount.activating"));
+      alert(
+        `${t("unsafeAccount.activating")}\n` +
+          t("unsafeAccount.accountActivationIsPending", {
+            blocktime: PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MINUTES,
+          })
+      );
       updateAccountPublicKeyActivationStatus(publicKey, currentNetwork, true);
     });
   };
@@ -66,9 +71,11 @@ export const AccountActivationCard = () => {
               </Text>
             </View>
 
-            <Text color="muted" size="large" className="text-center">
-              {t("unsafeAccount.description")}
-            </Text>
+            {!activationInProgress && (
+              <Text color="muted" size="large" className="text-center">
+                {t("unsafeAccount.description")}
+              </Text>
+            )}
 
             <View className="w-full flex items-center justify-center flex-col gap-4 mt-4">
               {!activationInProgress ? (

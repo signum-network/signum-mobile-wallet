@@ -1,64 +1,33 @@
-import { useEffect } from "react";
-import { Keyboard } from "react-native";
+import { View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { PUBLIC_CURRENT_OS } from "@/types/constants";
 import { Button, type Props as ButtonProps } from "../Button";
-import Animated, { useSharedValue } from "react-native-reanimated";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-const DEFAULT_HEIGHT = 95;
+const DEFAULT_HEIGHT = 82;
 
 interface Props extends ButtonProps {
   hidden?: boolean;
   bottomOffset?: number;
 }
 
-export const FormNavButton = (props: Props) => {
-  
-  const { hidden } = props;
-  if (hidden) return null;
-  
-  const height = useSharedValue(DEFAULT_HEIGHT);
-  const display = useSharedValue<"none" | "flex">("flex");
+export const FormNavButton = ({ hidden, bottomOffset, ...props }: Props) => {
   const { bottom } = useSafeAreaInsets();
 
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      "keyboardDidShow",
-      () => {
-        height.set(0);
-        display.set("none");
-      }
-    );
-
-    const keyboardDidHideListener = Keyboard.addListener(
-      "keyboardDidHide",
-      () => {
-        height.set(DEFAULT_HEIGHT);
-        display.set("flex");
-      }
-    );
-
-    return () => {
-      keyboardDidHideListener.remove();
-      keyboardDidShowListener.remove();
-    };
-  }, []);
+  if (hidden) return null;
 
   return (
-    <Animated.View
+    <View
       style={{
-        // @ts-expect-error This is the proper usage of the useShareValue hook, there are type issues on react-native-reanimated, if you use display.value; You will get warnings of incorrect API usage
-        display: props.hidden ? "none" : display,
+        height: DEFAULT_HEIGHT,
         zIndex: 250,
         position: "absolute",
         left: 0,
-        bottom: props.bottomOffset ?? bottom,
+        bottom: bottomOffset ?? bottom,
         elevation: PUBLIC_CURRENT_OS === "android" ? 50 : 0,
-        height,
       }}
-      className="justify-center items-center flex-1 w-full p-4 bg-card-foreground dark:bg-card-foreground-dark border-t border-card-border dark:border-card-border-dark"
+      className="justify-center items-center flex-1 w-full px-4 px-2 bg-card-foreground dark:bg-card-foreground-dark border-t border-card-border dark:border-card-border-dark"
     >
       <Button {...props} extraClassNames="max-w-sm" size="large" fullWidth />
-    </Animated.View>
+    </View>
   );
 };

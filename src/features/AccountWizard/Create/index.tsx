@@ -4,8 +4,7 @@ import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { router } from "expo-router";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { AnimatedSlideContainer } from "@/components/AnimatedSlideContainer";
-import { KeyboardAvoidingView } from "@/components/Form/KeyboardAvoidingView";
+import { AnimatedFadeContainer } from "@/components/AnimatedFadeContainer";
 import { Dialog } from "@/components/Dialog";
 import { AccountWizardContainer } from "../components/AccountWizardContainer";
 import { accountCreationSchema } from "./utils/schemas";
@@ -23,11 +22,23 @@ import { useAccountStore } from "@/hooks/useAccountStore";
 import { AccountType } from "@/types/account";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { KeyboardAnimatedContainer } from "@/components/KeyboardAnimatedContainer";
+import { FormStepper } from "./components/FormStepper";
+import { useLedgerService } from "@/hooks/useLedgerService";
+import { useNodeHostStore } from "@/hooks/useNodeHostStore";
+import { Address } from "@signumjs/core";
+import { PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MINUTES } from "@/types/constants";
 
 export const CreateScreen = () => {
   const { t } = useTranslation();
-  const { accountWalletNames, addAccount, setActiveAccount } =
-    useAccountStore();
+  const {
+    accountWalletNames,
+    addAccount,
+    setActiveAccount,
+    updateAccountPublicKeyActivationStatus,
+  } = useAccountStore();
+
+  const { ledgerService } = useLedgerService();
+  const { currentNetwork } = useNodeHostStore();
 
   const [showDialog, setShowDialog] = useState(false);
 
@@ -83,7 +94,24 @@ export const CreateScreen = () => {
 
       setActiveAccount(publicKey);
 
-      router.replace("/dashboard/overview");
+      const accountId = Address.fromPublicKey(publicKey).getNumericId();
+      if (ledgerService) {
+        ledgerService.account.activate(accountId, publicKey).finally(() => {
+          alert(
+            `${t("unsafeAccount.activating")}\n` +
+              t("unsafeAccount.accountActivationIsPending", {
+                blocktime: PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MINUTES,
+              })
+          );
+          updateAccountPublicKeyActivationStatus(
+            publicKey,
+            currentNetwork,
+            true
+          );
+        });
+      }
+
+      router.replace("/dashboard/account");
     } catch (error) {
       console.error(error);
     }
@@ -92,6 +120,7 @@ export const CreateScreen = () => {
   return (
     <FormProvider {...methods}>
       <FormNavigation onSubmit={methods.handleSubmit(onSubmit)} />
+      <FormStepper />
       <KeyboardAnimatedContainer>
         <Dialog variant="full" visible={showDialog}>
           <View className="flex flex-col items-center justify-center gap-4 w-full">
@@ -115,21 +144,21 @@ export const CreateScreen = () => {
         <ScrollView ref={scrollRef}>
           <AccountWizardContainer>
             {activeStep === Steps.AccountCreationAgreement && (
-              <AnimatedSlideContainer>
+             <AnimatedFadeContainer>
                 <Agreement />
-              </AnimatedSlideContainer>
+             </AnimatedFadeContainer>
             )}
 
             {activeStep === Steps.SecretPhraseGeneration && (
-              <AnimatedSlideContainer>
+              <AnimatedFadeContainer>
                 <SecretPhraseGeneration />
-              </AnimatedSlideContainer>
+              </AnimatedFadeContainer>
             )}
 
             {activeStep === Steps.SecretPhraseVerification && (
-              <AnimatedSlideContainer>
+              <AnimatedFadeContainer>
                 <SecretPhraseVerification />
-              </AnimatedSlideContainer>
+             </AnimatedFadeContainer>
             )}
           </AccountWizardContainer>
         </ScrollView>
