@@ -35,13 +35,13 @@ export const ResolvedAccountCard = () => {
 
   return resolvedAccount ? (
     <Card>
-      <Text fullWidth color="primary">
+      <Text color="primary">
         {t("accountWizard.importAccount.importAccountResolvedAddress", {
           address: resolvedAccount,
         })}
       </Text>
 
-      <Text fullWidth color="muted">
+      <Text color="muted">
         {t("accountWizard.importAccount.importAccountResolvedAddressHint")} 😁
       </Text>
     </Card>

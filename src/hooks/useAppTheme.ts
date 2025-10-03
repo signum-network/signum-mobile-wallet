@@ -3,6 +3,8 @@ import { useColorScheme } from "nativewind";
 import { DarkTheme, DefaultTheme } from "@react-navigation/native";
 import { appStore } from "@/states/appStore";
 
+type NavigationTheme = typeof DefaultTheme;
+
 export const useAppTheme = () => {
   const { colorScheme, setColorScheme } = useColorScheme();
   const themeMode = appStore((state) => state.themeMode);
@@ -10,7 +12,15 @@ export const useAppTheme = () => {
 
   const scheme = colorScheme ?? "light";
   const isDarkMode = scheme === "dark";
-  const theme = isDarkMode ? DarkTheme : DefaultTheme;
+
+  //overwrite primary color 
+  const theme: NavigationTheme = {
+    ...(isDarkMode ? DarkTheme : DefaultTheme),
+    colors: {
+      ...(isDarkMode ? DarkTheme.colors : DefaultTheme.colors),
+      primary: isDarkMode ? "#0066ff" : "#0099ff",
+    },
+  };
 
   const iconColor = {
     primary: theme.colors.primary,

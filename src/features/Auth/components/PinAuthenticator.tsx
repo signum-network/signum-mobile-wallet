@@ -11,7 +11,6 @@ import { useTranslation } from "react-i18next";
 import { Image } from "expo-image";
 import { signumBlueSymbolPicture } from "@/assets";
 import { Text } from "@/components/Text";
-import { useAudioPlayer } from "expo-audio";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 interface Props {
@@ -32,9 +31,6 @@ type Nullable<T> = T | null;
 
 const areAllItemsFilled = (array: string[]) => array.every((i) => !!i);
 
-const successAudioSource = require("../../../assets/audio/success-ringtone.mp3");
-const errorAudioSource = require("../../../assets/audio/error-ringtone.mp3");
-
 export const PinAuthenticator = ({
   label,
   complementaryLabel,
@@ -50,46 +46,27 @@ export const PinAuthenticator = ({
 }: Props) => {
   const { t } = useTranslation();
 
-  const successAudio = useAudioPlayer(successAudioSource);
-  const errorAudio = useAudioPlayer(errorAudioSource);
-
   const inputRefs = useRef<Array<Nullable<TextInput>>>([]);
 
   const inputs = useMemo(() => [...new Array(length)], [length]);
 
-  const resetValues = async () => {
-    if (!inputRefs || !inputRefs?.current) return;
-
-    inputRefs.current.map((ref, index) => {
-      if (!ref || !ref.focus) return;
-      if (index === 0) ref.focus();
-      ref.clear();
-      onChangeValue("", index);
-    });
-
-    onReset();
-  };
-
   const onChangeValue = (text: string, index: number) => {
-    const newValue = value.map((item, valueIndex) => {
-      if (valueIndex === index) {
-        return text;
-      }
-
-      return item;
-    });
-
+    const newValue = value.map((item, i) => (i === index ? text : item));
     onChange(newValue, areAllItemsFilled(newValue));
   };
 
   const handleChange = (text: string, index: number) => {
-    onChangeValue(text, index);
+    // Ensure only a single character is stored (safety net, even though maxLength=1 is set)
+    const char = text?.slice(0, 1) ?? "";
+    onChangeValue(char, index);
 
-    if (text.length !== 0) {
-      return inputRefs?.current[index + 1]?.focus();
+    if (char.length > 0) {
+      // Move focus to the next field when a digit is entered
+      inputRefs.current[index + 1]?.focus?.();
+    } else if (index > 0) {
+      // If empty and not the first, move focus back
+      inputRefs.current[index - 1]?.focus?.();
     }
-
-    return inputRefs?.current[index - 1]?.focus();
   };
 
   const handleBackspace = (
@@ -99,31 +76,36 @@ export const PinAuthenticator = ({
     const { nativeEvent } = event;
 
     if (nativeEvent.key === "Backspace") {
-      handleChange("", index);
+      const current = value[index] ?? "";
+      if (current.length === 0 && index > 0) {
+        // If current field is already empty -> move focus one position left
+        inputRefs.current[index - 1]?.focus?.();
+        // Also clear the left field, so it feels natural
+        onChangeValue("", index - 1);
+      } else {
+        // Otherwise just clear the current field
+        onChangeValue("", index);
+      }
     }
   };
-  
-  const playSuccessSound = () => {
-    successAudio.volume = 0.5;
-    successAudio.seekTo(0);
-    successAudio.play();
-  };
 
-  const playErrorSound = () => {
-    errorAudio.volume = 0.5;
-    errorAudio.seekTo(0.55);
-    errorAudio.play();
+  const resetValues = () => {
+    // Reset values but keep refs intact
+    const empty = Array.from({ length }, () => "");
+    onChange(empty, false);
+    // Clear native TextInputs (in case they cached a character)
+    inputRefs.current.forEach((ref) => ref?.clear?.());
+    // Focus back to the first input
+    inputRefs.current[0]?.focus?.();
+    onReset();
   };
 
   useEffect(() => {
     (async () => {
       if (areAllItemsFilled(value)) {
         if (success) {
-          // playSuccessSound();   
-          inputRefs.current = [];
           Keyboard.dismiss();
         } else if (error) {
-          // playErrorSound();
           setTimeout(() => {   //show error message longer
             resetValues();
           }, 1500); 
@@ -167,9 +149,7 @@ export const PinAuthenticator = ({
         {inputs.map((_item, index) => (
           <TextInput
             ref={(ref) => {
-              if (ref && !inputRefs.current.includes(ref)) {
-                inputRefs.current = [...inputRefs.current, ref];
-              }
+              inputRefs.current[index] = ref;
             }}
             key={index}
             autoFocus={index === 0}
@@ -181,9 +161,10 @@ export const PinAuthenticator = ({
             selectTextOnFocus
             autoCorrect={false}
             autoComplete="off"
-            keyboardType="decimal-pad"
+            keyboardType="number-pad"
             secureTextEntry
             testID={`OTPInput-${index}`}
+            value={value[index] ?? ""}
             onChangeText={(text) => !disabled && handleChange(text, index)}
             onKeyPress={(event) => !disabled && handleBackspace(event, index)}
           />

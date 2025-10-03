@@ -3,16 +3,17 @@ import { Tabs } from "expo-router";
 import { useTranslation } from "react-i18next";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { router } from "expo-router";
+import { useAppTheme } from "@/hooks/useAppTheme";
 type TabBarIconProperties = { color: string };
 
 export default function Layout() {
   const { t } = useTranslation();
-
+  const { theme, isDarkMode } = useAppTheme();
   const tabBarIconSize = 28;
   const tabBarLabelStyle = { fontSize: 12 };
   const insets = useSafeAreaInsets();
 
+  
   return (
     <Tabs
       screenOptions={{
@@ -21,8 +22,9 @@ export default function Layout() {
           height: 72 + insets.bottom,
           paddingBottom: 8 + insets.bottom,
           paddingTop: 8,
-          backgroundColor: "transparent",
-          borderTopWidth: 1,
+          backgroundColor:  isDarkMode ? "#000" : theme.colors.card,
+          borderTopWidth: isDarkMode ? 0.5 : 0.25,
+          borderTopColor: isDarkMode ? "#444444" : "#e0e0e0",
           elevation: 0,
           shadowOpacity: 0,
         },

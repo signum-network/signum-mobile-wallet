@@ -49,12 +49,7 @@ export default function RootLayout() {
       <AppProviders>
         <Stack screenOptions={{ headerShown: false }} />
       </AppProviders>
-      <BottomInsetDecor
-        lightBg="#EFEFF4"
-        darkBg="#1C1C1E"
-        lightLineColor="#e0e0e0"
-        darkLineColor="#444444"
-      />
+      <BottomInsetDecor/>
     </GestureHandlerRootView>
   );
 }

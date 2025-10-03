@@ -32,7 +32,7 @@ export const WalletNameField = () => {
               onChangeText={onChange}
               value={value}
               size="large"
-              extraClassNames="font-bold"
+              textAlign="center"
               maxLength={30}
             />
           )}

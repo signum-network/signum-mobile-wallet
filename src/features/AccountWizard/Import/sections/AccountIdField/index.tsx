@@ -23,22 +23,23 @@ export const AccountIdField = () => {
             {t("accountWizard.importAccount.importWatchOnlySecondHint")}
           </Text>
         </View>
-
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              placeholder={t("example") + " S-5MS6..., 167552..."}
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-              size="large"
-              extraClassNames="font-bold"
-              maxLength={30}
-            />
-          )}
-          name="account"
-        />
+  
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                placeholder={t("example") + " S-5MS6..., 167552..."}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                size="large"
+                textAlign="center"
+                maxLength={30}
+              />
+            )}
+            name="account"
+          />
+    
       </Card>
 
       <ResolvedAccountCard />

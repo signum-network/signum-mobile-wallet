@@ -23,9 +23,17 @@ export const TextInput = (props: Props) => {
     props.extraClassNames && props.extraClassNames,
   ]);
 
-  return (
-    <NativeTextInput contextMenuHidden className={classNames}   placeholderTextColor={
-    scheme === "dark" ? "#A1A1AA" : "#71717A"
-  }{...props} />
+return (
+    <NativeTextInput
+      className={classNames}
+      style={{
+        flexShrink: 1,    
+        minWidth: 0,       
+        maxWidth: "100%",  
+      }}         
+      contextMenuHidden={false}    
+      placeholderTextColor={scheme === "dark" ? "#A1A1AA" : "#71717A"}
+      {...props}
+    />
   );
 };

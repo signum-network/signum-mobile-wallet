@@ -1,35 +1,17 @@
-import { eq } from "drizzle-orm";
-import { db } from "@/db/get";
-import { accountPublicKeys } from "@/db/schema";
+import { Address } from "@signumjs/core";
 import { getLedgerService } from "@/utils/getLedgerService";
-import { asAddress } from "./asAddress";
 
-export const getAccountPublicKey = async (account: string) => {
+export const getAccountPublicKey = async (
+  account: string
+): Promise<string | undefined> => {
   const { ledgerService } = getLedgerService();
-  const accountID = asAddress(account).getNumericId();
-
-  const query = await db
-    .select()
-    .from(accountPublicKeys)
-    .where(eq(accountPublicKeys.account, accountID));
-
-  const row = !!query.length && query[0];
-
-  if (row) return row.publicKey;
+  const accountId = Address.create(account).getNumericId();
 
   try {
-    const accountPublicKey = await ledgerService.account.fetchAccountPublicKey(
-      accountID
-    );
-
-    if (!accountPublicKey) return undefined;
-
-    await db
-      .insert(accountPublicKeys)
-      .values({ account: accountID, publicKey: accountPublicKey });
-
-    return accountPublicKey;
-  } catch (_e) {
+    const pk = await ledgerService.account.fetchAccountPublicKey(accountId);
+    return pk ?? undefined;
+  } catch (e) {
+    console.error("[getAccountPublicKey] ledger fetch failed:", e);
     return undefined;
   }
 };

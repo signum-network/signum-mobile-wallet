@@ -84,7 +84,7 @@ export const SecretPhraseVerification = () => {
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
-                extraClassNames="font-medium"
+                size="large"
                 textAlign="center"
                 maxLength={30}
               />
