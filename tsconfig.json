@@ -2,12 +2,12 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "strict": true,
-    "module": "NodeNext",
-    "moduleResolution": "nodenext",
-    "baseUrl": ".",
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "jsx": "react-jsx",
+    "jsxImportSource": "nativewind",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["./src/*"]
     }
   },
   "include": [
