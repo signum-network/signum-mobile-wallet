@@ -8,7 +8,6 @@ import { BottomButtonsContainer } from "../components/BottomButtonsContainer";
 import { DashboardScreenContainer } from "../components/DashboardScreenContainer";
 import { Balance } from "./sections/Balance";
 import { Activity } from "./sections/Activity";
-import { AnimatedFadeContainer } from "@/components/AnimatedFadeContainer";
 import { HorizontalDivider } from "@/components/HorizontalDivider";
 
 export const OverviewScreen = () => {
@@ -41,14 +40,15 @@ export const OverviewScreen = () => {
           />
         )}
 
-        <Button
+      <Button
+          key={`receive-${isWatchOnly ? 'single' : 'double'}`}
           title={t("receive")}
           type="blackout"
           size="medium"
           wide={!isWatchOnly}
           fullWidth={isWatchOnly}
           linkProps={{ href: "/transfer/receive" }}
-          extraClassNames="h-14 flex-1 px-2"
+          extraClassNames={`h-14 px-2 ${isWatchOnly ? "w-full" : "flex-1"}`}
         />
       </BottomButtonsContainer>
     </Fragment>

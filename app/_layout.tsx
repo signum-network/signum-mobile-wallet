@@ -16,7 +16,6 @@ import { useMemo } from "react";
 Crypto.init(new ReactNativeExpoCryptoAdapter());
 
 if (__DEV__) {
-  // @ts-expect-error importing modules typing issue
   import("../ReactotronConfig").then(() =>
     console.log("Reactotron Configured")
   );
@@ -36,8 +35,7 @@ export {
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-
-   // Load Ꞩ (SIGNA symbol) for iOS
+  // Load Ꞩ (SIGNA symbol) for iOS
   const [loaded] = useFonts({
     SignumSymbols: require("@/assets/fonts/SignumSymbols.ttf"),
   });
@@ -49,7 +47,7 @@ export default function RootLayout() {
       <AppProviders>
         <Stack screenOptions={{ headerShown: false }} />
       </AppProviders>
-      <BottomInsetDecor/>
+      <BottomInsetDecor />
     </GestureHandlerRootView>
   );
 }

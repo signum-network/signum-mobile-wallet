@@ -2,15 +2,21 @@ import { useMemo } from "react";
 import { View } from "react-native";
 import { Image } from "expo-image";
 import { src44 } from "@signumjs/standards";
-import { PUBLIC_IPFS_GATEWAY } from "@/types/constants";
 import clsx from "clsx";
-import DOMComponent from "@/components/DOM/HashIconAvatar";
+import HashIconAvatarNative from "@/components/Avatars/HashIconAvatarNative";
+import { PUBLIC_IPFS_GATEWAY } from "@/types/constants";
 
 interface Props {
   loading: boolean;
   accountId: string;
   description: string;
   extraClassNames?: string;
+}
+
+function toIpfsUrl(cid?: string | null) {
+  if (!cid) return null;
+  const base = String(PUBLIC_IPFS_GATEWAY).replace(/\/+$/, ""); // trim trailing /
+  return `${base}/${cid}`;
 }
 
 export const AccountAvatar = ({
@@ -20,14 +26,10 @@ export const AccountAvatar = ({
   extraClassNames,
 }: Props) => {
   const ipfsImage = useMemo(() => {
-    if (loading) return null;
-
+    if (loading || !description) return null;
     try {
       const descriptor = src44.DescriptorData.parse(description, false);
-
-      if (descriptor.avatar) {
-        return `${PUBLIC_IPFS_GATEWAY}/${descriptor.avatar.ipfsCid}`;
-      }
+      return toIpfsUrl(descriptor?.avatar?.ipfsCid) ?? null;
     } catch {
       return null;
     }
@@ -44,14 +46,14 @@ export const AccountAvatar = ({
       {ipfsImage ? (
         <Image
           source={ipfsImage}
-          style={{
-            width: "100%",
-            height: "100%",
-            backgroundColor: "rgba(0,0,0,0.05)",
-          }}
+          contentFit="cover"
+          cachePolicy="memory-disk"
+          transition={200}
+          recyclingKey={accountId}
+          style={{ width: "100%", height: "100%" }}
         />
       ) : (
-        <DOMComponent id={accountId} />
+        <HashIconAvatarNative id={accountId} />
       )}
     </View>
   );

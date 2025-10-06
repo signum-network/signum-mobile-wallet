@@ -118,6 +118,7 @@
       "importWatchOnlySecondHint": "You have the option to enter a Signum Wallet Address, account ID, or even aliases",
       "importAccountAlreadyExists": "This account already exists on your wallet, please go to account settings and use it!",
       "importAccountResolvedAddress": "Account address: {{address}}",
+      "importAccountResolvedName": "Account Name: {{name}}",
       "importAccountResolvedAddressHint": "Use this suggestion as a helpful tool to ensure you import the accurate account"
     },
     "walletNameAlreadyUsed": "The wallet name is already being used, please choose another one!"

@@ -141,6 +141,8 @@ export const AccountCard = ({ publicKey, type, walletName }: Props) => {
   };
 
   const pan = Gesture.Pan()
+    .activeOffsetX([-20, 20])
+    .failOffsetY([-20, 20])
     .onBegin(() => {
       pressed.set(true);
     })
@@ -175,7 +177,7 @@ export const AccountCard = ({ publicKey, type, walletName }: Props) => {
 
   const itemHeightStyle = useAnimatedStyle(() => ({
     height: itemHeight.value,
-    marginTop: 32,
+    marginTop: 14,
   }));
 
   useQuery({

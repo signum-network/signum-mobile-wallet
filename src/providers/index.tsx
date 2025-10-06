@@ -5,17 +5,20 @@ import { DataInitializer } from "./DataInitializer";
 import { DatabaseProvider } from "./Database/Provider";
 import type { ChildrenProps } from "@/types/childrenProps";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { HashiconProvider } from "@/providers/Hashicon/Provider";
 
 export const AppProviders = ({ children }: ChildrenProps) => (
   <SafeAreaProvider>
-    <Suspense>
-      <TranslationsProvider>
-        <ThemeProvider>
-          <DatabaseProvider>
-            <DataInitializer>{children}</DataInitializer>
-          </DatabaseProvider>
-        </ThemeProvider>
-      </TranslationsProvider>
-    </Suspense>
+    <HashiconProvider>
+      <Suspense>
+        <TranslationsProvider>
+          <ThemeProvider>
+            <DatabaseProvider>
+              <DataInitializer>{children}</DataInitializer>
+            </DatabaseProvider>
+          </ThemeProvider>
+        </TranslationsProvider>
+      </Suspense>
+    </HashiconProvider>
   </SafeAreaProvider>
 );

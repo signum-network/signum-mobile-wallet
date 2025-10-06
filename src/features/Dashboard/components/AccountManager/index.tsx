@@ -1,5 +1,5 @@
 import { Fragment, useRef, type RefObject } from "react";
-import { ScrollView, View } from "react-native";
+import { View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { FlashList } from "@shopify/flash-list";
 import { useAccountStore } from "@/hooks/useAccountStore";
@@ -11,23 +11,23 @@ import { BottomButtonsContainer } from "../../components/BottomButtonsContainer"
 import { DashboardScreenContainer } from "../../components/DashboardScreenContainer";
 import { AccountCard, ITEM_HEIGHT } from "./components/AccountCard";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { HorizontalDivider } from "@/components/HorizontalDivider";
 
 export const AccountManager = () => {
   const { t } = useTranslation();
   const { accounts } = useAccountStore();
   const { iconColor } = useAppTheme();
-
-  const scrollRef: RefObject<ScrollView> = useRef(null!);
+  const insets = useSafeAreaInsets();
 
   const accountsList = Object.values(accounts);
 
   return (
 
     <Fragment>
-      <ScrollView ref={scrollRef} className="flex-1">
         <DashboardScreenContainer>
-          <View className="flex flex-col items-start justify-center w-full px-4">
-            <View className="w-full flex flex-col items-start justify-start mt-8 gap-2">
+          <View className="flex-1 flex-col items-start justify-center w-full px-4">
+            <View className="w-full flex flex-col items-start justify-start mt-8 gap-2 pb-4">
 
               <View className="flex flex-row items-center gap-1">
                 <MaterialIcons
@@ -46,27 +46,20 @@ export const AccountManager = () => {
                 </Text>
               </View>
             </View>
-
-            <View
-              style={{
-                flex: 1,
-                flexGrow: 1,
-                minHeight: 500,
-                width: "100%",
-                paddingBottom: 200,
-              }}
-            >
+            <HorizontalDivider />
+            <View className="w-full flex-1">
               <FlashList
                 data={accountsList}
                 keyExtractor={({ publicKey }) => publicKey}
                 renderItem={({ item }) => <AccountCard {...item} />}
                 estimatedItemSize={ITEM_HEIGHT}
                 ListEmptyComponent={<NoAccountsFoundCard />}
+                contentContainerStyle={{ paddingBottom: insets.bottom + 60 }}
               />
             </View>
           </View>
         </DashboardScreenContainer>
-      </ScrollView>
+
 
       <BottomButtonsContainer>
         <Button
