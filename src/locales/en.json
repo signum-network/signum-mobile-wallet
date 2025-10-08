@@ -125,6 +125,7 @@
   },
   "bottomBar": {
     "home": "Home",
+    "transfer": "Transfer",
     "accounts": "Accounts",
     "subscriptions": "Subscriptions",
     "tokens": "Tokens",

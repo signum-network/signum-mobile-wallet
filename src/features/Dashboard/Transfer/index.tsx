@@ -40,6 +40,7 @@ import { Confirmation } from "./sections/Confirmation";
 import { FormNavigation } from "./components/FormNavigation";
 import { FormStepper } from "./components/FormStepper";
 
+
 export const TransferScreen = () => {
   const { t } = useTranslation();
   const { ledgerService } = useLedgerService();
@@ -202,13 +203,11 @@ export const TransferScreen = () => {
       <SigningDialog visible={isSigningTransaction} />
 
       {!isComplete && <FormStepper />}
-
       <FormNavigation />
-
       <KeyboardAvoidingView>
         <ScrollView ref={scrollRef}>
           <DashboardScreenContainer>
-            <View className="flex flex-col items-start justify-center w-full px-4 mt-4 pb-20 gap-4">
+            <View className="flex flex-col items-start justify-center w-full px-4 mt-4 pb-28 gap-4">
               {activeStep === Steps.Recipient && (
                 <AnimatedFadeContainer fullWidth>
                   <Recipient />

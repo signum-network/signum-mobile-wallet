@@ -35,7 +35,7 @@ export const OverviewScreen = () => {
             type="primary"
             size="medium"
             wide
-            linkProps={{ href: "/transfer/send" }}
+            linkProps={{ href: "/dashboard/overview/send" }}
             extraClassNames="h-14 flex-1 px-2"
           />
         )}
@@ -47,7 +47,7 @@ export const OverviewScreen = () => {
           size="medium"
           wide={!isWatchOnly}
           fullWidth={isWatchOnly}
-          linkProps={{ href: "/transfer/receive" }}
+          linkProps={{ href: "/dashboard/overview/receive" }}
           extraClassNames={`h-14 px-2 ${isWatchOnly ? "w-full" : "flex-1"}`}
         />
       </BottomButtonsContainer>

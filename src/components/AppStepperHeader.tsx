@@ -21,12 +21,12 @@ export const AppStepperHeader = ({
   const { theme } = useAppTheme();
 
   return (
-    <View className="w-full px-4 py-2 border-b border-gray-200 dark:border-gray-900">
-      <Pressable
-        className="w-full active:opacity-80 ripple-[#333] ripple-bordered"
-        onPress={onBack}
-        disabled={disabled}
-      >
+    <Pressable
+      className="w-full active:opacity-80 ripple-[#333] ripple-bordered"
+      onPress={onBack}
+      disabled={disabled}
+    >
+      <View className="w-full px-4 py-2 border-b border-gray-200 dark:border-gray-900">
         <View>
           <View className="w-full flex flex-row items-center justify-between">
             <Ionicons
@@ -47,7 +47,7 @@ export const AppStepperHeader = ({
             </View>
           </View>
         </View>
-      </Pressable>
-    </View>
+      </View>
+    </Pressable>
   );
 };

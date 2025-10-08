@@ -12,6 +12,7 @@ import QRCode from "react-qr-code";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { router } from "expo-router";
 import { AccountSwitcher } from "@/components/Account/Switcher";
+import { AppHeader } from "@/components/AppHeader";
 
 export const DepositScreen = () => {
   const { t } = useTranslation();
@@ -32,38 +33,7 @@ export const DepositScreen = () => {
 
   return (
     <View className="flex-1 flex flex-col items-start justify-start mb-8 gap-4">
-      <View className="w-full px-4 pt-4 gap-4">
-        <Pressable
-          className="w-full rounded-lg active:opacity-80 ripple-[#333] ripple-bordered"
-          onPress={goBackwards}
-        >
-          <Card>
-            <View className="w-full flex flex-row items-center justify-between">
-              <Ionicons
-                name="arrow-back"
-                size={28}
-                color={theme.colors.text}
-                style={{ marginRight: 16 }}
-              />
-              <View className="w-14 h-14 rounded-full border border-card-border dark:border-card-border-dark flex justify-center items-center">
-                <Text size="large" color="muted" className="font-bold">
-                  {1}/{1}
-                </Text>
-              </View>
-
-              <View className="flex-1 flex flex-col items-end justify-end">
-                <Text size="large" color="muted" className="font-bold">
-                  {t("deposit.title")}
-                </Text>
-
-                <Text color="muted" size="small">
-                  {t("transfer.stepper.goBackwards")}
-                </Text>
-              </View>
-            </View>
-          </Card>
-        </Pressable>
-      </View>
+      <AppHeader title={t("deposit.title")} />
       <View className="w-full px-4 gap-4">
         <AccountSwitcher href="/dashboard/account" />
       </View>

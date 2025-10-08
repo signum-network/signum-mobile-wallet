@@ -88,7 +88,7 @@ export const LoginAuthScreen = () => {
           router.replace("/dashboard/overview");
         }
       },
-      areAllFieldsFilled ? 2700 : 1000
+      areAllFieldsFilled ? 1000 : 1000
     );
   };
 
@@ -119,7 +119,7 @@ export const LoginAuthScreen = () => {
         // Timeout is applied because error audio must finish, otherwise app will break
         setTimeout(() => {
           router.replace("/terms");
-        }, 3000);
+        }, 1000);
       });
     });
   };

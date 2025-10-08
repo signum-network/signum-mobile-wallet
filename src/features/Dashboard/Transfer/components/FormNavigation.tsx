@@ -100,6 +100,7 @@ export const FormNavigation = () => {
 
   return (
     <FormNavButton
+      bottomOffset={0}
       type="primary"
       title={t("continue")}
       hidden={activeStep === Steps.Confirmation}

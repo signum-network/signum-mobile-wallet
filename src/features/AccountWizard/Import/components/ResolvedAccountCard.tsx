@@ -78,7 +78,7 @@ export const ResolvedAccountCard = () => {
 
           setAccountName(shortName);
 
-          // 🧠 Set the fetched name into the "walletName" form field
+          // Set the fetched name into the "walletName" form field
           setValue("walletName", shortName, {
             shouldValidate: false,
             shouldDirty: false,

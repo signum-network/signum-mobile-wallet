@@ -1,4 +1,10 @@
-import { View, Pressable, ViewStyle, BackHandler, Platform } from "react-native";
+import {
+  View,
+  Pressable,
+  ViewStyle,
+  BackHandler,
+  Platform,
+} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Text } from "@/components/Text";
 import { useAppTheme } from "@/hooks/useAppTheme";
@@ -7,7 +13,7 @@ import { useCallback } from "react";
 
 type AppHeaderProps = {
   title: string;
-  onBack?: () => void;     
+  onBack?: () => void;
   disabled?: boolean;
 };
 
@@ -27,7 +33,6 @@ export const AppHeader = ({ title, onBack, disabled }: AppHeaderProps) => {
     return false;
   }, [onBack, router]);
 
- 
   useFocusEffect(
     useCallback(() => {
       if (Platform.OS !== "android") return;
@@ -37,12 +42,12 @@ export const AppHeader = ({ title, onBack, disabled }: AppHeaderProps) => {
   );
 
   return (
-    <View className="w-full p-4 border-b border-gray-200 dark:border-gray-900">
-      <Pressable
-        className="w-full active:opacity-80 ripple-[#333] ripple-bordered"
-        onPress={handleBack}               
-        disabled={disabled}
-      >
+    <Pressable
+      className="w-full active:opacity-80 ripple-[#333] ripple-bordered"
+      onPress={handleBack}
+      disabled={disabled}
+    >
+      <View className="w-full p-4 border-b border-gray-200 dark:border-gray-900">
         <View>
           <View className="w-full flex flex-row items-center justify-between">
             <Ionicons
@@ -59,7 +64,7 @@ export const AppHeader = ({ title, onBack, disabled }: AppHeaderProps) => {
             </View>
           </View>
         </View>
-      </Pressable>
-    </View>
+      </View>
+    </Pressable>
   );
 };

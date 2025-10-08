@@ -33,9 +33,9 @@ export default function Layout() {
     >
       <Tabs.Screen
         options={{
-          title: t("bottomBar.home"),
+          title: t("bottomBar.transfer"),
           tabBarIcon: ({ color }: TabBarIconProperties) => (
-            <Ionicons name="home" size={tabBarIconSize} color={color} />
+            <Ionicons name="swap-vertical-outline" size={tabBarIconSize} color={color} />
           ),
           tabBarLabelStyle,
         }}
@@ -47,7 +47,7 @@ export default function Layout() {
           title: t("bottomBar.accounts"),
           tabBarIcon: ({ color }: TabBarIconProperties) => (
             <Ionicons
-              name="people-circle-outline"
+              name="people-outline"
               size={tabBarIconSize}
               color={color}
             />
@@ -61,7 +61,7 @@ export default function Layout() {
         options={{
           title: t("bottomBar.tokens"),
           tabBarIcon: ({ color }: TabBarIconProperties) => (
-            <Ionicons name="apps" size={tabBarIconSize} color={color} />
+            <Ionicons name="apps-outline" size={tabBarIconSize} color={color} />
           ),
           tabBarLabelStyle,
         }}
@@ -72,7 +72,7 @@ export default function Layout() {
         options={{
           title: t("bottomBar.miner"),
           tabBarIcon: ({ color }: TabBarIconProperties) => (
-            <Ionicons name="cog" size={tabBarIconSize} color={color} />
+            <Ionicons name="cog-outline" size={tabBarIconSize} color={color} />
           ),
           tabBarLabelStyle,
         }}
@@ -83,7 +83,7 @@ export default function Layout() {
           popToTopOnBlur: true,
           title: t("bottomBar.settings"),
           tabBarIcon: ({ color }: TabBarIconProperties) => (
-            <Ionicons name="settings" size={tabBarIconSize} color={color} />
+            <Ionicons name="settings-outline" size={tabBarIconSize} color={color} />
           ),
           tabBarLabelStyle,
         }}
