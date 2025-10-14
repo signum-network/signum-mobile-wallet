@@ -44,6 +44,7 @@
   "send": "Send",
   "amount": "Amount",
   "notEnoguhFunds": "Not enough funds",
+  "notEnoughForFee": "Not enough funds to pay transaction fee",
   "receive": "Receive",
   "maxButton": "Use all available balance",
   "textOrMemo": "Text or Memo",

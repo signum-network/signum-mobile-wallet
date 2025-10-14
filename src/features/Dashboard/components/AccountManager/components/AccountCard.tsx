@@ -23,6 +23,8 @@ import { getBalancesFromAccount } from "@/utils/account/getBalancesFromAccount";
 import { getTokenBalancesFromAccount } from "@/utils/account/getTokenBalancesFromAccount";
 import { PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MILLISECONDS } from "@/types/constants";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { Pulse } from "@/components/Puls";
+import { asRSAddress } from "@/utils/account/asRSAddress";
 
 interface Props {
   publicKey: string;
@@ -30,7 +32,7 @@ interface Props {
   walletName: string;
 }
 
-export const ITEM_HEIGHT = 90;
+export const ITEM_HEIGHT = 116;
 const WIDTH_SCREEN = Dimensions.get("window").width;
 
 export const AccountCard = ({ publicKey, type, walletName }: Props) => {
@@ -203,8 +205,8 @@ export const AccountCard = ({ publicKey, type, walletName }: Props) => {
         );
 
         const tokenBalance = getTokenBalancesFromAccount(
-          assetBalances,
-          unconfirmedAssetBalances
+          assetBalances || [],
+          unconfirmedAssetBalances || []
         );
 
         updateAccountData(publicKey, currentNetwork, {
@@ -278,16 +280,22 @@ export const AccountCard = ({ publicKey, type, walletName }: Props) => {
 
               <View className="flex flex-col gap-1">
                 <Text className="font-bold">{walletName}</Text>
-
+                <Text color="muted">{asRSAddress(accountId)}</Text>
                 <Text color="muted" className="font-bold">
                   {formatNumber({ value: availableBalance })} {NativeTicker}
                 </Text>
 
                 {!isSecured ? (
                   activationInProgress ? (
-                    <Text color="primary" size="small" className="font-medium">
-                     ⏳ {t("unsafeAccount.activating")}
-                    </Text>
+                    <Pulse>
+                      <Text
+                        color="primary"
+                        size="small"
+                        className="font-medium"
+                      >
+                        ⏳ {t("unsafeAccount.activating")}
+                      </Text>
+                    </Pulse>
                   ) : (
                     <Text color="error" size="small" className="font-medium">
                       ⚠️ {t("settings.account.unsecuredAccount")}

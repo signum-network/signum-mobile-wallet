@@ -4,59 +4,100 @@ import { initReactI18next } from "react-i18next";
 import { getLocales } from "expo-localization";
 
 import enTranslation from "./en.json";
-// import esTranslation from "./es.json";
-// import ptTranslation from "./pt.json";
-// import deTranslation from "./de.json";
+import esTranslation from "./es.json";
+import ptTranslation from "./pt.json";
+import frTranslation from "./fr.json";
+import deTranslation from "./de.json";
+import zhTranslation from "./zh.json";
+import ruTranslation from "./ru.json";
 
-// TODO: THE UNIQUE LANGUAGE SUPPORTED IS ENGLISH
-// WE DO HAVE THESE MULTIPLE LANGUAGES FOR DOCUMENT PURPOSES ONLY
-// IN THE FUTURE WE MAY MOVE THIS CONTENT INTO A .MD FILE
-
-export type locales = "en" | "es" | "pt" | "de";
-const supportedLngs: locales[] = ["en", "es", "pt", "de"];
+// Use canonical ISO codes (zh instead of cn)
+export type Locales = "en" | "es" | "pt" | "fr" | "de" | "zh" | "ru";
+export type locales = Locales; // backwards compatibility if other files import `locales`
 
 export const lngCards: { lng: locales; label: string }[] = [
   { lng: "en", label: "English" },
+  { lng: "es", label: "Spanish" },
+  { lng: "pt", label: "Portuguese" },
+  { lng: "fr", label: "French" },
+  { lng: "de", label: "German" },
+  { lng: "zh", label: "Chinese" },
+  { lng: "ru", label: "Russian" },
 ];
 
-export const defaultSeparator = { thousand: ",", decimal: "." };
-// const europeanSeparator = { thousand: ".", decimal: "," };
-export const languageSeparators = new Map<locales, typeof defaultSeparator>([
+const SUPPORTED = new Set<Locales>(["en", "es", "pt", "fr", "de", "zh", "ru"]);
+
+// Separators: prefer NBSP for Russian thousand separator for nicer grouping
+type Separator = Readonly<{ thousand: string; decimal: string }>;
+
+export const defaultSeparator: Separator = { thousand: ",", decimal: "." };
+export const europeanSeparator: Separator = { thousand: ".", decimal: "," };
+export const russianSeparator: Separator = { thousand: " ", decimal: "," }; // NBSP
+export const languageSeparators = new Map<Locales, Separator>([
   ["en", defaultSeparator],
-  ["es", defaultSeparator],
-  ["pt", defaultSeparator],
-  ["de", defaultSeparator],
-  // ["de", europeanSeparator],
+  ["es", europeanSeparator],
+  ["pt", europeanSeparator],
+  ["fr", europeanSeparator],
+  ["de", europeanSeparator],
+  ["zh", defaultSeparator], 
+  ["ru", russianSeparator],
 ]);
 
-export const getDefaultLocale = (): locales => {
-  const deviceLanguage = getLocales();
-  const languageCode = deviceLanguage[0]?.languageCode;
+// Normalize locale codes coming from the device (e.g., pt-BR → pt, zh-CN → zh)
+const normalizeLocale = (code?: string): Locales => {
+  if (!code) return "en";
+  const lc = code.toLowerCase();
 
-  // @ts-expect-error If device language is not on the supported language list, fallback to english
-  if (!languageCode || !supportedLngs.includes(languageCode)) {
-    return "en";
-  }
+  // Handle tags like "pt-BR", "zh-CN", "fr-CA", etc.
+  if (lc.startsWith("zh")) return "zh";
+  if (lc.startsWith("pt")) return "pt";
 
-  // @ts-expect-error Return supported language
-  return languageCode;
+  const base = (lc.split(/[-_]/)[0] as Locales) || "en";
+  return SUPPORTED.has(base) ? base : "en";
 };
 
-i18n.use(initReactI18next).init({
-  fallbackLng: getDefaultLocale(),
-  supportedLngs,
-  resources: {
-    en: {
-      translation: enTranslation,
+export const getDefaultLocale = (): Locales => {
+  const localesArr = getLocales();
+  const primary = localesArr[0];
+  // Prefer full languageTag when available, otherwise languageCode
+  const code = (primary as any)?.languageTag || primary?.languageCode;
+  return normalizeLocale(code);
+};
+
+i18n
+  .use(initReactI18next)
+  .init({
+    // IMPORTANT: set initial language explicitly
+    lng: getDefaultLocale(),
+    // Understandable fallback (not dynamic)
+    fallbackLng: "en",
+    supportedLngs: Array.from(SUPPORTED),
+    resources: {
+      en: { translation: enTranslation },
+      es: { translation: esTranslation },
+      pt: { translation: ptTranslation },
+      fr: { translation: frTranslation },
+      de: { translation: deTranslation },
+      zh: { translation: zhTranslation },
+      ru: { translation: ruTranslation },
     },
-    es: {
-      translation: enTranslation,
+    // React-specific options
+    react: {
+      useSuspense: false, // avoids suspense renders during language changes
     },
-    pt: {
-      translation: enTranslation,
+    interpolation: {
+      escapeValue: false, // React escapes by itself
     },
-    de: {
-      translation: enTranslation,
-    },
-  },
-});
+    // Prefer returning the key instead of null when missing
+    returnNull: false,
+  });
+
+// Optional: log missing translation keys in dev builds
+if (__DEV__) {
+  i18n.on("missingKey", (lngs, ns, key) => {
+    // eslint-disable-next-line no-console
+    console.warn(`[i18n] Missing key: ${key} (ns: ${ns}, lngs: ${lngs})`);
+  });
+}
+
+export default i18n;

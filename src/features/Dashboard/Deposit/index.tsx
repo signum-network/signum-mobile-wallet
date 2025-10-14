@@ -27,10 +27,6 @@ export const DepositScreen = () => {
     alert(t("deposit.copiedAddress"));
   };
 
-  const goBackwards = () => {
-    router.replace("/dashboard/overview");
-  };
-
   return (
     <View className="flex-1 flex flex-col items-start justify-start mb-8 gap-4">
       <AppHeader title={t("deposit.title")} />

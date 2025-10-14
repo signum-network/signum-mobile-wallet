@@ -11,6 +11,7 @@ import { readPin, deletePin } from "@/utils/sec/handlePin";
 import { deleteSecretKey } from "@/utils/sec/handleSecretKeys";
 import { useAccountStore } from "@/hooks/useAccountStore";
 import * as LocalAuthentication from "expo-local-authentication";
+import { recipientsStore } from "@/states/recipientsStore";
 
 const initialValues = [...new Array(PUBLIC_PIN_LENGTH)];
 
@@ -99,7 +100,6 @@ export const LoginAuthScreen = () => {
     setLocked(true);
 
     alert(t("resetApp"));
-
     Keyboard.dismiss();
 
     const promises: Promise<boolean>[] = [];
@@ -113,10 +113,11 @@ export const LoginAuthScreen = () => {
     deletePin().then(() => {
       resetAppStore();
 
-      Promise.allSettled(promises).then((data) => {
+      recipientsStore.getState().reset();
+
+      Promise.allSettled(promises).then(() => {
         resetAccountStore();
 
-        // Timeout is applied because error audio must finish, otherwise app will break
         setTimeout(() => {
           router.replace("/terms");
         }, 1000);

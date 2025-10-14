@@ -178,7 +178,7 @@ export const ImportScreen = () => {
                   }
                   type={isAccountypeMnemonic ? "primary" : undefined}
                   title={t("fullAccount")}
-                  extraClassNames="!rounded-r-none w-1/2"
+                  extraClassNames="!rounded-r-none w-1/2 px-4"
                   size="large"
                   titleClassName={
                     isAccountypeMnemonic
@@ -200,7 +200,7 @@ export const ImportScreen = () => {
                   }
                   type={isAccountypeWatchOnly ? "primary" : undefined}
                   title={t("watchOnly")}
-                  extraClassNames="!rounded-l-none w-1/2"
+                  extraClassNames="!rounded-l-none w-1/2 px-4"
                   size="large"
                   titleClassName={
                     isAccountypeWatchOnly

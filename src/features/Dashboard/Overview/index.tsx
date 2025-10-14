@@ -34,9 +34,8 @@ export const OverviewScreen = () => {
             title={t("send")}
             type="primary"
             size="medium"
-            wide
             linkProps={{ href: "/dashboard/overview/send" }}
-            extraClassNames="h-14 flex-1 px-2"
+            extraClassNames="h-14 min-w-0 flex-1 px-2"
           />
         )}
 
@@ -45,10 +44,9 @@ export const OverviewScreen = () => {
           title={t("receive")}
           type="blackout"
           size="medium"
-          wide={!isWatchOnly}
           fullWidth={isWatchOnly}
           linkProps={{ href: "/dashboard/overview/receive" }}
-          extraClassNames={`h-14 px-2 ${isWatchOnly ? "w-full" : "flex-1"}`}
+          extraClassNames={`h-14 min-w-0 px-2 ${isWatchOnly ? "w-full" : "flex-1"}`}
         />
       </BottomButtonsContainer>
     </Fragment>

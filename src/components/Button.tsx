@@ -33,8 +33,13 @@ export const Button = ({
   extraClassNames,
   titleClassName,
 }: Props) => {
+
+  const heightClass =
+    size === "small" ? "h-12" : size === "large" ? "h-16" : "h-14";
+
   const classNames = clsx([
-    "flex flex-row justify-center items-center px-4 py-4 rounded-lg active:opacity-80 ripple-[#333] ripple-bordered",
+    "flex flex-row justify-center items-center py-1 rounded-lg active:opacity-80 ripple-[#333] ripple-bordered",
+    heightClass,
     fullWidth && "w-full",
     type === "primary" && "bg-signum dark:bg-signum-dark",
     type === "secondary" && "bg-gray-500",
@@ -42,29 +47,51 @@ export const Button = ({
     type === "blackout" && "bg-black dark:bg-white",
     disabled && "!bg-slate-200",
     wide && "!px-16",
-    extraClassNames && extraClassNames,
+    extraClassNames,
   ]);
 
+  const textSize =
+    size === "small" ? "text-sm" : size === "large" ? "text-xl" : "text-base";
+  const lineHeight =
+    size === "small" ? 16 : size === "large" ? 22 : 18; // sinnvolle Werte
+
   const textClassNames = clsx([
-    disabled && "font-bold !color-slate-500",
-    type && "color-white",
-    type === "blackout" && "dark:color-black",
-    size === "small" && "text-sm",
-    size === "large" && "text-xl",
+    disabled && "font-bold !text-slate-500",
+    type && "text-white",
+    type === "blackout" && "dark:text-black",
+    textSize,
     titleClassName,
   ]);
+
+  const TextContent = (
+    <Text
+      className={textClassNames}
+      numberOfLines={2}
+      ellipsizeMode="tail"
+      style={{
+        flexShrink: 1,
+        flexWrap: "wrap",
+        textAlign: "center",
+        lineHeight,
+      }}
+    >
+      {title}
+    </Text>
+  );
+
+  const Inner = (
+    <>
+      {icon && <View className={title ? "mr-4" : undefined}>{icon}</View>}
+      {title && TextContent}
+      {children}
+    </>
+  );
 
   if (linkProps) {
     return (
       <Link {...linkProps} asChild>
-        <Pressable
-          disabled={disabled}
-          className={classNames}
-          {...pressableProps}
-        >
-          {icon && <View className="mr-4">{icon}</View>}
-          {title && <Text className={textClassNames}>{title}</Text>}
-          {children && children}
+        <Pressable disabled={disabled} className={classNames} {...pressableProps}>
+          {Inner}
         </Pressable>
       </Link>
     );
@@ -72,9 +99,7 @@ export const Button = ({
 
   return (
     <Pressable disabled={disabled} className={classNames} {...pressableProps}>
-      {icon && <View className={title && "mr-4"}>{icon}</View>}
-      {title && <Text className={textClassNames}>{title}</Text>}
-      {children && children}
+      {Inner}
     </Pressable>
   );
 };

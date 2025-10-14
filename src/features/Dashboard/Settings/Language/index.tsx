@@ -14,14 +14,10 @@ export const LanguageSettingsScreen = () => {
       <AppHeader title={t("settings.language.title")} />
       <DashboardScreenContainer>
         <ScrollView>
-          <View className="flex flex-col items-center justify-center w-full px-4 gap-4 pt-8">
+          <View className="flex flex-col items-center justify-center w-full px-4 gap-4 pt-8 pb-16">
             {lngCards.map(({ lng, label }) => (
               <LanguageCard key={lng} lng={lng} label={label} />
             ))}
-
-            <Text className="font-medium mt-4" color="muted">
-              More languages will be included soon!
-            </Text>
           </View>
         </ScrollView>
       </DashboardScreenContainer>

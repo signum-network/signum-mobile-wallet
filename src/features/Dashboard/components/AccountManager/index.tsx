@@ -20,7 +20,9 @@ export const AccountManager = () => {
   const { iconColor } = useAppTheme();
   const insets = useSafeAreaInsets();
 
-  const accountsList = Object.values(accounts);
+const accountsList = Object.values(accounts).sort(
+  (a, b) => b.addedAt - a.addedAt
+);
 
   return (
 
@@ -73,7 +75,7 @@ export const AccountManager = () => {
         <Button
           title={t("accountWizard.quickStart.importCta")}
           type="blackout"
-          size="small"
+          size="medium"
           linkProps={{ href: "/account-wizard/import" }}
           extraClassNames="h-14 flex-1 min-w-0 px-2"
         />

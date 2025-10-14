@@ -7,10 +7,14 @@ import { FormNavButton } from "@/components/Form/NavButton";
 import { asAddress } from "@/utils/account/asAddress";
 import { getAccountPublicKey } from "@/utils/account/getAccountPublicKey";
 import { type TransactionCreation, Steps, maxMemoLength } from "../utils/types";
+import { PUBLIC_RESERVED_SIGNA_FOR_TX_FEE } from "@/types/constants";
 
 export const FormNavigation = () => {
   const { t } = useTranslation();
-  const { accountId } = useAccount();
+  const {
+    accountId,
+    accountData: { balance },
+  } = useAccount();
   const { watch, setValue } = useFormContext<TransactionCreation>();
 
   const activeStep = watch("activeStep");
@@ -25,7 +29,25 @@ export const FormNavigation = () => {
     recipient === "0" || recipient.includes("2222-2222-2222-2222");
 
   const canCompleteFirstStep = recipient || isRecipientBurningAddress;
-  const canCompleteSecondStep = amount && amount <= maxAmount;
+
+  const isAssetSigna = watch("asset") === "0";
+  const amountNum = Number(amount) || 0;
+  const maxNum = Number(maxAmount) || 0;
+
+  const available = Math.max(
+    maxNum - (isAssetSigna ? PUBLIC_RESERVED_SIGNA_FOR_TX_FEE : 0),
+    0
+  );
+
+  const signaAvailableBalance =
+    balance?.availableBalance?.getSigna
+      ? Number(balance.availableBalance.getSigna())
+      : 0;
+  const hasFeeFunds =
+    isAssetSigna || signaAvailableBalance >= PUBLIC_RESERVED_SIGNA_FOR_TX_FEE;
+
+  const canCompleteSecondStep = amountNum > 0 && amountNum <= available && hasFeeFunds;
+
   const canCompleteThirdStep =
     !includeMemo ||
     !!(includeMemo && memo.trim() && memo.length <= maxMemoLength);

@@ -1,5 +1,12 @@
 import { useTranslation } from "react-i18next";
-import { Alert, ActivityIndicator, View, Pressable } from "react-native";
+import {
+  Alert,
+  ActivityIndicator,
+  View,
+  Pressable,
+  AlertButton,
+  Platform,
+} from "react-native";
 import { router } from "expo-router";
 import { Amount, ChainValue } from "@signumjs/util";
 import { useAccount } from "@/hooks/useAccount";
@@ -49,11 +56,13 @@ export const AssetCard = ({
   const isTokenAdmin = account === accountId;
 
   const pickOptions = () => {
-    const alertOptions = [
+    const alertOptions: AlertButton[] = [
       {
         text: t("transfer.title"),
         onPress: () => {
-          router.push({ pathname: "/transfer/send", params: { asset } });
+          router.push({  pathname: "/dashboard/overview/send",
+            params: { asset },
+          });
         },
       },
       {
@@ -72,6 +81,15 @@ export const AssetCard = ({
     ];
 
     if (isWatchOnly) alertOptions.shift();
+
+    // Add cancel button (only visible on iOS)
+    if (Platform.OS === "ios") {
+      alertOptions.push({
+        text: t("cancel"),
+        style: "cancel",
+        onPress: () => {},
+      });
+    }
 
     Alert.alert(
       `(${ticker}) ${t("overview.options")}`,
