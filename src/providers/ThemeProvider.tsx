@@ -15,15 +15,7 @@ export const ThemeProvider = ({ children }: ChildrenProps) => {
   const dynamicTopInset = useMemo(() => {
     switch (pathname) {
       case "/terms":
-
-     // case "/dashboard/overview/activity":
-      //case "/dashboard/settings/account":
-     // case "/dashboard/settings/language":
-      // case "/dashboard/settings/currency":
-     // case "/dashboard/settings/features":
-      //case "/dashboard/settings/nodes":
-      //case "/dashboard/settings/about":
-        return 0;
+       return 0;
 
       default:
         return insets.top;

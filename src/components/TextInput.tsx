@@ -1,6 +1,8 @@
+import React, { forwardRef } from "react";
 import {
   TextInput as NativeTextInput,
   type TextInputProps,
+  Platform,
 } from "react-native";
 import clsx from "clsx";
 import { useColorScheme } from "react-native";
@@ -10,30 +12,41 @@ interface Props extends Omit<TextInputProps, "className"> {
   size?: "small" | "medium" | "large" | "extraLarge";
 }
 
-export const TextInput = (props: Props) => {
+const sizeMap = {
+  small:      { fontSize: 14, lineHeight: 14, padV: 12 },
+  medium:     { fontSize: 16, lineHeight: 16, padV: 14 },
+  large:      { fontSize: 18, lineHeight: 18, padV: 16 },
+  extraLarge: { fontSize: 24, lineHeight: 24, padV: 18 },
+} as const;
 
+export const TextInput = forwardRef<NativeTextInput, Props>((props, ref) => {
   const scheme = useColorScheme();
+  const s = sizeMap[props.size ?? "medium"];
+  const iosBump = Platform.OS === "ios" ? 1 : 0;
 
   const classNames = clsx([
-    "p-4 rounded-lg border border-card-border dark:border-card-border-dark w-full bg-muted dark:bg-muted-dark color-black dark:color-white",
+    "rounded-lg border border-card-border dark:border-card-border-dark w-full bg-muted dark:bg-muted-dark",
+    "text-black dark:text-white",
     props.editable === false && "opacity-80",
-    props.size === "small" && "text-sm",
-    props.size === "large" && "text-lg",
-    props.size === "extraLarge" && "text-3xl",
-    props.extraClassNames && props.extraClassNames,
+    props.extraClassNames,
   ]);
 
-return (
+  return (
     <NativeTextInput
+      ref={ref}
       className={classNames}
       style={{
-        flexShrink: 1,    
-        minWidth: 0,       
-        maxWidth: "100%",  
-      }}         
-      contextMenuHidden={false}    
+        fontSize: s.fontSize,
+        lineHeight: s.lineHeight + iosBump,
+        paddingVertical: s.padV + iosBump,
+        paddingHorizontal: 16,
+        flexShrink: 1,
+        minWidth: 0,
+        maxWidth: "100%",
+        textAlignVertical: "center" as any,
+      }}
       placeholderTextColor={scheme === "dark" ? "#A1A1AA" : "#71717A"}
       {...props}
     />
   );
-};
+});

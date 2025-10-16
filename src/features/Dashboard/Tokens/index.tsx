@@ -132,7 +132,7 @@ export const TokensScreen = () => {
   return (
     <ScrollView>
       <DashboardScreenContainer>
-        <View className="flex flex-col items-start justify-center w-full px-4 pt-4 gap-4">
+        <View className="flex flex-col items-start justify-center w-full px-4 pt-4 mb-4 gap-4">
           <AssetSummary estimatedValue={tokenRows.estimatedSignaValue} />
 
           <AssetList list={tokenRows.rows} />

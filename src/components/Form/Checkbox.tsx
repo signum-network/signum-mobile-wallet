@@ -3,11 +3,12 @@ import { Text } from "@/components/Text";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import NativeCheckbox from "expo-checkbox";
 import clsx from "clsx";
+import type { ReactNode } from "react";
 
 interface Props {
   value: boolean;
   onPress: () => void;
-  title: string;
+  title?: string | ReactNode;
   description?: string;
   bordered?: boolean;
   fullWidth?: boolean;

@@ -156,7 +156,6 @@ export const ManualNodeWizard = () => {
               />
             </Pressable>
           )}
-          estimatedItemSize={80}
           ListEmptyComponent={
             <View className="flex-1 justify-center items-center gap-2 py-8">
               <Ionicons

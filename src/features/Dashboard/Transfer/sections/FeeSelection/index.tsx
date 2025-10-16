@@ -7,6 +7,7 @@ import { Text } from "@/components/Text";
 import { Card } from "@/components/Card";
 import { FormCheckbox } from "@/components/Form/Checkbox";
 import { type TransactionCreation } from "../../utils/types";
+import { SignaSymbol } from "@/components/SignaSymbol";
 
 export const FeeSelection = () => {
   const { t } = useTranslation();
@@ -59,7 +60,12 @@ export const FeeSelection = () => {
               <FormCheckbox
                 value={fee === cheapPlanck}
                 onPress={setCheapFees}
-                title={`🕤 ${t("transfer.feeMinimal")} (${cheapSigna} Ꞩ)`}
+                title={
+                  <Text>
+                    🕤 {t("transfer.feeMinimal")} ({standardSigna}{" "}
+                    <SignaSymbol/>)
+                  </Text>
+                }
                 fullWidth
                 bordered
               />
@@ -67,7 +73,12 @@ export const FeeSelection = () => {
               <FormCheckbox
                 value={fee === standardPlanck}
                 onPress={setStandardFees}
-                title={`⏩ ${t("transfer.feeFast")} (${standardSigna} Ꞩ)`}
+                title={
+                  <Text>
+                    ⏩ {t("transfer.feeFast")} ({standardSigna}{" "}
+                    <SignaSymbol />)
+                  </Text>
+                }
                 fullWidth
                 bordered
               />
@@ -75,7 +86,12 @@ export const FeeSelection = () => {
               <FormCheckbox
                 value={fee === priorityPlanck}
                 onPress={setPriorityFees}
-                title={`🚀 ${t("transfer.feePriority")} (${prioritySigna} Ꞩ)`}
+                title={
+                  <Text>
+                    🚀 {t("transfer.feePriority")} ({standardSigna}{" "}
+                    <SignaSymbol />)
+                  </Text>
+                }
                 fullWidth
                 bordered
               />

@@ -96,7 +96,6 @@ export const Activity = () => {
               data={transactions}
               keyExtractor={({ transaction }) => transaction}
               renderItem={({ item }) => <TransactionActivityCard {...item} />}
-              estimatedItemSize={ITEM_HEIGHT}
               ListEmptyComponent={<NoTransactionsFoundCard />}
             />
           </View>

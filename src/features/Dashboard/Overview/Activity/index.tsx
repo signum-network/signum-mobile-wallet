@@ -139,7 +139,6 @@ export const ActivityScreen = () => {
                     renderItem={({ item }) => (
                       <TransactionActivityCard {...item} />
                     )}
-                    estimatedItemSize={ITEM_HEIGHT}
                     ListEmptyComponent={<NoTransactionsFoundCard />}
                   />
                 </View>

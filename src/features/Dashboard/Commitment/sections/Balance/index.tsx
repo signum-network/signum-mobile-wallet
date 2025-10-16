@@ -6,6 +6,7 @@ import { Text } from "@/components/Text";
 import { useAccount } from "@/hooks/useAccount";
 import { useTicker } from "@/hooks/useTicker";
 import { formatNumber } from "@/utils/formatNumber";
+import { SignaSymbol } from "@/components/SignaSymbol";
 
 interface Props {
   availableBalance: number;
@@ -47,7 +48,7 @@ export const Balance = ({ availableBalance, committedBalance }: Props) => {
             <Text className="font-bold">
               {formatNumber({
                 value: availableBalance,
-              })}
+              })} <SignaSymbol />
             </Text>
           </View>
 
@@ -57,7 +58,7 @@ export const Balance = ({ availableBalance, committedBalance }: Props) => {
             <Text className="font-bold">
               {formatNumber({
                 value: committedBalance,
-              })}
+              })} <SignaSymbol />
             </Text>
           </View>
 

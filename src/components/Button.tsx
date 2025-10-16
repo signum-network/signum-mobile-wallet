@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import type { LinkProps } from "expo-router/build/link/Link";
 import { Link } from "expo-router";
 import { Pressable, PressableProps, Text, View } from "react-native";
+import { useColorScheme } from "nativewind"; // <—
 import clsx from "clsx";
 
 export interface Props {
@@ -33,47 +34,57 @@ export const Button = ({
   extraClassNames,
   titleClassName,
 }: Props) => {
+  const { colorScheme } = useColorScheme(); // "light" | "dark" | "system"
 
   const heightClass =
     size === "small" ? "h-12" : size === "large" ? "h-16" : "h-14";
 
-  const classNames = clsx([
+
+  const bgClass =
+    type === "primary"
+      ? "bg-signum dark:bg-signum-dark"
+      : type === "secondary"
+      ? "bg-gray-500 dark:bg-gray-400" 
+      : type === "error"
+      ? "bg-red-500 dark:bg-red-400" 
+      : type === "blackout"
+      ? "bg-black dark:bg-white"
+      : undefined;
+
+  const classNames = clsx(
     "flex flex-row justify-center items-center py-1 rounded-lg active:opacity-80 ripple-[#333] ripple-bordered",
     heightClass,
     fullWidth && "w-full",
-    type === "primary" && "bg-signum dark:bg-signum-dark",
-    type === "secondary" && "bg-gray-500",
-    type === "error" && "bg-red-500",
-    type === "blackout" && "bg-black dark:bg-white",
+    bgClass,
     disabled && "!bg-slate-200",
     wide && "!px-16",
-    extraClassNames,
-  ]);
+    extraClassNames
+  );
 
   const textSize =
     size === "small" ? "text-sm" : size === "large" ? "text-xl" : "text-base";
-  const lineHeight =
-    size === "small" ? 16 : size === "large" ? 22 : 18; // sinnvolle Werte
+  const lineHeight = size === "small" ? 16 : size === "large" ? 22 : 18;
 
-  const textClassNames = clsx([
+  const textColorClass =
+    type === "blackout"
+      ? "text-white dark:text-black"
+      : type
+      ? "text-white"
+      : "text-inherit";
+
+  const textClassNames = clsx(
     disabled && "font-bold !text-slate-500",
-    type && "text-white",
-    type === "blackout" && "dark:text-black",
+    textColorClass,
     textSize,
-    titleClassName,
-  ]);
+    titleClassName
+  );
 
   const TextContent = (
     <Text
       className={textClassNames}
       numberOfLines={2}
       ellipsizeMode="tail"
-      style={{
-        flexShrink: 1,
-        flexWrap: "wrap",
-        textAlign: "center",
-        lineHeight,
-      }}
+      style={{ flexShrink: 1, flexWrap: "wrap", textAlign: "center", lineHeight }}
     >
       {title}
     </Text>
@@ -87,19 +98,24 @@ export const Button = ({
     </>
   );
 
+  const pressable = (
+    <Pressable
+      key={`btn-${colorScheme}-${type}-${size}-${disabled}`} // <—
+      disabled={disabled}
+      className={classNames}
+      {...pressableProps}
+    >
+      {Inner}
+    </Pressable>
+  );
+
   if (linkProps) {
     return (
       <Link {...linkProps} asChild>
-        <Pressable disabled={disabled} className={classNames} {...pressableProps}>
-          {Inner}
-        </Pressable>
+        {pressable}
       </Link>
     );
   }
 
-  return (
-    <Pressable disabled={disabled} className={classNames} {...pressableProps}>
-      {Inner}
-    </Pressable>
-  );
+  return pressable;
 };

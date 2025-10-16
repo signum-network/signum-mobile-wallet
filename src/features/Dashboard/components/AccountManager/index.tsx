@@ -54,7 +54,6 @@ const accountsList = Object.values(accounts).sort(
                 data={accountsList}
                 keyExtractor={({ publicKey }) => publicKey}
                 renderItem={({ item }) => <AccountCard {...item} />}
-                estimatedItemSize={ITEM_HEIGHT}
                 ListEmptyComponent={<NoAccountsFoundCard />}
                 contentContainerStyle={{ paddingBottom: insets.bottom + 60 }}
               />

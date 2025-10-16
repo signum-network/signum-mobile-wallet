@@ -1,5 +1,14 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { View, Pressable, ScrollView, Keyboard, Text as RNText } from "react-native";
+import {
+  View,
+  Pressable,
+  ScrollView,
+  Keyboard,
+  Text as RNText,
+  Modal,
+  TextInput as NativeTextInput,
+  Platform,
+} from "react-native";
 import { Controller, type Control } from "react-hook-form";
 import { TextInput } from "@/components/TextInput";
 import { AccountAvatar } from "@/components/Account/Avatar";
@@ -28,6 +37,8 @@ type ListItem = {
   description: string; // src44 description ("" if unknown)
   loading: boolean;
 };
+
+const isIOS = Platform.OS === "ios";
 
 function isNumericAddress(v: string) {
   return /^[0-9]+$/.test(v);
@@ -68,7 +79,6 @@ export const RecipientAutocomplete: React.FC<RecipientAutocompleteProps> = ({
         const rs = addr.getReedSolomonAddress();
         const numericId = String(addr.getNumericId());
 
-        // Wallet name exclusively from the store
         const walletNameFromStore = (acc?.walletName ?? "").trim();
         const title = walletNameFromStore || undefined;
 
@@ -162,7 +172,19 @@ export const RecipientAutocomplete: React.FC<RecipientAutocompleteProps> = ({
   // UI state
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const interactingRef = useRef(false); // prevents closing while scrolling
+  const interactingRef = useRef(false); // prevents closing while scrolling (Android)
+  const selectingRef = useRef(false);
+
+  // iOS: anchor the Modal/clone input
+  const inputRef = useRef<NativeTextInput>(null);
+  const modalInputRef = useRef<NativeTextInput>(null);
+  const [anchor, setAnchor] = useState<{ x: number; y: number; w: number; h: number }>({ x: 0, y: 0, w: 0, h: 0 });
+
+  const measureAnchor = () => {
+    inputRef.current?.measureInWindow?.((x, y, w, h) => {
+      setAnchor({ x, y, w, h });
+    });
+  };
 
   // Filter: prefix match on RS (case-insensitive) or numeric
   const filterItems = (q: string) => {
@@ -181,34 +203,40 @@ export const RecipientAutocomplete: React.FC<RecipientAutocompleteProps> = ({
     <Controller
       control={control}
       name={name}
+      defaultValue=""
       render={({ field: { onChange, onBlur, value } }) => {
         const data = filterItems(query || String(value || ""));
 
         const handleSelect = (rs: string) => {
           onChange(rs);
           setOpen(false);
-          setTimeout(() => Keyboard.dismiss(), 0);
+          Keyboard.dismiss();
         };
 
         const defer = (fn: () => void, ms = 100) => setTimeout(fn, ms);
 
         return (
           <View className="w-full">
+            {/* Shared input field (iOS: focus only starts modal, Android: active field) */}
             <TextInput
+              ref={inputRef}
               placeholder={placeholder}
               size={size}
-              value={value}
-              onBlur={() => {
-                // only close if NOT currently interacting with the dropdown
-                defer(() => {
-                  if (!interactingRef.current) setOpen(false);
-                }, 80);
-                onBlur();
-              }}
+              value={String(value ?? "")} // always bind as string
+              editable={!isIOS ? true : !open}  // iOS locks the original during modal
+              onLayout={() => isIOS && measureAnchor()}
               onFocus={() => {
                 setQuery(String(value || ""));
                 setOpen(true);
+                if (isIOS) {
+                  // iOS: open modal & focus clone input
+                  setTimeout(() => {
+                    measureAnchor();
+                    setTimeout(() => modalInputRef.current?.focus(), 0);
+                  }, 0);
+                }
               }}
+              onBlur={onBlur} // no close on onBlur → avoids race
               onChangeText={(txt) => {
                 onChange(txt);
                 setQuery(txt);
@@ -216,56 +244,143 @@ export const RecipientAutocomplete: React.FC<RecipientAutocompleteProps> = ({
               }}
             />
 
-            {/* Dropdown below the text field */}
-            {open && data.length > 0 && (
-              <View className="mt-2 rounded-2xl border border-neutral-200 bg-white shadow-lg overflow-hidden">
-                <ScrollView
-                  style={{ maxHeight: 235 }}
-                  nestedScrollEnabled
-                  keyboardShouldPersistTaps="always"
-                  keyboardDismissMode="on-drag"
-                  onTouchStart={() => { interactingRef.current = true; }}
-                  onScrollBeginDrag={() => { interactingRef.current = true; }}
-                  onTouchEnd={() => { defer(() => (interactingRef.current = false), 120); }}
-                  onScrollEndDrag={() => { defer(() => (interactingRef.current = false), 120); }}
-                >
-                  {data.map((item) => (
-                    <Pressable
-                      key={item.key}
-                      onPress={() => handleSelect(item.rs)}
-                      className="flex-row items-center gap-3 px-3 py-2 min-h-12"
-                    >
-                      <AccountAvatar
-                        loading={item.loading}
-                        accountId={item.accountId}
-                        description={item.description}
-                      />
-                      
-                      <View className="flex-1 justify-center gap-0.5">
-                        {/* Title line: wallet name (own) or loaded name (foreign) */}
-                        {item.title ? (
-                          <RNText
-                            numberOfLines={1}
-                            ellipsizeMode="tail"
-                            style={{ fontWeight: "600", includeFontPadding: false }}
-                          >
-                            {item.title}
+            {/* ANDROID: Inline dropdown within normal layout flow */}
+            {!isIOS && open && (
+              data.length > 0 ? (
+                <View className="mt-2 rounded-2xl border border-neutral-200 bg-white shadow-lg overflow-hidden">
+                  <ScrollView
+                    style={{ maxHeight: 235 }}
+                    nestedScrollEnabled
+                    keyboardShouldPersistTaps="always"
+                    keyboardDismissMode="none"
+                    scrollsToTop={false}
+                    bounces={false}
+                    onTouchStart={() => { interactingRef.current = true; }}
+                    onScrollBeginDrag={() => { interactingRef.current = true; }}
+                    onTouchEnd={() => { defer(() => (interactingRef.current = false), 120); }}
+                    onScrollEndDrag={() => { defer(() => (interactingRef.current = false), 120); }}
+                  >
+                    {data.map((item) => (
+                      <Pressable
+                        key={item.key}
+                        onPressIn={() => { selectingRef.current = true; }}
+                        onPress={() => {
+                          selectingRef.current = false;
+                          handleSelect(item.rs);
+                        }}
+                        className="flex-row items-center gap-3 px-3 py-2 min-h-12"
+                      >
+                        <AccountAvatar
+                          loading={item.loading}
+                          accountId={item.accountId}
+                          description={item.description}
+                        />
+                        <View className="flex-1 justify-center gap-0.5">
+                          {item.title ? (
+                            <RNText numberOfLines={1} ellipsizeMode="tail" style={{ fontWeight: "600", includeFontPadding: false }}>
+                              {item.title}
+                            </RNText>
+                          ) : null}
+                          <RNText numberOfLines={1} ellipsizeMode="middle" style={{ opacity: 0.7, includeFontPadding: false }}>
+                            {item.rs}
                           </RNText>
-                        ) : null}
+                        </View>
+                      </Pressable>
+                    ))}
+                  </ScrollView>
+                </View>
+              ) : null
+            )}
 
-                        {/* RS line always visible */}
-                        <RNText
-                          numberOfLines={1}
-                          ellipsizeMode="middle"
-                          style={{ opacity: 0.7, includeFontPadding: false }}
-                        >
-                          {item.rs}
-                        </RNText>
-                      </View>
-                    </Pressable>
-                  ))}
-                </ScrollView>
-              </View>
+            {/* iOS: stable modal with clone input + dropdown */}
+            {isIOS && (
+              <Modal
+                visible={open}
+                transparent
+                animationType="none"
+                presentationStyle="overFullScreen"
+                statusBarTranslucent
+                onShow={() => {
+                  measureAnchor();
+                  setTimeout(() => modalInputRef.current?.focus(), 0);
+                }}
+                onRequestClose={() => setOpen(false)}
+              >
+                {/* Backdrop: tap outside closes modal */}
+                <Pressable className="flex-1 bg-black/0" onPress={() => setOpen(false)}>
+                  {/* Clone input exactly over the original */}
+                  <View
+                    style={{
+                      position: "absolute",
+                      left: anchor.x,
+                      top: anchor.y,
+                      width: anchor.w,
+                      height: anchor.h,
+                    }}
+                  >
+                    <TextInput
+                      ref={modalInputRef}
+                      placeholder={placeholder}
+                      size={size}
+                      value={String(value ?? "")}
+                      autoFocus
+                      onChangeText={(txt) => {
+                        onChange(txt);
+                        setQuery(txt);
+                      }}
+                    />
+                  </View>
+
+                  {/* Dropdown below clone input (8px gap) */}
+                  <View
+                    style={{
+                      position: "absolute",
+                      left: anchor.x,
+                      top: anchor.y + anchor.h + 8,
+                      width: anchor.w,
+                    }}
+                    className="rounded-2xl border border-neutral-200 bg-white shadow-lg overflow-hidden"
+                  >
+                    {data.length > 0 && (
+                      <ScrollView
+                        style={{ maxHeight: 235 }}
+                        keyboardShouldPersistTaps="always"
+                        keyboardDismissMode="none"
+                        scrollsToTop={false}
+                        bounces={false}
+                      >
+                        {data.map((item) => (
+                          <Pressable
+                            key={item.key}
+                            onPressIn={() => { selectingRef.current = true; }}
+                            onPress={() => {
+                              selectingRef.current = false;
+                              handleSelect(item.rs);
+                            }}
+                            className="flex-row items-center gap-3 px-3 py-2 min-h-12"
+                          >
+                            <AccountAvatar
+                              loading={item.loading}
+                              accountId={item.accountId}
+                              description={item.description}
+                            />
+                            <View className="flex-1 justify-center gap-0.5">
+                              {item.title ? (
+                                <RNText numberOfLines={1} ellipsizeMode="tail" style={{ fontWeight: "600", includeFontPadding: false }}>
+                                  {item.title}
+                                </RNText>
+                              ) : null}
+                              <RNText numberOfLines={1} ellipsizeMode="middle" style={{ opacity: 0.7, includeFontPadding: false }}>
+                                {item.rs}
+                              </RNText>
+                            </View>
+                          </Pressable>
+                        ))}
+                      </ScrollView>
+                    )}
+                  </View>
+                </Pressable>
+              </Modal>
             )}
           </View>
         );

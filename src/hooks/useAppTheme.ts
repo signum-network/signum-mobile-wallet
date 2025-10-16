@@ -2,18 +2,21 @@ import { useEffect } from "react";
 import { useColorScheme } from "nativewind";
 import { DarkTheme, DefaultTheme } from "@react-navigation/native";
 import { appStore } from "@/states/appStore";
+import type { ThemePreference } from "@/states/appStore";
 
 type NavigationTheme = typeof DefaultTheme;
 
 export const useAppTheme = () => {
-  const { colorScheme, setColorScheme } = useColorScheme();
-  const themeMode = appStore((state) => state.themeMode);
-  const toggleThemeMode = appStore((state) => state.toggleThemeMode);
+  const { colorScheme, setColorScheme } = useColorScheme(); 
+  const themeMode = appStore((s) => s.themeMode);          
+  const setThemeMode = appStore((s) => s.setThemeMode);
+  const cycleThemeMode = appStore((s) => s.cycleThemeMode);
 
-  const scheme = colorScheme ?? "light";
-  const isDarkMode = scheme === "dark";
+  const resolvedScheme: "light" | "dark" =
+    themeMode === "system" ? (colorScheme === "dark" ? "dark" : "light") : themeMode;
 
-  //overwrite primary color 
+  const isDarkMode = resolvedScheme === "dark";
+
   const theme: NavigationTheme = {
     ...(isDarkMode ? DarkTheme : DefaultTheme),
     colors: {
@@ -29,8 +32,16 @@ export const useAppTheme = () => {
   };
 
   useEffect(() => {
-    setColorScheme(themeMode || "system");
+    setColorScheme(themeMode as ThemePreference);
   }, [themeMode, setColorScheme]);
 
-  return { isDarkMode, theme, themeMode, iconColor, toggleThemeMode };
+  return {
+    isDarkMode,
+    theme,
+    themeMode,          
+    resolvedScheme,      
+    iconColor,
+    setThemeMode,        
+    cycleThemeMode, 
+  };
 };

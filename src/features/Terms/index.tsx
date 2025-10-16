@@ -53,7 +53,7 @@ export const TermsScreen = () => {
         </View>
       </View>
 
-      <View className="flex items-center p-4 gap-4 color-slate-500">
+      <View className="flex items-center px-4 gap-4 color-slate-500">
         <View
           className="w-full"
           style={{ paddingBottom: insets.bottom }}
