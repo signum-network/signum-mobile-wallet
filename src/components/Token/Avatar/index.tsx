@@ -4,7 +4,7 @@ import { Image } from "expo-image";
 import clsx from "clsx";
 import { PUBLIC_IPFS_GATEWAY } from "@/types/constants";
 
-import HashIconAvatarNative from "@/components/Avatars/HashIconAvatarNative";
+import HashIconAvatarNativeSVG from "@/components/Account/Avatar/HashIconNativeSVG";
 
 interface Props {
   loading: boolean;
@@ -46,7 +46,7 @@ export const TokenAvatar = ({
           style={{ width: "100%", height: "100%", backgroundColor: "rgba(0,0,0,0.05)" }}
         />
       ) : (
-        <HashIconAvatarNative id={tokenId} />
+        <HashIconAvatarNativeSVG seed={tokenId} />
       )}
     </View>
   );

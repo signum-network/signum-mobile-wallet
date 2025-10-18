@@ -59,7 +59,6 @@ export const AssetPickerDialog = ({
             data={tokenBalance}
             keyExtractor={({ asset }) => asset}
             renderItem={({ item }) => <AssetCard {...item} />}
-            estimatedItemSize={ITEM_HEIGHT}
           />
         </View>
 

@@ -7,7 +7,7 @@ const config = getDefaultConfig(__dirname);
 
 const { assetExts, sourceExts } = config.resolver;
 
-config.resolver.assetExts = [...assetExts, "html", "sql"];
+config.resolver.assetExts = [...assetExts, "sql"];
 
 config.resolver.sourceExts = sourceExts.filter((ext) => ext !== "sql");
 

@@ -3,7 +3,7 @@ import { View } from "react-native";
 import { Image } from "expo-image";
 import { src44 } from "@signumjs/standards";
 import clsx from "clsx";
-import HashIconAvatarNative from "@/components/Avatars/HashIconAvatarNative";
+import HashIconNativeSVG from "@/components/Account/Avatar/HashIconNativeSVG";
 import { PUBLIC_IPFS_GATEWAY } from "@/types/constants";
 
 interface Props {
@@ -53,7 +53,7 @@ export const AccountAvatar = ({
           style={{ width: "100%", height: "100%" }}
         />
       ) : (
-        <HashIconAvatarNative id={accountId} />
+        <HashIconNativeSVG seed={accountId} />
       )}
     </View>
   );
