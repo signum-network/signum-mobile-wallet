@@ -17,7 +17,7 @@ export const Agreement = () => {
     setValue(key, !value);
 
   return (
-    <View className="flex justify-center items-center gap-4 pb-24">
+    <View className="flex justify-center items-center gap-4 pb-20 w-full">
       <Text className="text-8xl pt-4">🔒</Text>
 
       <Text size="extraLarge" className="font-bold text-center">

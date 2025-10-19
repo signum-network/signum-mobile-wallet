@@ -34,6 +34,7 @@
   "download": "Herunterladen",
   "accountDoesNotExists": "Dieses Konto existiert entweder nicht oder wurde noch nicht aktiviert",
   "scanQRCode": "QR‑Code scannen",
+  "invalidQRCode" : "Ungültiger QR-Code",
   "cameraPermissionRejected": "Der Kamerazugriff wurde mehrfach verweigert. Bitte gehe zu den Einstellungen deines Telefons und aktiviere die Kameraberechtigung, um fortzufahren.",
   "requestCameraPermission": "Kamerazugriff anfordern",
   "testnetMode": "Testnet‑Modus",

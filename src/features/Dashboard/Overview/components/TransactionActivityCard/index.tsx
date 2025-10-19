@@ -16,7 +16,6 @@ import { getAccountPublicKey } from "@/utils/account/getAccountPublicKey";
 import { openTransactionLink } from "@/utils/explorer/openLink";
 import { transactionTypeReader } from "./utils/transactionTypeReader";
 import { SummaryLabel } from "./components/SummaryLabel";
-
 import * as Clipboard from "expo-clipboard";
 import Feather from "@expo/vector-icons/Feather";
 
@@ -26,7 +25,7 @@ export const TransactionActivityCard = (props: Transaction) => {
   const { t } = useTranslation();
   const { ledgerService } = useLedgerService();
   const { iconColor } = useAppTheme();
-  const { publicKey, accountId } = useAccount();
+  const { publicKey, accountId, isWatchOnly } = useAccount();
   const dateLocale = useDateLocale();
 
   const {
@@ -319,11 +318,11 @@ export const TransactionActivityCard = (props: Transaction) => {
         </View>
       ) : isSender ? (
         <View style={{ transform: [{ rotate: "-135deg" }] }}>
-          <Feather name="arrow-down-circle" size={24} color="#EF4444" />
+          <Feather name="arrow-down-circle" size={24} color={iconColor.red} />
         </View>
       ) : (
         <View style={{ transform: [{ rotate: "45deg" }] }}>
-          <Feather name="arrow-down-circle" size={24} color="#22C55E" />
+          <Feather name="arrow-down-circle" size={24} color={iconColor.green} />
         </View>
       );
 
@@ -427,7 +426,7 @@ export const TransactionActivityCard = (props: Transaction) => {
       };
     }
 
-    if (transactionReadableData.hasEncryptedText) {
+    if (transactionReadableData.hasEncryptedText && !isWatchOnly) {
       defaultOptions[2] = {
         text: t("overview.viewEncryptedMessage"),
         onPress: readEncryptedAttachment,
@@ -478,12 +477,12 @@ export const TransactionActivityCard = (props: Transaction) => {
             <Text className="font-medium">{transactionReadableData.title}</Text>
 
             {transactionReadableData.hasEncryptedText ? (
-              <Text size="extraSmall" color="success">
+              <Text size="extraSmall" color="success" className="font-bold">
                 🔒 {t("overview.hasEncryptedMessage")}
               </Text>
             ) : (
               transactionReadableData.showAttachmentBadge && (
-                <Text size="extraSmall" color="muted">
+                <Text size="extraSmall" color="success" className="font-bold">
                   💬 {t("overview.hasMessage")}
                 </Text>
               )

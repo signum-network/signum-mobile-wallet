@@ -18,9 +18,9 @@ export const Text = ({
 }: Props) => {
   const classNames = clsx([
     color === "primary" && "text-signum dark:text-signum-dark",
-    color === "error" && "text-red-500",
+    color === "error" && "text-red dark:text-red-dark",
     color === "white" && "text-white",
-    color === "success" && "text-green-500",
+    color === "success" && "text-green dark:text-green-dark",
     color === "content" && "text-black dark:text-white",
     color === "muted" &&
       "text-muted-foreground dark:text-muted-foreground-dark",

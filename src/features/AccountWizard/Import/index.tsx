@@ -10,7 +10,6 @@ import type { AccountImport } from "./utils/types";
 import { AccountWizardContainer } from "../components/AccountWizardContainer";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useAccountStore } from "@/hooks/useAccountStore";
-import { AnimatedFadeContainer } from "@/components/AnimatedFadeContainer";
 import { Text } from "@/components/Text";
 import { Button } from "@/components/Button";
 import { AccountType } from "@/types/account";
@@ -212,8 +211,7 @@ export const ImportScreen = () => {
               </View>
 
               {type === AccountType.mnemonic && (
-                <AnimatedFadeContainer>
-                  <View className="gap-4">
+                  <View className="gap-4 w-full">
                     <Text className="text-center">
                       {t("accountWizard.importAccount.importMnemonicHint")}
                     </Text>
@@ -223,12 +221,10 @@ export const ImportScreen = () => {
                     />
                     <SeedPhraseField />
                   </View>
-                </AnimatedFadeContainer>
               )}
 
               {type === AccountType.watchOnly && (
-                <AnimatedFadeContainer>
-                  <View className="gap-4">
+                  <View className="gap-4 w-full">
                     <Text className="text-center">
                       {t("accountWizard.importAccount.importWatchOnlyHint")}
                     </Text>
@@ -238,7 +234,6 @@ export const ImportScreen = () => {
                     />
                     <AccountIdField />
                   </View>
-                </AnimatedFadeContainer>
               )}
             </View>
 

@@ -12,14 +12,15 @@ module.exports = {
     extend: {
       colors: {
         signum: {
-          DEFAULT: "#0099ff",
-          dark: "#0066ff",
+          DEFAULT: "#0066ff",
+          dark: "#0099ff",
         },
         "signum-secondary": {
           DEFAULT: "#E8F3FF",
           light: "#EAF0F6",
         },
-        "light-green": { DEFAULT: "#00FF88" },
+        green: { DEFAULT: "#16A34A", dark: "#22C55E" },
+        red: { DEFAULT: "#DC2626", dark: "#EF4444" },
         "midgnight-blue": { DEFAULT: "#021851" },
         muted: {
           DEFAULT: "#F4F4F5",

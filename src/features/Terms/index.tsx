@@ -25,7 +25,7 @@ export const TermsScreen = () => {
     <View className="flex-1 gap-4 bg-white dark:bg-black">
       <View
         style={{ paddingTop: insets.top + 24 }}
-        className="items-center justify-center bg-signum pb-4 gap-4"
+        className="items-center justify-center pb-4 gap-4 bg-signum-dark"
       >
         <Image
           source={{ uri: signumWhiteSymbolPicture }}
@@ -44,7 +44,7 @@ export const TermsScreen = () => {
           </Text>
         </View>
 
-        <View className="flex-1 p-2 rounded-md border border-card-border dark:border-card-border-dark">
+        <View className="flex-1 p-2 rounded-md border border-card-border dark:border-card-border-dark bg-muted dark:bg-muted-dark">
           <Markdown
             value={markdown}
             styles={{  li: { paddingBottom: 10 } }}

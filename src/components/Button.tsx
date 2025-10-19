@@ -42,7 +42,7 @@ export const Button = ({
 
   const bgClass =
     type === "primary"
-      ? "bg-signum dark:bg-signum-dark"
+      ? "bg-signum-dark dark:bg-signum-dark"
       : type === "secondary"
       ? "bg-gray-500 dark:bg-gray-400" 
       : type === "error"

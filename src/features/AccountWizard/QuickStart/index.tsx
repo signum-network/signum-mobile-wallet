@@ -7,7 +7,6 @@ import { Button } from "@/components/Button";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { AccountWizardContainer } from "../components/AccountWizardContainer";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { AnimatedFadeContainer } from "@/components/AnimatedFadeContainer";
 
 export const QuickStartScreen = () => {
   const { t } = useTranslation();
@@ -15,7 +14,6 @@ export const QuickStartScreen = () => {
 
   return (
     <AccountWizardContainer>
-      <AnimatedFadeContainer>
         <View className="flex flex-1 flex-col justify-around gap-8">
           <View className="items-center justify-center gap-4">
             <Image
@@ -65,7 +63,6 @@ export const QuickStartScreen = () => {
             />
           </View>
         </View>
-      </AnimatedFadeContainer>
     </AccountWizardContainer>
   );
 };

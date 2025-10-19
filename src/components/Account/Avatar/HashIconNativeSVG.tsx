@@ -7,7 +7,7 @@ import { PATTERN } from "@/lib/hashiconPattern";
 
 /**
  * This component renders EmeraldPay-style hashicons natively with react-native-svg.
- * It ports the original algorithm (your index.html UMD) 1:1:
+ * It ports the original algorithm
  * - same triangle geometry
  * - same color generation (hue/sat/lightness + variation + shift + light offsets)
  * - same per-cell alpha from the big PATTERN table

@@ -25,6 +25,7 @@ import { PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MILLISECONDS } from "@/types/consta
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Pulse } from "@/components/Puls";
 import { asRSAddress } from "@/utils/account/asRSAddress";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
 interface Props {
   publicKey: string;
@@ -236,6 +237,8 @@ export const AccountCard = ({ publicKey, type, walletName }: Props) => {
     enabled: isActiveNodeSynced && !!ledgerService,
   });
 
+const { iconColor } = useAppTheme();
+
   return (
     <GestureDetector gesture={pan}>
       <Animated.View style={itemHeightStyle}>
@@ -313,7 +316,7 @@ export const AccountCard = ({ publicKey, type, walletName }: Props) => {
 
             {isCurrentAccount && (
               <View className="flex flex-col items-center justify-center">
-                <Ionicons name="checkbox" size={20} color="green" />
+                <Ionicons name="checkbox" size={20} color={iconColor.green} />
 
                 <Text color="success" className="font-bold" size="small">
                   {t("settings.account.active")}

@@ -34,6 +34,7 @@
   "download": "Descargar",
   "accountDoesNotExists": "Esta cuenta no existe o aún no ha sido activada",
   "scanQRCode": "Escanear código QR",
+  "invalidQRCode" : "Código QR no válido",
   "cameraPermissionRejected": "El acceso a la cámara fue denegado varias veces. Ve a los ajustes de tu teléfono y habilita el permiso de la cámara para continuar.",
   "requestCameraPermission": "Solicitar acceso a la cámara",
   "testnetMode": "Modo Testnet",

@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 type TabBarIconProperties = { color: string };
 
 export default function Layout() {
@@ -13,7 +14,9 @@ export default function Layout() {
   const tabBarLabelStyle = { fontSize: 12 };
   const insets = useSafeAreaInsets();
 
-  
+  const tabBarActiveColor  = isDarkMode ? "#0099ff" : "#0099ff";
+  const tabBarInactiveColor = isDarkMode ? "#777777" : "#999999";
+
   return (
     <Tabs
       screenOptions={{
@@ -29,6 +32,8 @@ export default function Layout() {
           shadowOpacity: 0,
         },
         tabBarLabelStyle,
+        tabBarActiveTintColor: tabBarActiveColor, 
+        tabBarInactiveTintColor: tabBarInactiveColor,
       }}
     >
       <Tabs.Screen
@@ -72,7 +77,8 @@ export default function Layout() {
         options={{
           title: t("bottomBar.miner"),
           tabBarIcon: ({ color }: TabBarIconProperties) => (
-            <Ionicons name="cog-outline" size={tabBarIconSize} color={color} />
+
+            <MaterialCommunityIcons name="harddisk" size={tabBarIconSize} color={color}/>
           ),
           tabBarLabelStyle,
         }}

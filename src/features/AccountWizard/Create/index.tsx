@@ -4,7 +4,6 @@ import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { router } from "expo-router";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { AnimatedFadeContainer } from "@/components/AnimatedFadeContainer";
 import { Dialog } from "@/components/Dialog";
 import { AccountWizardContainer } from "../components/AccountWizardContainer";
 import { accountCreationSchema } from "./utils/schemas";
@@ -144,21 +143,21 @@ export const CreateScreen = () => {
         <ScrollView ref={scrollRef}>
           <AccountWizardContainer>
             {activeStep === Steps.AccountCreationAgreement && (
-             <AnimatedFadeContainer>
+       
                 <Agreement />
-             </AnimatedFadeContainer>
+
             )}
 
             {activeStep === Steps.SecretPhraseGeneration && (
-              <AnimatedFadeContainer>
+
                 <SecretPhraseGeneration />
-              </AnimatedFadeContainer>
+ 
             )}
 
             {activeStep === Steps.SecretPhraseVerification && (
-              <AnimatedFadeContainer>
+  
                 <SecretPhraseVerification />
-             </AnimatedFadeContainer>
+          
             )}
           </AccountWizardContainer>
         </ScrollView>

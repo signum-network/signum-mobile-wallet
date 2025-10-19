@@ -62,7 +62,7 @@ export const FeeSelection = () => {
                 onPress={setCheapFees}
                 title={
                   <Text>
-                    🕤 {t("transfer.feeMinimal")} ({standardSigna}{" "}
+                    🕤 {t("transfer.feeMinimal")} ({cheapSigna}{" "}
                     <SignaSymbol/>)
                   </Text>
                 }
@@ -88,7 +88,7 @@ export const FeeSelection = () => {
                 onPress={setPriorityFees}
                 title={
                   <Text>
-                    🚀 {t("transfer.feePriority")} ({standardSigna}{" "}
+                    🚀 {t("transfer.feePriority")} ({prioritySigna}{" "}
                     <SignaSymbol />)
                   </Text>
                 }

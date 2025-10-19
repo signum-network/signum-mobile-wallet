@@ -5,6 +5,8 @@ import { Card } from "@/components/Card";
 import { appStore } from "@/states/appStore";
 import type { locales } from "@/locales";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { useAppTheme } from "@/hooks/useAppTheme";
+
 
 interface Props {
   lng: locales;
@@ -21,6 +23,8 @@ export const LanguageCard = ({ lng, label }: Props) => {
   };
 
   const isCurrentLanguage = language === lng;
+
+  const { iconColor } = useAppTheme();
 
   return (
     <Pressable
@@ -41,7 +45,7 @@ export const LanguageCard = ({ lng, label }: Props) => {
 
           {isCurrentLanguage && (
             <View className="w-20 flex flex-col items-center justify-center">
-              <Ionicons name="checkbox" size={24} color="green" />
+               <Ionicons name="checkbox" size={20} color={iconColor.green} />
 
               <Text color="success" className="font-bold" size="small">
                 {t("settings.account.active")}

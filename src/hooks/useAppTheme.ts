@@ -21,7 +21,7 @@ export const useAppTheme = () => {
     ...(isDarkMode ? DarkTheme : DefaultTheme),
     colors: {
       ...(isDarkMode ? DarkTheme.colors : DefaultTheme.colors),
-      primary: isDarkMode ? "#0066ff" : "#0099ff",
+      primary: isDarkMode ? "#0099ff" : "#0099ff",
     },
   };
 
@@ -29,6 +29,8 @@ export const useAppTheme = () => {
     primary: theme.colors.primary,
     default: theme.colors.text,
     blackout: theme.colors.card,
+    green: isDarkMode ? "#22C55E" : "#16A34A",
+    red: isDarkMode ? "#EF4444" : "#DC2626",
   };
 
   useEffect(() => {

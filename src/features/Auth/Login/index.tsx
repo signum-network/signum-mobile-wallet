@@ -79,8 +79,6 @@ export const LoginAuthScreen = () => {
     const areAllFieldsFilled = value.join("").length === PUBLIC_PIN_LENGTH;
     setFailedAuthAttempts(0);
 
-    // This timeout is here because of the success sound feedback :D, the tone lasts 3 seconds
-    // As UX practice, if user logs in with hardware auth, the tone will not sound, because user want to log in quick
     setTimeout(
       () => {
         if (!isAccountEnrolled) {

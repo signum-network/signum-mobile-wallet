@@ -43,7 +43,7 @@ export const CameraDialog = ({ onCodeScanned, expected }: Props) => {
         onCodeScanned({ ...code, data: address });
         hideDialog();
       } else {
-        alert(t("invalidSignumQRCode"));
+        alert(t("invalidQRCode"));
       }
       return;
     }
@@ -55,7 +55,7 @@ export const CameraDialog = ({ onCodeScanned, expected }: Props) => {
         onCodeScanned({ ...code, data: scannedData });
         hideDialog();
       } else {
-        alert(t("invalidSignumQRCode"));
+        alert(t("invalidQRCode"));
       }
       return;
     }

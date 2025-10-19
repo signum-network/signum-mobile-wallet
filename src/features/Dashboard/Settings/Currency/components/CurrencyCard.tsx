@@ -8,6 +8,8 @@ import {
   type SupportedTickerSymbol,
 } from "@/types/currencies";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { useAppTheme } from "@/hooks/useAppTheme";
+
 
 interface Props {
   id: SupportedTickerSymbol;
@@ -25,6 +27,8 @@ export const CurrencyCard = ({ id }: Props) => {
   const isCurrentCurrency = activeCurrency === id;
 
   const symbol = AllowedTickersSymbol.get(id);
+
+  const { iconColor } = useAppTheme();
 
   return (
     <Pressable
@@ -45,7 +49,7 @@ export const CurrencyCard = ({ id }: Props) => {
 
           {isCurrentCurrency && (
             <View className="w-20 flex flex-col items-center justify-center">
-              <Ionicons name="checkbox" size={20} color="green" />
+               <Ionicons name="checkbox" size={20} color={iconColor.green} />
 
               <Text color="success" className="font-bold" size="small">
                 {t("settings.account.active")}

@@ -12,6 +12,7 @@ import { Image } from "expo-image";
 import { signumBlueSymbolPicture } from "@/assets";
 import { Text } from "@/components/Text";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
 interface Props {
   label: string;
@@ -106,19 +107,22 @@ export const PinAuthenticator = ({
         if (success) {
           Keyboard.dismiss();
         } else if (error) {
-          setTimeout(() => {   //show error message longer
+          setTimeout(() => {
+            //show error message longer
             resetValues();
-          }, 1500); 
+          }, 1500);
         }
       }
     })();
   }, [value, success, error]);
 
+  const { iconColor } = useAppTheme();
+
   if (success) {
     return (
       <View className="flex-1 items-center gap-4 pt-16">
         <View className="items-center justify-center gap-4">
-          <Ionicons name="checkmark-circle" size={85} color="green" />
+          <Ionicons name="checkmark-circle" size={85} color={iconColor.green}/>
 
           <Text className="max-w-xs w-full text-center !text-2xl">
             {successLabel}
