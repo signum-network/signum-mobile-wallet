@@ -79,7 +79,7 @@
       "description": "Richte dein Konto ein, um mit dieser großartigen Wallet Geld zu senden und zu empfangen!",
       "ctaTitle": "Bitte wähle, ob du ein Konto erstellen oder wiederherstellen möchtest",
       "createCta": "Neues Konto erstellen",
-      "importCta": "Konto imortieren"
+      "importCta": "Konto importieren"
     },
     "createAccount": {
       "firstStepTitle": "Bevor du ein neues Konto erstellst, solltest du Folgendes wissen...",
