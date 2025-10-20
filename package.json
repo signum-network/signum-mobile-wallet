@@ -107,9 +107,6 @@
     },
     "@esbuild-kit/esm-loader": {
       "esbuild": "^0.25.11"
-    },
-    "overrides": {
-      "axios": "^1.12.2"
     }
   },
   "peerDependenciesMeta": {
