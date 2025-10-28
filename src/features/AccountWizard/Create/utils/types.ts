@@ -4,6 +4,8 @@ export enum Steps {
   SecretPhraseVerification,
 }
 
+export const StepsAmount = 3;
+
 // Form Schemas
 
 export type AccountCreation = {

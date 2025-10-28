@@ -71,6 +71,7 @@ export const Activity = () => {
   const isLoading = isPending && !transactions.length;
 
   return (
+    <View className="pb-60">
     <Card>
       <Text size="large" className="font-medium">
         {t("transaction_other")}
@@ -95,7 +96,6 @@ export const Activity = () => {
               data={transactions}
               keyExtractor={({ transaction }) => transaction}
               renderItem={({ item }) => <TransactionActivityCard {...item} />}
-              estimatedItemSize={ITEM_HEIGHT}
               ListEmptyComponent={<NoTransactionsFoundCard />}
             />
           </View>
@@ -116,5 +116,6 @@ export const Activity = () => {
         </View>
       )}
     </Card>
+    </View>
   );
 };

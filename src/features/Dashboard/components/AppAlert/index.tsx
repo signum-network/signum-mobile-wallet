@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { View, ActivityIndicator } from "react-native";
 import { useTranslation } from "react-i18next";
 import { Text } from "@/components/Text";
 import { useAppStore } from "@/hooks/useAppStore";
@@ -23,11 +23,28 @@ export const AppAlert = () => {
 
   if (!isOnline) {
     return (
-      <View className="w-full py-2 flex items-center justify-center bg-signum mb-2">
-        <Text className="!text-white font-medium text-center">
-          {t("youAreOffline")}
-        </Text>
-      </View>
+      <>
+        {/* Banner displayed above the overlay */}
+        <View
+          className="absolute inset-x-0 top-0 z-[1000]"
+          pointerEvents="box-none"
+        >
+          <View className="py-2 items-center justify-center bg-signum">
+            <Text className="!text-white font-medium text-center">
+              {t("youAreOffline")}
+            </Text>
+          </View>
+        </View>
+
+        {/* Overlay blocks interaction and centers the loader */}
+        <View
+          pointerEvents="auto"
+          className="absolute inset-0 z-[999] bg-black/50 items-center justify-center"
+          style={{ elevation: 999 }} // wichtig für Android-Z-Order
+        >
+          <ActivityIndicator size={84} />
+        </View>
+      </>
     );
   }
 

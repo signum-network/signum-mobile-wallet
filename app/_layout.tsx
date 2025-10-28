@@ -7,11 +7,15 @@ import * as SplashScreen from "expo-splash-screen";
 import { Stack } from "expo-router/stack";
 import { AppProviders } from "@/providers";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { BottomInsetDecor } from "@/components/BottomInsetDecor";
+import { useFonts } from "expo-font";
+import { useEffect } from "react";
+
+
 
 Crypto.init(new ReactNativeExpoCryptoAdapter());
 
 if (__DEV__) {
-  // @ts-expect-error importing modules typing issue
   import("../ReactotronConfig").then(() =>
     console.log("Reactotron Configured")
   );
@@ -30,12 +34,26 @@ export {
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
+// Load Ꞩ (SIGNA symbol) for iOS
 export default function RootLayout() {
+  const [fontsLoaded] = useFonts({
+    SignumSymbols: require("@/assets/fonts/SignumSymbols.ttf"),
+  });
+
+  useEffect(() => {
+    if (fontsLoaded) {
+      SplashScreen.hideAsync().catch(() => {});
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) return null;
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <AppProviders>
         <Stack screenOptions={{ headerShown: false }} />
       </AppProviders>
+      <BottomInsetDecor />
     </GestureHandlerRootView>
   );
 }

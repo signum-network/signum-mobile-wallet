@@ -28,10 +28,27 @@ export const AccountActivationCard = () => {
   const requestActivation = async () => {
     if (!ledgerService) return;
 
-    ledgerService.account.activate(accountId, publicKey).finally(() => {
-      alert(t("unsafeAccount.activating"));
-      updateAccountPublicKeyActivationStatus(publicKey, currentNetwork, true);
-    });
+    updateAccountPublicKeyActivationStatus(publicKey, currentNetwork, true);
+
+    try {
+      const result = await ledgerService.account.activate(accountId, publicKey);
+      alert(
+        `${t("unsafeAccount.activating")}\n` +
+          t("unsafeAccount.accountActivationIsPending", {
+            blocktime: PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MINUTES,
+          })
+      );
+    } catch (err: any) {
+      updateAccountPublicKeyActivationStatus(publicKey, currentNetwork, false);
+      const msg = err?.message ?? "unknownError";
+      console.warn("Activation failed:", err);
+
+      alert(
+        t("errors.activationFailed", {
+          reason: msg,
+        })
+      );
+    }
   };
 
   return (
@@ -66,9 +83,11 @@ export const AccountActivationCard = () => {
               </Text>
             </View>
 
-            <Text color="muted" size="large" className="text-center">
-              {t("unsafeAccount.description")}
-            </Text>
+            {!activationInProgress && (
+              <Text color="muted" size="large" className="text-center">
+                {t("unsafeAccount.description")}
+              </Text>
+            )}
 
             <View className="w-full flex items-center justify-center flex-col gap-4 mt-4">
               {!activationInProgress ? (

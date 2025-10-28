@@ -1,12 +1,14 @@
 import { View, Pressable } from "react-native";
 import { Text } from "@/components/Text";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import NativeCheckbox from "expo-checkbox";
 import clsx from "clsx";
+import type { ReactNode } from "react";
 
 interface Props {
   value: boolean;
   onPress: () => void;
-  title: string;
+  title?: string | ReactNode;
   description?: string;
   bordered?: boolean;
   fullWidth?: boolean;
@@ -27,10 +29,12 @@ export const FormCheckbox = ({
       "border border-card-border dark:border-card-border-dark rounded-lg",
   ]);
 
+  const { iconColor } = useAppTheme();
+
   return (
     <Pressable className={classNames} onPress={onPress}>
-      <View className="w-1/12  flex justify-center items-center">
-        <NativeCheckbox value={value} />
+      <View className="w-1/12  flex justify-center items-center" pointerEvents="none">
+        <NativeCheckbox value={value} color={iconColor.primary} />
       </View>
 
       <View className="w-11/12  flex-col items-start justify-start">

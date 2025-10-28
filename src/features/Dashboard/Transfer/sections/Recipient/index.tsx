@@ -1,20 +1,20 @@
 import { View } from "react-native";
 import { useTranslation } from "react-i18next";
-import { useFormContext, Controller } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import type { BarcodeScanningResult } from "expo-camera";
 import { Text } from "@/components/Text";
 import { Card } from "@/components/Card";
-import { TextInput } from "@/components/TextInput";
 import { CameraDialog } from "@/components/CameraDialog";
 import type { TransactionCreation } from "../../utils/types";
 import { ResolvedAccountCard } from "../../components/ResolvedAccountCard";
+import { RecipientAutocomplete } from "../../components/RecipientAutocomplete";
 
 export const Recipient = () => {
   const { t } = useTranslation();
   const { control, setValue } = useFormContext<TransactionCreation>();
 
   const onCodeScanned = (data: BarcodeScanningResult) => {
-    setValue("recipient", data.data);
+    setValue("recipient", data.data, { shouldValidate: true, shouldDirty: true });
   };
 
   return (
@@ -30,25 +30,17 @@ export const Recipient = () => {
           </Text>
         </View>
 
-        <Controller
+        <RecipientAutocomplete
           control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              placeholder={t("example") + " S-5MS6..., 167552..."}
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-              size="large"
-              extraClassNames="font-bold"
-            />
-          )}
           name="recipient"
+          placeholder={t("example") + " S-5MS6..., 167552..."}
+          size="large"
         />
 
         <ResolvedAccountCard />
       </Card>
 
-      <CameraDialog onCodeScanned={onCodeScanned} />
+      <CameraDialog expected={"address"} onCodeScanned={onCodeScanned} />
     </View>
   );
 };

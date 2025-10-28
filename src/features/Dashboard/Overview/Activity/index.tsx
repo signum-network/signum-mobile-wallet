@@ -17,6 +17,7 @@ import {
 } from "../components/TransactionActivityCard";
 import { PUBLIC_SIGNUM_FETCH_ACCOUNT_DATA_INTERVAL } from "@/types/constants";
 import { DashboardScreenContainer } from "../../components/DashboardScreenContainer";
+import { AppHeader } from "@/components/AppHeader";
 
 export const ActivityScreen = () => {
   const { t } = useTranslation();
@@ -111,6 +112,8 @@ export const ActivityScreen = () => {
   const canShowLoadMoreButton = !!transactions.length && !isListComplete;
 
   return (
+    <>
+     <AppHeader title={t("transaction_other")} />
     <ScrollView>
       <DashboardScreenContainer>
         <View className="flex flex-col items-start justify-center w-full px-4 pt-4 gap-4">
@@ -136,7 +139,6 @@ export const ActivityScreen = () => {
                     renderItem={({ item }) => (
                       <TransactionActivityCard {...item} />
                     )}
-                    estimatedItemSize={ITEM_HEIGHT}
                     ListEmptyComponent={<NoTransactionsFoundCard />}
                   />
                 </View>
@@ -161,5 +163,6 @@ export const ActivityScreen = () => {
         </View>
       </DashboardScreenContainer>
     </ScrollView>
+    </>
   );
 };

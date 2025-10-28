@@ -1,28 +1,25 @@
-// import { useMemo } from "react";
-// import { appStore } from "@/states/appStore";
-// import { enUS, es, ptBR, de } from "date-fns/locale";
-import { enUS } from "date-fns/locale";
+import { useTranslation } from "react-i18next";
+
+// Import all date-fns locales
+import { enUS, es, pt, fr, de, zhCN, ru } from "date-fns/locale";
 
 export const useDateLocale = () => {
-  // const language = appStore((state) => state.language);
+  const { i18n } = useTranslation();
 
-  // const dateLocale = useMemo(() => {
-  //   switch (language) {
-  //     case "de":
-  //       return de;
-
-  //     case "es":
-  //       return es;
-
-  //     case "pt":
-  //       return ptBR;
-
-  //     default:
-  //       return enUS;
-  //   }
-  // }, [language]);
-
-  // return dateLocale;
-
-  return enUS;
+  switch (i18n.language) {
+    case "de":
+      return de;
+    case "es":
+      return es;
+    case "pt":
+      return pt;      
+    case "fr":
+      return fr;
+    case "zh":
+      return zhCN;
+    case "ru":
+      return ru;
+    default:
+      return enUS;
+  }
 };

@@ -41,3 +41,5 @@ export const PUBLIC_IPFS_GATEWAY = "https://ipfs.io/ipfs";
 export const SECURE_STORE_PIN_KEY = "PIN_KEY";
 
 export const SECURE_STORE_PIN_SALT = "PIN_SALT";
+
+export const PUBLIC_RESERVED_SIGNA_FOR_TX_FEE = 0.5;

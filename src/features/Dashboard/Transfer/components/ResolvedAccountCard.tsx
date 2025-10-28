@@ -70,16 +70,17 @@ export const ResolvedAccountCard = ({ simple }: Props) => {
             </Text>
           </View>
         ) : (
-          <Text fullWidth color="primary">
-            {t("transfer.resolvedRecipientAddress", {
-              address: resolvedAccount.getReedSolomonAddress(),
-            })}
-          </Text>
+          <>
+            <Text fullWidth color="primary">
+              {t("transfer.resolvedRecipientAddress", {
+                address: resolvedAccount.getReedSolomonAddress(),
+              })}
+            </Text>
+            <Text fullWidth color="muted" size="small">
+              {t("transfer.resolvedRecipientAddressHint")} 😁
+            </Text>
+          </>
         )}
-
-        <Text fullWidth color="muted" size="small">
-          {t("transfer.resolvedRecipientAddressHint")} 😁
-        </Text>
       </View>
     </Card>
   ) : null;

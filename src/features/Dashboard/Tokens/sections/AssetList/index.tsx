@@ -42,7 +42,6 @@ export const AssetList = ({ list }: Props) => {
           data={list}
           keyExtractor={({ asset }) => asset}
           renderItem={({ item }) => <AssetCard {...item} />}
-          estimatedItemSize={ITEM_HEIGHT}
           ListEmptyComponent={<NoTokensFoundCard />}
         />
       </View>

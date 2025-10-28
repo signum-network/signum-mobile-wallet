@@ -4,8 +4,6 @@ import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { router } from "expo-router";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { AnimatedSlideContainer } from "@/components/AnimatedSlideContainer";
-import { KeyboardAvoidingView } from "@/components/Form/KeyboardAvoidingView";
 import { Dialog } from "@/components/Dialog";
 import { AccountWizardContainer } from "../components/AccountWizardContainer";
 import { accountCreationSchema } from "./utils/schemas";
@@ -22,12 +20,26 @@ import {
 import { useAccountStore } from "@/hooks/useAccountStore";
 import { AccountType } from "@/types/account";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { KeyboardAnimatedContainer } from "@/components/KeyboardAnimatedContainer";
+import { FormStepper } from "./components/FormStepper";
+import { useLedgerService } from "@/hooks/useLedgerService";
+import { useNodeHostStore } from "@/hooks/useNodeHostStore";
+import { Address } from "@signumjs/core";
+import { PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MINUTES } from "@/types/constants";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
 export const CreateScreen = () => {
   const { t } = useTranslation();
-  const { accountWalletNames, addAccount, setActiveAccount } =
-    useAccountStore();
+  const {
+    accountWalletNames,
+    addAccount,
+    setActiveAccount,
+    updateAccountPublicKeyActivationStatus,
+  } = useAccountStore();
 
+  const { ledgerService } = useLedgerService();
+  const { currentNetwork } = useNodeHostStore();
+  const { iconColor } = useAppTheme();
   const [showDialog, setShowDialog] = useState(false);
 
   const scrollRef: RefObject<ScrollView> = useRef(null!);
@@ -82,7 +94,26 @@ export const CreateScreen = () => {
 
       setActiveAccount(publicKey);
 
-      router.replace("/dashboard/overview");
+      const accountId = Address.fromPublicKey(publicKey).getNumericId();
+      if (ledgerService) {
+        ledgerService.account.activate(accountId, publicKey).finally(() => {
+          alert(
+            `${t("unsafeAccount.activating")}\n` +
+              t("unsafeAccount.accountActivationIsPending", {
+                blocktime: PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MINUTES,
+              })
+          );
+          updateAccountPublicKeyActivationStatus(
+            publicKey,
+            currentNetwork,
+            true
+          );
+        });
+      }
+      setTimeout(() => {
+        setShowDialog(false);
+        router.replace("/dashboard/account");
+      }, 4000);
     } catch (error) {
       console.error(error);
     }
@@ -90,50 +121,41 @@ export const CreateScreen = () => {
 
   return (
     <FormProvider {...methods}>
-      <Dialog variant="full" visible={showDialog}>
-        <View className="flex flex-col items-center justify-center gap-4 w-full">
-          <Ionicons name="checkmark-circle" size={85} color="green" />
-
-          <Text className="text-center" size="large">
-            {t("accountWizard.createAccount.accountCreated")}
-          </Text>
-
-          <Text className="text-center" color="muted">
-            {t("accountWizard.createAccount.accountCreatedDescription")} ❤️
-          </Text>
-
-          <View className="gap-2 flex flex-row items-center justify-center">
-            <ActivityIndicator />
-            <Text color="muted">{t("auth.loadingWait")}</Text>
-          </View>
-        </View>
-      </Dialog>
-
       <FormNavigation onSubmit={methods.handleSubmit(onSubmit)} />
+      <FormStepper />
+      <KeyboardAnimatedContainer>
+        <Dialog variant="full" visible={showDialog}>
+          <View className="flex flex-col items-center justify-center gap-4 w-full">
+            <Ionicons name="checkmark-circle" size={85} color={iconColor.green} />
 
-      <KeyboardAvoidingView>
+            <Text className="text-center" size="large">
+              {t("accountWizard.createAccount.accountCreated")}
+            </Text>
+
+            <Text className="text-center" color="muted">
+              {t("accountWizard.createAccount.accountCreatedDescription")} ❤️
+            </Text>
+
+            <View className="gap-2 flex flex-row items-center justify-center">
+              <ActivityIndicator />
+              <Text color="muted">{t("auth.loadingWait")}</Text>
+            </View>
+          </View>
+        </Dialog>
+
         <ScrollView ref={scrollRef}>
           <AccountWizardContainer>
-            {activeStep === Steps.AccountCreationAgreement && (
-              <AnimatedSlideContainer>
-                <Agreement />
-              </AnimatedSlideContainer>
-            )}
-
+            {activeStep === Steps.AccountCreationAgreement && 
+            <Agreement />}
             {activeStep === Steps.SecretPhraseGeneration && (
-              <AnimatedSlideContainer>
-                <SecretPhraseGeneration />
-              </AnimatedSlideContainer>
+              <SecretPhraseGeneration />
             )}
-
             {activeStep === Steps.SecretPhraseVerification && (
-              <AnimatedSlideContainer>
-                <SecretPhraseVerification />
-              </AnimatedSlideContainer>
+              <SecretPhraseVerification />
             )}
           </AccountWizardContainer>
         </ScrollView>
-      </KeyboardAvoidingView>
+      </KeyboardAnimatedContainer>
     </FormProvider>
   );
 };

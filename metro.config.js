@@ -1,19 +1,16 @@
 const { getDefaultConfig } = require("expo/metro-config");
 const { withNativeWind } = require("nativewind/metro");
-const {
-  wrapWithReanimatedMetroConfig,
-} = require("react-native-reanimated/metro-config");
+const { wrapWithReanimatedMetroConfig } = require("react-native-reanimated/metro-config");
 
 /** @type {import('expo/metro-config').MetroConfig} */
 const config = getDefaultConfig(__dirname);
 
-config.resolver.sourceExts.push("sql");
+const { assetExts, sourceExts } = config.resolver;
 
-/**
- * This blocklist is required for @signumjs/crypto to exclude non-used crypto adapters from bundling,
- * thus avoiding compilation errors
- * @type {RegExp[]}
- */
+config.resolver.assetExts = [...assetExts, "sql"];
+
+config.resolver.sourceExts = sourceExts.filter((ext) => ext !== "sql");
+
 config.resolver.blockList = [/@signumjs\/crypto\/adapters\/.+$/];
 
 module.exports = wrapWithReanimatedMetroConfig(

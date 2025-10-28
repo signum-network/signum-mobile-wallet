@@ -10,12 +10,10 @@ import type { AccountImport } from "./utils/types";
 import { AccountWizardContainer } from "../components/AccountWizardContainer";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useAccountStore } from "@/hooks/useAccountStore";
-import { AnimatedSlideContainer } from "@/components/AnimatedSlideContainer";
 import { Text } from "@/components/Text";
 import { Button } from "@/components/Button";
 import { AccountType } from "@/types/account";
 import { HorizontalDivider } from "@/components/HorizontalDivider";
-import { KeyboardAvoidingView } from "@/components/Form/KeyboardAvoidingView";
 import { CameraDialog } from "@/components/CameraDialog";
 import { getAccountPublicKey } from "@/utils/account/getAccountPublicKey";
 import { FormNavigation } from "./components/FormNavigation";
@@ -27,6 +25,8 @@ import {
   saveSecretKey,
 } from "@/utils/sec/handleSecretKeys";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { KeyboardAnimatedContainer } from "@/components/KeyboardAnimatedContainer";
+import { AppHeader } from "@/components/AppHeader";
 
 export const ImportScreen = () => {
   const { t } = useTranslation();
@@ -135,11 +135,26 @@ export const ImportScreen = () => {
     }
   };
 
+  const { isAccountEnrolled } = useAccountStore();
+  const goBackwards = () => {
+    if (!isAccountEnrolled) {
+      router.replace("/account-wizard");
+      return;
+    } else {
+      router.replace("/dashboard/account");
+    }
+  };
+
   return (
     <FormProvider {...methods}>
       <FormNavigation onSubmit={handleSubmit(onSubmit)} />
 
-      <KeyboardAvoidingView>
+      <AppHeader
+        title={t("accountWizard.quickStart.importCta")}
+        onBack={goBackwards}
+      />
+
+      <KeyboardAnimatedContainer>
         <ScrollView>
           <AccountWizardContainer>
             <View className="flex flex-col items-center justify-center w-full gap-4">
@@ -151,19 +166,24 @@ export const ImportScreen = () => {
                 {t("accountWizard.importAccount.importDescription")}
               </Text>
 
-              <View className="flex flex-row items-center justify-center bg-card-foreground dark:bg-card-foreground-dark border border-card-border dark:border-card-border-dark rounded-lg max-w-md mx-auto w-full">
+              <View className="flex flex-row items-stretch gap-2 bg-card-foreground dark:bg-card-foreground-dark border border-card-border dark:border-card-border-dark rounded-full max-w-md w-full p-1 overflow-hidden">
                 <Button
                   icon={
                     <Ionicons
                       name="bag-check"
                       size={24}
-                      color={isAccountypeMnemonic ? "white" : iconColor.default}
+                      color={isAccountypeMnemonic ? "white" : iconColor.muted}
                     />
                   }
                   type={isAccountypeMnemonic ? "primary" : undefined}
                   title={t("fullAccount")}
-                  extraClassNames="!rounded-r-none w-1/2"
-                  size="large"
+                  extraClassNames="flex-1 px-4"
+                  size="medium"
+                  titleClassName={
+                    isAccountypeMnemonic
+                      ? "text-white"
+                      : "text-muted-foreground dark:text-muted-foreground-dark"
+                  }
                   pressableProps={{ onPress: setMnemonicMode }}
                 />
 
@@ -172,39 +192,46 @@ export const ImportScreen = () => {
                     <Ionicons
                       name="eye"
                       size={24}
-                      color={
-                        isAccountypeWatchOnly ? "white" : iconColor.default
-                      }
+                      color={isAccountypeWatchOnly ? "white" : iconColor.muted}
                     />
                   }
                   type={isAccountypeWatchOnly ? "primary" : undefined}
                   title={t("watchOnly")}
-                  extraClassNames="!rounded-l-none w-1/2"
-                  size="large"
+                  extraClassNames="flex-1 px-4"
+                  size="medium"
+                  titleClassName={
+                    isAccountypeWatchOnly
+                      ? "text-white"
+                      : "text-muted-foreground dark:text-muted-foreground-dark"
+                  }
                   pressableProps={{ onPress: setWatchOnlyMode }}
                 />
               </View>
 
-              <Text className="text-center">
-                {t(
-                  isAccountypeMnemonic
-                    ? "accountWizard.importAccount.importMnemonicHint"
-                    : "accountWizard.importAccount.importWatchOnlyHint"
-                )}
-              </Text>
-
-              <CameraDialog onCodeScanned={onCodeScanned} />
-
               {type === AccountType.mnemonic && (
-                <AnimatedSlideContainer>
+                <View className="gap-4 w-full">
+                  <Text className="text-center">
+                    {t("accountWizard.importAccount.importMnemonicHint")}
+                  </Text>
+                  <CameraDialog
+                    expected={"passphrase"}
+                    onCodeScanned={onCodeScanned}
+                  />
                   <SeedPhraseField />
-                </AnimatedSlideContainer>
+                </View>
               )}
 
               {type === AccountType.watchOnly && (
-                <AnimatedSlideContainer>
+                <View className="gap-4 w-full">
+                  <Text className="text-center">
+                    {t("accountWizard.importAccount.importWatchOnlyHint")}
+                  </Text>
+                  <CameraDialog
+                    expected={"address"}
+                    onCodeScanned={onCodeScanned}
+                  />
                   <AccountIdField />
-                </AnimatedSlideContainer>
+                </View>
               )}
             </View>
 
@@ -213,7 +240,7 @@ export const ImportScreen = () => {
             <WalletNameField />
           </AccountWizardContainer>
         </ScrollView>
-      </KeyboardAvoidingView>
+      </KeyboardAnimatedContainer>
     </FormProvider>
   );
 };

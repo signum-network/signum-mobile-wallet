@@ -24,7 +24,7 @@ export class MarketService {
       );
       if (!response) return null;
       if (!response.length) return null;
-      return <MarketData>response[0];
+      return response[0] as MarketData;
     });
   }
 }

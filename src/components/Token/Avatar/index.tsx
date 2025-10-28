@@ -1,9 +1,10 @@
 import { useMemo } from "react";
 import { View } from "react-native";
 import { Image } from "expo-image";
-import { PUBLIC_IPFS_GATEWAY } from "@/types/constants";
 import clsx from "clsx";
-import DOMComponent from "@/components/DOM/HashIconAvatar";
+import { PUBLIC_IPFS_GATEWAY } from "@/types/constants";
+
+import HashIconAvatarNativeSVG from "@/components/Account/Avatar/HashIconNativeSVG";
 
 interface Props {
   loading: boolean;
@@ -20,20 +21,20 @@ export const TokenAvatar = ({
 }: Props) => {
   const ipfsImage = useMemo(() => {
     if (loading) return null;
-
     try {
       if (avatarIpfsHash) {
         return `${PUBLIC_IPFS_GATEWAY}/${avatarIpfsHash}`;
       }
     } catch {
-      return null;
+      // noop
     }
+    return null;
   }, [loading, avatarIpfsHash]);
 
   return (
     <View
       className={clsx([
-        "size-10 overflow-hidden rounded-lg",
+        "size-11 overflow-hidden rounded-lg",
         !ipfsImage && "pr-1",
         extraClassNames && extraClassNames,
       ])}
@@ -41,14 +42,11 @@ export const TokenAvatar = ({
       {ipfsImage ? (
         <Image
           source={ipfsImage}
-          style={{
-            width: "100%",
-            height: "100%",
-            backgroundColor: "rgba(0,0,0,0.05)",
-          }}
+          contentFit="cover"
+          style={{ width: "100%", height: "100%", backgroundColor: "rgba(0,0,0,0.05)" }}
         />
       ) : (
-        <DOMComponent id={tokenId} />
+        <HashIconAvatarNativeSVG seed={tokenId} />
       )}
     </View>
   );

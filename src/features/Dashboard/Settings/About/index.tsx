@@ -6,6 +6,7 @@ import { Text } from "@/components/Text";
 import { Button } from "@/components/Button";
 import { HorizontalDivider } from "@/components/HorizontalDivider";
 import { signumBlueSymbolPicture } from "@/assets";
+import { AppHeader } from "@/components/AppHeader";
 
 import * as Application from "expo-application";
 import * as Linking from "expo-linking";
@@ -30,63 +31,69 @@ export const AboutScreen = () => {
   };
 
   return (
-    <View className="flex flex-1 flex-col items-center justify-center w-full px-4 gap-4 pt-8">
-      <Card>
-        <View className="flex flex-col items-center justify-center w-full gap-2">
-          <View className="items-center justify-center gap-2 mb-2">
-            <Image
-              source={{ uri: signumBlueSymbolPicture }}
-              style={{ width: 75, height: 75 }}
+    <>
+      <AppHeader title={t("settings.about.title")} />
+      <View className="flex flex-1 flex-col items-center w-full px-4 gap-4 pt-8">
+        <Card>
+          <View className="flex flex-col items-center justify-center w-full gap-2">
+            <View className="items-center justify-center gap-2 mb-2">
+              <Image
+                source={{ uri: signumBlueSymbolPicture }}
+                style={{ width: 75, height: 75 }}
+              />
+
+              <Text className="w-full text-center !text-2xl">
+                Signum Mobile Wallet
+              </Text>
+
+              <Text className="w-full text-center font-medium">
+                {t("settings.about.version", {
+                  version: Application.nativeApplicationVersion ?? "unknown",
+                })}
+              </Text>
+
+              <Text
+                className="w-full text-center font-medium"
+                color="muted"
+                size="small"
+              >
+                {t("settings.about.nonCustodial")}
+              </Text>
+            </View>
+
+            <HorizontalDivider />
+
+            <Text className="text-center !text-2xl mt-4" color="muted">
+              {t("settings.about.links")}
+            </Text>
+
+            <Button
+              titleClassName="color-signum"
+              wide
+              title={t("settings.about.repository")}
+              pressableProps={{ onPress: openRepositoryPage }}
             />
 
-            <Text className="w-full text-center !text-2xl">
-              Signum Mobile Wallet
-            </Text>
+            <Button
+              titleClassName="color-signum"
+              wide
+              title={t("settings.about.privacyPolicy")}
+              pressableProps={{ onPress: openPrivacyPolicyPage }}
+            />
 
-            <Text className="w-full text-center font-medium">
-              {t("settings.about.version", {
-                version: Application.nativeApplicationVersion ?? "unknown",
-              })}
-            </Text>
+            <Button
+              titleClassName="color-signum"
+              wide
+              title={t("settings.about.contact")}
+              pressableProps={{ onPress: contactDeveloper }}
+            />
 
-            <Text
-              className="w-full text-center font-medium"
-              color="muted"
-              size="small"
-            >
-              {t("settings.about.nonCustodial")}
+            <Text className="text-center" size="small" color="muted">
+              Made with ❤️ by Signum Network
             </Text>
           </View>
-
-          <HorizontalDivider />
-
-          <Text className="text-center !text-2xl mt-4" color="muted">
-            {t("settings.about.links")}
-          </Text>
-
-          <Button
-            wide
-            title={t("settings.about.repository")}
-            pressableProps={{ onPress: openRepositoryPage }}
-          />
-
-          <Button
-            wide
-            title={t("settings.about.privacyPolicy")}
-            pressableProps={{ onPress: openPrivacyPolicyPage }}
-          />
-
-          <Button
-            wide
-            title={t("settings.about.contact")}
-            pressableProps={{ onPress: contactDeveloper }}
-          />
-
-          <Text className="text-center" size="small" color="muted">
-            Made with ❤️ by Signum Network
-          </Text>
-        </View>
-      </Card>
-    </View>
+        </Card>
+      </View>
+    </>
   );
 };

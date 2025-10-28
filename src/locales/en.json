@@ -34,6 +34,7 @@
   "download": "Download",
   "accountDoesNotExists": "This account either doesn't exist or hasn't been activated yet",
   "scanQRCode": "Scan QR Code",
+  "invalidQRCode" : "Invalid QR code",
   "cameraPermissionRejected": "Camera access has been denied multiple times. Please go to the phone’s settings and enable camera permission to continue.",
   "requestCameraPermission": "Request Camera Permission",
   "testnetMode": "Testnet Mode",
@@ -44,13 +45,14 @@
   "send": "Send",
   "amount": "Amount",
   "notEnoguhFunds": "Not enough funds",
+  "notEnoughForFee": "Not enough funds to pay transaction fee",
   "receive": "Receive",
   "maxButton": "Use all available balance",
   "textOrMemo": "Text or Memo",
   "terms": {
-    "requestFirstLine": "Before you start using this wallet",
-    "requestSecondLine": "Please read and agree the following terms",
-    "acceptTerms": "I accept the terms of service"
+    "requestFirstLine": "Before you start using this wallet,",
+    "requestSecondLine": "here’s a quick open-source note",
+    "openSourceMd": "# Open Source\n\n**Signum Mobile Wallet** is open-source software under the **Apache License 2.0**.\n\n ### In short:\n- You may use, copy, modify, and distribute the app.\n- When distributing, keep **license and copyright notices**; mark **changes**.\n- A **patent license** from contributors applies.\n- Provided **as is**, without warranties.\n\n ### Learn more:\n\n- **View source:**\n https://github.com/signum-network/signum-mobile-wallet\n- **Apache-2.0 (full text):**\n https://github.com/signum-network/signum-mobile-wallet/tree/main?tab=License-1-ov-file\n- **NOTICE & acknowledgments:**\n https://github.com/signum-network/signum-mobile-wallet/blob/main/NOTICE.md\n\n> Note: Open-source licenses are not terms of service—**no acceptance** is required. This notice is for transparency."
   },
   "auth": {
     "enrollPassCodeTitle": "Please set a passcode to secure your device",
@@ -100,7 +102,13 @@
       "accountCreated": "Account created successfully!",
       "accountCreatedDescription": "Kindly hold on while the wallet prepares your account to use",
       "secretPhraseCreationDescription": "It is very important that you store this Secret Phrase in a safe place. If you lose it, you will lose the access to your account. You need this Secret Phrase to import your account on other devices and/or alternative Signum Blockchain Wallets",
-      "secretPhraseCreationSecondDescription": "This account is part of the Signum Network, an advanced blockchain platform. You can use this Secret Phrase throughout the entire Signum eco-system, e.g. trade crypto tokens, create/buy NFTs and much more"
+      "secretPhraseCreationSecondDescription": "This account is part of the Signum Network, an advanced blockchain platform. You can use this Secret Phrase throughout the entire Signum eco-system, e.g. trade crypto tokens, create/buy NFTs and much more",
+      "stepper": {
+        "goBackwards": "Press to go back",
+        "agreementStepTitle": "Agreement",
+        "secretPhraseGenerationTitle": "Secret Phrase Generation",
+        "secretPhraseVerificationTitle": "Secret Phrase Verification"
+      }
     },
     "importAccount": {
       "importTitle": "Restore Wallet",
@@ -112,12 +120,15 @@
       "importWatchOnlySecondHint": "You have the option to enter a Signum Wallet Address, account ID, or even aliases",
       "importAccountAlreadyExists": "This account already exists on your wallet, please go to account settings and use it!",
       "importAccountResolvedAddress": "Account address: {{address}}",
+      "importAccountResolvedName": "Account Name: {{name}}",
       "importAccountResolvedAddressHint": "Use this suggestion as a helpful tool to ensure you import the accurate account"
     },
     "walletNameAlreadyUsed": "The wallet name is already being used, please choose another one!"
   },
   "bottomBar": {
     "home": "Home",
+    "transfer": "Transfer",
+    "accounts": "Accounts",
     "subscriptions": "Subscriptions",
     "tokens": "Tokens",
     "settings": "Settings",
@@ -204,9 +215,9 @@
   },
   "unsafeAccount": {
     "title": "Account is unsafe",
-    "description": "This account is not yet fully registered on the blockchain. Please activate your account to ensure its security and make it fully usable for all services, including exchanges",
-    "activate": "Activate account",
-    "activating": "Account activation is pending",
+    "description": "This account is not yet fully registered on the blockchain.Please register your account to ensure security and full access to all services, including exchanges.",
+    "activate": "Register account",
+    "activating": "Account is being registered on the network.",
     "accountActivationIsPending": "It may take up to {{blocktime}} minutes",
     "visitAccountManager": "Visit account manager"
   },

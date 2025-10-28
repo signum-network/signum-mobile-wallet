@@ -1,23 +1,26 @@
-import type { ColorSchemeName } from "react-native";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { getDefaultLocale, type locales } from "@/locales";
 import type { authMethod } from "@/types/authMethod";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+export type ThemePreference = "system" | "light" | "dark";
+
 interface State {
-  themeMode: ColorSchemeName;
+  themeMode: ThemePreference;            
   language: locales;
-  isTermAgreed: boolean; // Determine whether the user has agreed to terms of service
-  isAuthEnrolled: boolean; // Determine whether the user has enrolled for authentication.
-  authMethod: authMethod; // Determine the method the user will use for authentication (PIN or Biometric)
+  isTermAgreed: boolean;
+  isAuthEnrolled: boolean;
+  authMethod: authMethod;
   failedAuthAttempts: number;
-  isOnline: boolean; // Determine whether the user has internet access
-  minerMode: boolean; // Determine whether the user has enabled miner mode for handling commitment
+  isOnline: boolean;
+  minerMode: boolean;
 }
 
 interface Actions {
   reset: () => void;
+  setThemeMode: (value: ThemePreference) => void; 
+  cycleThemeMode: () => void;                     
   toggleThemeMode: () => void;
   setLanguage: (value: locales) => void;
   setIsTermAgreed: (value: boolean) => void;
@@ -29,7 +32,7 @@ interface Actions {
 }
 
 const initialState: State = {
-  themeMode: "light",
+  themeMode: "system",               
   language: getDefaultLocale(),
   isTermAgreed: false,
   isAuthEnrolled: false,
@@ -43,46 +46,42 @@ export const appStore = create<State & Actions>()(
   persist(
     (set, get) => ({
       ...initialState,
-      reset: () => {
-        set(initialState);
-      },
+      reset: () => set(initialState),
+
+      setThemeMode: (value) => set({ themeMode: value }),
+      cycleThemeMode: () =>
+        set((state) => ({
+          themeMode:
+            state.themeMode === "system"
+              ? "dark"
+              : state.themeMode === "dark"
+              ? "light"
+              : "system",
+        })),
+
+
       toggleThemeMode: () =>
-        set(() => ({
-          themeMode: get().themeMode === "dark" ? "light" : "dark",
+        set((state) => ({
+          themeMode: state.themeMode === "dark" ? "light" : "dark",
         })),
-      setLanguage: (value) =>
-        set(() => ({
-          language: value,
-        })),
-      setIsTermAgreed: (value) =>
-        set(() => ({
-          isTermAgreed: value,
-        })),
-      setIsAuthEnrolled: (value) =>
-        set(() => ({
-          isAuthEnrolled: value,
-        })),
-      setAuthMethod: (value) =>
-        set(() => ({
-          authMethod: value,
-        })),
-      setFailedAuthAttempts: (value) =>
-        set(() => ({
-          failedAuthAttempts: value,
-        })),
-      setIsOnline: (value) =>
-        set(() => ({
-          isOnline: value,
-        })),
-      setMinerMode: (value) =>
-        set(() => ({
-          minerMode: value,
-        })),
+
+      setLanguage: (value) => set({ language: value }),
+      setIsTermAgreed: (value) => set({ isTermAgreed: value }),
+      setIsAuthEnrolled: (value) => set({ isAuthEnrolled: value }),
+      setAuthMethod: (value) => set({ authMethod: value }),
+      setFailedAuthAttempts: (value) => set({ failedAuthAttempts: value }),
+      setIsOnline: (value) => set({ isOnline: value }),
+      setMinerMode: (value) => set({ minerMode: value }),
     }),
     {
       name: "app-storage",
       storage: createJSONStorage(() => AsyncStorage),
-      version: 1,
+      version: 2,
+      migrate: async (persisted: any) => {
+        if (!persisted) return persisted;
+        if (!persisted.themeMode) persisted.themeMode = "system";
+        return persisted;
+      },
     }
   )
 );

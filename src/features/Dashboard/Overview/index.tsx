@@ -8,6 +8,7 @@ import { BottomButtonsContainer } from "../components/BottomButtonsContainer";
 import { DashboardScreenContainer } from "../components/DashboardScreenContainer";
 import { Balance } from "./sections/Balance";
 import { Activity } from "./sections/Activity";
+import { HorizontalDivider } from "@/components/HorizontalDivider";
 
 export const OverviewScreen = () => {
   const { t } = useTranslation();
@@ -15,34 +16,37 @@ export const OverviewScreen = () => {
 
   return (
     <Fragment>
-      <ScrollView>
-        <DashboardScreenContainer>
-          <View className="flex flex-col items-start justify-center w-full px-4 pt-4 pb-20 gap-4">
-            <AccountSwitcher href="/dashboard/account" />
+      <DashboardScreenContainer>
+        <View className="flex flex-col items-start justify-center w-full px-4 pt-4 gap-4">
+          <AccountSwitcher href="/dashboard/account" />
 
-            <Balance />
-
+          <Balance />
+          <HorizontalDivider />
+          <ScrollView className="w-full">
             <Activity />
-          </View>
-        </DashboardScreenContainer>
-      </ScrollView>
+          </ScrollView>
+        </View>
+      </DashboardScreenContainer>
 
       <BottomButtonsContainer>
         {!isWatchOnly && (
           <Button
             title={t("send")}
             type="primary"
-            wide
-            linkProps={{ href: "/dashboard/transfer" }}
+            size="medium"
+            linkProps={{ href: "/dashboard/overview/send" }}
+            extraClassNames="h-14 min-w-0 flex-1 px-2"
           />
         )}
 
-        <Button
+      <Button
+          key={`receive-${isWatchOnly ? 'single' : 'double'}`}
           title={t("receive")}
           type="blackout"
-          wide={!isWatchOnly}
+          size="medium"
           fullWidth={isWatchOnly}
-          linkProps={{ href: "/dashboard/deposit" }}
+          linkProps={{ href: "/dashboard/overview/receive" }}
+          extraClassNames={`h-14 min-w-0 px-2 ${isWatchOnly ? "w-full" : "flex-1"}`}
         />
       </BottomButtonsContainer>
     </Fragment>

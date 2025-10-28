@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Keyboard } from "react-native";
+import { View, Keyboard } from "react-native";
 import { router } from "expo-router";
 import { useAppStore } from "@/hooks/useAppStore";
 import { PinAuthenticator } from "@/features/Auth/components/PinAuthenticator";
@@ -11,6 +11,7 @@ import { readPin, deletePin } from "@/utils/sec/handlePin";
 import { deleteSecretKey } from "@/utils/sec/handleSecretKeys";
 import { useAccountStore } from "@/hooks/useAccountStore";
 import * as LocalAuthentication from "expo-local-authentication";
+import { recipientsStore } from "@/states/recipientsStore";
 
 const initialValues = [...new Array(PUBLIC_PIN_LENGTH)];
 
@@ -78,8 +79,6 @@ export const LoginAuthScreen = () => {
     const areAllFieldsFilled = value.join("").length === PUBLIC_PIN_LENGTH;
     setFailedAuthAttempts(0);
 
-    // This timeout is here because of the success sound feedback :D, the tone lasts 3 seconds
-    // As UX practice, if user logs in with hardware auth, the tone will not sound, because user want to log in quick
     setTimeout(
       () => {
         if (!isAccountEnrolled) {
@@ -88,7 +87,7 @@ export const LoginAuthScreen = () => {
           router.replace("/dashboard/overview");
         }
       },
-      areAllFieldsFilled ? 2700 : 1000
+      areAllFieldsFilled ? 1000 : 1000
     );
   };
 
@@ -99,7 +98,6 @@ export const LoginAuthScreen = () => {
     setLocked(true);
 
     alert(t("resetApp"));
-
     Keyboard.dismiss();
 
     const promises: Promise<boolean>[] = [];
@@ -113,13 +111,14 @@ export const LoginAuthScreen = () => {
     deletePin().then(() => {
       resetAppStore();
 
-      Promise.allSettled(promises).then((data) => {
+      recipientsStore.getState().reset();
+
+      Promise.allSettled(promises).then(() => {
         resetAccountStore();
 
-        // Timeout is applied because error audio must finish, otherwise app will break
         setTimeout(() => {
           router.replace("/terms");
-        }, 3000);
+        }, 1000);
       });
     });
   };
@@ -145,18 +144,20 @@ export const LoginAuthScreen = () => {
   }, [failedAuthAttempts]);
 
   return (
-    <PinAuthenticator
-      label={t("auth.loginPassCodeTitle")}
-      complementaryLabel={t("auth.loginPassCodeDescription")}
-      errorLabel={t("auth.verifyIncorrectPassCode")}
-      successLabel={`${t("auth.loginCorrectPassCode")} 😊`}
-      error={error}
-      success={success}
-      length={PUBLIC_PIN_LENGTH}
-      value={value}
-      onChange={handleOnChangeValues}
-      onReset={resetValues}
-      disabled={loading || locked}
-    />
+    <View className="flex-1 items-center justify-start pt-24 bg-white dark:bg-black">
+      <PinAuthenticator
+        label={t("auth.loginPassCodeTitle")}
+        complementaryLabel={t("auth.loginPassCodeDescription")}
+        errorLabel={t("auth.verifyIncorrectPassCode")}
+        successLabel={`${t("auth.loginCorrectPassCode")} 😊`}
+        error={error}
+        success={success}
+        length={PUBLIC_PIN_LENGTH}
+        value={value}
+        onChange={handleOnChangeValues}
+        onReset={resetValues}
+        disabled={loading || locked}
+      />
+    </View>
   );
 };

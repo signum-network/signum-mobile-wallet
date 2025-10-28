@@ -7,6 +7,7 @@ import { useAccount } from "@/hooks/useAccount";
 import { useTicker } from "@/hooks/useTicker";
 import { useActiveMarketRate } from "@/hooks/useActiveMarketRate";
 import { formatNumber } from "@/utils/formatNumber";
+import { SignaSymbol } from "@/components/SignaSymbol";
 
 export const Balance = () => {
   const { t } = useTranslation();
@@ -53,7 +54,7 @@ export const Balance = () => {
 
           <View className="w-full flex flex-row items-center gap-2">
             <Text className="font-medium text-xl">
-              Ꞩ{formatNumber({ value: totalBalance })}
+              <SignaSymbol size={18} /> {formatNumber({ value: totalBalance })}
             </Text>
 
             <Text size="large" color="muted" className="font-medium">

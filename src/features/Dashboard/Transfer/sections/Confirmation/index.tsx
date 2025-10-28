@@ -1,4 +1,5 @@
 import { View } from "react-native";
+import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
 import { Amount } from "@signumjs/util";
@@ -18,8 +19,8 @@ import { signumBlueSymbolPicture } from "@/assets";
 import { type TransactionCreation } from "../../utils/types";
 import { ResolvedAccountCard } from "../../components/ResolvedAccountCard";
 import Ionicons from "@expo/vector-icons/Ionicons";
-
 import * as Clipboard from "expo-clipboard";
+import { recipientsStore } from "@/states/recipientsStore";
 
 interface Props {
   onSubmit: () => void;
@@ -40,6 +41,27 @@ export const Confirmation = ({
   const { price, symbol } = useActiveMarketRate();
   const { watch } = useFormContext<TransactionCreation>();
 
+  // Get recipient from the form
+  const recipient = watch("recipient");
+
+  // Touch action from the store
+  const addOrTouchRecipient = recipientsStore((s) => s.addOrTouchRecipient);
+
+  // Ensure that each transaction is touched only once
+  const touchedTxRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (
+      isComplete &&
+      !!transactionId &&
+      !!recipient &&
+      touchedTxRef.current !== transactionId
+    ) {
+      addOrTouchRecipient({ address: recipient });
+      touchedTxRef.current = transactionId;
+    }
+  }, [isComplete, transactionId, recipient, addOrTouchRecipient]);
+
   const asset = watch("asset");
   const amount = watch("amount");
   const includeMemo = watch("includeMemo");
@@ -52,14 +74,12 @@ export const Confirmation = ({
   const { avatarIpfsHash } = useTokenTransactionalData(asset);
 
   const isAssetSigna = asset === "0";
-
   const readableTicker = isAssetSigna ? NativeTicker : tokenTicker;
 
   const signaAmountMarketValue =
     isAssetSigna && amount && price ? amount * price : 0;
 
   const signaFees = fee ? Number(Amount.fromPlanck(fee).getSigna()) : 0;
-
   const signaFeesMarketValue = signaFees && price ? signaFees * price : 0;
 
   const copyTransactionId = async () => {
@@ -123,7 +143,7 @@ export const Confirmation = ({
           </Card>
         )}
 
-        <View className="w-full flex flex-col gap-1">
+        <View className="w-full flex flex-col gap-1 text-left">
           <Text size="large" color="muted" className="font-bold">
             {t("recipient")}
           </Text>

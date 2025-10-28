@@ -1,10 +1,12 @@
-import { View, Pressable } from "react-native";
+import { View, ScrollView ,Pressable } from "react-native";
 import { useTranslation } from "react-i18next";
 import { Text } from "@/components/Text";
 import { Card } from "@/components/Card";
 import { appStore } from "@/states/appStore";
 import type { locales } from "@/locales";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { useAppTheme } from "@/hooks/useAppTheme";
+
 
 interface Props {
   lng: locales;
@@ -22,13 +24,15 @@ export const LanguageCard = ({ lng, label }: Props) => {
 
   const isCurrentLanguage = language === lng;
 
+  const { iconColor } = useAppTheme();
+
   return (
     <Pressable
       onPress={changeLanguage}
       className="w-full rounded-lg active:opacity-80 ripple-[#333] ripple-bordered"
     >
       <Card>
-        <View className="w-full flex flex-row justify-between items-center">
+        <View className="h-12 w-full flex flex-row justify-between items-center">
           <View className="flex flex-row gap-1 items-center justify-start">
             <Text className="font-medium" size="large">
               {label}
@@ -38,10 +42,9 @@ export const LanguageCard = ({ lng, label }: Props) => {
               {lng.toUpperCase()}
             </Text>
           </View>
-
           {isCurrentLanguage && (
-            <View className="flex flex-col items-center justify-center">
-              <Ionicons name="checkbox" size={36} color="green" />
+            <View className="w-20 flex flex-col items-center justify-center">
+               <Ionicons name="checkmark-circle" size={20} color={iconColor.green} />
 
               <Text color="success" className="font-bold" size="small">
                 {t("settings.account.active")}

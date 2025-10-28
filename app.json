@@ -2,10 +2,10 @@
   "expo": {
     "name": "Signum Mobile Wallet",
     "slug": "signum-mobile-wallet",
-    "version": "1.0.0",
+    "version": "1.0.3",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -21,8 +21,10 @@
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "NSFaceIDUsageDescription": "Allow $(PRODUCT_NAME) to use Face ID for wallet authentication"
-      }
+        "NSFaceIDUsageDescription": "Allow $(PRODUCT_NAME) to use Face ID for wallet authentication",
+        "ITSAppUsesNonExemptEncryption": false
+      },
+      "bundleIdentifier": "com.signum.mobile"
     },
     "android": {
       "edgeToEdgeEnabled": true,
@@ -58,17 +60,16 @@
       ],
       "expo-localization",
       "expo-asset",
-      "expo-sqlite",
-      "expo-audio"
+      "expo-sqlite"
     ],
     "extra": {
       "router": {
         "origin": false
       },
       "eas": {
-        "projectId": "f778d323-0563-479a-8392-3ea2135d8f9e"
+        "projectId": "0765d670-c2f7-4e5b-a395-49a08823ab2b"
       }
     },
-    "owner": "snamobile"
+    "owner": "angis"
   }
 }

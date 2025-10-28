@@ -1,5 +1,5 @@
 import { View } from "react-native";
-import { useRef, useEffect, useMemo, type RefObject } from "react";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
 import { Text } from "@/components/Text";
@@ -8,18 +8,16 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import { generateSeed, pickRandomKeySeedIndex } from "@/utils/sec/generateSeed";
 import { generateSecretKeys } from "@/utils/sec/handleSecretKeys";
 import { downloadSeed } from "@/utils/sec/downloadSeed";
+import { buildQrSvg } from "@/utils/sec/qrSvg";
 import { Address } from "@signumjs/core";
 import type { AccountCreation } from "../../utils/types";
 import * as Clipboard from "expo-clipboard";
-import QRCode from "react-qr-code";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 export const SecretPhraseGeneration = () => {
   const { t } = useTranslation();
   const { iconColor } = useAppTheme();
   const { watch, setValue } = useFormContext<AccountCreation>();
-
-  const QrCodeRef: RefObject<QRCode> & RefObject<SVGSVGElement> = useRef(null!);
 
   const seedPhrase = watch("seedPhrase");
 
@@ -34,31 +32,15 @@ export const SecretPhraseGeneration = () => {
   };
 
   const copyToClipboard = async () => {
+    if (!seedPhrase) return;
     await Clipboard.setStringAsync(seedPhrase);
     alert(t("accountWizard.createAccount.copiedSeedPhrase"));
   };
 
-  // Fun topic to share: I Had to convert React Native SVG to a HTML Compatible SVG in order to allow the user to download the QR Code
-  const qrCodePrintPaths = useMemo(() => {
-    if (!seedPhrase || !QrCodeRef.current?.props?.children) return "";
-
-    const paths: string[] = [];
-
-    // @ts-ignore
-    QrCodeRef.current.props.children.forEach((children) => {
-      if (!children || !children.props) return;
-
-      const { d, fill } = children.props;
-
-      paths.push(`
-      <path d='${d}' fill='${fill}' />
-      `);
-    });
-
-    return paths.join("");
-  }, [seedPhrase, QrCodeRef, QrCodeRef.current?.props?.children]);
-
   const download = () => {
+    if (!seedPhrase) return alert("QR generation error");
+    // Build crisp SVG once here (no refs needed)
+    const { moduleCount, paths } = buildQrSvg(seedPhrase, "M");
     const { publicKey } = generateSecretKeys(seedPhrase);
     const accountAddress =
       Address.fromPublicKey(publicKey).getReedSolomonAddress() || "";
@@ -73,7 +55,10 @@ export const SecretPhraseGeneration = () => {
       secondDescription: t(
         "accountWizard.createAccount.secretPhraseCreationSecondDescription"
       ),
-      qrCodePaths: qrCodePrintPaths,
+      qrCodePaths: paths,
+      moduleCount, // <<-- used for pixel-perfect sizing + quiet zone
+      quietZoneModules: 4, // <<-- standard
+      moduleSizePx: 7, // <<-- print-friendly size (252/294/... px)
     });
   };
 
@@ -82,7 +67,7 @@ export const SecretPhraseGeneration = () => {
   }, []);
 
   return (
-    <View className="flex justify-center items-center gap-4 pt-8">
+    <View className="flex justify-center items-center gap-4 pt-8 w-full">
       <Text size="extraLarge" className="font-bold text-center">
         {t("accountWizard.createAccount.secondStepTitle")}
       </Text>
@@ -100,46 +85,28 @@ export const SecretPhraseGeneration = () => {
           {seedPhrase ? seedPhrase : t("loading") + "..."}
         </Text>
       </View>
-
-      <View className="hidden h-0 overflow-hidden">
-        <QRCode
-          size={0}
-          style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-          value={seedPhrase}
-          viewBox="0 0 50 50"
-          ref={QrCodeRef}
-        />
-      </View>
-
       <View className="flex flex-col justify-center w-full gap-4 items-center px-8">
         <Button
           icon={<Ionicons name="copy" size={24} color="white" />}
           type="secondary"
           title={t("copyToClipboard")}
+          size="medium"
           fullWidth
           pressableProps={{ onPress: copyToClipboard }}
           disabled={!seedPhrase}
         />
-
         <Text color="muted">{t("or")}</Text>
-
         <Button
-          icon={
-            <Ionicons
-              name="cloud-download"
-              size={24}
-              color={iconColor.blackout}
-            />
-          }
+          icon={<Ionicons name="cloud-download" size={24} color={iconColor.blackout} />}
           type="blackout"
           title={t("download")}
+          size="medium"
           fullWidth
           pressableProps={{ onPress: download }}
           disabled={!seedPhrase}
         />
       </View>
-
-      <Text className="text-center">
+      <Text className="text-center pb-20">
         {t("accountWizard.createAccount.secondStepSeedPhraseSecondTip")}
       </Text>
     </View>

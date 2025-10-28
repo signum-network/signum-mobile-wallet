@@ -61,7 +61,7 @@ export const AccountSwitcher = ({ href }: Props) => {
           <View className="border rounded-lg border-card-border dark:border-card-border-dark p-4 opacity-80">
             <FontAwesome6
               name="arrows-rotate"
-              size={28}
+              size={20}
               color={iconColor.default}
             />
           </View>

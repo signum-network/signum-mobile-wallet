@@ -23,6 +23,9 @@ import { getBalancesFromAccount } from "@/utils/account/getBalancesFromAccount";
 import { getTokenBalancesFromAccount } from "@/utils/account/getTokenBalancesFromAccount";
 import { PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MILLISECONDS } from "@/types/constants";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { Pulse } from "@/components/Puls";
+import { asRSAddress } from "@/utils/account/asRSAddress";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
 interface Props {
   publicKey: string;
@@ -30,7 +33,7 @@ interface Props {
   walletName: string;
 }
 
-export const ITEM_HEIGHT = 90;
+export const ITEM_HEIGHT = 116;
 const WIDTH_SCREEN = Dimensions.get("window").width;
 
 export const AccountCard = ({ publicKey, type, walletName }: Props) => {
@@ -87,6 +90,10 @@ export const AccountCard = ({ publicKey, type, walletName }: Props) => {
 
   const isCurrentAccount = activeAccount === publicKey;
 
+  //Check if account activation is in progress
+  const networkData = currentAccount?.[currentNetwork];
+  const activationInProgress = !!networkData?.activationInProgress;
+
   // TODO: Remove "transactions history", "subscription" from account
   const removeAccount = async () => {
     itemHeight.set(0);
@@ -137,6 +144,8 @@ export const AccountCard = ({ publicKey, type, walletName }: Props) => {
   };
 
   const pan = Gesture.Pan()
+    .activeOffsetX([-20, 20])
+    .failOffsetY([-20, 20])
     .onBegin(() => {
       pressed.set(true);
     })
@@ -171,7 +180,7 @@ export const AccountCard = ({ publicKey, type, walletName }: Props) => {
 
   const itemHeightStyle = useAnimatedStyle(() => ({
     height: itemHeight.value,
-    marginTop: 32,
+    marginTop: 14,
   }));
 
   useQuery({
@@ -197,8 +206,8 @@ export const AccountCard = ({ publicKey, type, walletName }: Props) => {
         );
 
         const tokenBalance = getTokenBalancesFromAccount(
-          assetBalances,
-          unconfirmedAssetBalances
+          assetBalances || [],
+          unconfirmedAssetBalances || []
         );
 
         updateAccountData(publicKey, currentNetwork, {
@@ -212,21 +221,30 @@ export const AccountCard = ({ publicKey, type, walletName }: Props) => {
         });
 
         return true;
-      } catch (error: any) {
-        if (
-          error.message === "incorrectAccount" ||
-          error.message === "unknownAccount"
-        ) {
-          updateAccountActivationStatus(publicKey, currentNetwork, false);
-        }
-
-        return false;
-      }
+} catch (error: any) {
+  if (error.message === "incorrectAccount" || error.message === "unknownAccount") {
+   
+    updateAccountData(publicKey, currentNetwork, {
+      loading: false,
+      isSecured: false,
+      activationInProgress: false,
+      name: "",
+      description: "",
+      balance: {
+        ...currentAccount?.[currentNetwork]?.balance,
+      },
+      tokenBalance: [],
+    });
+  }
+  return false;
+}
     },
     refetchInterval: PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MILLISECONDS,
     staleTime: PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MILLISECONDS,
     enabled: isActiveNodeSynced && !!ledgerService,
   });
+
+const { iconColor } = useAppTheme();
 
   return (
     <GestureDetector gesture={pan}>
@@ -272,15 +290,27 @@ export const AccountCard = ({ publicKey, type, walletName }: Props) => {
 
               <View className="flex flex-col gap-1">
                 <Text className="font-bold">{walletName}</Text>
-
+                <Text color="muted">{asRSAddress(accountId)}</Text>
                 <Text color="muted" className="font-bold">
                   {formatNumber({ value: availableBalance })} {NativeTicker}
                 </Text>
 
                 {!isSecured ? (
-                  <Text color="error" size="small" className="font-medium">
-                    ⚠️ {t("settings.account.unsecuredAccount")}
-                  </Text>
+                  activationInProgress ? (
+                    <Pulse>
+                      <Text
+                        color="primary"
+                        size="small"
+                        className="font-medium"
+                      >
+                        ⏳ {t("unsafeAccount.activating")}
+                      </Text>
+                    </Pulse>
+                  ) : (
+                    <Text color="error" size="small" className="font-medium">
+                      ⚠️ {t("settings.account.unsecuredAccount")}
+                    </Text>
+                  )
                 ) : (
                   <Text color="primary" size="small" className="font-medium">
                     {type === AccountType.watchOnly
@@ -293,7 +323,7 @@ export const AccountCard = ({ publicKey, type, walletName }: Props) => {
 
             {isCurrentAccount && (
               <View className="flex flex-col items-center justify-center">
-                <Ionicons name="checkbox" size={36} color="green" />
+                <Ionicons name="checkmark-circle" size={20} color={iconColor.green} />
 
                 <Text color="success" className="font-bold" size="small">
                   {t("settings.account.active")}
