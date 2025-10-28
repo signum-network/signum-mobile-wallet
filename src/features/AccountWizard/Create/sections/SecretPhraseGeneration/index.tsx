@@ -19,7 +19,6 @@ export const SecretPhraseGeneration = () => {
   const { iconColor } = useAppTheme();
   const { watch, setValue } = useFormContext<AccountCreation>();
 
-
   const seedPhrase = watch("seedPhrase");
 
   const generateSeedPhrase = () => {
@@ -50,12 +49,16 @@ export const SecretPhraseGeneration = () => {
       seed: seedPhrase,
       accountAddress,
       title: t("accountWizard.createAccount.secondStepTitle"),
-      description: t("accountWizard.createAccount.secretPhraseCreationDescription"),
-      secondDescription: t("accountWizard.createAccount.secretPhraseCreationSecondDescription"),
+      description: t(
+        "accountWizard.createAccount.secretPhraseCreationDescription"
+      ),
+      secondDescription: t(
+        "accountWizard.createAccount.secretPhraseCreationSecondDescription"
+      ),
       qrCodePaths: paths,
-      moduleCount,          // <<-- used for pixel-perfect sizing + quiet zone
-      quietZoneModules: 4,  // <<-- standard
-      moduleSizePx: 7,      // <<-- print-friendly size (252/294/... px)
+      moduleCount, // <<-- used for pixel-perfect sizing + quiet zone
+      quietZoneModules: 4, // <<-- standard
+      moduleSizePx: 7, // <<-- print-friendly size (252/294/... px)
     });
   };
 
@@ -64,52 +67,48 @@ export const SecretPhraseGeneration = () => {
   }, []);
 
   return (
-        <View className="flex justify-center items-center gap-4 pt-8 w-full">
-          <Text size="extraLarge" className="font-bold text-center">
-            {t("accountWizard.createAccount.secondStepTitle")}
-          </Text>
+    <View className="flex justify-center items-center gap-4 pt-8 w-full">
+      <Text size="extraLarge" className="font-bold text-center">
+        {t("accountWizard.createAccount.secondStepTitle")}
+      </Text>
 
-          <Text size="large" color="muted" className="text-center">
-            {t("accountWizard.createAccount.secondStepDescription")}
-          </Text>
+      <Text size="large" color="muted" className="text-center">
+        {t("accountWizard.createAccount.secondStepDescription")}
+      </Text>
 
-          <Text size="large" className="text-center font-bold">
-            🔻 {t("accountWizard.createAccount.secondStepSeedPhraseTip")} 🔻
-          </Text>
+      <Text size="large" className="text-center font-bold">
+        🔻 {t("accountWizard.createAccount.secondStepSeedPhraseTip")} 🔻
+      </Text>
 
-          <View className="p-4 py-6 w-full bg-card-foreground dark:bg-card-foreground-dark border border-card-border dark:border-card-border-dark rounded-md">
-            <Text size="extraLarge">
-              {seedPhrase ? seedPhrase : t("loading") + "..."}
-            </Text>
-          </View>
-          <View className="flex flex-col justify-center w-full gap-4 items-center px-8">
-            <Button
-              icon={<Ionicons name="copy" size={24} color="white" />}
-              type="secondary"
-              title={t("copyToClipboard")}
-              fullWidth
-              pressableProps={{ onPress: copyToClipboard }}
-              disabled={!seedPhrase}
-            />
-            <Text color="muted">{t("or")}</Text>
-            <Button
-              icon={
-              <Ionicons 
-              name="cloud-download" 
-              size={24} 
-              color={iconColor.blackout} 
-              />
-            }
-              type="blackout"
-              title={t("download")}
-              fullWidth
-              pressableProps={{ onPress: download }}
-              disabled={!seedPhrase}
-            />
-          </View>
-          <Text className="text-center pb-20">
-            {t("accountWizard.createAccount.secondStepSeedPhraseSecondTip")}
-          </Text>
-        </View>
+      <View className="p-4 py-6 w-full bg-card-foreground dark:bg-card-foreground-dark border border-card-border dark:border-card-border-dark rounded-md">
+        <Text size="extraLarge">
+          {seedPhrase ? seedPhrase : t("loading") + "..."}
+        </Text>
+      </View>
+      <View className="flex flex-col justify-center w-full gap-4 items-center px-8">
+        <Button
+          icon={<Ionicons name="copy" size={24} color="white" />}
+          type="secondary"
+          title={t("copyToClipboard")}
+          size="medium"
+          fullWidth
+          pressableProps={{ onPress: copyToClipboard }}
+          disabled={!seedPhrase}
+        />
+        <Text color="muted">{t("or")}</Text>
+        <Button
+          icon={<Ionicons name="cloud-download" size={24} color={iconColor.blackout} />}
+          type="blackout"
+          title={t("download")}
+          size="medium"
+          fullWidth
+          pressableProps={{ onPress: download }}
+          disabled={!seedPhrase}
+        />
+      </View>
+      <Text className="text-center pb-20">
+        {t("accountWizard.createAccount.secondStepSeedPhraseSecondTip")}
+      </Text>
+    </View>
   );
 };

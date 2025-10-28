@@ -215,9 +215,9 @@
   },
   "unsafeAccount": {
     "title": "Konto ist unsicher",
-    "description": "Dieses Konto ist noch nicht vollständig in der Blockchain registriert. Bitte aktiviere dein Konto, um die Sicherheit zu gewährleisten und es vollständig für alle Dienste, auch Börsen, nutzen zu können",
-    "activate": "Konto aktivieren",
-    "activating": "Konto wird aktiviert",
+    "description": "Dieses Konto ist noch nicht vollständig in der Blockchain registriert. Bitte registriere dein Konto, um die Sicherheit zu gewährleisten und es vollständig für alle Dienste, einschließlich Börsen, nutzen zu können.",
+    "activate": "Konto registrieren",
+    "activating": "Konto wird im Netzwerk registriert",
     "accountActivationIsPending": "Dies kann bis zu {{blocktime}} Minuten dauern",
     "visitAccountManager": "Zur Kontoverwaltung"
   },

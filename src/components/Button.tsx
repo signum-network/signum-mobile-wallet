@@ -14,6 +14,7 @@ export interface Props {
   icon?: ReactNode;
   fullWidth?: boolean;
   wide?: boolean;
+  rounded?: boolean;
   children?: ReactNode;
   disabled?: boolean;
   extraClassNames?: string;
@@ -29,6 +30,7 @@ export const Button = ({
   icon,
   fullWidth,
   wide,
+  rounded = true,
   children,
   disabled = false,
   extraClassNames,
@@ -38,7 +40,6 @@ export const Button = ({
 
   const heightClass =
     size === "small" ? "h-12" : size === "large" ? "h-16" : "h-14";
-
 
   const bgClass =
     type === "primary"
@@ -52,12 +53,13 @@ export const Button = ({
       : undefined;
 
   const classNames = clsx(
-    "flex flex-row justify-center items-center py-1 rounded-lg active:opacity-80 ripple-[#333] ripple-bordered",
+    "flex flex-row justify-center items-center py-1 active:opacity-80 ripple-[#333] ripple-bordered",
     heightClass,
     fullWidth && "w-full",
     bgClass,
     disabled && "!bg-slate-200",
     wide && "!px-16",
+    rounded ? "rounded-full" : "rounded-lg",
     extraClassNames
   );
 
@@ -84,7 +86,12 @@ export const Button = ({
       className={textClassNames}
       numberOfLines={2}
       ellipsizeMode="tail"
-      style={{ flexShrink: 1, flexWrap: "wrap", textAlign: "center", lineHeight }}
+      style={{
+        flexShrink: 1,
+        flexWrap: "wrap",
+        textAlign: "center",
+        lineHeight,
+      }}
     >
       {title}
     </Text>

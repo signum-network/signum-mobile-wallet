@@ -124,11 +124,13 @@ export const EnrollAuthScreen = () => {
   }, [verificationSuccess, verificationError]);
 
   return (
-  <View className="flex-1 items-center justify-start pt-12 bg-white dark:bg-black">
-    <View className="max-w-md mb-2 justify-center h-14">
-      {step === Steps.verify ? (
+  <View className="flex-1 items-center justify-start bg-white dark:bg-black">
+    <View className="max-w-md mb-2 justify-center h-14 pt-4">
+      {step === Steps.verify && verificationError ? (
         <Button
-          type="secondary"
+          type="blackout"
+          size="small"
+          rounded
           title={t("auth.goBack")}
           pressableProps={{
             onPress: resetProgress,

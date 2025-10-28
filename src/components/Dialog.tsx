@@ -21,7 +21,10 @@ export const Dialog = ({ visible, variant, onClose, children }: Props) => {
   return (
     <Modal
       animationType="fade"
-      transparent={isTransparent}
+      transparent
+      statusBarTranslucent
+      presentationStyle="overFullScreen"
+      hardwareAccelerated
       visible={visible}
       onRequestClose={onClose}
     >

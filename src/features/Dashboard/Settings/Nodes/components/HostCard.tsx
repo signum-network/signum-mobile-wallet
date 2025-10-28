@@ -43,7 +43,7 @@ export const HostCard = ({
         </View>
 
         {showPickButton && (
-          <View className="flex flex-row items-center justify-center gap-2 px-2">
+          <View className="w-20 flex flex-col items-center justify-center">
             <Ionicons
               name={
                 isCurrentActiveNode
@@ -52,11 +52,11 @@ export const HostCard = ({
               }
               size={20}
               color={
-                isCurrentActiveNode ? iconColor.primary : iconColor.default
+                isCurrentActiveNode ? iconColor.green : iconColor.muted
               }
             />
 
-            <Text color={isCurrentActiveNode ? "primary" : "content"}>
+            <Text size="small" color={isCurrentActiveNode ? "success" : "muted"}>
               {t(
                 isCustomNodeCard
                   ? "settings.node.options"

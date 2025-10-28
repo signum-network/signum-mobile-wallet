@@ -132,11 +132,6 @@ export const CommitmentScreen = () => {
         <ScrollView>
           <DashboardScreenContainer>
             <View className="flex flex-col items-start justify-center w-full px-4 pt-4 pb-20 gap-4">
-              <Balance
-                availableBalance={availableBalance}
-                committedBalance={committedBalance}
-              />
-
               {!isComplete ? (
                 <Operation
                   availableBalance={availableBalance}
@@ -146,6 +141,10 @@ export const CommitmentScreen = () => {
               ) : (
                 <CompleteCard transactionId={transactionId} />
               )}
+              <Balance
+                availableBalance={availableBalance}
+                committedBalance={committedBalance}
+              />
             </View>
           </DashboardScreenContainer>
         </ScrollView>

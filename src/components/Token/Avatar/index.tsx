@@ -34,7 +34,7 @@ export const TokenAvatar = ({
   return (
     <View
       className={clsx([
-        "size-10 overflow-hidden rounded-lg",
+        "size-11 overflow-hidden rounded-lg",
         !ipfsImage && "pr-1",
         extraClassNames && extraClassNames,
       ])}

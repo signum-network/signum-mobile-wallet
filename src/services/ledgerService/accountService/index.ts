@@ -42,39 +42,52 @@ export class AccountService extends LedgerSubService {
     );
   }
 
-  activate(accountId: string, publicKey: string) {
-    return handleError(async () => {
-      const isTestnet = nodeHostStore.getState().activeNodeHost.isTestnet;
+ activate(accountId: string, publicKey: string) {
+  return handleError(async () => {
+    const isTestnet = nodeHostStore.getState().activeNodeHost.isTestnet;
 
-      const signumAccountActivatorUrl = isTestnet
-        ? PUBLIC_SIGNUM_ACCOUNT_ACTIVATOR_TESTNET_URL
-        : PUBLIC_SIGNUM_ACCOUNT_ACTIVATOR_MAINNET_URL;
+    const signumAccountActivatorUrl = isTestnet
+      ? PUBLIC_SIGNUM_ACCOUNT_ACTIVATOR_TESTNET_URL
+      : PUBLIC_SIGNUM_ACCOUNT_ACTIVATOR_MAINNET_URL;
 
-      await fetch(`${signumAccountActivatorUrl}/api/activate`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          account: accountId,
-          publickey: publicKey,
-          ref: "signum-mobile-wallet",
-        }),
-      })
-        .then((res) => {
-          if (res.ok) {
-            return res.json();
-          }
-
-          return res.text().then((text) => {
-            throw new Error(text);
-          });
-        })
-        .catch((error) => {
-          throw error;
-        });
+    const res = await fetch(`${signumAccountActivatorUrl}/api/activate`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        account: accountId,
+        publickey: publicKey,
+        ref: "signum-mobile-wallet",
+      }),
     });
-  }
+
+    // Error case: Return the text if available, otherwise a generic message.
+    if (!res.ok) {
+      const text = await res.text().catch(() => "");
+      throw new Error(text || `HTTP ${res.status} ${res.statusText}`);
+    }
+
+    // 204 or empty body? => nothing to parse, simply return
+    if (res.status === 204) return;
+
+    // Only parse if Content-Type is JSON AND the body is not empty
+    const ctype = res.headers.get("content-type") || "";
+    if (!ctype.includes("application/json")) {
+      // If there is text: read it (optional for debugging), but do not parse it.
+      const maybeText = await res.text().catch(() => "");
+      return; // intentionally not an error – the endpoint is allowed to respond without JSON
+    }
+
+    const raw = await res.text(); // read text first
+    if (!raw || !raw.trim()) return; // Empty body => OK, no data expected
+
+    try {
+      return JSON.parse(raw); // valid JSON
+    } catch {
+      throw new Error("Invalid JSON from account activator endpoint");
+    }
+  });
+}
+
 
   async exists(accountId: string): Promise<boolean> {
     try {

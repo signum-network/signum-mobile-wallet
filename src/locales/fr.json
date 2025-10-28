@@ -215,9 +215,9 @@
   },
   "unsafeAccount": {
     "title": "Compte non sûr",
-    "description": "Ce compte n’est pas encore entièrement enregistré sur la blockchain. Veuillez activer votre compte pour assurer sa sécurité et le rendre pleinement utilisable pour tous les services, y compris les plateformes d’échange",
-    "activate": "Activer le compte",
-    "activating": "Activation du compte en attente",
+    "description": "Ce compte n’est pas encore entièrement enregistré sur la blockchain. Veuillez enregistrer votre compte afin d’assurer sa sécurité et de pouvoir l’utiliser pour tous les services, y compris les plateformes d’échange.",
+    "activate": "Enregistrer le compte",
+    "activating": "Enregistrement du compte en cours…",
     "accountActivationIsPending": "Cela peut prendre jusqu’à {{blocktime}} minutes",
     "visitAccountManager": "Aller au gestionnaire de comptes"
   },

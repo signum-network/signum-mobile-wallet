@@ -42,7 +42,7 @@ export const SettingsScreen = () => {
            <SettingsCard
             icon={
               <Ionicons
-                name="extension-puzzle"
+                name="information-circle-sharp"
                 size={24}
                 color={iconColor.default}
               />

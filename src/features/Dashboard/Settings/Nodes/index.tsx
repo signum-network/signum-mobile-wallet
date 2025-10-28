@@ -33,25 +33,19 @@ export const NodeSettingsScreen = () => {
 
       <DashboardScreenContainer>
         <View className="flex-1 flex-col items-center w-full gap-4 px-4">
-          <Text size="large" className="font-bold text-center mt-4">
-            {t("settings.node.connectionType")}
-          </Text>
-
-          <View className="flex flex-row items-center justify-center bg-card-foreground dark:bg-card-foreground-dark border border-card-border dark:border-card-border-dark rounded-lg max-w-md mx-auto w-full">
+          <View className="flex flex-row items-stretch gap-2 bg-card-foreground dark:bg-card-foreground-dark border border-card-border dark:border-card-border-dark rounded-full max-w-md w-full p-1 overflow-hidden">
             <Button
               icon={
                 <Ionicons
                   name="bulb"
                   size={24}
-                  color={
-                    isConnectionTypeAutomatic ? "white" : iconColor.default
-                  }
+                  color={isConnectionTypeAutomatic ? "white" : iconColor.muted}
                 />
               }
               type={isConnectionTypeAutomatic ? "primary" : undefined}
               title={t("settings.node.auto")}
-              extraClassNames="!rounded-r-none w-1/2 px-0"
-              size="large"
+              extraClassNames="flex-1 px-4"
+              size="medium"
               titleClassName={
                 isConnectionTypeAutomatic
                   ? "text-white"
@@ -65,13 +59,13 @@ export const NodeSettingsScreen = () => {
                 <Ionicons
                   name="options"
                   size={24}
-                  color={isConnectionTypeManual ? "white" : iconColor.default}
+                  color={isConnectionTypeManual ? "white" : iconColor.muted}
                 />
               }
               type={isConnectionTypeManual ? "primary" : undefined}
               title={t("settings.node.manual")}
-              extraClassNames="!rounded-l-none w-1/2 px-0"
-              size="large"
+              extraClassNames="flex-1 px-4"
+              size="medium"
               titleClassName={
                 isConnectionTypeManual
                   ? "text-white"
@@ -84,9 +78,7 @@ export const NodeSettingsScreen = () => {
           <CurrentNode />
 
           {isConnectionTypeManual ? (
-     
-              <ManualNodeWizard />
-
+            <ManualNodeWizard />
           ) : (
             <Text color="muted" className="font-bold text-center">
               {t("settings.node.nodeAutomaticSelected")}

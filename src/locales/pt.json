@@ -215,9 +215,9 @@
   },
   "unsafeAccount": {
     "title": "Conta insegura",
-    "description": "Esta conta ainda não está totalmente registrada na blockchain. Ative sua conta para garantir segurança e usá-la plenamente em todos os serviços, inclusive corretoras",
-    "activate": "Ativar conta",
-    "activating": "Ativação da conta pendente",
+    "description": "Esta conta ainda não está totalmente registrada na blockchain. Registre sua conta para garantir a segurança e poder usá-la em todos os serviços, incluindo as corretoras.",
+    "activate": "Registrar conta",
+    "activating": "A conta está sendo registrada na rede",
     "accountActivationIsPending": "Isso pode levar até {{blocktime}} minutos",
     "visitAccountManager": "Ir ao gerenciamento de contas"
   },

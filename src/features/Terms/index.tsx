@@ -44,7 +44,7 @@ export const TermsScreen = () => {
           </Text>
         </View>
 
-        <View className="flex-1 p-2 rounded-md border border-card-border dark:border-card-border-dark bg-muted dark:bg-card-foreground-dark">
+        <View className="flex-1 p-2 rounded-md border border-card-border dark:border-card-border-dark bg-muted dark:bg-card-foreground-dark/75">
           <Markdown
             value={markdown}
             styles={{  li: { paddingBottom: 10 } }}

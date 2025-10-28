@@ -26,6 +26,7 @@ import { useLedgerService } from "@/hooks/useLedgerService";
 import { useNodeHostStore } from "@/hooks/useNodeHostStore";
 import { Address } from "@signumjs/core";
 import { PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MINUTES } from "@/types/constants";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
 export const CreateScreen = () => {
   const { t } = useTranslation();
@@ -38,7 +39,7 @@ export const CreateScreen = () => {
 
   const { ledgerService } = useLedgerService();
   const { currentNetwork } = useNodeHostStore();
-
+  const { iconColor } = useAppTheme();
   const [showDialog, setShowDialog] = useState(false);
 
   const scrollRef: RefObject<ScrollView> = useRef(null!);
@@ -109,8 +110,10 @@ export const CreateScreen = () => {
           );
         });
       }
-
-      router.replace("/dashboard/account");
+      setTimeout(() => {
+        setShowDialog(false);
+        router.replace("/dashboard/account");
+      }, 4000);
     } catch (error) {
       console.error(error);
     }
@@ -123,7 +126,7 @@ export const CreateScreen = () => {
       <KeyboardAnimatedContainer>
         <Dialog variant="full" visible={showDialog}>
           <View className="flex flex-col items-center justify-center gap-4 w-full">
-            <Ionicons name="checkmark-circle" size={85} color="green" />
+            <Ionicons name="checkmark-circle" size={85} color={iconColor.green} />
 
             <Text className="text-center" size="large">
               {t("accountWizard.createAccount.accountCreated")}
@@ -142,22 +145,13 @@ export const CreateScreen = () => {
 
         <ScrollView ref={scrollRef}>
           <AccountWizardContainer>
-            {activeStep === Steps.AccountCreationAgreement && (
-       
-                <Agreement />
-
-            )}
-
+            {activeStep === Steps.AccountCreationAgreement && 
+            <Agreement />}
             {activeStep === Steps.SecretPhraseGeneration && (
-
-                <SecretPhraseGeneration />
- 
+              <SecretPhraseGeneration />
             )}
-
             {activeStep === Steps.SecretPhraseVerification && (
-  
-                <SecretPhraseVerification />
-          
+              <SecretPhraseVerification />
             )}
           </AccountWizardContainer>
         </ScrollView>

@@ -215,9 +215,9 @@
   },
   "unsafeAccount": {
     "title": "账户不安全",
-    "description": "该账户尚未在区块链上完全注册。请激活你的账户以确保安全，并可在包括交易所等所有服务中完整使用",
-    "activate": "激活账户",
-    "activating": "账户激活待处理",
+    "description": "此账户尚未在区块链上完全注册。请注册您的账户，以确保安全并能完整使用所有服务，包括交易所。",
+    "activate": "注册账户",
+    "activating": "账户正在网络上注册",
     "accountActivationIsPending": "这可能需要最多 {{blocktime}} 分钟",
     "visitAccountManager": "前往账户管理"
   },

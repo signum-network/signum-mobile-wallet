@@ -221,16 +221,23 @@ export const AccountCard = ({ publicKey, type, walletName }: Props) => {
         });
 
         return true;
-      } catch (error: any) {
-        if (
-          error.message === "incorrectAccount" ||
-          error.message === "unknownAccount"
-        ) {
-          updateAccountActivationStatus(publicKey, currentNetwork, false);
-        }
-
-        return false;
-      }
+} catch (error: any) {
+  if (error.message === "incorrectAccount" || error.message === "unknownAccount") {
+   
+    updateAccountData(publicKey, currentNetwork, {
+      loading: false,
+      isSecured: false,
+      activationInProgress: false,
+      name: "",
+      description: "",
+      balance: {
+        ...currentAccount?.[currentNetwork]?.balance,
+      },
+      tokenBalance: [],
+    });
+  }
+  return false;
+}
     },
     refetchInterval: PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MILLISECONDS,
     staleTime: PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MILLISECONDS,
@@ -316,7 +323,7 @@ const { iconColor } = useAppTheme();
 
             {isCurrentAccount && (
               <View className="flex flex-col items-center justify-center">
-                <Ionicons name="checkbox" size={20} color={iconColor.green} />
+                <Ionicons name="checkmark-circle" size={20} color={iconColor.green} />
 
                 <Text color="success" className="font-bold" size="small">
                   {t("settings.account.active")}

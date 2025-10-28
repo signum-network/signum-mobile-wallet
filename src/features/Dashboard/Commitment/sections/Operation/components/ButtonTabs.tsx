@@ -21,19 +21,19 @@ export const ButtonTabs = ({
   const { iconColor } = useAppTheme();
 
   return (
-    <View className="flex flex-row items-center justify-center bg-card-foreground dark:bg-card-foreground-dark border border-card-border dark:border-card-border-dark rounded-lg max-w-md mx-auto w-full">
+    <View className="flex flex-row items-stretch gap-2 bg-card-foreground dark:bg-card-foreground-dark border border-card-border dark:border-card-border-dark rounded-full max-w-md w-full p-1 overflow-hidden">
       <Button
         icon={
           <Ionicons
             name="add-circle-outline"
             size={24}
-            color={isOperationTypeAdd ? "white" : iconColor.default}
+            color={isOperationTypeAdd ? "white" : iconColor.muted}
           />
         }
         type={isOperationTypeAdd ? "primary" : undefined}
         title={t("add")}
-        extraClassNames="!rounded-r-none w-1/2"
-        size="large"
+        extraClassNames="flex-1 px-4"
+        size="medium"
         titleClassName={
           isOperationTypeAdd
             ? "text-white"
@@ -47,13 +47,13 @@ export const ButtonTabs = ({
           <Ionicons
             name="remove-circle-outline"
             size={24}
-            color={isOperationTypeRemove ? "white" : iconColor.default}
+            color={isOperationTypeRemove ? "white" : iconColor.muted}
           />
         }
         type={isOperationTypeRemove ? "primary" : undefined}
         title={t("remove")}
-        extraClassNames="!rounded-l-none w-1/2"
-        size="large"
+        extraClassNames="flex-1 px-4" 
+        size="medium"
         titleClassName={
           isOperationTypeRemove
             ? "text-white"

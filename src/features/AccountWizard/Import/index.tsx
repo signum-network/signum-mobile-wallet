@@ -166,19 +166,19 @@ export const ImportScreen = () => {
                 {t("accountWizard.importAccount.importDescription")}
               </Text>
 
-              <View className="flex flex-row items-center justify-center bg-card-foreground dark:bg-card-foreground-dark border border-card-border dark:border-card-border-dark rounded-lg max-w-md mx-auto w-full">
+              <View className="flex flex-row items-stretch gap-2 bg-card-foreground dark:bg-card-foreground-dark border border-card-border dark:border-card-border-dark rounded-full max-w-md w-full p-1 overflow-hidden">
                 <Button
                   icon={
                     <Ionicons
                       name="bag-check"
                       size={24}
-                      color={isAccountypeMnemonic ? "white" : iconColor.default}
+                      color={isAccountypeMnemonic ? "white" : iconColor.muted}
                     />
                   }
                   type={isAccountypeMnemonic ? "primary" : undefined}
                   title={t("fullAccount")}
-                  extraClassNames="!rounded-r-none w-1/2 px-4"
-                  size="large"
+                  extraClassNames="flex-1 px-4"
+                  size="medium"
                   titleClassName={
                     isAccountypeMnemonic
                       ? "text-white"
@@ -192,15 +192,13 @@ export const ImportScreen = () => {
                     <Ionicons
                       name="eye"
                       size={24}
-                      color={
-                        isAccountypeWatchOnly ? "white" : iconColor.default
-                      }
+                      color={isAccountypeWatchOnly ? "white" : iconColor.muted}
                     />
                   }
                   type={isAccountypeWatchOnly ? "primary" : undefined}
                   title={t("watchOnly")}
-                  extraClassNames="!rounded-l-none w-1/2 px-4"
-                  size="large"
+                  extraClassNames="flex-1 px-4"
+                  size="medium"
                   titleClassName={
                     isAccountypeWatchOnly
                       ? "text-white"
@@ -211,29 +209,29 @@ export const ImportScreen = () => {
               </View>
 
               {type === AccountType.mnemonic && (
-                  <View className="gap-4 w-full">
-                    <Text className="text-center">
-                      {t("accountWizard.importAccount.importMnemonicHint")}
-                    </Text>
-                    <CameraDialog
-                      expected={"passphrase"}
-                      onCodeScanned={onCodeScanned}
-                    />
-                    <SeedPhraseField />
-                  </View>
+                <View className="gap-4 w-full">
+                  <Text className="text-center">
+                    {t("accountWizard.importAccount.importMnemonicHint")}
+                  </Text>
+                  <CameraDialog
+                    expected={"passphrase"}
+                    onCodeScanned={onCodeScanned}
+                  />
+                  <SeedPhraseField />
+                </View>
               )}
 
               {type === AccountType.watchOnly && (
-                  <View className="gap-4 w-full">
-                    <Text className="text-center">
-                      {t("accountWizard.importAccount.importWatchOnlyHint")}
-                    </Text>
-                    <CameraDialog
-                      expected={"address"}
-                      onCodeScanned={onCodeScanned}
-                    />
-                    <AccountIdField />
-                  </View>
+                <View className="gap-4 w-full">
+                  <Text className="text-center">
+                    {t("accountWizard.importAccount.importWatchOnlyHint")}
+                  </Text>
+                  <CameraDialog
+                    expected={"address"}
+                    onCodeScanned={onCodeScanned}
+                  />
+                  <AccountIdField />
+                </View>
               )}
             </View>
 

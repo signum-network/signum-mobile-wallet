@@ -28,15 +28,27 @@ export const AccountActivationCard = () => {
   const requestActivation = async () => {
     if (!ledgerService) return;
 
-    ledgerService.account.activate(accountId, publicKey).finally(() => {
+    updateAccountPublicKeyActivationStatus(publicKey, currentNetwork, true);
+
+    try {
+      const result = await ledgerService.account.activate(accountId, publicKey);
       alert(
         `${t("unsafeAccount.activating")}\n` +
           t("unsafeAccount.accountActivationIsPending", {
             blocktime: PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MINUTES,
           })
       );
-      updateAccountPublicKeyActivationStatus(publicKey, currentNetwork, true);
-    });
+    } catch (err: any) {
+      updateAccountPublicKeyActivationStatus(publicKey, currentNetwork, false);
+      const msg = err?.message ?? "unknownError";
+      console.warn("Activation failed:", err);
+
+      alert(
+        t("errors.activationFailed", {
+          reason: msg,
+        })
+      );
+    }
   };
 
   return (

@@ -91,11 +91,11 @@ export const ManualNodeWizard = () => {
           {t("settings.node.selectANode")}
         </Text>
 
-        <View className="flex flex-row items-center justify-center bg-card-foreground dark:bg-card-foreground-dark border border-card-border dark:border-card-border-dark rounded-lg max-w-md mx-auto w-full">
+        <View className="flex flex-row items-stretch gap-2 bg-card-foreground dark:bg-card-foreground-dark border border-card-border dark:border-card-border-dark rounded-full max-w-md w-full p-1 overflow-hidden">
           <Button
             type={nodeGroup === "mainnet" ? "primary" : undefined}
             title="Mainnet"
-            extraClassNames="!rounded-r-none w-4/12"
+            extraClassNames="flex-1 px-4"
             titleClassName={
               nodeGroup === "mainnet"
                 ? "text-white"
@@ -107,7 +107,7 @@ export const ManualNodeWizard = () => {
           <Button
             type={nodeGroup === "testnet" ? "primary" : undefined}
             title="Testnet"
-            extraClassNames="w-4/12"
+            extraClassNames="flex-1 px-4"
             titleClassName={
               nodeGroup === "testnet"
                 ? "text-white"
@@ -119,7 +119,7 @@ export const ManualNodeWizard = () => {
           <Button
             type={nodeGroup === "custom" ? "primary" : undefined}
             title={t("settings.node.custom")}
-            extraClassNames="!rounded-l-none w-4/12"
+            extraClassNames="flex-1 px-4"
             titleClassName={
               nodeGroup === "custom"
                 ? "text-white"
@@ -172,8 +172,8 @@ export const ManualNodeWizard = () => {
                 {t("settings.node.noCustomNode")}
               </Text>
 
-              <View className="gap-2 flex flex-row items-center justify-center">
-                <Text color="muted">
+              <View className="gap-2 flex w-full flex-row items-center justify-center">
+                <Text className="text-center" color="muted">
                   {t("settings.node.noCustomNodeDescription")}
                 </Text>
               </View>
