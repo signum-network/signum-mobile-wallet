@@ -1,4 +1,4 @@
-import { View, Pressable, ViewStyle } from "react-native";
+import { View, Pressable } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Text } from "@/components/Text";
 import { useAppTheme } from "@/hooks/useAppTheme";

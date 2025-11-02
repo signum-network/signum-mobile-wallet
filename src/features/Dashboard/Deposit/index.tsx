@@ -1,4 +1,4 @@
-import { View, Pressable } from "react-native";
+import { View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { Card } from "@/components/Card";
@@ -10,13 +10,11 @@ import { asRSAddress } from "@/utils/account/asRSAddress";
 import * as Clipboard from "expo-clipboard";
 import QRCode from "react-qr-code";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { router } from "expo-router";
 import { AccountSwitcher } from "@/components/Account/Switcher";
 import { AppHeader } from "@/components/AppHeader";
 
 export const DepositScreen = () => {
   const { t } = useTranslation();
-  const { theme } = useAppTheme();
   const { accountId } = useAccount();
   const { iconColor } = useAppTheme();
 

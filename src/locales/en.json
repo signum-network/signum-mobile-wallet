@@ -34,7 +34,7 @@
   "download": "Download",
   "accountDoesNotExists": "This account either doesn't exist or hasn't been activated yet",
   "scanQRCode": "Scan QR Code",
-  "invalidQRCode" : "Invalid QR code",
+  "invalidQRCode": "Invalid QR code",
   "cameraPermissionRejected": "Camera access has been denied multiple times. Please go to the phone’s settings and enable camera permission to continue.",
   "requestCameraPermission": "Request Camera Permission",
   "testnetMode": "Testnet Mode",
@@ -293,6 +293,8 @@
   "transfer": {
     "title": "Transfer",
     "recipientDescription": "Set the recipient for the payment",
+    "yourAccounts": "Your accounts",
+    "recentRecipients": "Recent recipients",
     "resolvedRecipientAddress": "Account address: {{address}}",
     "resolvedRecipientAddressHint": "Use this suggestion as a helpful tool to ensure you send to the correct account",
     "recipientBurnAddress": "Burn Address",

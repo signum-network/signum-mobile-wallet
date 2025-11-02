@@ -34,7 +34,7 @@
   "download": "下载",
   "accountDoesNotExists": "该账户不存在或尚未激活",
   "scanQRCode": "扫描二维码",
-  "invalidQRCode" : "无效的二维码",
+  "invalidQRCode": "无效的二维码",
   "cameraPermissionRejected": "摄像头访问被多次拒绝。请前往手机设置启用相机权限以继续。",
   "requestCameraPermission": "请求相机访问",
   "testnetMode": "测试网模式",
@@ -293,6 +293,8 @@
   "transfer": {
     "title": "转账",
     "recipientDescription": "设置付款的收款方",
+    "yourAccounts": "您的账户",
+    "recentRecipients": "最近的收件人",
     "resolvedRecipientAddress": "账户地址：{{address}}",
     "resolvedRecipientAddressHint": "使用此建议以确保发送到正确的账户",
     "recipientBurnAddress": "销毁地址",

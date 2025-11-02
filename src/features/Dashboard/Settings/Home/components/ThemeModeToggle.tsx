@@ -3,7 +3,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
 export const ThemeModeToggle = () => {
-  const { themeMode, setThemeMode, resolvedScheme, theme } = useAppTheme();
+  const { themeMode, setThemeMode, theme } = useAppTheme();
 
   const activeColor = theme.colors.primary;
   const inactiveColor = theme.colors.text + "55";

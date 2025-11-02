@@ -44,7 +44,7 @@ const initialState: State = {
 
 export const appStore = create<State & Actions>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       ...initialState,
       reset: () => set(initialState),
 
@@ -76,12 +76,7 @@ export const appStore = create<State & Actions>()(
     {
       name: "app-storage",
       storage: createJSONStorage(() => AsyncStorage),
-      version: 2,
-      migrate: async (persisted: any) => {
-        if (!persisted) return persisted;
-        if (!persisted.themeMode) persisted.themeMode = "system";
-        return persisted;
-      },
+      version: 1,
     }
   )
 );

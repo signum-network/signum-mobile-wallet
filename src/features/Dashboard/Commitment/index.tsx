@@ -9,7 +9,7 @@ import { useAccount } from "@/hooks/useAccount";
 import { useNodeHostStore } from "@/hooks/useNodeHostStore";
 import { useLedgerService } from "@/hooks/useLedgerService";
 import { useNetworkFees } from "@/hooks/useNetworkFees";
-import { KeyboardAvoidingView } from "@/components/Form/KeyboardAvoidingView";
+import { KeyboardDismissView } from "@/components/KeyboardDismissView";
 import { SigningDialog } from "@/components/SigningDialog";
 import { readSecretKey } from "@/utils/sec/handleSecretKeys";
 import { DashboardScreenContainer } from "../components/DashboardScreenContainer";
@@ -128,7 +128,7 @@ export const CommitmentScreen = () => {
     <FormProvider {...methods}>
       <SigningDialog visible={isSigningTransaction} />
 
-      <KeyboardAvoidingView>
+      <KeyboardDismissView>
         <ScrollView>
           <DashboardScreenContainer>
             <View className="flex flex-col items-start justify-center w-full px-4 pt-4 pb-20 gap-4">
@@ -148,7 +148,7 @@ export const CommitmentScreen = () => {
             </View>
           </DashboardScreenContainer>
         </ScrollView>
-      </KeyboardAvoidingView>
+      </KeyboardDismissView>
     </FormProvider>
   );
 };

@@ -143,7 +143,7 @@ export const CreateScreen = () => {
           </View>
         </Dialog>
 
-        <ScrollView ref={scrollRef}>
+        <ScrollView ref={scrollRef} key={activeStep}>
           <AccountWizardContainer>
             {activeStep === Steps.AccountCreationAgreement && 
             <Agreement />}

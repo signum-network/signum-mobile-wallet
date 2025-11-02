@@ -1,4 +1,4 @@
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect } from "react";
 import { View, Alert } from "react-native";
 import { useTranslation } from "react-i18next";
 import { router } from "expo-router";

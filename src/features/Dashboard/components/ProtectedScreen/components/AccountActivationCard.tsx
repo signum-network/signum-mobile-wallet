@@ -31,7 +31,6 @@ export const AccountActivationCard = () => {
     updateAccountPublicKeyActivationStatus(publicKey, currentNetwork, true);
 
     try {
-      const result = await ledgerService.account.activate(accountId, publicKey);
       alert(
         `${t("unsafeAccount.activating")}\n` +
           t("unsafeAccount.accountActivationIsPending", {

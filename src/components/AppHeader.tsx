@@ -1,7 +1,6 @@
 import {
   View,
   Pressable,
-  ViewStyle,
   BackHandler,
   Platform,
 } from "react-native";

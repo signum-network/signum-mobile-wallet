@@ -15,17 +15,14 @@ import { Amount, ChainValue } from "@signumjs/util";
 import { AttachmentMessage, AttachmentEncryptedMessage } from "@signumjs/core";
 import { encryptMessage } from "@signumjs/crypto";
 import { useQueryClient } from "@tanstack/react-query";
-import { AnimatedFadeContainer } from "@/components/AnimatedFadeContainer";
 import { useAccount } from "@/hooks/useAccount";
 import { useLedgerService } from "@/hooks/useLedgerService";
 import { useNodeHostStore } from "@/hooks/useNodeHostStore";
 import { WatchOnlyAccountCard } from "@/components/Account/WatchOnlyAccountCard";
-import { KeyboardAvoidingView } from "@/components/Form/KeyboardAvoidingView";
 import { SigningDialog } from "@/components/SigningDialog";
 import { readSecretKey } from "@/utils/sec/handleSecretKeys";
 import { asAddress } from "@/utils/account/asAddress";
 import { getAccountPublicKey } from "@/utils/account/getAccountPublicKey";
-import { DashboardScreenContainer } from "../components/DashboardScreenContainer";
 import { transactionCreationSchema } from "./utils/schemas";
 import {
   Steps,
@@ -39,7 +36,9 @@ import { FeeSelection } from "./sections/FeeSelection";
 import { Confirmation } from "./sections/Confirmation";
 import { FormNavigation } from "./components/FormNavigation";
 import { FormStepper } from "./components/FormStepper";
-
+import { recipientsStore } from "@/states/recipientsStore";
+import { useAccountStore } from "@/hooks/useAccountStore";
+import { KeyboardDismissView } from "@/components/KeyboardDismissView";
 
 export const TransferScreen = () => {
   const { t } = useTranslation();
@@ -47,6 +46,7 @@ export const TransferScreen = () => {
   const { isWatchOnly, publicKey, accountId } = useAccount();
   const { currentNetwork } = useNodeHostStore();
   const { asset } = useGlobalSearchParams<GlobalSearchParams>();
+  const { accounts } = useAccountStore();
 
   const [isSigningTransaction, setIsSigningTransaction] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
@@ -176,6 +176,10 @@ export const TransferScreen = () => {
       if (confirmation?.transaction) {
         // @ts-ignore
         setTransactionId(confirmation.transaction);
+        const isOwnAccount = !!accounts[recipientPublicKey];
+        if (!isOwnAccount) {
+          recipientsStore.getState().add(recipientPublicKey);
+        }
       }
 
       scrollToTop();
@@ -201,51 +205,22 @@ export const TransferScreen = () => {
   return (
     <FormProvider {...methods}>
       <SigningDialog visible={isSigningTransaction} />
-
       {!isComplete && <FormStepper />}
+      <View className="flex-1 items-start w-full px-4 py-4 gap-4">
+        {activeStep === Steps.Recipient && <Recipient />}
+        {activeStep === Steps.HoldingsSelection &&   <KeyboardDismissView><HoldingsSelection /></KeyboardDismissView>}
+        {activeStep === Steps.MemoOptions && <MemoOptions />}
+        {activeStep === Steps.FeeSelection && <FeeSelection />}
+        {activeStep === Steps.Confirmation && (
+          <Confirmation
+            onSubmit={methods.handleSubmit(onSubmit)}
+            isComplete={isComplete}
+            transactionId={transactionId}
+            disableOnSubmit={isSigningTransaction || isComplete}
+          />
+        )}
+      </View>
       <FormNavigation />
-      <KeyboardAvoidingView>
-        <ScrollView ref={scrollRef}>
-          <DashboardScreenContainer>
-            <View className="flex flex-col items-start justify-center w-full px-4 mt-4 pb-28 gap-4">
-              {activeStep === Steps.Recipient && (
-                <AnimatedFadeContainer fullWidth>
-                  <Recipient />
-                </AnimatedFadeContainer>
-              )}
-
-              {activeStep === Steps.HoldingsSelection && (
-                <AnimatedFadeContainer fullWidth>
-                  <HoldingsSelection />
-                </AnimatedFadeContainer>
-              )}
-
-              {activeStep === Steps.MemoOptions && (
-                <AnimatedFadeContainer fullWidth>
-                  <MemoOptions />
-                </AnimatedFadeContainer>
-              )}
-
-              {activeStep === Steps.FeeSelection && (
-                <AnimatedFadeContainer fullWidth>
-                  <FeeSelection />
-                </AnimatedFadeContainer>
-              )}
-
-              {activeStep === Steps.Confirmation && (
-                <AnimatedFadeContainer fullWidth>
-                  <Confirmation
-                    onSubmit={methods.handleSubmit(onSubmit)}
-                    isComplete={isComplete}
-                    transactionId={transactionId}
-                    disableOnSubmit={isSigningTransaction || isComplete}
-                  />
-                </AnimatedFadeContainer>
-              )}
-            </View>
-          </DashboardScreenContainer>
-        </ScrollView>
-      </KeyboardAvoidingView>
     </FormProvider>
   );
 };

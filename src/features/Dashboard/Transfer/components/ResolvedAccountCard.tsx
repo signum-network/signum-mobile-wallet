@@ -60,8 +60,8 @@ export const ResolvedAccountCard = ({ simple }: Props) => {
     <Card>
       <View className="gap-1 w-full">
         {simple ? (
-          <View className="w-full flex flex-col gap-1">
-            <Text fullWidth color="content">
+          <View className="w-full flex flex-col">
+            <Text fullWidth color="primary">
               {resolvedAccount.getReedSolomonAddress()}
             </Text>
 

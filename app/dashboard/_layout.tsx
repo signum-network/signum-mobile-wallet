@@ -1,10 +1,11 @@
-
 import { Tabs } from "expo-router";
 import { useTranslation } from "react-i18next";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { StackActions } from "@react-navigation/native";
+
 type TabBarIconProperties = { color: string };
 
 export default function Layout() {
@@ -14,7 +15,7 @@ export default function Layout() {
   const tabBarLabelStyle = { fontSize: 12 };
   const insets = useSafeAreaInsets();
 
-  const tabBarActiveColor  = isDarkMode ? "#0099ff" : "#0099ff";
+  const tabBarActiveColor = isDarkMode ? "#0099ff" : "#0099ff";
   const tabBarInactiveColor = isDarkMode ? "#777777" : "#999999";
 
   return (
@@ -25,7 +26,7 @@ export default function Layout() {
           height: 72 + insets.bottom,
           paddingBottom: 8 + insets.bottom,
           paddingTop: 8,
-          backgroundColor:  isDarkMode ? "#000" : theme.colors.card,
+          backgroundColor: isDarkMode ? "#000" : theme.colors.card,
           borderTopWidth: isDarkMode ? 0.5 : 0.25,
           borderTopColor: isDarkMode ? "#444444" : "#e0e0e0",
           elevation: 0,
@@ -35,6 +36,25 @@ export default function Layout() {
         tabBarActiveTintColor: tabBarActiveColor, 
         tabBarInactiveTintColor: tabBarInactiveColor,
       }}
+      // Reset each tab's navigation stack to its root screen
+     screenListeners={({ navigation, route }) => ({
+        tabPress: () => {
+          const tabsState = navigation.getState();
+          const pressed = tabsState.routes.find(r => r.key === route.key);
+          const nested = pressed?.state;
+          if (
+            nested &&
+            typeof nested.index === "number" &&
+            nested.index > 0 &&
+            (nested.type?.includes("stack") || nested.routeNames)
+          ) {
+            navigation.dispatch({
+              ...StackActions.popToTop(),
+              target: nested.key,
+            });
+          }
+        },
+      })}
     >
       <Tabs.Screen
         options={{
@@ -77,7 +97,6 @@ export default function Layout() {
         options={{
           title: t("bottomBar.miner"),
           tabBarIcon: ({ color }: TabBarIconProperties) => (
-
             <MaterialCommunityIcons name="harddisk" size={tabBarIconSize} color={color}/>
           ),
           tabBarLabelStyle,
@@ -86,7 +105,6 @@ export default function Layout() {
       />
       <Tabs.Screen
         options={{
-          popToTopOnBlur: true,
           title: t("bottomBar.settings"),
           tabBarIcon: ({ color }: TabBarIconProperties) => (
             <Ionicons name="settings-outline" size={tabBarIconSize} color={color} />

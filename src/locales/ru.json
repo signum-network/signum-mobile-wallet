@@ -34,7 +34,7 @@
   "download": "Скачать",
   "accountDoesNotExists": "Этот аккаунт не существует или ещё не активирован",
   "scanQRCode": "Сканировать QR‑код",
-  "invalidQRCode" : "Недействительный QR-код",
+  "invalidQRCode": "Недействительный QR-код",
   "cameraPermissionRejected": "Доступ к камере был неоднократно отклонён. Перейдите в настройки телефона и включите разрешение на камеру, чтобы продолжить.",
   "requestCameraPermission": "Запросить доступ к камере",
   "testnetMode": "Режим Testnet",
@@ -293,6 +293,8 @@
   "transfer": {
     "title": "Перевод",
     "recipientDescription": "Укажите получателя платежа",
+    "yourAccounts": "Ваши счета",
+    "recentRecipients": "Недавние получатели",
     "resolvedRecipientAddress": "Адрес аккаунта: {{address}}",
     "resolvedRecipientAddressHint": "Используйте это предложение, чтобы не ошибиться с аккаунтом получателя",
     "recipientBurnAddress": "Адрес сожжения",

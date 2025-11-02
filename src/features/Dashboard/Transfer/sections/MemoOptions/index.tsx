@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { View } from "react-native";
+import { View, ScrollView } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useFormContext, Controller } from "react-hook-form";
 import { Text } from "@/components/Text";
@@ -31,60 +31,65 @@ export const MemoOptions = () => {
   }, [memo, includeMemo, isMemoEncrypted]);
 
   return (
-    <View className="gap-4 w-full">
-      <FormCheckbox
-        value={includeMemo}
-        onPress={toggleMemoAvailability}
-        title={t("transfer.addMemoTitle")}
-        description={t("transfer.addMemoDescription")}
-        fullWidth
-        bordered
-      />
-
-      {includeMemo && (
-        <>
-          <Card>
-            <View>
-              <Text size="large" className="font-medium">
-                {t("transfer.addMemoHint")}
-              </Text>
-            </View>
-
-            <Controller
-              control={control}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <TextInput
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value}
-                  extraClassNames="font-medium w-full min-h-40"
-                  size="large"
-                  maxLength={maxMemoLength}
-                  multiline
-                  textAlignVertical="top"
-                />
-              )}
-              name="memo"
-            />
-
-            <Text
-              color={memo.length > maxMemoLength ? "error" : "muted"}
-              className="self-end"
-            >
-              {`${memo.length}/${maxMemoLength}`}
-            </Text>
-          </Card>
-
+    <View>
+      <ScrollView>
+        <View className="gap-4 w-full pb-32">
           <FormCheckbox
-            value={isMemoEncrypted}
-            onPress={toggleEncryptedMemoAvailability}
-            title={"🔐 " + t("transfer.addEncryptedMemoTitle")}
-            description={t("transfer.addEncryptedMemoDescription")}
+            value={includeMemo}
+            onPress={toggleMemoAvailability}
+            title={t("transfer.addMemoTitle")}
+            description={t("transfer.addMemoDescription")}
             fullWidth
             bordered
           />
-        </>
-      )}
+
+          {includeMemo && (
+            <>
+              <Card>
+                <View>
+                  <Text size="large" className="font-medium">
+                    {t("transfer.addMemoHint")}
+                  </Text>
+                </View>
+
+                <Controller
+                  control={control}
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                      onBlur={onBlur}
+                      onChangeText={onChange}
+                      value={value}
+                      returnKeyType="done"
+                      extraClassNames="font-medium w-full min-h-40"
+                      size="large"
+                      maxLength={maxMemoLength}
+                      multiline
+                      textAlignVertical="top"
+                    />
+                  )}
+                  name="memo"
+                />
+
+                <Text
+                  color={memo.length > maxMemoLength ? "error" : "muted"}
+                  className="self-end"
+                >
+                  {`${memo.length}/${maxMemoLength}`}
+                </Text>
+              </Card>
+
+              <FormCheckbox
+                value={isMemoEncrypted}
+                onPress={toggleEncryptedMemoAvailability}
+                title={"🔐 " + t("transfer.addEncryptedMemoTitle")}
+                description={t("transfer.addEncryptedMemoDescription")}
+                fullWidth
+                bordered
+              />
+            </>
+          )}
+        </View>
+      </ScrollView>
     </View>
   );
 };
