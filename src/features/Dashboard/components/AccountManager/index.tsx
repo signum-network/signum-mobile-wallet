@@ -59,6 +59,7 @@ export const AccountManager = () => {
           <HorizontalDivider />
           <View className="w-full flex-1">
             <FlashList
+              key={accountsList.length}   
               data={accountsList}
               keyExtractor={({ publicKey }) => publicKey}
               renderItem={({ item }) => <AccountCard {...item} />}
