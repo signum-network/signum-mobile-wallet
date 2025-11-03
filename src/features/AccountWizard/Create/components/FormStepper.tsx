@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
 import { type AccountCreation, Steps, StepsAmount } from "../utils/types";
@@ -12,28 +11,6 @@ export const FormStepper = () => {
   const activeStep = watch("activeStep");
 
   const currentStep = activeStep + 1;
-
-  const stepTitle = useMemo(() => {
-    switch (activeStep) {
-      case Steps.AccountCreationAgreement:
-        return t("accountWizard.createAccount.stepper.agreementStepTitle");
-
-      case Steps.SecretPhraseGeneration:
-        return t(
-          "accountWizard.createAccount.stepper.secretPhraseGenerationTitle"
-        );
-
-      case Steps.SecretPhraseVerification:
-        return t(
-          "accountWizard.createAccount.stepper.secretPhraseVerificationTitle"
-        );
-
-      // Steps Activation
-      default:
-        return t("accountWizard.createAccount.stepper.accountActivationTitle");
-    }
-  }, [activeStep]);
-
   const { isAccountEnrolled } = useAccountStore();
 
   const goBackwards = () => {

@@ -1,11 +1,9 @@
-import { ScrollView, View } from "react-native";
+import { View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useNodeHostStore } from "@/hooks/useNodeHostStore";
 import { Text } from "@/components/Text";
 import { Button } from "@/components/Button";
-import { KeyboardAvoidingView } from "@/components/Form/KeyboardAvoidingView";
-import { AnimatedFadeContainer } from "@/components/AnimatedFadeContainer";
 import { DashboardScreenContainer } from "@/features/Dashboard/components/DashboardScreenContainer";
 import { CurrentNode } from "./sections/CurrentNode";
 import { ManualNodeWizard } from "./sections/ManualNodeWizard";

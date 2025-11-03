@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState, useCallback } from "react";
 import { View } from "react-native";
 import { useTranslation } from "react-i18next";
 import {
@@ -25,8 +25,35 @@ export const CameraDialog = ({ onCodeScanned, expected }: Props) => {
   const [permission, requestPermission] = useCameraPermissions();
 
   const [visible, setVisible] = useState(false);
-  const showDialog = () => setVisible(true);
-  const hideDialog = () => setVisible(false);
+  const showDialog = () => {
+    resetFeedback();
+    setVisible(true);
+  };
+  const hideDialog = () => {
+    setVisible(false);
+    resetFeedback();
+  };
+
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [errorLock, setErrorLock] = useState(false);
+
+  const showErrorText = useCallback(
+    (msg: string) => {
+      if (errorLock) return;
+      setErrorMsg(msg);
+      setErrorLock(true);
+      setTimeout(() => {
+        setErrorMsg(null);
+        setErrorLock(false);
+      }, 1500);
+    },
+    [errorLock]
+  );
+
+  const resetFeedback = useCallback(() => {
+    setErrorMsg(null);
+    setErrorLock(false);
+  }, []);
 
   const request = async () => {
     const { canAskAgain, granted } = await requestPermission();
@@ -43,19 +70,18 @@ export const CameraDialog = ({ onCodeScanned, expected }: Props) => {
         onCodeScanned({ ...code, data: address });
         hideDialog();
       } else {
-        alert(t("invalidQRCode"));
+        showErrorText(t("invalidQRCode"));
       }
       return;
     }
 
     if (expected === "passphrase") {
-      // Simple heuristic: passphrase must contain 10–20 words
       const words = scannedData.split(/\s+/).filter(Boolean);
       if (words.length >= 10 && words.length <= 20) {
         onCodeScanned({ ...code, data: scannedData });
         hideDialog();
       } else {
-        alert(t("invalidQRCode"));
+        showErrorText(t("invalidQRCode"));
       }
       return;
     }
@@ -74,7 +100,7 @@ export const CameraDialog = ({ onCodeScanned, expected }: Props) => {
           <Text className="mb-8 font-bold">{t("scanQRCode")}</Text>
 
           {canUseCamera ? (
-            <View className="w-full h-96 mb-8">
+            <View className="w-full h-96 mb-8 relative">
               <CameraView
                 style={{ width: "100%", height: "100%" }}
                 mute
@@ -82,6 +108,13 @@ export const CameraDialog = ({ onCodeScanned, expected }: Props) => {
                 onBarcodeScanned={scanEvent}
                 facing="back"
               />
+              {errorMsg ? (
+                <View className="absolute bottom-[-30px] left-0 right-0">
+                  <Text className="text-center font-medium text-red-500">
+                    {errorMsg}
+                  </Text>
+                </View>
+              ) : null}
             </View>
           ) : (
             <Fragment>
@@ -91,11 +124,9 @@ export const CameraDialog = ({ onCodeScanned, expected }: Props) => {
                 color={iconColor.default}
                 className="opacity-50"
               />
-
               <Text className="text-center font-medium">
                 {t("allowTheAppToUseTheCamera")} 🤖
               </Text>
-
               <Button
                 icon={<FontAwesome6 name="qrcode" size={24} color="white" />}
                 fullWidth

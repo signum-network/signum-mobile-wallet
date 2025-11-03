@@ -30,7 +30,8 @@ export const NoAccountsFoundCard = () => {
         <Button
           title={t("settings.account.addAccount")}
           type="blackout"
-          size="large"
+          size="medium"
+           extraClassNames="p-4"
           icon={
             <Ionicons
               name="add-circle-sharp"

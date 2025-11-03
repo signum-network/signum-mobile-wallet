@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
 import { FormNavButton } from "@/components/Form/NavButton";
 import { type AccountCreation, Steps } from "../utils/types";
+import { useAccountStore } from "@/hooks/useAccountStore";
 
 interface Props {
   onSubmit: () => void;
@@ -11,6 +12,7 @@ interface Props {
 export const FormNavigation = ({ onSubmit }: Props) => {
   const { t } = useTranslation();
   const { watch, setValue } = useFormContext<AccountCreation>();
+  const { isAccountEnrolled } = useAccountStore();
 
   const activeStep = watch("activeStep");
   const firstTerm = watch("firstTerm");
@@ -70,8 +72,11 @@ export const FormNavigation = ({ onSubmit }: Props) => {
     canCompleteThirdStep,
   ]);
 
+ 
+
   return (
     <FormNavButton
+      bottomOffset={isAccountEnrolled ? 0 : undefined}
       type="primary"
       title={t("continue")}
       {...FormNavButtonProps}

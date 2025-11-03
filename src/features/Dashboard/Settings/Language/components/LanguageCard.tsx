@@ -1,4 +1,4 @@
-import { View, ScrollView ,Pressable } from "react-native";
+import { View, Pressable } from "react-native";
 import { useTranslation } from "react-i18next";
 import { Text } from "@/components/Text";
 import { Card } from "@/components/Card";

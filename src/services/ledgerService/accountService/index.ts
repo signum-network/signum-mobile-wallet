@@ -72,8 +72,6 @@ export class AccountService extends LedgerSubService {
     // Only parse if Content-Type is JSON AND the body is not empty
     const ctype = res.headers.get("content-type") || "";
     if (!ctype.includes("application/json")) {
-      // If there is text: read it (optional for debugging), but do not parse it.
-      const maybeText = await res.text().catch(() => "");
       return; // intentionally not an error – the endpoint is allowed to respond without JSON
     }
 

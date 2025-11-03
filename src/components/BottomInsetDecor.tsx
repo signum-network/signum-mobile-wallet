@@ -4,7 +4,7 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 
 export function BottomInsetDecor() {
   const insets = useSafeAreaInsets();
-  const { theme, isDarkMode } = useAppTheme();
+  const { isDarkMode } = useAppTheme();
 
   if (insets.bottom === 0) return null;
 

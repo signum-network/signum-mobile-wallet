@@ -48,8 +48,9 @@ export const SecretPhraseVerification = () => {
                 }
               )}
               onBlur={onBlur}
-              onChangeText={onChange}
+              onChangeText={(text) => onChange(text.toLowerCase())} 
               value={value}
+              returnKeyType="done"
               size="large"
               textAlign="center"
               extraClassNames="font-medium"
@@ -84,6 +85,7 @@ export const SecretPhraseVerification = () => {
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
+                returnKeyType="done"
                 size="large"
                 textAlign="center"
                 maxLength={30}

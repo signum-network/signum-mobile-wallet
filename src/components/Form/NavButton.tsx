@@ -12,7 +12,6 @@ interface Props extends ButtonProps {
 
 export const FormNavButton = ({ hidden, bottomOffset, ...props }: Props) => {
   const { bottom } = useSafeAreaInsets();
-
   if (hidden) return null;
 
   return (
@@ -25,8 +24,8 @@ export const FormNavButton = ({ hidden, bottomOffset, ...props }: Props) => {
         bottom: bottomOffset ?? bottom,
         elevation: PUBLIC_CURRENT_OS === "android" ? 50 : 0,
       }}
-    className="flex flex-row justify-around items-center w-full px-4 bg-white dark:bg-black border-t border-card-border dark:border-card-border-dark gap-2"
-  >
+      className="flex flex-row justify-around items-center w-full px-4 bg-white dark:bg-black border-t border-card-border dark:border-card-border-dark gap-2"
+    >
       <Button {...props} extraClassNames="max-w-sm" size="large" fullWidth />
     </View>
   );

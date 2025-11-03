@@ -79,6 +79,8 @@ export const LoginAuthScreen = () => {
     const areAllFieldsFilled = value.join("").length === PUBLIC_PIN_LENGTH;
     setFailedAuthAttempts(0);
 
+    recipientsStore.getState().purgeExpired();
+
     setTimeout(
       () => {
         if (!isAccountEnrolled) {
@@ -111,7 +113,7 @@ export const LoginAuthScreen = () => {
     deletePin().then(() => {
       resetAppStore();
 
-      recipientsStore.getState().reset();
+      recipientsStore.getState().clear();
 
       Promise.allSettled(promises).then(() => {
         resetAccountStore();

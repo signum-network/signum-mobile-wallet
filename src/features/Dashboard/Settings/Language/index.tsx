@@ -1,5 +1,4 @@
 import { ScrollView, View } from "react-native";
-import { Text } from "@/components/Text";
 import { useTranslation } from "react-i18next";
 import { lngCards } from "@/locales";
 import { DashboardScreenContainer } from "../../components/DashboardScreenContainer";

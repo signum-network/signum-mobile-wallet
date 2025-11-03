@@ -32,7 +32,7 @@ export const CompleteCard = ({ transactionId }: Props) => {
   return (
     <Card>
       <View className="w-full flex flex-col items-center gap-1">
-        <Ionicons name="checkmark-circle" size={65} color="green" />
+        <Ionicons name="checkmark-circle" size={65} color={iconColor.green} />
 
         <Text fullWidth className="text-center" color="success" size="large">
           {t("transfer.signedTransactionTitle")}

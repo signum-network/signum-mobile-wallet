@@ -57,6 +57,9 @@ const initialState: State = {
   accounts: {},
 };
 
+const deepClone = <T,>(o: T): T => JSON.parse(JSON.stringify(o));
+
+
 export const accountStore = create<State & Actions>()(
   persist(
     (set, get) => ({
@@ -76,9 +79,9 @@ export const accountStore = create<State & Actions>()(
             type,
             publicKey,
             walletName,
-            addedAt: new Date().getTime(),
-            mainnet: defaultAccountNetworkData,
-            testnet: defaultAccountNetworkData,
+      addedAt: Date.now(),
+      mainnet: deepClone(defaultAccountNetworkData),
+      testnet: deepClone(defaultAccountNetworkData),
           };
 
           const newValue = accounts;

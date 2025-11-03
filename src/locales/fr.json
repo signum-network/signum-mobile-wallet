@@ -34,7 +34,7 @@
   "download": "Télécharger",
   "accountDoesNotExists": "Ce compte n’existe pas ou n’a pas encore été activé",
   "scanQRCode": "Scanner le QR code",
-  "invalidQRCode" : "Code QR invalide",
+  "invalidQRCode": "Code QR invalide",
   "cameraPermissionRejected": "L’accès à la caméra a été refusé plusieurs fois. Veuillez aller dans les réglages du téléphone et activer l’autorisation caméra pour continuer.",
   "requestCameraPermission": "Demander l’autorisation caméra",
   "testnetMode": "Mode Testnet",
@@ -293,6 +293,8 @@
   "transfer": {
     "title": "Transférer",
     "recipientDescription": "Définissez le destinataire du paiement",
+    "yourAccounts": "Vos comptes",
+    "recentRecipients": "Destinataires récents",
     "resolvedRecipientAddress": "Adresse du compte : {{address}}",
     "resolvedRecipientAddressHint": "Utilisez cette suggestion comme aide pour vous assurer d’envoyer au bon compte",
     "recipientBurnAddress": "Adresse de brûlage",

@@ -81,6 +81,7 @@ export const AmountBox = () => {
                   setValue("amount", data);
                 }}
                 keyboardType="numeric"
+                returnKeyType="done"
                 placeholder={t("transfer.enterAmount")}
                 size="large"
                 textAlign="center"
