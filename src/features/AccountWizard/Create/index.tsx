@@ -32,6 +32,7 @@ export const CreateScreen = () => {
   const { t } = useTranslation();
   const {
     accountWalletNames,
+    isAccountEnrolled,
     addAccount,
     setActiveAccount,
     updateAccountPublicKeyActivationStatus,
@@ -123,7 +124,7 @@ export const CreateScreen = () => {
     <FormProvider {...methods}>
       <FormNavigation onSubmit={methods.handleSubmit(onSubmit)} />
       <FormStepper />
-      <KeyboardAnimatedContainer>
+         <KeyboardAnimatedContainer baseBottom={isAccountEnrolled ? -70 : 36}> 
         <Dialog variant="full" visible={showDialog}>
           <View className="flex flex-col items-center justify-center gap-4 w-full">
             <Ionicons name="checkmark-circle" size={85} color={iconColor.green} />

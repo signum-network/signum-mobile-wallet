@@ -34,6 +34,7 @@ export const ImportScreen = () => {
   const {
     accountWalletNames,
     accountPublicKeys,
+    isAccountEnrolled,
     addAccount,
     setActiveAccount,
   } = useAccountStore();
@@ -135,7 +136,6 @@ export const ImportScreen = () => {
     }
   };
 
-  const { isAccountEnrolled } = useAccountStore();
   const goBackwards = () => {
     if (!isAccountEnrolled) {
       router.replace("/account-wizard");
@@ -153,8 +153,7 @@ export const ImportScreen = () => {
         title={t("accountWizard.quickStart.importCta")}
         onBack={goBackwards}
       />
-
-      <KeyboardAnimatedContainer>
+      <KeyboardAnimatedContainer baseBottom={isAccountEnrolled ? -70 : 36}> 
         <ScrollView>
           <AccountWizardContainer>
             <View className="flex flex-col items-center justify-center w-full gap-4">
@@ -165,7 +164,6 @@ export const ImportScreen = () => {
               <Text size="large" color="muted" className="text-center">
                 {t("accountWizard.importAccount.importDescription")}
               </Text>
-
               <View className="flex flex-row items-stretch gap-2 bg-card-foreground dark:bg-card-foreground-dark border border-card-border dark:border-card-border-dark rounded-full max-w-md w-full p-1 overflow-hidden">
                 <Button
                   icon={
@@ -207,7 +205,6 @@ export const ImportScreen = () => {
                   pressableProps={{ onPress: setWatchOnlyMode }}
                 />
               </View>
-
               {type === AccountType.mnemonic && (
                 <View className="gap-4 w-full">
                   <Text className="text-center">
@@ -220,7 +217,6 @@ export const ImportScreen = () => {
                   <SeedPhraseField />
                 </View>
               )}
-
               {type === AccountType.watchOnly && (
                 <View className="gap-4 w-full">
                   <Text className="text-center">
