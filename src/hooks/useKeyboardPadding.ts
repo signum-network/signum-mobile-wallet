@@ -85,7 +85,7 @@ export function useKeyboardPadding({
 
   const style = useAnimatedStyle(() => {
     const raw = kbd.height.value ?? 0;
-    const safeBottom = Platform.OS === "ios" ? insets.bottom : 0;
+    const safeBottom = insets.bottom;
     const height = Math.max(0, raw - safeBottom);
 
     const active = isFocused && visible.value === 1 && height > threshold;

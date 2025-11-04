@@ -31,6 +31,7 @@ export const AccountIdField = () => {
                 placeholder={t("example") + " S-5MS6..., 167552..."}
                 onBlur={onBlur}
                 onChangeText={onChange}
+                returnKeyType="done"
                 value={value}
                 size="large"
                 textAlign="center"

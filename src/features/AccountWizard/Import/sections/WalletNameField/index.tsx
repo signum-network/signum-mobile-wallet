@@ -31,6 +31,7 @@ export const WalletNameField = () => {
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
+              returnKeyType="done"
               size="large"
               textAlign="center"
               maxLength={30}
