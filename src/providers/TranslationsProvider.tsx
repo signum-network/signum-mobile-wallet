@@ -1,0 +1,15 @@
+import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import { appStore } from "@/states/appStore";
+import type { ChildrenProps } from "@/types/childrenProps";
+
+export const TranslationsProvider = ({ children }: ChildrenProps) => {
+  const { i18n } = useTranslation();
+  const language = appStore((state) => state.language);
+
+  useEffect(() => {
+    i18n.changeLanguage(language);
+  }, [language]);
+
+  return children;
+};

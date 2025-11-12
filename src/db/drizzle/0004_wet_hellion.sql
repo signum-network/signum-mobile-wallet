@@ -1,0 +1,1 @@
+ALTER TABLE `tokens-transactional-data` ADD `avatarIpfsHash` text;

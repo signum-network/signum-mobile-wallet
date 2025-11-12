@@ -1,0 +1,41 @@
+{
+  "version": "6",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1717710851055,
+      "tag": "0000_stale_maginty",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1717711613061,
+      "tag": "0001_shiny_silver_fox",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1740191370373,
+      "tag": "0002_noisy_king_bedlam",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1740193305671,
+      "tag": "0003_acoustic_meteorite",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1743259395507,
+      "tag": "0004_wet_hellion",
+      "breakpoints": true
+    }
+  ]
+}

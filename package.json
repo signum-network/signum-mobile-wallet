@@ -1,0 +1,129 @@
+{
+  "name": "signum-mobile-wallet",
+  "version": "1.1.0",
+  "main": "expo-router/entry",
+  "scripts": {
+    "start": "expo start",
+    "start-clean": "expo start -c",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "web": "expo start --web",
+    "prebuild": "npx expo prebuild --clean",
+    "expo-fix": "npx expo install --fix",
+    "expo-doctor": "npx expo-doctor@latest",
+    "ts-check": "tsc",
+    "db-generate": "npx drizzle-kit generate",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "@expo/metro-runtime": "~6.1.2",
+    "@expo/vector-icons": "^15.0.3",
+    "@hookform/resolvers": "^3.10.0",
+    "@react-native-async-storage/async-storage": "2.2.0",
+    "@react-native-community/netinfo": "11.4.1",
+    "@react-navigation/native": "^7.1.8",
+    "@shopify/flash-list": "2.0.2",
+    "@signumjs/core": "^2.0.6",
+    "@signumjs/crypto": "^2.0.6",
+    "@signumjs/http": "^2.0.8",
+    "@signumjs/react-native-expo-crypto-adapter": "github:ANGiS-X/signumjs-react-native-crypto-adapter#main",
+    "@signumjs/standards": "^2.0.7",
+    "@signumjs/util": "^2.0.6",
+    "@tanstack/react-query": "^5.80.7",
+    "babel-plugin-inline-import": "^3.0.0",
+    "clsx": "^2.1.1",
+    "colord": "^2.9.3",
+    "date-fns": "^4.1.0",
+    "drizzle-orm": "^0.44.2",
+    "expo": "^54.0.21",
+    "expo-application": "~7.0.7",
+    "expo-camera": "~17.0.8",
+    "expo-checkbox": "~5.0.7",
+    "expo-clipboard": "~8.0.7",
+    "expo-constants": "~18.0.10",
+    "expo-crypto": "~15.0.7",
+    "expo-drizzle-studio-plugin": "^0.1.2",
+    "expo-font": "^14.0.9",
+    "expo-image": "~3.0.9",
+    "expo-linking": "~8.0.8",
+    "expo-local-authentication": "~17.0.7",
+    "expo-localization": "~17.0.7",
+    "expo-print": "~15.0.7",
+    "expo-router": "^6.0.14",
+    "expo-secure-store": "~15.0.7",
+    "expo-sharing": "~14.0.7",
+    "expo-splash-screen": "~31.0.10",
+    "expo-sqlite": "~16.0.8",
+    "i18next": "^23.16.8",
+    "intl-pluralrules": "^2.0.1",
+    "js-sha3": "^0.9.3",
+    "nativewind": "^4.1.23",
+    "qrcode-generator": "^2.0.4",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "react-hook-form": "^7.54.2",
+    "react-i18next": "^14.1.3",
+    "react-native": "0.81.5",
+    "react-native-edge-to-edge": "^1.7.0",
+    "react-native-gesture-handler": "~2.28.0",
+    "react-native-marked": "^7.0.1",
+    "react-native-reanimated": "~4.1.1",
+    "react-native-safe-area-context": "~5.6.0",
+    "react-native-screens": "~4.16.0",
+    "react-native-svg": "15.12.1",
+    "react-native-web": "^0.21.0",
+    "react-native-webview": "13.15.0",
+    "react-native-worklets": "0.5.1",
+    "react-number-format": "^5.4.3",
+    "react-qr-code": "^2.0.15",
+    "tailwindcss": "^3.4.17",
+    "yup": "^1.6.1",
+    "zustand": "^4.5.6"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.28.4",
+    "@types/react": "~19.1.10",
+    "babel-plugin-module-resolver": "^5.0.2",
+    "depcheck": "^1.4.7",
+    "drizzle-kit": "^0.31.1",
+    "husky": "^9.0.11",
+    "reactotron-react-native": "^5.1.18",
+    "typescript": "~5.9.2"
+  },
+  "overrides": {
+    "react-number-format": {
+      "react": "$react",
+      "react-dom": "$react"
+    },
+    "@signumjs/react-native-expo-crypto-adapter": {
+      "expo-crypto": "15.0.7"
+    },
+    "expo-drizzle-studio-plugin": {
+      "expo-sqlite": "16.0.8"
+    },
+    "esbuild": "^0.25.11",
+    "@esbuild-kit/core-utils": {
+      "esbuild": "^0.25.11"
+    },
+    "@esbuild-kit/esm-loader": {
+      "esbuild": "^0.25.11"
+    },
+    "axios": "^1.12.2",
+    "@signumjs/http": {
+      "axios": "^1.12.2"
+    }
+  },
+  "peerDependenciesMeta": {
+    "react-dom": {
+      "optional": true
+    }
+  },
+  "expo": {
+    "doctor": {
+      "reactNativeDirectoryCheck": {
+        "listUnknownPackages": false
+      }
+    }
+  },
+  "private": true
+}

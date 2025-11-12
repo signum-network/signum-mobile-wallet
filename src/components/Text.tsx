@@ -1,0 +1,36 @@
+import { Text as NativeText } from "react-native";
+import clsx from "clsx";
+
+interface Props {
+  color?: "primary" | "content" | "white" | "muted" | "error" | "success";
+  size?: "extraSmall" | "small" | "medium" | "large" | "extraLarge";
+  className?: string;
+  fullWidth?: boolean;
+  children: any;
+}
+
+export const Text = ({
+  color = "content",
+  size = "medium",
+  className,
+  fullWidth,
+  children,
+}: Props) => {
+  const classNames = clsx([
+    color === "primary" && "text-signum dark:text-signum-dark",
+    color === "error" && "text-red dark:text-red-dark",
+    color === "white" && "text-white",
+    color === "success" && "text-green dark:text-green-dark",
+    color === "content" && "text-black dark:text-white",
+    color === "muted" &&
+      "text-muted-foreground dark:text-muted-foreground-dark",
+    size === "extraSmall" && "text-xs",
+    size === "small" && "text-sm",
+    size === "large" && "text-lg",
+    size === "extraLarge" && "text-3xl",
+    fullWidth && "w-full",
+    className && className,
+  ]);
+
+  return <NativeText className={classNames}>{children}</NativeText>;
+};
