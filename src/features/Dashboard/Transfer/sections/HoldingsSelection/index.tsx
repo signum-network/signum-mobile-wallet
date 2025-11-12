@@ -15,6 +15,8 @@ import { AssetPickerDialog } from "./components/AssetPickerDialog";
 import { AmountBox } from "./components/AmountBox";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useTokenTransactionalData } from "@/hooks/useTokenTransactionalData";
+import { PUBLIC_RESERVED_SIGNA_FOR_TX_FEE } from "@/types/constants";
+import { SignaSymbol } from "@/components/SignaSymbol";
 
 export const HoldingsSelection = () => {
   const { t } = useTranslation();
@@ -88,24 +90,33 @@ export const HoldingsSelection = () => {
                 asset={asset}
                 isAssetSigna={isAssetSigna}
                 readableTicker={readableTicker}
-                readableAvailableBalance={readableAvailableBalance}
+                readableAvailableBalance={Math.max(
+                  0,
+                  readableAvailableBalance -
+                    (isAssetSigna ? PUBLIC_RESERVED_SIGNA_FOR_TX_FEE : 0)
+                )}
                 avatarIpfsHash={avatarIpfsHash || null}
               />
 
               {!!tokenBalance.length && (
-                <View className="border rounded-lg border-card-border dark:border-card-border-dark px-2 py-4 opacity-80 flex flex-col items-center gap-1">
+                <View className="border rounded-lg border-card-border dark:border-card-border-dark px-2 py-4 opacity-80 flex flex-col items-center gap-1 max-w-28">
                   <MaterialIcons
                     name="currency-exchange"
                     size={28}
                     color={iconColor.primary}
                   />
 
-                  <Text size="extraSmall" color="primary">
+                  <Text size="extraSmall" color="primary" className="text-center">
                     {t("transfer.changeAsset")}
                   </Text>
                 </View>
               )}
             </View>
+            <Text size="medium" color="muted">
+             {"("} {t("reservedBalance")}{" "}
+               {PUBLIC_RESERVED_SIGNA_FOR_TX_FEE}{" "}
+              <SignaSymbol /> {")"}
+            </Text>
           </Card>
         </Pressable>
 

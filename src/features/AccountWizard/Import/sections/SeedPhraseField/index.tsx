@@ -30,7 +30,7 @@ export const SeedPhraseField = () => {
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
               onBlur={onBlur}
-              onChangeText={onChange}
+              onChangeText={(text) => onChange(text.toLowerCase())} 
               value={value}
               extraClassNames="font-medium w-full min-h-40"
               size="large"

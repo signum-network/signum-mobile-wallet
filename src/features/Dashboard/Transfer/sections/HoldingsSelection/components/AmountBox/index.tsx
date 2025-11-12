@@ -91,7 +91,7 @@ export const AmountBox = () => {
           />
 
           {!!(!notEnoughFunds && signaAmountMarketValue) && (
-            <Text size="large" color="muted" className="font-medium">
+            <Text size="large" color="muted" className="font-medium text-center">
               {`${symbol}${formatNumber({
                 value: signaAmountMarketValue,
                 isFiat: true,
@@ -100,12 +100,12 @@ export const AmountBox = () => {
           )}
 
           {(notEnoughFunds && !insufficientFeeFunds) && (
-            <Text color="error" className="font-medium">
+            <Text color="error" className="font-medium text-center">
               {t("notEnoguhFunds")}
             </Text>
           )}
           {(!notEnoughFunds && insufficientFeeFunds) && (
-            <Text color="error" className="font-medium">
+            <Text color="error" className="font-medium text-center">
                {t("notEnoughForFee")}
             </Text>
           )}

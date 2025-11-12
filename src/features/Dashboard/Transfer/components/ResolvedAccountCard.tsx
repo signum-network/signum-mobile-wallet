@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
@@ -7,6 +7,7 @@ import { Card } from "@/components/Card";
 import { asAddress } from "@/utils/account/asAddress";
 import type { TransactionCreation } from "../utils/types";
 import { useAccount } from "@/hooks/useAccount";
+import { useLedgerService } from "@/hooks/useLedgerService";
 
 interface Props {
   simple?: boolean;
@@ -16,21 +17,64 @@ export const ResolvedAccountCard = ({ simple }: Props) => {
   const { t } = useTranslation();
   const { watch } = useFormContext<TransactionCreation>();
   const { accountId } = useAccount();
+  const { ledgerService } = useLedgerService();
 
   const recipient = watch("recipient");
 
   const resolvedAccount = useMemo(() => {
-    if (!recipient.trim()) return;
-
+    if (!recipient?.trim()) return;
     try {
-      let accountId = recipient;
-      return asAddress(accountId);
-    } catch (error) {
+      return asAddress(recipient);
+    } catch {
       return;
     }
   }, [recipient]);
 
-  if (recipient === "0" || recipient.includes("2222-2222-2222-2222")) {
+  const [accountName, setAccountName] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const rsAddress = useMemo(
+    () => (resolvedAccount ? resolvedAccount.getReedSolomonAddress() : ""),
+    [resolvedAccount]
+  );
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const fetchName = async () => {
+      setAccountName("");
+
+      if (!rsAddress || !ledgerService) return;
+
+      try {
+        setLoading(true);
+        const acc = await ledgerService.ledgerInstance.account.getAccount({
+          accountId: rsAddress,
+        });
+        if (cancelled) return;
+
+        const rawName = (acc?.name ?? "").trim();
+        if (rawName) {
+          const shortName =
+            rawName.length > 30 ? `${rawName.slice(0, 30)}…` : rawName;
+          setAccountName(shortName);
+        } else {
+          setAccountName("");
+        }
+      } catch {
+        if (!cancelled) setAccountName("");
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    };
+
+    void fetchName();
+    return () => {
+      cancelled = true;
+    };
+  }, [rsAddress, ledgerService]);
+
+  if (recipient === "0" || recipient?.includes("2222-2222-2222-2222")) {
     return (
       <Card>
         <View className="gap-1 w-full">
@@ -65,6 +109,12 @@ export const ResolvedAccountCard = ({ simple }: Props) => {
               {resolvedAccount.getReedSolomonAddress()}
             </Text>
 
+            {!loading && !!accountName && (
+              <Text fullWidth color="primary" size="small">
+                {accountName}
+              </Text>
+            )}
+
             <Text fullWidth color="muted" size="small">
               {resolvedAccount.getNumericId()}
             </Text>
@@ -76,6 +126,13 @@ export const ResolvedAccountCard = ({ simple }: Props) => {
                 address: resolvedAccount.getReedSolomonAddress(),
               })}
             </Text>
+
+            {!loading && !!accountName && (
+              <Text fullWidth color="primary">
+                {accountName}
+              </Text>
+            )}
+
             <Text fullWidth color="muted" size="small">
               {t("transfer.resolvedRecipientAddressHint")} 😁
             </Text>
