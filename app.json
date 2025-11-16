@@ -2,7 +2,7 @@
   "expo": {
     "name": "Signum Mobile Wallet",
     "slug": "signum-mobile-wallet",
-    "version": "1.0.3",
+    "version": "1.2.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -24,7 +24,8 @@
         "NSFaceIDUsageDescription": "Allow $(PRODUCT_NAME) to use Face ID for wallet authentication",
         "ITSAppUsesNonExemptEncryption": false
       },
-      "bundleIdentifier": "com.signum.mobile"
+      "bundleIdentifier": "com.signum.mobile",
+      "buildNumber": "2"
     },
     "android": {
       "edgeToEdgeEnabled": true,
@@ -37,7 +38,8 @@
         "android.permission.USE_BIOMETRIC",
         "android.permission.USE_FINGERPRINT",
         "android.permission.CAMERA"
-      ]
+      ],
+      "versionCode": 2
     },
     "web": {
       "favicon": "./assets/favicon.png"

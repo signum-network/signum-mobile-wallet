@@ -1,50 +1,116 @@
 # Privacy Policy
 
-This Privacy Policy ("Policy") describes our policies regarding the collection, usage, protection and processing of personally identifiable information received from Users ("User", "You") of the Signum Mobile Wallet Application and its related applications and services ("Wallet", "We", "Our" or "Us").
+This Privacy Policy ("Policy") describes how the **Signum Mobile Wallet** ("Wallet", "We", "Our", "Us") handles information and protects user privacy.  
+We encourage you to read this Policy carefully before using the Wallet.  
 
-We encourage you to read our Privacy Policy carefully before using our Wallet. We do not collect any information that may identify You without your permission. However by using the Wallet, you give us a consent and permission to collect, store and use the information about you, including your personal information, as prescribed by this Policy. You acknowledge and agree that such personal information may be transferred to and stored on the servers of the Wallet and the servers of authorized third parties.
+The **Signum Mobile Wallet** is an **open-source, non-custodial wallet** — all sensitive data remains **entirely on your device**.  
+We do **not collect**, **store**, or **process** any personal information on external servers.
 
-1. We do not collect any personal information that identifies You as individual, this includes in special
+---
 
-a) personal secrets, like passwords, passphrases, or PIN
+## 1. Personal Information
 
-b) email address, phone numbers, or any other identification schemes, e.g. SSN, ID Card, passport etc.
+We **do not collect or store any personal information** that identifies you as an individual.  
+This includes, in particular:
 
-1. We _may_ collect the information provided or generated whenever the User takes any action in our Wallet or omits to do it or otherwise uses Our services, such as:
+a) Private secrets such as passwords, recovery phrases, or PINs  
+b) Email addresses, phone numbers, or other identifiers (e.g. ID cards, passports, etc.)
 
-a) IP address;
+Your **private keys and recovery phrases** are generated and stored locally on your device and never transmitted.  
 
-c) The type (including identifiers) of the device of the mobile devices You use with the Wallet, platform type, geolocation information, internet service, operating system, etc. to provide the best service and identify possible issues with particular type of device or operating system or language;
+---
 
-d) In - Wallet behavioral information such as without limitation Your visits of the Wallet, clicks on ads or other similar information including additional related data(or metadata), such as the time, date, and location related to such behavior. That information allow us to analyse the usage of our wallet and may help us to design the better UI in the wallet;
+## 2. Technical Information
 
-2. We _may_ share some personal information with certain providers that perform services on our behalf. We only share the personal information which is necessary for them to perform those services. We require any provider with which we may share personal information to protect that data in a manner consistent with this policy and to limit the use of such personal information to the performance of services for the Mobile Wallet. Please note that those providers have their own privacy policies which will govern the shared information and which are available at the links below. In particular, we may share some information with:
+The Wallet may process minimal, **non-identifying technical data** necessary for functionality, such as:
 
-| Who       | Shared Information | Purpose                                                          | Privacy Policy                   |
-| --------- | ------------------ | ---------------------------------------------------------------- | -------------------------------- |
-| CoinGecko | None               | Used for making API calls to retrieve current price information. | https://www.coingecko.com/en/api |
+a) Public blockchain data (addresses, transactions, balances)  
+b) Device information (operating system, language, screen size) to optimize UI layout  
+c) Node connection data (e.g., API endpoints) required to interact with the Signum network
 
-1. We implement a variety of security measures when You enter, submit, or access to our Wallet in order to maintain the safety of Your personal information. Your wallet passphrases are used to dervice your private key which is encrypted with a hashed PIN, and they are stored on the device's sensitive KeyChain, which is usually protected memory on the device.
+This information is **not linked** to you personally and is never used for profiling or analytics.  
 
-2. Without prejudice to Our efforts on protection of Your information nothing herein constitutes a warranty of security of the Wallet, and You agree to transmit information at Your own risk. Please note, that the Wallet does not guarantee that Your information may not be accessed, disclosed, altered, or destroyed by breach of any of Our physical, technical, or managerial safeguards.
+---
 
-3. We may use the information we collect from You in any ways in order to:
-   a) Deliver the type of content and product in which You are interested in;
-   b) Improve customer service;
-   c) Quickly process Your transactions;
-   d) Provide responses to official requests of competent authorities;
-   e) Send information and updates pertaining to Your use of the Wallet via periodic e-mails
+## 3. Third-Party Services
 
-4. Notwithstanding anything to the contrary in this Privacy Policy, We may preserve or disclose Your information if we believe that it is reasonably necessary to comply with a law, regulation, legal process, or governmental request; to protect the safety of any person or assets and rights related thereto; to address fraud, security or technical issues. The Wallet may in particular share Your personal information with law enforcement, data protection authorities, government officials, and other authorities only when the Wallet is legally bound to do so or has to protect the safety of users and the Wallet.
+The Wallet **does not use advertising, analytics, or tracking services**.  
+However, it may communicate with trusted third-party APIs that provide public blockchain or market data.  
 
-5. You acknowledge and agree that the Wallet is not liable for any illegal or abusive use of Your information. You acknowledge and agree, that in case You share Your information from the Wallet in social or other networks, or other third-party sites and/or platforms, your information is subject to privacy policies of such third-party resources.
+| Provider   | Shared Information | Purpose                                      | Privacy Policy                      |
+| ---------- | ------------------ | -------------------------------------------- | ----------------------------------- |
+| CoinGecko  | None               | Retrieve public price data for Signa tokens. | https://www.coingecko.com/en/api    |
 
-6. The information which is no longer identifiable is eligible to be transferred to and to be shared with the third parties such as without limitation Our services' providers or advertising partners.
+These API calls are anonymous and contain **no personal data**.
 
-7. We may, at Our sole discretion, include or offer third-party products or services in the Wallet. These third-party providers have separate and independent privacy policies. We, therefore, have no responsibility or liability for the content and activities of these linked services.
+---
 
-8. In case You are EU citizen and want to exercise rights enshrined in art. 15 of GDPR, please write Us at development@signum.network e-mail.
+## 4. Security
 
-9. The wallet may update this Policy at any time. We will notify you on any changes prior to the date when they become effective by email (sent to the e-mail address specified in your account) or in the announcement in the wallet or on the website.
+We apply strong security measures to protect your sensitive data:
 
-10. If there are any questions regarding this Policy or feedback related thereto You may contact Us using the development@signum.network e-mail.
+- Private keys and PINs are **encrypted** and stored in the device's **secure storage** (Keychain/Keystore).  
+- All transactions are **signed locally** — your secrets never leave your device.  
+- The Wallet does not transmit unencrypted or personally identifying data.
+
+Despite our efforts, no system is 100% secure. By using the Wallet, you acknowledge that you use it **at your own risk**, and the community cannot recover lost private keys or funds.
+
+---
+
+## 5. Data Usage
+
+The limited information handled by the Wallet may be used solely to:
+a) Display balances and transaction history  
+b) Fetch public blockchain or market data  
+c) Improve compatibility and performance across devices
+
+We **never** use your data for advertising, profiling, or sharing with third parties.  
+
+---
+
+## 6. Legal Requests
+
+We do not have or store any user data that could be disclosed to authorities.  
+In the unlikely event of a lawful request, only publicly available blockchain data can be provided.
+
+---
+
+## 7. Your Rights (GDPR / EU Residents)
+
+If you are an EU citizen and wish to exercise your rights under the GDPR (Art. 15 ff.), please contact us.  
+While we do not process personal data, we will respond to any legitimate privacy-related request.
+
+📧 **development@signum.network**
+
+---
+
+## 8. Third-Party Links
+
+The Wallet may include optional links to third-party resources (e.g., block explorers).  
+Those third-party sites have their own privacy policies, and we are not responsible for their content or practices.
+
+---
+
+## 9. Changes to This Policy
+
+We may update this Policy from time to time.  
+Any material changes will be announced within the app or on our official GitHub page before becoming effective.
+
+---
+
+## 10. Contact
+
+If you have questions or concerns regarding this Policy, please contact us at:  
+📧 **development@signum.network**
+
+---
+
+## 11. License
+
+This Wallet and its documentation (including this Policy) are published under the **Apache License 2.0**.  
+For full details, see the [LICENSE](./LICENSE) file.
+
+---
+
+**© 2025 Signum Network Community**  
+Open Source • Decentralized • Privacy by Design

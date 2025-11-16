@@ -8,6 +8,9 @@ export const ThemeModeToggle = () => {
   const activeColor = theme.colors.primary;
   const inactiveColor = theme.colors.text + "55";
 
+  const isLight = themeMode === "light";
+  const isDark = themeMode === "dark";
+
   return (
     <View
       style={{
@@ -18,30 +21,19 @@ export const ThemeModeToggle = () => {
         paddingVertical: 8,
       }}
     >
-      {/* System */}
-      <Pressable onPress={() => setThemeMode("system")}>
-        <Ionicons
-          name="aperture-outline"
-          size={28}
-          color={themeMode === "system" ? activeColor : inactiveColor}
-        />
-      </Pressable>
-
-      {/* Light */}
-      <Pressable onPress={() => setThemeMode("light")}>
+      <Pressable onPress={() => setThemeMode(isLight ? "system" : "light")}>
         <Ionicons
           name="sunny-outline"
           size={28}
-          color={themeMode === "light" ? activeColor : inactiveColor}
+          color={isLight ? activeColor : inactiveColor}
         />
       </Pressable>
 
-      {/* Dark */}
-      <Pressable onPress={() => setThemeMode("dark")}>
+      <Pressable onPress={() => setThemeMode(isDark ? "system" : "dark")}>
         <Ionicons
           name="moon-outline"
           size={26}
-          color={themeMode === "dark" ? activeColor : inactiveColor}
+          color={isDark ? activeColor : inactiveColor}
         />
       </Pressable>
     </View>
