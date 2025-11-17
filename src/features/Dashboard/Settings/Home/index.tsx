@@ -4,6 +4,7 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import { DashboardScreenContainer } from "../../components/DashboardScreenContainer";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { SettingsCard } from "./components/SettingsCard";
+import { ThemeModeToggle } from "./components/ThemeModeToggle";
 
 export const SettingsScreen = () => {
   const { t } = useTranslation();
@@ -13,6 +14,7 @@ export const SettingsScreen = () => {
     <ScrollView>
       <DashboardScreenContainer>
         <View className="flex flex-col w-full p-4 gap-4">
+          <ThemeModeToggle />
           <SettingsCard
            
               icon={

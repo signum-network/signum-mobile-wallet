@@ -13,7 +13,7 @@ export const useAppTheme = () => {
   const cycleThemeMode = appStore((s) => s.cycleThemeMode);
 
   const resolvedScheme: "light" | "dark" =
-    themeMode === "system" ? (colorScheme === "dark" ? "dark" : "light") : themeMode;
+    colorScheme === "dark" ? "dark" : "light";
 
   const isDarkMode = resolvedScheme === "dark";
 
@@ -21,7 +21,7 @@ export const useAppTheme = () => {
     ...(isDarkMode ? DarkTheme : DefaultTheme),
     colors: {
       ...(isDarkMode ? DarkTheme.colors : DefaultTheme.colors),
-      primary: isDarkMode ? "#0099ff" : "#0099ff",
+      primary: "#0099ff",
     },
   };
 

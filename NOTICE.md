@@ -27,7 +27,7 @@ Below is a non-exhaustive list of major dependencies and their respective licens
 - **React & React Native** — © Meta Platforms, Inc. — MIT License  
 - **Expo & Expo Modules** — © Expo Team — MIT License  
 - **Expo Router** — © Expo Team — MIT License  
-- **TypeScript** — © Microsoft Corporation — Apache 2.0 License  
+- **TypeScript** — © Microsoft — Apache 2.0 License  
 - **Tailwind CSS** — © Tailwind Labs, Inc. — MIT License  
 - **Drizzle ORM & Drizzle Kit** — © Drizzle Team — MIT License  
 - **Zustand** — © Poimandres — MIT License  
@@ -38,7 +38,8 @@ Below is a non-exhaustive list of major dependencies and their respective licens
 ### Signum Blockchain SDK
 - **@signumjs/core**, **crypto**, **http**, **standards**, **util**,  
   **@signumjs/react-native-expo-crypto-adapter**  
-  — © Signum Network Contributors — MIT License  
+  — © Signum Network Contributors  
+  — Licensed under the Apache License, Version 2.0  
   — Source: https://github.com/signum-network
 
 ### UI & UX Libraries
@@ -80,4 +81,4 @@ This application:
 
 ---
 
-_Last updated: October 28, 2025_
+_Last updated: November 16, 2025_
