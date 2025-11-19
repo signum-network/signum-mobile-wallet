@@ -1,40 +1,34 @@
 {
   "cli": {
-    "appVersionSource": "remote",
+    "appVersionSource": "local",
     "requireCommit": true
   },
   "build": {
-    "preview": {
+    "development": {
+      "node": "20.18.0",
+      "developmentClient": true,
       "env": {
-        "EAS_BUILD_ENV": "preview"
-      },
+        "EAS_BUILD_ENV": "development"
+      }
+    },
+    "preview": {
       "node": "20.18.0",
       "android": {
         "buildType": "apk"
       },
-      "cache": {
-        "key": "v1-deps"
+      "distribution": "internal",
+      "env": {
+        "EAS_BUILD_ENV": "preview"
       }
-    },
-    "preview2": {
-      "node": "20.18.0",
-      "android": {
-        "gradleCommand": ":app:assembleRelease"
-      }
-    },
-    "preview3": {
-      "node": "20.18.0",
-      "developmentClient": true
-    },
-    "preview4": {
-      "node": "20.18.0",
-      "distribution": "internal"
     },
     "production": {
       "node": "20.18.0",
-      "autoIncrement": true,
       "android": {
         "buildType": "app-bundle"
+      },
+      "autoIncrement": false,
+      "env": {
+        "EAS_BUILD_ENV": "production"
       }
     }
   }
