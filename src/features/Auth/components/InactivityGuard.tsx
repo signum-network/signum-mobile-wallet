@@ -1,6 +1,6 @@
 import { PropsWithChildren, useEffect, useRef } from "react";
 import { AppState, AppStateStatus, View } from "react-native";
-import { router } from "expo-router";
+import { router, usePathname } from "expo-router";
 
 type Props = {
   /** Time until auto-logout when user is inactive (in ms) */
@@ -21,6 +21,7 @@ export default function InactivityGuard({
   const bgTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastBackgroundAt = useRef<number | null>(null);
   const loggingOut = useRef(false);
+  const pathname = usePathname();
 
   /** Clears all active timers */
   const clearTimers = () => {
@@ -54,6 +55,11 @@ export default function InactivityGuard({
   };
 
   useEffect(() => {
+    armIdle();
+  }, [pathname]);
+  // Handle app foreground/background transitions and base idle timer
+  useEffect(() => {
+    // Arm idle timer initially (if configured)
     armIdle();
 
     const sub = AppState.addEventListener("change", (state: AppStateStatus) => {
@@ -99,11 +105,11 @@ export default function InactivityGuard({
   return (
     <View
       style={{ flex: 1 }}
-      onStartShouldSetResponder={() => {
+      pointerEvents="box-none"
+      onStartShouldSetResponderCapture={() => {
         onAnyTouch();
         return false;
       }}
-      onResponderStart={onAnyTouch}
     >
       {children}
     </View>

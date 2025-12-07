@@ -20,7 +20,7 @@ import { SignaSymbol } from "@/components/SignaSymbol";
 
 export const HoldingsSelection = () => {
   const { t } = useTranslation();
-  const { iconColor } = useAppTheme();
+  const { iconColor, tokens } = useAppTheme();
   const { NativeTicker } = useTicker();
   const {
     accountData: { balance, tokenBalance },
@@ -99,22 +99,30 @@ export const HoldingsSelection = () => {
               />
 
               {!!tokenBalance.length && (
-                <View className="border rounded-lg border-card-border dark:border-card-border-dark px-2 py-4 opacity-80 flex flex-col items-center gap-1 max-w-28">
+                <View
+                  className="border rounded-lg px-2 py-4 opacity-80 flex flex-col items-center gap-1 max-w-28"
+                  style={{
+                    borderColor: tokens.border,
+                  }}
+                >
                   <MaterialIcons
                     name="currency-exchange"
                     size={28}
                     color={iconColor.primary}
                   />
 
-                  <Text size="extraSmall" color="primary" className="text-center">
+                  <Text
+                    size="extraSmall"
+                    color="primary"
+                    className="text-center"
+                  >
                     {t("transfer.changeAsset")}
                   </Text>
                 </View>
               )}
             </View>
             <Text size="medium" color="muted">
-             {"("} {t("reservedBalance")}{" "}
-               {PUBLIC_RESERVED_SIGNA_FOR_TX_FEE}{" "}
+              {"("} {t("reservedBalance")} {PUBLIC_RESERVED_SIGNA_FOR_TX_FEE}{" "}
               <SignaSymbol /> {")"}
             </Text>
           </Card>

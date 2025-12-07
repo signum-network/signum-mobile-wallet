@@ -197,6 +197,38 @@
       "minerModeActive": "Manage your signum commitment by visiting the miner screen. It is located on the bottom tabs!",
       "minerModeDescription": "Miner mode allows you to easily add or remove your signum commitment"
     },
+    "design": {
+      "title": "App Design",
+      "description": "Choose the look of your wallet.",
+      "defaultLight": {
+        "title": "Default Light",
+        "description": "Bright standard theme for everyday use."
+      },
+      "defaultDark": {
+        "title": "Default Dark",
+        "description": "Dark theme for low-light environments."
+      },
+      "signum": {
+        "title": "Signum",
+        "description": "A theme based on official Signum colors."
+      },
+      "midnight": {
+        "title": "Midnight",
+        "description": "Ultra dark theme for OLED displays."
+      },
+      "solarized": {
+        "title": "Solarized",
+        "description": "Inspired by the classic Solarized palette."
+      },
+      "sunrise": {
+        "title": "Sunrise",
+        "description": "Warm and friendly orange-pink look."
+      },
+      "bubblegum": {
+        "title": "Bubblegum",
+        "description": "Playful pastel theme with pink and purple."
+      }
+    },
     "about": {
       "title": "About",
       "description": "View information about this wallet",

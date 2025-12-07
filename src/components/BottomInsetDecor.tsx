@@ -4,17 +4,9 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 
 export function BottomInsetDecor() {
   const insets = useSafeAreaInsets();
-  const { isDarkMode } = useAppTheme();
+  const { tokens } = useAppTheme();
 
   if (insets.bottom === 0) return null;
-
-  const lightBgColor = "#fff";
-  const darkBgColor = "#1C1C1E";
-  const bgColor = isDarkMode ? darkBgColor : lightBgColor;
-
-  const lightLineColor = "#e0e0e0";
-  const darkLineColor = "#444444";
-  const lineColor = isDarkMode ? darkLineColor : lightLineColor;
 
   return (
     <View
@@ -22,9 +14,12 @@ export function BottomInsetDecor() {
       style={{ position: "absolute", left: 0, right: 0, bottom: 0 }}
     >
       <View
-        style={{ height: StyleSheet.hairlineWidth, backgroundColor: lineColor }}
+        style={{ height: StyleSheet.hairlineWidth, backgroundColor: tokens.border }}
       />
-      <View style={{ height: insets.bottom, backgroundColor: bgColor }} />
+
+      <View
+        style={{ height: insets.bottom, backgroundColor: tokens.surfaceElevated }}
+      />
     </View>
   );
 }

@@ -30,6 +30,18 @@ Send, receive, and manage **Signa and Tokens** effortlessly — anytime, anywher
 - **Custom or predefined node selection**  
 - **Detailed transaction view** with P2P message decryption  
 
+#### 🎨 Custom App Designs  
+- Added a completely new **theme and design system**  
+- Choose from multiple visual styles tailored for different preferences:  
+  - **Default Light** – clean, bright standard look  
+  - **Default Dark** – balanced dark mode  
+  - **Midnight** – ultra-dark theme ideal for OLED displays  
+  - **Sunrise** – warm orange-pink theme  
+  - **Bubblegum** – playful pastel theme  
+- All UI elements now use a unified **token-based color system** for consistent styling  
+- System light/dark mode is only used on the **first app launch** — afterwards the theme is user-controlled  
+- Improved visual consistency, accessibility, and readability across all screens
+
 #### 🔒 Security
 - Private keys are encrypted and stored locally  
 - Recovery phrases are **never stored** on the device  
@@ -64,6 +76,18 @@ Send, receive, and manage **Signa and Tokens** effortlessly — anytime, anywher
 - Enhanced **node management** – use trusted defaults or add your own  
 - **PIN and biometric authentication** for fast and secure access  
 - **Performance and stability** improvements  
+
+#### 🎨 Custom App Designs  
+- Added a completely new **theme and design system**  
+- Choose from multiple visual styles tailored for different preferences:  
+  - **Default Light** – clean, bright standard look  
+  - **Default Dark** – balanced dark mode  
+  - **Midnight** – ultra-dark theme ideal for OLED displays    
+  - **Sunrise** – warm orange-pink theme  
+  - **Bubblegum** – playful pastel theme  
+- All UI elements now use a unified **token-based color system** for consistent styling  
+- System light/dark mode is only used on the **first app launch** — afterwards the theme is user-controlled  
+- Improved visual consistency, accessibility, and readability across all screens
 
 #### 🔒 Security
 - Local encryption of private keys  

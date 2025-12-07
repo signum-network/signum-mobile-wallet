@@ -227,7 +227,8 @@ export const AccountCard = ({ publicKey, type, walletName }: Props) => {
           updateAccountData(publicKey, currentNetwork, {
             loading: false,
             isSecured: false,
-            activationInProgress: currentAccount?.[currentNetwork]?.activationInProgress ?? false,
+            activationInProgress:
+              currentAccount?.[currentNetwork]?.activationInProgress ?? false,
             name: "",
             description: "",
             balance: {
@@ -244,18 +245,19 @@ export const AccountCard = ({ publicKey, type, walletName }: Props) => {
     enabled: isActiveNodeSynced && !!ledgerService,
   });
 
-  const { iconColor } = useAppTheme();
+  const { iconColor, tokens } = useAppTheme();
 
   return (
     <GestureDetector gesture={pan}>
       <Animated.View style={itemHeightStyle}>
         <Animated.View
-          className="bg-red-500 !rounded-lg pr-4 flex flex-row items-center justify-end"
+          className="!rounded-lg pr-4 flex flex-row items-center justify-end"
           style={{
             height: ITEM_HEIGHT,
             position: "absolute",
             right: "0%",
             width: "95%",
+            backgroundColor: tokens.error,
           }}
         >
           <View className="flex flex-row items-center gap-2">
@@ -268,12 +270,14 @@ export const AccountCard = ({ publicKey, type, walletName }: Props) => {
         </Animated.View>
 
         <Animated.View
-          className="bg-card-foreground dark:bg-card-foreground-dark border border-card-border dark:border-card-border-dark !rounded-lg"
+          className="border !rounded-lg"
           style={[
             transformStyle,
             {
               width: "100%",
               height: ITEM_HEIGHT,
+              backgroundColor: tokens.surface,
+              borderColor: tokens.border,
             },
           ]}
         >

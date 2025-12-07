@@ -9,7 +9,7 @@ import {
   type TextStyle,
 } from "react-native";
 import clsx from "clsx";
-import { useColorScheme } from "react-native";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
 interface Props extends Omit<TextInputProps, "className" | "style"> {
   extraClassNames?: string;
@@ -20,15 +20,16 @@ interface Props extends Omit<TextInputProps, "className" | "style"> {
 }
 
 type SizeDef = { fontSize: number; lineHeight: number; padV: number };
+
 const sizeMap: Record<NonNullable<Props["size"]>, SizeDef> = {
-  small: { fontSize: 14, lineHeight: 14, padV: 12 },
-  medium: { fontSize: 16, lineHeight: 16, padV: 14 },
-  large: { fontSize: 18, lineHeight: 18, padV: 16 },
-  extraLarge: { fontSize: 24, lineHeight: 24, padV: 18 },
+  small: { fontSize: 14, lineHeight: 14, padV: 10 },
+  medium: { fontSize: 16, lineHeight: 16, padV: 12 },
+  large: { fontSize: 18, lineHeight: 18, padV: 14 },
+  extraLarge: { fontSize: 24, lineHeight: 24, padV: 16 },
 } as const;
 
 export const TextInput = forwardRef<NativeTextInput, Props>((props, ref) => {
-  const scheme = useColorScheme();
+  const { tokens } = useAppTheme();
   const s = sizeMap[props.size ?? "medium"];
   const iosBump = Platform.OS === "ios" ? 1 : 0;
   const isMultiline = !!props.multiline;
@@ -39,15 +40,23 @@ export const TextInput = forwardRef<NativeTextInput, Props>((props, ref) => {
   );
 
   const inputRef = useRef<NativeTextInput>(null);
-
   React.useImperativeHandle(ref, () => inputRef.current as NativeTextInput);
 
-  const classNames = clsx([
-    "rounded-lg border border-card-border dark:border-card-border-dark w-full bg-muted dark:bg-muted-dark",
-    "text-black dark:text-white",
+  // TOKEN COLORS
+  const backgroundColor = tokens.surfaceElevated;
+  const borderColor = tokens.border;
+  const textColor = tokens.text;
+  const placeholderColor = tokens.textMuted;
+
+  // Clear button colors
+  const iconFg = tokens.textMuted; // X color
+  const iconBg = tokens.surface; // circle background
+
+  const classNames = clsx(
+    "rounded-lg border w-full",
     props.editable === false && "opacity-80",
-    props.extraClassNames,
-  ]);
+    props.extraClassNames
+  );
 
   const baseStyle = useMemo(() => {
     const style: TextStyle = {
@@ -57,42 +66,54 @@ export const TextInput = forwardRef<NativeTextInput, Props>((props, ref) => {
       flexShrink: 1,
       minWidth: 0,
       maxWidth: "100%",
-      // Make room for the clear button
-      paddingRight: 16,
+      paddingRight: 16, // space for clear button
+      color: textColor,
+      backgroundColor,
+      borderColor,
       ...(isMultiline
-        ? { lineHeight: s.lineHeight + iosBump, textAlignVertical: "top" as any }
+        ? {
+            lineHeight: s.lineHeight + iosBump,
+            textAlignVertical: "top" as any,
+          }
         : {}),
     };
     return style;
-  }, [s.fontSize, s.padV, iosBump, isMultiline]);
+  }, [
+    s.fontSize,
+    s.padV,
+    iosBump,
+    isMultiline,
+    textColor,
+    backgroundColor,
+    borderColor,
+  ]);
 
-  const { style: userStyle, onChangeText, value, editable = true, ...rest } = props;
+  const {
+    style: userStyle,
+    onChangeText,
+    value,
+    editable = true,
+    ...rest
+  } = props;
 
   const currentText = typeof value === "string" ? value : innerValue;
   const showClear =
-    clearButtonEnabled && editable && !props.secureTextEntry && currentText.length > 0;
+    clearButtonEnabled &&
+    editable &&
+    !props.secureTextEntry &&
+    currentText.length > 0;
 
   const handleChangeText = (txt: string) => {
-    if (typeof value !== "string") {
-      setInnerValue(txt);
-    }
+    if (typeof value !== "string") setInnerValue(txt);
     onChangeText?.(txt);
   };
 
   const handleClear = () => {
-    // Clear native input visually
-    if (Platform.OS === "android") {
-      // Android doesn't expose a native clear button; clear via state and ref
-      inputRef.current?.clear?.();
-    }
-    // Update state/prop callback
+    if (Platform.OS === "android") inputRef.current?.clear?.();
     if (typeof value !== "string") setInnerValue("");
     onChangeText?.("");
     props.onClear?.();
   };
-
-  const iconFg = scheme === "dark" ? "#D4D4D8" : "#52525B";
-  const iconBg = scheme === "dark" ? "#27272A" : "#E4E4E7";
 
   return (
     <View className="relative w-full">
@@ -100,11 +121,12 @@ export const TextInput = forwardRef<NativeTextInput, Props>((props, ref) => {
         ref={inputRef}
         className={classNames}
         style={[baseStyle, userStyle]}
-        placeholderTextColor={scheme === "dark" ? "#A1A1AA" : "#71717A"}
+        placeholderTextColor={placeholderColor}
         underlineColorAndroid="transparent"
         allowFontScaling={false}
-        // Avoid the native iOS clear button so we don't end up with two buttons
-        {...(Platform.OS === "ios" ? { clearButtonMode: "never" as const } : {})}
+        {...(Platform.OS === "ios"
+          ? { clearButtonMode: "never" as const }
+          : {})}
         value={value}
         onChangeText={handleChangeText}
         editable={editable}
@@ -134,7 +156,9 @@ export const TextInput = forwardRef<NativeTextInput, Props>((props, ref) => {
               justifyContent: "center",
             }}
           >
-            <Text style={{ fontSize: 16, lineHeight: 16, color: iconFg }}>×</Text>
+            <Text style={{ fontSize: 18, lineHeight: 18, color: iconFg }}>
+              ×
+            </Text>
           </View>
         </Pressable>
       )}

@@ -1,50 +1,64 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useColorScheme } from "nativewind";
 import { DarkTheme, DefaultTheme } from "@react-navigation/native";
 import { appStore } from "@/states/appStore";
-import type { ThemePreference } from "@/states/appStore";
+import { themeTokens, type ThemeDesign, type ThemeTokens } from "@/theme/tokens";
 
 type NavigationTheme = typeof DefaultTheme;
 
+const DARK_DESIGNS: ThemeDesign[] = [
+  "defaultDark",
+  "midnight",
+  "solarized",
+];
+
 export const useAppTheme = () => {
-  const { colorScheme, setColorScheme } = useColorScheme(); 
-  const themeMode = appStore((s) => s.themeMode);          
-  const setThemeMode = appStore((s) => s.setThemeMode);
-  const cycleThemeMode = appStore((s) => s.cycleThemeMode);
+  const { setColorScheme } = useColorScheme(); 
 
-  const resolvedScheme: "light" | "dark" =
-    colorScheme === "dark" ? "dark" : "light";
+  const themeDesign = appStore((s) => s.themeDesign);
+  const setThemeDesign = appStore((s) => s.setThemeDesign);
 
-  const isDarkMode = resolvedScheme === "dark";
 
-  const theme: NavigationTheme = {
-    ...(isDarkMode ? DarkTheme : DefaultTheme),
-    colors: {
-      ...(isDarkMode ? DarkTheme.colors : DefaultTheme.colors),
-      primary: "#0099ff",
-    },
-  };
+  const isDarkMode = DARK_DESIGNS.includes(themeDesign);
+
+  const tokens: ThemeTokens = themeTokens[themeDesign];
+
+  // React Navigation Theme
+  const theme: NavigationTheme = useMemo(
+    () => ({
+      ...(isDarkMode ? DarkTheme : DefaultTheme),
+      colors: {
+        ...(isDarkMode ? DarkTheme.colors : DefaultTheme.colors),
+        primary: tokens.primary,
+        background: tokens.background,
+        card: tokens.surface,
+        text: tokens.text,
+        border: tokens.border,
+        notification: tokens.error,
+      },
+    }),
+    [isDarkMode, tokens]
+  );
 
   const iconColor = {
-    primary: theme.colors.primary,
-    default: theme.colors.text,
-    blackout: theme.colors.card,
-    muted: isDarkMode ? "#71717A" : "#A1A1AA",
-    green: isDarkMode ? "#22C55E" : "#16A34A",
-    red: isDarkMode ? "#EF4444" : "#DC2626",
+    primary: tokens.primary,
+    default: tokens.text,
+    blackout: tokens.surface,
+    muted: tokens.textMuted,
+    green: tokens.success,
+    red: tokens.error,
   };
 
   useEffect(() => {
-    setColorScheme(themeMode as ThemePreference);
-  }, [themeMode, setColorScheme]);
+    setColorScheme(isDarkMode ? "dark" : "light");
+  }, [isDarkMode, setColorScheme]);
 
   return {
     isDarkMode,
     theme,
-    themeMode,          
-    resolvedScheme,      
+    themeDesign,
+    tokens,
     iconColor,
-    setThemeMode,        
-    cycleThemeMode, 
+    setThemeDesign,
   };
 };

@@ -2,11 +2,11 @@ import type { ReactNode } from "react";
 import type { LinkProps } from "expo-router/build/link/Link";
 import { Link } from "expo-router";
 import { Pressable, PressableProps, Text, View } from "react-native";
-import { useColorScheme } from "nativewind"; // <—
 import clsx from "clsx";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
 export interface Props {
-  type?: "primary" | "secondary" | "error" | "blackout";
+  type?: "primary" | "secondary" | "error" | "blackout" | "link";
   size?: "small" | "medium" | "large";
   linkProps?: LinkProps;
   pressableProps?: PressableProps;
@@ -36,28 +36,15 @@ export const Button = ({
   extraClassNames,
   titleClassName,
 }: Props) => {
-  const { colorScheme } = useColorScheme(); // "light" | "dark" | "system"
+  const { tokens } = useAppTheme();
 
   const heightClass =
     size === "small" ? "h-12" : size === "large" ? "h-16" : "h-14";
-
-  const bgClass =
-    type === "primary"
-      ? "bg-signum-dark dark:bg-signum-dark"
-      : type === "secondary"
-      ? "bg-gray-500 dark:bg-gray-400" 
-      : type === "error"
-      ? "bg-red-500 dark:bg-red-400" 
-      : type === "blackout"
-      ? "bg-black dark:bg-white"
-      : undefined;
 
   const classNames = clsx(
     "flex flex-row justify-center items-center py-1 active:opacity-80 ripple-[#333] ripple-bordered",
     heightClass,
     fullWidth && "w-full",
-    bgClass,
-    disabled && "!bg-slate-200",
     wide && "!px-16",
     rounded ? "rounded-full" : "rounded-lg",
     extraClassNames
@@ -67,16 +54,43 @@ export const Button = ({
     size === "small" ? "text-sm" : size === "large" ? "text-xl" : "text-base";
   const lineHeight = size === "small" ? 16 : size === "large" ? 22 : 18;
 
-  const textColorClass =
-    type === "blackout"
-      ? "text-white dark:text-black"
-      : type
-      ? "text-white"
-      : "text-inherit";
+  let backgroundColor: string | undefined;
+  let textColor: string | undefined;
+
+  if (disabled) {
+    backgroundColor = tokens.surfaceElevated;
+    textColor = tokens.textMuted;
+  } else {
+    switch (type) {
+      case "primary":
+        backgroundColor = tokens.primary;
+        textColor = "#FFFFFF";
+        break;
+      case "secondary":
+        backgroundColor = tokens.surfaceElevated;
+        textColor = tokens.text;
+        break;
+      case "error":
+        backgroundColor = tokens.error;
+        textColor = "#FFFFFF";
+        break;
+      case "blackout":
+        backgroundColor = tokens.text;
+        textColor = tokens.background;
+        break;
+      case "link":
+        backgroundColor = "transparent";
+        textColor = tokens.primary;
+        break;
+      default:
+        backgroundColor = "transparent";
+        textColor = tokens.text;
+        break;
+    }
+  }
 
   const textClassNames = clsx(
-    disabled && "font-bold !text-slate-500",
-    textColorClass,
+    disabled && "font-bold",
     textSize,
     titleClassName
   );
@@ -91,6 +105,7 @@ export const Button = ({
         flexWrap: "wrap",
         textAlign: "center",
         lineHeight,
+        color: textColor,
       }}
     >
       {title}
@@ -107,9 +122,12 @@ export const Button = ({
 
   const pressable = (
     <Pressable
-      key={`btn-${colorScheme}-${type}-${size}-${disabled}`} // <—
       disabled={disabled}
       className={classNames}
+      style={{
+        backgroundColor,
+        opacity: disabled ? 0.7 : 1,
+      }}
       {...pressableProps}
     >
       {Inner}

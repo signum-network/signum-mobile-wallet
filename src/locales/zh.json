@@ -197,6 +197,38 @@
       "minerModeActive": "在“矿工”页面管理你的 Signum 承诺余额。你可以在底部标签栏找到它！",
       "minerModeDescription": "矿工模式让你可以轻松添加或移除你的 Signum 承诺余额"
     },
+    "design": {
+      "title": "应用主题",
+      "description": "选择你的钱包外观。",
+      "defaultLight": {
+        "title": "默认浅色",
+        "description": "明亮的标准主题，适合日常使用。"
+      },
+      "defaultDark": {
+        "title": "默认深色",
+        "description": "适合弱光环境的深色主题。"
+      },
+      "signum": {
+        "title": "Signum",
+        "description": "基于 Signum 官方配色的主题。"
+      },
+      "midnight": {
+        "title": "午夜",
+        "description": "适用于 OLED 屏幕的超深色主题。"
+      },
+      "solarized": {
+        "title": "Solarized",
+        "description": "灵感来自经典 Solarized 色板。"
+      },
+      "sunrise": {
+        "title": "日出",
+        "description": "温暖友好的橙粉色风格。"
+      },
+      "bubblegum": {
+        "title": "泡泡糖",
+        "description": "俏皮的粉色与紫色粉彩主题。"
+      }
+    },
     "about": {
       "title": "关于",
       "description": "查看此钱包的相关信息",

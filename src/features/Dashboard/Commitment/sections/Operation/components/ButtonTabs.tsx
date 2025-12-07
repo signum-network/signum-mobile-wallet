@@ -18,10 +18,16 @@ export const ButtonTabs = ({
   setRemoveMode,
 }: Props) => {
   const { t } = useTranslation();
-  const { iconColor } = useAppTheme();
+  const { iconColor, tokens } = useAppTheme();
 
   return (
-    <View className="flex flex-row items-stretch gap-2 bg-card-foreground dark:bg-card-foreground-dark border border-card-border dark:border-card-border-dark rounded-full max-w-md w-full p-1 overflow-hidden">
+    <View
+      className="flex flex-row items-stretch gap-2 rounded-full max-w-md w-full p-1 overflow-hidden border"
+      style={{
+        backgroundColor: tokens.surface,
+        borderColor: tokens.border,
+      }}
+    >
       <Button
         icon={
           <Ionicons
@@ -34,14 +40,9 @@ export const ButtonTabs = ({
         title={t("add")}
         extraClassNames="flex-1 px-4"
         size="medium"
-        titleClassName={
-          isOperationTypeAdd
-            ? "text-white"
-            : "text-muted-foreground dark:text-muted-foreground-dark"
-        }
+        titleClassName="font-medium"
         pressableProps={{ onPress: setAddMode }}
       />
-
       <Button
         icon={
           <Ionicons
@@ -52,13 +53,9 @@ export const ButtonTabs = ({
         }
         type={isOperationTypeRemove ? "primary" : undefined}
         title={t("remove")}
-        extraClassNames="flex-1 px-4" 
+        extraClassNames="flex-1 px-4"
         size="medium"
-        titleClassName={
-          isOperationTypeRemove
-            ? "text-white"
-            : "text-muted-foreground dark:text-muted-foreground-dark"
-        }
+        titleClassName="font-medium"
         pressableProps={{ onPress: setRemoveMode }}
       />
     </View>

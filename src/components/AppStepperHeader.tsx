@@ -18,7 +18,7 @@ export const AppStepperHeader = ({
   onBack,
   disabled,
 }: AppStepperHeaderProps) => {
-  const { theme } = useAppTheme();
+  const { tokens } = useAppTheme();
 
   return (
     <Pressable
@@ -26,21 +26,30 @@ export const AppStepperHeader = ({
       onPress={onBack}
       disabled={disabled}
     >
-      <View className="w-full px-4 py-2 border-b border-gray-200 dark:border-gray-900">
+      <View className="w-full px-4 py-2 border-b"
+        style={{
+          borderColor: tokens.border,
+        }}
+      >
         <View>
           <View className="w-full flex flex-row items-center justify-between">
             <Ionicons
               name="arrow-back"
               size={28}
-              color={theme.colors.text}
+              color={tokens.text}
               style={{ marginRight: 16 }}
             />
             <View className="flex-1 flex flex-col">
-              <Text color="content" className="text-[22px]">
+              <Text color="content" size="2large">
                 {title}
               </Text>
             </View>
-            <View className="w-14 h-14 rounded-full border border-card-border dark:border-card-border-dark flex justify-center items-center">
+            <View className="w-14 h-14 rounded-full border flex justify-center items-center"
+              style={{
+                borderColor: tokens.border,
+                backgroundColor: tokens.surfaceElevated,
+              }}
+            >
               <Text size="large" color="content" className="font-bold">
                 {currentStep}/{stepsAmount}
               </Text>

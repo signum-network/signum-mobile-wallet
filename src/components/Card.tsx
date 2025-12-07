@@ -1,9 +1,19 @@
 import { View } from "react-native";
 import type { ChildrenProps } from "@/types/childrenProps";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
 export const Card = ({ children }: ChildrenProps) => {
+  const { tokens } = useAppTheme();
+
   return (
-    <View className="flex flex-col justify-start items-start gap-4 p-4 bg-card-foreground dark:bg-card-foreground-dark border border-card-border dark:border-card-border-dark rounded-lg w-full">
+    <View
+      className="flex flex-col justify-start items-start gap-4 p-4 rounded-lg w-full"
+      style={{
+        backgroundColor: tokens.surface,
+        borderWidth: 1,
+        borderColor: tokens.border,
+      }}
+    >
       {children}
     </View>
   );

@@ -2,7 +2,7 @@ import {
   View,
   Pressable,
   BackHandler,
-  Platform,
+  Platform
 } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Text } from "@/components/Text";
@@ -17,7 +17,7 @@ type AppHeaderProps = {
 };
 
 export const AppHeader = ({ title, onBack, disabled }: AppHeaderProps) => {
-  const { theme } = useAppTheme();
+  const { theme, tokens } = useAppTheme();
   const router = useRouter();
 
   const handleBack = useCallback(() => {
@@ -46,7 +46,11 @@ export const AppHeader = ({ title, onBack, disabled }: AppHeaderProps) => {
       onPress={handleBack}
       disabled={disabled}
     >
-      <View className="w-full p-4 border-b border-gray-200 dark:border-gray-900">
+      <View className="w-full p-4 border-b"
+        style={{
+          borderColor: tokens.border,
+        }}
+      >
         <View>
           <View className="w-full flex flex-row items-center justify-between">
             <Ionicons
@@ -57,7 +61,7 @@ export const AppHeader = ({ title, onBack, disabled }: AppHeaderProps) => {
             />
 
             <View className="flex-1 flex flex-col">
-              <Text color="content" className="text-[22px]">
+              <Text color="content" size="2large">
                 {title}
               </Text>
             </View>

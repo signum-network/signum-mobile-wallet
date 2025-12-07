@@ -16,7 +16,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 
 export const SecretPhraseGeneration = () => {
   const { t } = useTranslation();
-  const { iconColor } = useAppTheme();
+  const { iconColor, tokens } = useAppTheme();
   const { watch, setValue } = useFormContext<AccountCreation>();
 
   const seedPhrase = watch("seedPhrase");
@@ -76,18 +76,44 @@ export const SecretPhraseGeneration = () => {
         {t("accountWizard.createAccount.secondStepDescription")}
       </Text>
 
-      <Text size="large" className="text-center font-bold">
-        🔻 {t("accountWizard.createAccount.secondStepSeedPhraseTip")} 🔻
-      </Text>
+      <View className="flex-row items-center justify-center">
+        <View
+          style={{
+            transform: [{ rotate: "180deg" }],
+            marginRight: 8,
+          }}
+        >
+          <Ionicons name="triangle" size={18} color={tokens.primary} />
+        </View>
 
-      <View className="p-4 py-6 w-full bg-card-foreground dark:bg-card-foreground-dark border border-card-border dark:border-card-border-dark rounded-md">
+        <Text size="large" color="content" className="text-center font-bold">
+          {t("accountWizard.createAccount.secondStepSeedPhraseTip")}
+        </Text>
+
+        <View
+          style={{
+            transform: [{ rotate: "180deg" }],
+            marginLeft: 8,
+          }}
+        >
+          <Ionicons name="triangle" size={18} color={tokens.primary} />
+        </View>
+      </View>
+
+      <View
+        className="p-4 py-6 w-full rounded-md border"
+        style={{
+          backgroundColor: tokens.surface,
+          borderColor: tokens.border,
+        }}
+      >
         <Text size="extraLarge">
           {seedPhrase ? seedPhrase : t("loading") + "..."}
         </Text>
       </View>
-      <View className="flex flex-col justify-center w-full gap-4 items-center px-8">
+      <View className="flex flex-col justify-center w-full gap-4 items-center px-8 pt-4">
         <Button
-          icon={<Ionicons name="copy" size={24} color="white" />}
+          icon={<Ionicons name="copy" size={24} color={iconColor.default} />}
           type="secondary"
           title={t("copyToClipboard")}
           size="medium"

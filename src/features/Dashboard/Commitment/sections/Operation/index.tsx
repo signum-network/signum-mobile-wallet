@@ -163,6 +163,14 @@ export const Operation = ({
     !!(isOperationTypeAdd && maxAvailableBalance < amount) ||
     !!(isOperationTypeRemove && maxAvailableBalance < amount);
 
+  const belowMinAddAmount =
+    isOperationTypeAdd &&
+    !!amount &&
+    Number(amount) < 0.2;
+
+  const insufficientFeeFunds =
+    availableBalance < 0.2;
+
   if (isWatchOnly) {
     return (
       <Card>
@@ -240,19 +248,25 @@ export const Operation = ({
               />
 
               <Button
-                type="secondary"
+                type="blackout"
                 title={t(
                   isOperationTypeAdd
                     ? "maxButton"
                     : "commitment.useAllCommittedBalance"
                 )}
-                size="small"
+                size="medium"
                 extraClassNames="mt-2"
                 wide
                 pressableProps={{ onPress: setMaxAvailableBalance }}
               />
 
-              {!!(!!amount && notEnoughFunds) && (
+              {!!insufficientFeeFunds && (
+                <Text color="error" size="small" className="text-center m-2">
+                  {t("notEnoughForFee")}
+                </Text>
+              )}
+
+              {!!(!!amount && notEnoughFunds && !insufficientFeeFunds) && (
                 <Text color="error" className="font-medium my-2">
                   {t("notEnoguhFunds")}
                 </Text>
@@ -260,7 +274,7 @@ export const Operation = ({
             </View>
           </Card>
 
-          {!!(!!amount && !notEnoughFunds) && (
+          {!!(!!amount && !notEnoughFunds && !belowMinAddAmount) && (
             <Card>
               <Text color="muted" className="text-center" fullWidth>
                 {t("transfer.pressTheButtonLonger")}

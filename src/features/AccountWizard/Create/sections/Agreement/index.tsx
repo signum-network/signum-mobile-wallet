@@ -4,10 +4,13 @@ import { useFormContext } from "react-hook-form";
 import type { AccountCreation } from "../../utils/types";
 import { Text } from "@/components/Text";
 import { FormCheckbox } from "@/components/Form/Checkbox";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
 export const Agreement = () => {
   const { t } = useTranslation();
   const { watch, setValue } = useFormContext<AccountCreation>();
+  const { iconColor } = useAppTheme();
 
   const firstTerm = watch("firstTerm");
   const secondTerm = watch("secondTerm");
@@ -18,7 +21,7 @@ export const Agreement = () => {
 
   return (
     <View className="flex justify-center items-center gap-4 pb-20 w-full">
-      <Text className="text-8xl pt-4">🔒</Text>
+      <Ionicons name="lock-closed" size={80} color={iconColor.primary} />
 
       <Text size="extraLarge" className="font-bold text-center">
         {t("accountWizard.createAccount.firstStepTitle")}

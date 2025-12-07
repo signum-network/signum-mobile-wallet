@@ -197,6 +197,38 @@
       "minerModeActive": "Gerencie seu compromisso Signum pela tela do Minerador. Você o encontrará na barra inferior!",
       "minerModeDescription": "O modo minerador permite adicionar ou remover seu compromisso Signum com facilidade"
     },
+    "design": {
+      "title": "Design do App",
+      "description": "Escolha a aparência da sua carteira.",
+      "defaultLight": {
+        "title": "Claro Padrão",
+        "description": "Tema claro padrão para uso diário."
+      },
+      "defaultDark": {
+        "title": "Escuro Padrão",
+        "description": "Tema escuro para ambientes com pouca luz."
+      },
+      "signum": {
+        "title": "Signum",
+        "description": "Um tema baseado nas cores oficiais do Signum."
+      },
+      "midnight": {
+        "title": "Meia-Noite",
+        "description": "Tema ultra escuro para telas OLED."
+      },
+      "solarized": {
+        "title": "Solarized",
+        "description": "Inspirado na clássica paleta Solarized."
+      },
+      "sunrise": {
+        "title": "Amanhecer",
+        "description": "Visual quente e acolhedor em tons laranja-rosa."
+      },
+      "bubblegum": {
+        "title": "Bubblegum",
+        "description": "Tema pastel divertido com rosa e roxo."
+      }
+    },
     "about": {
       "title": "Sobre",
       "description": "Ver informações sobre esta carteira",

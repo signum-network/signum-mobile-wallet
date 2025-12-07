@@ -3,11 +3,11 @@ import { persist, createJSONStorage } from "zustand/middleware";
 import { getDefaultLocale, type locales } from "@/locales";
 import type { authMethod } from "@/types/authMethod";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
-export type ThemePreference = "system" | "light" | "dark";
+import type { ThemeDesign } from "@/theme/tokens";
+import { Appearance } from "react-native";
 
 interface State {
-  themeMode: ThemePreference;            
+  themeDesign: ThemeDesign;
   language: locales;
   isTermAgreed: boolean;
   isAuthEnrolled: boolean;
@@ -19,9 +19,7 @@ interface State {
 
 interface Actions {
   reset: () => void;
-  setThemeMode: (value: ThemePreference) => void; 
-  cycleThemeMode: () => void;                     
-  toggleThemeMode: () => void;
+  setThemeDesign: (value: ThemeDesign) => void;
   setLanguage: (value: locales) => void;
   setIsTermAgreed: (value: boolean) => void;
   setIsAuthEnrolled: (value: boolean) => void;
@@ -31,8 +29,13 @@ interface Actions {
   setMinerMode: (value: boolean) => void;
 }
 
+const systemScheme = Appearance.getColorScheme(); // "light" | "dark" | null
+
+const initialThemeDesign: ThemeDesign =
+  systemScheme === "dark" ? "defaultDark" : "defaultLight";
+
 const initialState: State = {
-  themeMode: "system",               
+  themeDesign: initialThemeDesign,
   language: getDefaultLocale(),
   isTermAgreed: false,
   isAuthEnrolled: false,
@@ -48,23 +51,7 @@ export const appStore = create<State & Actions>()(
       ...initialState,
       reset: () => set(initialState),
 
-      setThemeMode: (value) => set({ themeMode: value }),
-      cycleThemeMode: () =>
-        set((state) => ({
-          themeMode:
-            state.themeMode === "system"
-              ? "dark"
-              : state.themeMode === "dark"
-              ? "light"
-              : "system",
-        })),
-
-
-      toggleThemeMode: () =>
-        set((state) => ({
-          themeMode: state.themeMode === "dark" ? "light" : "dark",
-        })),
-
+      setThemeDesign: (value) => set({ themeDesign: value }),
       setLanguage: (value) => set({ language: value }),
       setIsTermAgreed: (value) => set({ isTermAgreed: value }),
       setIsAuthEnrolled: (value) => set({ isAuthEnrolled: value }),

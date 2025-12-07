@@ -197,6 +197,38 @@
       "minerModeActive": "Gestiona tu compromiso de Signum desde la pantalla del Minero. ¡Lo encontrarás en la barra inferior!",
       "minerModeDescription": "El modo minero permite añadir o retirar fácilmente tu compromiso de Signum"
     },
+    "design": {
+      "title": "Diseño de la App",
+      "description": "Elige el aspecto de tu monedero.",
+      "defaultLight": {
+        "title": "Claro Predeterminado",
+        "description": "Tema claro estándar para uso diario."
+      },
+      "defaultDark": {
+        "title": "Oscuro Predeterminado",
+        "description": "Tema oscuro para ambientes con poca luz."
+      },
+      "signum": {
+        "title": "Signum",
+        "description": "Un tema basado en los colores oficiales de Signum."
+      },
+      "midnight": {
+        "title": "Medianoche",
+        "description": "Tema ultra oscuro para pantallas OLED."
+      },
+      "solarized": {
+        "title": "Solarized",
+        "description": "Inspirado en la clásica paleta Solarized."
+      },
+      "sunrise": {
+        "title": "Amanecer",
+        "description": "Un aspecto cálido y amigable en tonos naranja-rosado."
+      },
+      "bubblegum": {
+        "title": "Bubblegum",
+        "description": "Tema pastel y divertido con rosa y púrpura."
+      }
+    },
     "about": {
       "title": "Acerca de",
       "description": "Ver información sobre esta wallet",
