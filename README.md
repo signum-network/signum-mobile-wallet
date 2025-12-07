@@ -43,26 +43,67 @@ npm run prebuild
 
 ---
 
-## 🎨 Styling (Tailwind / NativeWind)
+## 🎨 Styling (Design Tokens + NativeWind)
 
-The project uses **NativeWind v4** for Tailwind-style utility classes.
+The project uses a **unified design-token system** for all colors and theming, combined with **NativeWind v4** for layout utilities.
 
-### Useful Links
-- Docs: https://www.nativewind.dev/
-- Troubleshooting: https://www.nativewind.dev/docs/getting-started/troubleshooting
+### 🔑 Key Concepts
 
-### Notes
-- Write Tailwind classes directly in your React components  
-- Fully compatible with Expo-managed workflow  
-- Prebuild required when adding new native modules  
-- Restart the app after editing `tailwind.config.js`
+- No Tailwind color classes like `bg-white`, `text-gray-500`, or `dark:bg-black`
+- All colors are defined centrally in:  
+  `src/theme/tokens.ts`
+- Each design theme (e.g. `defaultLight`, `defaultDark`, `midnight`, `solarized`, `sunrise`, `bubblegum`) provides a full token set:
+  - `background`
+  - `surface` / `surfaceElevated`
+  - `border`
+  - `text` / `textMuted`
+  - `primary` / `primarySoft`
+  - `success`
+  - `error`
+- Components access design tokens using:
+
+```ts
+import { useAppTheme } from "@/hooks/useAppTheme";
+
+const { tokens, isDarkMode, themeDesign } = useAppTheme();
+```
+
+- All UI elements (Navigation, TabBar, Buttons, Cards, Inputs, Forms, Alerts, Screens) render based on these tokens.
+
+### 🧩 NativeWind Usage
+
+NativeWind is used for **layout utilities** such as:
+
+- Flexbox (`flex`, `items-center`, `justify-between`)
+- Spacing (`px-4`, `py-2`, `gap-4`)
+- Sizing (`w-full`, `h-12`)
+- Borders & radius (`rounded-lg`, `rounded-full`)
+- Interaction (`active:opacity-80`)
+
+But **not** for colors.  
+All color styling must come from the token system.
+
+### 🌈 Theme Design System
+
+- Users can switch design themes under **Settings → App Design**
+- On first app launch, the system light/dark mode determines the initial theme:
+  - Light system → `defaultLight`
+  - Dark system → `defaultDark`
+- After that, theme selection is persistent and user-controlled
+- Themes are completely independent of system light/dark mode
+
+### 📚 Useful Links
+
+- NativeWind Docs: https://www.nativewind.dev/  
+- Theme Tokens: `src/theme/tokens.ts`  
+- Theme Hook: `src/hooks/useAppTheme.ts`
 
 ---
 
 ## 🧰 Debugging Tools
 
 ### Reactotron
-Useful for logging, network, Redux, async storage, and performance insights.  
+Useful for logging, network monitoring, async storage inspection, and performance insights.  
 https://docs.infinite.red/reactotron/
 
 ### Inspect SQLite (Drizzle ORM)
@@ -85,8 +126,8 @@ The project uses **EAS Build** with the following profiles:
 | Profile | Purpose | Notes |
 |---------|---------|-------|
 | **development** | Dev Client builds | Debugging, Reactotron, Drizzle Studio |
-| **preview** | Internal test builds (APK / ad-hoc iOS) | For QA & testers |
-| **production** | Store releases | For Google Play & App Store |
+| **preview** | Internal test builds (APK / ad-hoc iOS) | QA & testing |
+| **production** | Store releases | Google Play & App Store |
 
 ### Commands
 ```bash
@@ -105,11 +146,11 @@ eas build -p ios --profile production
 
 # 🔢 Versioning & App Updates
 
-Correct versioning is essential for publishing builds to **Google Play** and the **Apple App Store**.
+Correct versioning is essential for publishing builds to **Google Play** and **App Store Connect**.
 
 Expo uses:
 
-- **version** → what the user sees  
+- **version** → user-visible version  
 - **android.versionCode** → required by Google Play  
 - **ios.buildNumber** → required by App Store Connect  
 
@@ -132,7 +173,7 @@ Update only when the user will notice changes:
 
 ## Store Build Numbers
 
-These *must* be incremented **every time** you submit a build — even if the user-facing version stays the same.
+These *must* be incremented **every time** you submit a build.
 
 ### Android
 ```json
@@ -140,8 +181,8 @@ These *must* be incremented **every time** you submit a build — even if the us
   "versionCode": 1
 }
 ```
-- Must be an **integer**
-- Must always increase: `1 → 2 → 3 → ...`
+- Must be an integer  
+- Must always increase  
 
 ### iOS
 ```json
@@ -149,8 +190,8 @@ These *must* be incremented **every time** you submit a build — even if the us
   "buildNumber": "1"
 }
 ```
-- Must be a **string**
-- Increases the same way: `"1" → "2" → "3"`
+- Must be a string  
+- Must always increase  
 
 ---
 
@@ -174,22 +215,18 @@ These *must* be incremented **every time** you submit a build — even if the us
 
 ## When Should You Update?
 
-### ✔️ Update **version**
-Only when something changes for the user.
+### ✔️ `version`
+When something changes for the user.
 
-### ✔️ Update **versionCode** and **buildNumber**
-Every upload to:
-
-- Google Play  
-- App Store Connect  
-
+### ✔️ `versionCode` and `buildNumber`
+Every time you upload a build to Google Play or App Store Connect.
 
 ---
 
 ## 🧪 Testing
 
 - **Preview builds** for internal QA  
-- **Development builds** for debugging and feature work  
+- **Development builds** for debugging  
 - **Production builds** for store submissions  
 
 ---
