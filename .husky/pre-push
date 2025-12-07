@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🔍 Running TypeScript check..."
+npm run ts-check
+
+echo "🏗️  Building Android release..."
+cd android && ./gradlew assembleRelease --quiet
