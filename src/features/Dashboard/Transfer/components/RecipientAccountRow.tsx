@@ -26,7 +26,7 @@ export const RecipientAccountRow: React.FC<Props> = ({
 }) => {
   const { accounts } = useAccountStore();
   const { currentNetwork } = useNodeHostStore();
-  const { iconColor } = useAppTheme();
+  const { iconColor, tokens } = useAppTheme();
 
   const account = accounts[publicKey];
   const numericId = useMemo(
@@ -45,7 +45,10 @@ export const RecipientAccountRow: React.FC<Props> = ({
   return (
     <Pressable
       onPress={() => onSelect(rs!)}
-      className="flex-row items-center justify-between py-3 bg-white dark:bg-card-foreground-dark"
+      className="flex-row items-center justify-between py-3"
+      style={{
+        backgroundColor: tokens.surface,
+      }}
     >
       <View className="flex-1 flex-row items-center gap-4">
         <AccountAvatar

@@ -14,7 +14,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 
 export const ManualNodeWizard = () => {
   const { t } = useTranslation();
-  const { iconColor } = useAppTheme();
+  const { iconColor, tokens } = useAppTheme();
   const {
     reliableNodeHost,
     testnetReliableNodeHost,
@@ -36,10 +36,8 @@ export const ManualNodeWizard = () => {
     switch (nodeGroup) {
       case "mainnet":
         return reliableNodeHost;
-
       case "testnet":
         return testnetReliableNodeHost;
-
       default:
         return customNodeHost;
     }
@@ -91,16 +89,19 @@ export const ManualNodeWizard = () => {
           {t("settings.node.selectANode")}
         </Text>
 
-        <View className="flex flex-row items-stretch gap-2 bg-card-foreground dark:bg-card-foreground-dark border border-card-border dark:border-card-border-dark rounded-full max-w-md w-full p-1 overflow-hidden">
+        <View
+          className="flex flex-row items-stretch gap-2 rounded-full max-w-md w-full p-1 overflow-hidden border"
+          style={{
+            backgroundColor: tokens.surface,
+            borderColor: tokens.border,
+          }}
+        >
           <Button
             type={nodeGroup === "mainnet" ? "primary" : undefined}
             title="Mainnet"
             extraClassNames="flex-1 px-4"
-            titleClassName={
-              nodeGroup === "mainnet"
-                ? "text-white"
-                : "text-muted-foreground dark:text-muted-foreground-dark"
-            }
+            size="medium"
+            titleClassName="font-medium"
             pressableProps={{ onPress: setNodeGroupMainnet }}
           />
 
@@ -108,11 +109,8 @@ export const ManualNodeWizard = () => {
             type={nodeGroup === "testnet" ? "primary" : undefined}
             title="Testnet"
             extraClassNames="flex-1 px-4"
-            titleClassName={
-              nodeGroup === "testnet"
-                ? "text-white"
-                : "text-muted-foreground dark:text-muted-foreground-dark"
-            }
+            size="medium"
+            titleClassName="font-medium"
             pressableProps={{ onPress: setNodeGroupTestnet }}
           />
 
@@ -120,11 +118,8 @@ export const ManualNodeWizard = () => {
             type={nodeGroup === "custom" ? "primary" : undefined}
             title={t("settings.node.custom")}
             extraClassNames="flex-1 px-4"
-            titleClassName={
-              nodeGroup === "custom"
-                ? "text-white"
-                : "text-muted-foreground dark:text-muted-foreground-dark"
-            }
+            size="medium"
+            titleClassName="font-medium"
             pressableProps={{ onPress: setNodeGroupCustom }}
           />
         </View>

@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Text } from "@/components/Text";
 import { useAppStore } from "@/hooks/useAppStore";
 import { useNodeHostStore } from "@/hooks/useNodeHostStore";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
 // Detect alerts:
 // Offline
@@ -20,6 +21,7 @@ export const AppAlert = () => {
     isTestnet,
     connectionType,
   } = useNodeHostStore();
+  const { tokens } = useAppTheme();
 
   if (!isOnline) {
     return (
@@ -29,8 +31,16 @@ export const AppAlert = () => {
           className="absolute inset-x-0 top-0 z-[1000]"
           pointerEvents="box-none"
         >
-          <View className="py-2 items-center justify-center bg-signum">
-            <Text className="!text-white font-medium text-center">
+          <View
+            className="py-2 items-center justify-center"
+            style={{
+              backgroundColor: tokens.primary,
+            }}
+          >
+            <Text
+              className="font-medium text-center"
+              color="white"
+            >
               {t("youAreOffline")}
             </Text>
           </View>
@@ -39,8 +49,11 @@ export const AppAlert = () => {
         {/* Overlay blocks interaction and centers the loader */}
         <View
           pointerEvents="auto"
-          className="absolute inset-0 z-[999] bg-black/50 items-center justify-center"
-          style={{ elevation: 999 }} // wichtig für Android-Z-Order
+          className="absolute inset-0 z-[999] items-center justify-center"
+          style={{
+            elevation: 999,
+            backgroundColor: "rgba(0,0,0,0.5)",
+          }}
         >
           <ActivityIndicator size={84} />
         </View>
@@ -70,8 +83,22 @@ export const AppAlert = () => {
   return null;
 };
 
-export const Alert = ({ label }: { label: string }) => (
-  <View className="w-full py-2 flex items-center justify-center bg-[#FF5724] mb-2">
-    <Text className="!text-white font-medium text-center">{label}</Text>
-  </View>
-);
+export const Alert = ({ label }: { label: string }) => {
+  const { tokens } = useAppTheme();
+
+  return (
+    <View
+      className="w-full py-2 flex items-center justify-center mb-2"
+      style={{
+        backgroundColor: tokens.error,
+      }}
+    >
+      <Text
+        className="font-medium text-center"
+        color="white"
+      >
+        {label}
+      </Text>
+    </View>
+  );
+};

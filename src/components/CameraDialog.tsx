@@ -110,7 +110,7 @@ export const CameraDialog = ({ onCodeScanned, expected }: Props) => {
               />
               {errorMsg ? (
                 <View className="absolute bottom-[-30px] left-0 right-0">
-                  <Text className="text-center font-medium text-red-500">
+                  <Text className="text-center font-medium" color="error">
                     {errorMsg}
                   </Text>
                 </View>

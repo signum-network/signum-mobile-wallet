@@ -30,7 +30,7 @@ import { AppHeader } from "@/components/AppHeader";
 
 export const ImportScreen = () => {
   const { t } = useTranslation();
-  const { iconColor } = useAppTheme();
+  const { iconColor, tokens } = useAppTheme();
   const {
     accountWalletNames,
     accountPublicKeys,
@@ -153,7 +153,7 @@ export const ImportScreen = () => {
         title={t("accountWizard.quickStart.importCta")}
         onBack={goBackwards}
       />
-      <KeyboardAnimatedContainer baseBottom={isAccountEnrolled ? -70 : 36}> 
+      <KeyboardAnimatedContainer baseBottom={isAccountEnrolled ? -70 : 36}>
         <ScrollView>
           <AccountWizardContainer>
             <View className="flex flex-col items-center justify-center w-full gap-4">
@@ -164,7 +164,13 @@ export const ImportScreen = () => {
               <Text size="large" color="muted" className="text-center">
                 {t("accountWizard.importAccount.importDescription")}
               </Text>
-              <View className="flex flex-row items-stretch gap-2 bg-card-foreground dark:bg-card-foreground-dark border border-card-border dark:border-card-border-dark rounded-full max-w-md w-full p-1 overflow-hidden">
+              <View
+                className="flex flex-row items-stretch gap-2 rounded-full max-w-md w-full p-1 overflow-hidden border"
+                style={{
+                  backgroundColor: tokens.surface,
+                  borderColor: tokens.border,
+                }}
+              >
                 <Button
                   icon={
                     <Ionicons
@@ -177,11 +183,7 @@ export const ImportScreen = () => {
                   title={t("fullAccount")}
                   extraClassNames="flex-1 px-4"
                   size="medium"
-                  titleClassName={
-                    isAccountypeMnemonic
-                      ? "text-white"
-                      : "text-muted-foreground dark:text-muted-foreground-dark"
-                  }
+                  titleClassName="font-medium"
                   pressableProps={{ onPress: setMnemonicMode }}
                 />
 
@@ -197,11 +199,7 @@ export const ImportScreen = () => {
                   title={t("watchOnly")}
                   extraClassNames="flex-1 px-4"
                   size="medium"
-                  titleClassName={
-                    isAccountypeWatchOnly
-                      ? "text-white"
-                      : "text-muted-foreground dark:text-muted-foreground-dark"
-                  }
+                  titleClassName="font-medium"
                   pressableProps={{ onPress: setWatchOnlyMode }}
                 />
               </View>

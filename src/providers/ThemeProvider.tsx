@@ -8,7 +8,7 @@ import type { ChildrenProps } from "@/types/childrenProps";
 import { SystemBars } from "react-native-edge-to-edge";
 
 export const ThemeProvider = ({ children }: ChildrenProps) => {
-  const { isDarkMode, theme } = useAppTheme();
+  const { isDarkMode, theme, tokens } = useAppTheme(); 
   const insets = useSafeAreaInsets();
   const pathname = usePathname();
 
@@ -27,7 +27,7 @@ export const ThemeProvider = ({ children }: ChildrenProps) => {
       style={{
         flex: 1,
         paddingTop: dynamicTopInset,
-        backgroundColor: theme.colors.background,
+        backgroundColor: tokens.background,
       }}
     >
       <SystemBars style={isDarkMode ? "light" : "dark"} />

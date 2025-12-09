@@ -7,10 +7,12 @@ import { Button } from "@/components/Button";
 import { signumWhiteSymbolPicture } from "@/assets";
 import { Text } from "@/components/Text";
 import { useAppStore } from "@/hooks/useAppStore";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import Markdown from "react-native-marked";
 
 export const TermsScreen = () => {
   const { t } = useTranslation();
+  const { tokens } = useAppTheme();
   const { setIsTermAgreed } = useAppStore();
   const router = useRouter();
   const insets = useSafeAreaInsets();
@@ -22,18 +24,27 @@ export const TermsScreen = () => {
   };
 
   return (
-    <View className="flex-1 gap-4 bg-white dark:bg-black">
+    <View
+      className="flex-1 gap-4"
+      style={{
+        backgroundColor: tokens.background,
+      }}
+    >
       <View
-        style={{ paddingTop: insets.top + 24 }}
-        className="items-center justify-center pb-4 gap-4 bg-signum-dark"
+        className="items-center justify-center pb-4 gap-4"
+        style={{
+          paddingTop: insets.top + 24,
+          backgroundColor: tokens.primary,
+        }}
       >
         <Image
           source={{ uri: signumWhiteSymbolPicture }}
           style={{ width: 96, height: 96 }}
         />
-        <Text className="text-white font-bold text-3xl">{t("welcome")}</Text>
+        <Text size="extraLarge" className="font-bold" color="white">
+          {t("welcome")}
+        </Text>
       </View>
-
       <View style={{ flex: 0.95 }} className="px-4 gap-4">
         <View>
           <Text size="large" color="muted" className="text-center font-medium">
@@ -43,21 +54,24 @@ export const TermsScreen = () => {
             {t("terms.requestSecondLine")}
           </Text>
         </View>
-
-        <View className="flex-1 p-2 rounded-md border border-card-border dark:border-card-border-dark bg-muted dark:bg-card-foreground-dark/75">
+        <View
+          className="flex-1 p-2 rounded-md border"
+          style={{
+            borderColor: tokens.border,
+            backgroundColor: tokens.surface,
+          }}
+        >
           <Markdown
             value={markdown}
-            styles={{  li: { paddingBottom: 10 } }}
-            flatListProps={{ style: { backgroundColor: "transparent" } }}
+            styles={{ li: { paddingBottom: 10, color: tokens.text } }}
+            flatListProps={{
+              style: { backgroundColor: "transparent" },
+            }}
           />
         </View>
       </View>
-
-      <View className="flex items-center px-4 gap-4 color-slate-500">
-        <View
-          className="w-full"
-          style={{ paddingBottom: insets.bottom }}
-        >
+      <View className="flex items-center px-4 gap-4">
+        <View className="w-full" style={{ paddingBottom: insets.bottom }}>
           <Button
             type="primary"
             title={t("continue")}

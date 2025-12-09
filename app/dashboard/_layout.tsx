@@ -11,19 +11,20 @@ type TabBarIconProperties = { color: string };
 
 export default function Layout() {
   const { t } = useTranslation();
-  const { theme, isDarkMode } = useAppTheme();
+  const { isDarkMode, tokens } = useAppTheme();
   const tabBarIconSize = 28;
   const tabBarLabelStyle = { fontSize: 12 };
   const insets = useSafeAreaInsets();
 
-  const tabBarActiveColor = isDarkMode ? "#0099ff" : "#0099ff";
-  const tabBarInactiveColor = isDarkMode ? "#777777" : "#999999";
+  const tabBarActiveColor = tokens.primary;
+  const tabBarInactiveColor = tokens.textMuted;
 
   return (
     <InactivityGuard
-      timeoutMs={2 * 60_000}
-      backgroundGraceMs={2 * 60_000} 
+      timeoutMs={5 * 60_000}
+      backgroundGraceMs={5 * 60_000}
       onLogout={() => {
+        // handled elsewhere
       }}
     >
       <Tabs
@@ -33,9 +34,9 @@ export default function Layout() {
             height: 72 + insets.bottom,
             paddingBottom: 8 + insets.bottom,
             paddingTop: 8,
-            backgroundColor: isDarkMode ? "#000" : theme.colors.card,
+            backgroundColor: tokens.surfaceElevated ?? tokens.surface,
             borderTopWidth: isDarkMode ? 0.5 : 0.25,
-            borderTopColor: isDarkMode ? "#444444" : "#e0e0e0",
+            borderTopColor: tokens.border,
             elevation: 0,
             shadowOpacity: 0,
           },
@@ -122,6 +123,7 @@ export default function Layout() {
           }}
           name="commitment"
         />
+
         <Tabs.Screen
           options={{
             title: t("bottomBar.settings"),

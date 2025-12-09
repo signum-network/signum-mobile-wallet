@@ -9,6 +9,7 @@ import { Button } from "@/components/Button";
 import { getHardwareAuth } from "@/utils/sec/getHardwareAuth";
 import { generateHash } from "@/utils/sec/generateHash";
 import { savePin } from "@/utils/sec/handlePin";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
 enum Steps {
   enter,
@@ -20,6 +21,7 @@ const initialValues = [...new Array(PUBLIC_PIN_LENGTH)];
 export const EnrollAuthScreen = () => {
   const { t } = useTranslation();
   const { authMethod, setAuthMethod, setIsAuthEnrolled } = useAppStore();
+  const { tokens } = useAppTheme();
 
   const [step, setStep] = useState(Steps.enter);
 
@@ -124,61 +126,63 @@ export const EnrollAuthScreen = () => {
   }, [verificationSuccess, verificationError]);
 
   return (
-  <View className="flex-1 items-center justify-start bg-white dark:bg-black">
-    <View className="max-w-md mb-2 justify-center h-14 pt-4">
-      {step === Steps.verify && verificationError ? (
-        <Button
-          type="blackout"
-          size="small"
-          rounded
-          title={t("auth.goBack")}
-          pressableProps={{
-            onPress: resetProgress,
-            pointerEvents: verificationSuccess ? "none" : "auto",
-          }}
-          extraClassNames={verificationSuccess ? "opacity-0" : "opacity-100"}
-          wide
+    <View
+      className="flex-1 items-center justify-start"
+      style={{ backgroundColor: tokens.background }}
+    >
+      <View className="max-w-md mb-2 justify-center h-14 pt-4">
+        {step === Steps.verify && verificationError ? (
+          <Button
+            type="secondary"
+            size="small"
+            rounded
+            title={t("auth.goBack")}
+            pressableProps={{
+              onPress: resetProgress,
+              pointerEvents: verificationSuccess ? "none" : "auto",
+            }}
+            extraClassNames={verificationSuccess ? "opacity-0" : "opacity-100"}
+            wide
+          />
+        ) : (
+          <Button
+            title=" "
+            pressableProps={{ pointerEvents: "none" }}
+            extraClassNames="opacity-0"
+            wide
+          />
+        )}
+      </View>
+
+      {step === Steps.enter && (
+        <PinAuthenticator
+          label={t("auth.enrollPassCodeTitle")}
+          complementaryLabel={t("auth.enrollPassCodeDescription")}
+          errorLabel=""
+          successLabel=""
+          error={false}
+          success={false}
+          length={PUBLIC_PIN_LENGTH}
+          value={firstStepvalues}
+          onChange={handleOnChangeFirstStepValues}
+          onReset={() => {}}
         />
-      ) : (
-        <Button
-          type="secondary"
-          title=" "
-          pressableProps={{ pointerEvents: "none" }}
-          extraClassNames="opacity-0"
-          wide
+      )}
+
+      {step === Steps.verify && (
+        <PinAuthenticator
+          label={t("auth.enterPassCodeAgain")}
+          complementaryLabel={t("auth.verifyPassCode")}
+          errorLabel={t("auth.verifyIncorrectPassCode")}
+          successLabel={`${t("auth.verifyLoadingWait")} 🔒`}
+          error={verificationError}
+          success={verificationSuccess}
+          length={PUBLIC_PIN_LENGTH}
+          value={verificationValues}
+          onChange={handleOnChangeVerificationValues}
+          onReset={resetVerificationValues}
         />
       )}
     </View>
-
-    {step === Steps.enter && (
-      <PinAuthenticator
-        label={t("auth.enrollPassCodeTitle")}
-        complementaryLabel={t("auth.enrollPassCodeDescription")}
-        errorLabel=""
-        successLabel=""
-        error={false}
-        success={false}
-        length={PUBLIC_PIN_LENGTH}
-        value={firstStepvalues}
-        onChange={handleOnChangeFirstStepValues}
-        onReset={() => {}}
-      />
-    )}
-
-    {step === Steps.verify && (
-      <PinAuthenticator
-        label={t("auth.enterPassCodeAgain")}
-        complementaryLabel={t("auth.verifyPassCode")}
-        errorLabel={t("auth.verifyIncorrectPassCode")}
-        successLabel={`${t("auth.verifyLoadingWait")} 🔒`}
-        error={verificationError}
-        success={verificationSuccess}
-        length={PUBLIC_PIN_LENGTH}
-        value={verificationValues}
-        onChange={handleOnChangeVerificationValues}
-        onReset={resetVerificationValues}
-      />
-    )}
-  </View>
-);
+  );
 };

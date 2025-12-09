@@ -17,7 +17,7 @@ interface Props {
 
 export const AccountSwitcher = ({ href }: Props) => {
   const { t } = useTranslation();
-  const { iconColor } = useAppTheme();
+  const { iconColor, tokens } = useAppTheme();
   const {
     accountId,
     isWatchOnly,
@@ -58,7 +58,13 @@ export const AccountSwitcher = ({ href }: Props) => {
             </View>
           </View>
 
-          <View className="border rounded-lg border-card-border dark:border-card-border-dark p-4 opacity-80">
+          <View
+            className="border rounded-lg p-4 opacity-80"
+            style={{
+              borderColor: tokens.border,
+              backgroundColor: tokens.surfaceElevated,
+            }}
+          >
             <FontAwesome6
               name="right-left"
               size={20}

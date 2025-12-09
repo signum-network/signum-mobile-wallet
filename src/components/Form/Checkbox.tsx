@@ -22,22 +22,35 @@ export const FormCheckbox = ({
   bordered,
   fullWidth,
 }: Props) => {
-  const classNames = clsx([
-    "flex flex-row justify-center items-center gap-4 p-4 bg-card-foreground dark:bg-card-foreground-dark",
-    fullWidth && "w-full",
-    bordered &&
-      "border border-card-border dark:border-card-border-dark rounded-lg",
-  ]);
+  const { tokens, iconColor } = useAppTheme();
 
-  const { iconColor } = useAppTheme();
+  const classNames = clsx(
+    "flex flex-row justify-center items-center gap-4 p-4",
+    fullWidth && "w-full",
+    bordered && "rounded-lg"
+  );
 
   return (
-    <Pressable className={classNames} onPress={onPress}>
-      <View className="w-1/12  flex justify-center items-center" pointerEvents="none">
-        <NativeCheckbox value={value} color={iconColor.primary} />
+    <Pressable
+      className={classNames}
+      onPress={onPress}
+      style={{
+        backgroundColor: tokens.surface,
+        borderWidth: bordered ? 1 : 0,
+        borderColor: bordered ? tokens.border : undefined,
+      }}
+    >
+      <View
+        className="w-1/12 flex justify-center items-center"
+        pointerEvents="none"
+      >
+        <NativeCheckbox
+          value={value}
+          color={iconColor.primary} // ← bereits tokenisiert
+        />
       </View>
 
-      <View className="w-11/12  flex-col items-start justify-start">
+      <View className="w-11/12 flex-col items-start justify-start">
         <Text className="font-medium">{title}</Text>
 
         {description && (

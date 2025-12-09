@@ -13,7 +13,7 @@ export const CurrencySettingsScreen = () => {
       <AppHeader title={t("settings.currency.title")} />
         <DashboardScreenContainer>
              <ScrollView>
-          <View className="flex flex-col items-center justify-center w-full px-4 gap-4 pt-8">
+          <View className="flex flex-col items-center justify-center w-full px-4 gap-4 pt-8 pb-16">
             <Text className="font-medium mb-4" color="muted">
               Data provided by Coingecko
             </Text>

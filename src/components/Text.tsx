@@ -1,9 +1,10 @@
-import { Text as NativeText } from "react-native";
+import { Text as NativeText, TextStyle } from "react-native";
 import clsx from "clsx";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
 interface Props {
   color?: "primary" | "content" | "white" | "muted" | "error" | "success";
-  size?: "extraSmall" | "small" | "medium" | "large" | "extraLarge";
+  size?: "extraSmall" | "small" | "medium" | "large" | "2large" | "extraLarge";
   className?: string;
   fullWidth?: boolean;
   children: any;
@@ -16,21 +17,37 @@ export const Text = ({
   fullWidth,
   children,
 }: Props) => {
+  const { tokens } = useAppTheme();
+
   const classNames = clsx([
-    color === "primary" && "text-signum dark:text-signum-dark",
-    color === "error" && "text-red dark:text-red-dark",
-    color === "white" && "text-white",
-    color === "success" && "text-green dark:text-green-dark",
-    color === "content" && "text-black dark:text-white",
-    color === "muted" &&
-      "text-muted-foreground dark:text-muted-foreground-dark",
     size === "extraSmall" && "text-xs",
     size === "small" && "text-sm",
+    size === "medium" && "text-base",
     size === "large" && "text-lg",
+    size === "2large" && "text-2xl",
     size === "extraLarge" && "text-3xl",
     fullWidth && "w-full",
     className && className,
   ]);
 
-  return <NativeText className={classNames}>{children}</NativeText>;
+  const colorStyle: TextStyle = {
+    color:
+      color === "primary"
+        ? tokens.primary
+        : color === "muted"
+        ? tokens.textMuted
+        : color === "error"
+        ? tokens.error
+        : color === "success"
+        ? tokens.success
+        : color === "white"
+        ? "#FFFFFF"
+        : tokens.text,
+  };
+
+  return (
+    <NativeText className={classNames} style={colorStyle}>
+      {children}
+    </NativeText>
+  );
 };
