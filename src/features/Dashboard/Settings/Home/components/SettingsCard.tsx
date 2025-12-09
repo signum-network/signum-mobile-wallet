@@ -26,7 +26,7 @@ export const SettingsCard = ({ icon, title, description, href }: Props) => {
       className="w-full rounded-lg active:opacity-80 ripple-[#333] ripple-bordered"
     >
       <Card>
-        <View className="w-full h-24 flex flex-row items-center justify-between">
+        <View className="w-full h-20 flex flex-row items-center justify-between">
           <View className="flex flex-row items-center gap-3 flex-1 pr-2">
             <View className="pl-2">{icon}</View>
 

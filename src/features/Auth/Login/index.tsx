@@ -10,6 +10,7 @@ import { generateHash } from "@/utils/sec/generateHash";
 import { readPin, deletePin } from "@/utils/sec/handlePin";
 import { deleteSecretKey } from "@/utils/sec/handleSecretKeys";
 import { useAccountStore } from "@/hooks/useAccountStore";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import * as LocalAuthentication from "expo-local-authentication";
 import { recipientsStore } from "@/states/recipientsStore";
 
@@ -24,6 +25,8 @@ export const LoginAuthScreen = () => {
     setFailedAuthAttempts,
     resetAppStore,
   } = useAppStore();
+
+  const { tokens } = useAppTheme();
 
   const [locked, setLocked] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -93,9 +96,6 @@ export const LoginAuthScreen = () => {
     );
   };
 
-  // Reset app settings
-  // Reset account store
-  // Delete account secret keys from secure storage
   const resetApp = () => {
     setLocked(true);
 
@@ -146,7 +146,12 @@ export const LoginAuthScreen = () => {
   }, [failedAuthAttempts]);
 
   return (
-    <View className="flex-1 items-center justify-start pt-24 bg-white dark:bg-black">
+    <View
+      className="flex-1 items-center justify-start pt-24"
+      style={{
+        backgroundColor: tokens.background,
+      }}
+    >
       <PinAuthenticator
         label={t("auth.loginPassCodeTitle")}
         complementaryLabel={t("auth.loginPassCodeDescription")}

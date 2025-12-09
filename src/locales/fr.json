@@ -197,6 +197,38 @@
       "minerModeActive": "Gérez votre engagement Signum depuis l’écran Mineur. Il se trouve dans les onglets du bas !",
       "minerModeDescription": "Le mode mineur vous permet d’ajouter ou de retirer facilement votre engagement Signum"
     },
+    "design": {
+      "title": "Design de l’application",
+      "description": "Choisissez l’apparence de votre portefeuille.",
+      "defaultLight": {
+        "title": "Clair par Défaut",
+        "description": "Thème clair standard pour un usage quotidien."
+      },
+      "defaultDark": {
+        "title": "Sombre par Défaut",
+        "description": "Thème sombre pour les environnements peu éclairés."
+      },
+      "signum": {
+        "title": "Signum",
+        "description": "Un thème basé sur les couleurs officielles de Signum."
+      },
+      "midnight": {
+        "title": "Minuit",
+        "description": "Thème ultra sombre pour les écrans OLED."
+      },
+      "solarized": {
+        "title": "Solarized",
+        "description": "Inspiré par la palette classique Solarized."
+      },
+      "sunrise": {
+        "title": "Aube",
+        "description": "Un style chaleureux et agréable en orange-rosé."
+      },
+      "bubblegum": {
+        "title": "Bubblegum",
+        "description": "Thème pastel ludique avec rose et violet."
+      }
+    },
     "about": {
       "title": "À propos",
       "description": "Afficher des informations sur ce portefeuille",

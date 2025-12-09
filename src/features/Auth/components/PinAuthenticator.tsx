@@ -1,13 +1,8 @@
 import { useMemo, useEffect } from "react";
-import {
-  View,
-  ActivityIndicator,
-  Pressable,
-  FlatList,
-} from "react-native";
+import { View, ActivityIndicator, Pressable, FlatList } from "react-native";
 import { useTranslation } from "react-i18next";
 import { Image } from "expo-image";
-import { signumBlueSymbolPicture } from "@/assets";
+import { signumTransparentSymbol } from "@/assets";
 import { Text } from "@/components/Text";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useAppTheme } from "@/hooks/useAppTheme";
@@ -50,7 +45,7 @@ export const PinAuthenticator = ({
   onReset,
 }: Props) => {
   const { t } = useTranslation();
-  const { iconColor } = useAppTheme();
+  const { iconColor, tokens } = useAppTheme();
 
   // Normalize the value to 6 slots
   const normalized = useMemo(() => {
@@ -100,6 +95,7 @@ export const PinAuthenticator = ({
   useEffect(() => {
     if (areAllItemsFilled(normalized)) {
       if (success) {
+        // success case: do nothing, parent handles
       } else if (error) {
         setTimeout(() => {
           const empty = Array.from({ length: PIN_LEN }, () => "");
@@ -131,19 +127,31 @@ export const PinAuthenticator = ({
 
   return (
     <View
-      className="flex-1 bg-white dark:bg-black"
+      className="flex-1"
       style={{
         paddingTop: SCREEN_PADDING_TOP,
         paddingBottom: SCREEN_PADDING_BOTTOM,
+        backgroundColor: tokens.background,
       }}
     >
       <View className="flex-1 items-center">
         {/* Header */}
-        <View className="items-center justify-center gap-2 pt-2">
-          <Image
-            source={{ uri: signumBlueSymbolPicture }}
-            style={{ width: 75, height: 75 }}
-          />
+        <View className="items-center justify-center gap-2 pt-1">
+          <View
+            style={{
+              width: 75,
+              height: 75,
+              borderRadius: 999,
+              backgroundColor: tokens.primary,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Image
+              source={{ uri: signumTransparentSymbol }}
+              style={{ width: 54, height: 54, resizeMode: "contain" }}
+            />
+          </View>
           <View className="h-20 justify-center">
             <Text className="max-w-xs w-full text-center !text-2xl">
               {label}
@@ -157,7 +165,7 @@ export const PinAuthenticator = ({
         </Text>
 
         {/* Spacer */}
-       <View className="flex-1 min-h-12 max-h-24" />
+        <View className="flex-1 min-h-12 max-h-24" />
 
         {/* PIN */}
         <View className="w-full max-w-md mx-auto px-8 items-center mb-4">
@@ -170,18 +178,22 @@ export const PinAuthenticator = ({
               return (
                 <View
                   key={i}
-                  className={`${
-                    filled
-                      ? "bg-signum-dark"
-                      : "bg-white dark:bg-black dark:border-white/20"
-                  } w-5 h-5 rounded-full mb-3`}
+                  className="w-5 h-5 rounded-full mb-3"
+                  style={{
+                    backgroundColor: filled
+                      ? tokens.primary
+                      : tokens.background,
+                  }}
                 />
               );
             })}
           </View>
           <View
-            style={{ width: PIN_LINE_WIDTH }}
-            className="h-[1px] bg-black dark:bg-white"
+            style={{
+              width: PIN_LINE_WIDTH,
+              backgroundColor: tokens.text,
+            }}
+            className="h-[1px]"
           />
         </View>
 
@@ -227,7 +239,7 @@ export const PinAuthenticator = ({
                 accessibilityLabel={lbl}
               >
                 <Text
-                  className="text-2xl"
+                  size="extraLarge"
                   color={disabledKey ? "muted" : "content"}
                 >
                   {lbl}

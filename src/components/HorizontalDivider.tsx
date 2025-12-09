@@ -1,5 +1,16 @@
 import { View } from "react-native";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
-export const HorizontalDivider = () => (
-  <View className="h-0.5 w-full bg-card-border dark:bg-card-border-dark"></View>
-);
+export const HorizontalDivider = () => {
+  const { tokens } = useAppTheme();
+
+  return (
+    <View
+      className="w-full"
+      style={{
+        height: 0.5,
+        backgroundColor: tokens.border,
+      }}
+    />
+  );
+};

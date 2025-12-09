@@ -12,7 +12,7 @@ import { AppHeader } from "@/components/AppHeader";
 
 export const NodeSettingsScreen = () => {
   const { t } = useTranslation();
-  const { iconColor } = useAppTheme();
+  const { iconColor, tokens } = useAppTheme();
   const { connectionType, setConnectionType, resetActiveNodeHost } =
     useNodeHostStore();
 
@@ -30,8 +30,14 @@ export const NodeSettingsScreen = () => {
       <AppHeader title={t("settings.node.title")} />
 
       <DashboardScreenContainer>
-        <View className="flex-1 flex-col items-center w-full gap-4 px-4">
-          <View className="flex flex-row items-stretch gap-2 bg-card-foreground dark:bg-card-foreground-dark border border-card-border dark:border-card-border-dark rounded-full max-w-md w-full p-1 overflow-hidden">
+        <View className="flex-1 flex-col items-center w-full gap-4 px-4 pt-4">
+          <View
+            className="flex flex-row items-stretch gap-2 rounded-full max-w-md w-full p-1 overflow-hidden border"
+            style={{
+              backgroundColor: tokens.surface,
+              borderColor: tokens.border,
+            }}
+          >
             <Button
               icon={
                 <Ionicons
@@ -44,11 +50,7 @@ export const NodeSettingsScreen = () => {
               title={t("settings.node.auto")}
               extraClassNames="flex-1 px-4"
               size="medium"
-              titleClassName={
-                isConnectionTypeAutomatic
-                  ? "text-white"
-                  : "text-muted-foreground dark:text-muted-foreground-dark"
-              }
+              titleClassName="font-medium"
               pressableProps={{ onPress: setAutomaticMode }}
             />
 
@@ -64,11 +66,7 @@ export const NodeSettingsScreen = () => {
               title={t("settings.node.manual")}
               extraClassNames="flex-1 px-4"
               size="medium"
-              titleClassName={
-                isConnectionTypeManual
-                  ? "text-white"
-                  : "text-muted-foreground dark:text-muted-foreground-dark"
-              }
+              titleClassName="font-medium"
               pressableProps={{ onPress: setManualMode }}
             />
           </View>

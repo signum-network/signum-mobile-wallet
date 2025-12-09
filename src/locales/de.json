@@ -197,6 +197,42 @@
       "minerModeActive": "Verwalte dein Signum‑Commitment über den Miner‑Bildschirm. Du findest ihn in der unteren Tab‑Leiste!",
       "minerModeDescription": "Der Miner‑Modus ermöglicht es dir, dein Signum‑Commitment einfach hinzuzufügen oder zu entfernen"
     },
+    "design": {
+      "title": "Design",
+      "description": "Bevorzugtes Wallet‑Design auswählen"
+    },
+    "design": {
+      "title": "App-Design",
+      "description": "Wähle das Erscheinungsbild deiner Wallet.",
+      "defaultLight": {
+        "title": "Standard Hell",
+        "description": "Helles Standard-Theme für den täglichen Gebrauch."
+      },
+      "defaultDark": {
+        "title": "Standard Dunkel",
+        "description": "Dunkles Theme für Umgebungen mit wenig Licht."
+      },
+      "signum": {
+        "title": "Signum",
+        "description": "Ein Theme basierend auf den offiziellen Signum-Farben."
+      },
+      "midnight": {
+        "title": "Mitternacht",
+        "description": "Ultra-dunkles Theme für OLED-Displays."
+      },
+      "solarized": {
+        "title": "Solarized",
+        "description": "Inspiriert von der klassischen Solarized-Palette."
+      },
+      "sunrise": {
+        "title": "Sonnenaufgang",
+        "description": "Warmes, freundliches Orange-Pink-Design."
+      },
+      "bubblegum": {
+        "title": "Bubblegum",
+        "description": "Verspieltes Pastell-Theme mit Rosa und Violett."
+      }
+    },
     "about": {
       "title": "Info",
       "description": "Informationen zu dieser Wallet ansehen",
