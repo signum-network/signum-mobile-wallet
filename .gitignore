@@ -13,6 +13,9 @@ ios
 # IDEs
 .idea/
 
+
+.keystore/
+
 # Native
 *.orig.*
 *.jks
