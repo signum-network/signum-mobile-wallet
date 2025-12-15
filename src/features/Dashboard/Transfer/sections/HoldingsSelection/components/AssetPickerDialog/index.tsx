@@ -24,29 +24,23 @@ export const AssetPickerDialog = ({
     accountData: { tokenBalance },
   } = useAccount();
 
+  const maxVisibleTokenRows = 6;
+  const rowsToShow = Math.min(tokenBalance.length, maxVisibleTokenRows);
+  const listHeight = Math.max(ITEM_HEIGHT, rowsToShow * ITEM_HEIGHT);
+
   return (
     <Dialog variant="transparent" visible={visible} onClose={onClose}>
       <View
         style={{
           width: "100%",
-          height: "98%",
           gap: 8,
           display: "flex",
-          justifyContent: "space-between",
           flexDirection: "column",
           alignItems: "center",
         }}
       >
         <Text className="font-medium">{t("transfer.pickAnAsset")}</Text>
-
-        <View
-          style={{
-            flex: 1,
-            flexGrow: 1,
-            minHeight: ITEM_HEIGHT,
-            width: "100%",
-          }}
-        >
+        <View style={{ width: "100%" }}>
           <AssetCard
             asset=""
             balanceQNT=""
@@ -54,20 +48,26 @@ export const AssetPickerDialog = ({
             isSigna
             signaAvailableBalance={signaAvailableBalance}
           />
-
+        </View>
+        <View
+          style={{
+            width: "100%",
+            height: listHeight,
+          }}
+        >
           <FlashList
             data={tokenBalance}
             keyExtractor={({ asset }) => asset}
             renderItem={({ item }) => <AssetCard {...item} />}
           />
         </View>
-
         <Button
           icon={<Ionicons name="close" size={24} color="white" />}
           wide
           title={t("cancel")}
           type="error"
           pressableProps={{ onPress: onClose }}
+          extraClassNames="mt-6"
         />
       </View>
     </Dialog>

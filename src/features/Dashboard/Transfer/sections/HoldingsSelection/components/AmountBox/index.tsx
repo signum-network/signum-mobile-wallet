@@ -41,7 +41,9 @@ export const AmountBox = () => {
     0
   );
 
-  const notEnoughFunds = amountNum > 0 && amountNum > available;
+  const EPS = 1e-8;
+  const notEnoughFunds = amountNum > 0 && amountNum - available > EPS;
+
   const noFundsAvailable = available === 0;
 
   const setMaxAvailableBalance = () => setValue("amount", available);
@@ -56,7 +58,7 @@ export const AmountBox = () => {
   return (
     <Fragment>
       <Card>
-        <View className="w-full flex flex-col items-center justify-center gap-2">
+        <View className="w-full flex flex-col items-center justify-center gap-4">
           <Text className="font-medium">{t("amount")}</Text>
 
           <NumericFormat
@@ -115,6 +117,7 @@ export const AmountBox = () => {
             disabled={noFundsAvailable}
             title={t("maxButton")}
             size="small"
+            fullWidth
             extraClassNames="mt-2 px-4"
             pressableProps={{ onPress: setMaxAvailableBalance }}
           />

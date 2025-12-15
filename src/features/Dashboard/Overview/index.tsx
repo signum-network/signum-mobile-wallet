@@ -34,7 +34,7 @@ export const OverviewScreen = () => {
             title={t("send")}
             type="primary"
             size="medium"
-            linkProps={{ href: "/dashboard/overview/send" }}
+            linkProps={{ href: "/dashboard/overview/send?asset=0" }}
             extraClassNames="h-14 min-w-0 flex-1 px-2"
           />
         )}
