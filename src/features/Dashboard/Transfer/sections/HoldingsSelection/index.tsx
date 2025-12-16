@@ -1,6 +1,6 @@
 import { Fragment, useMemo, useState, useEffect } from "react";
 import { ChainValue } from "@signumjs/util";
-import { View, Pressable } from "react-native";
+import { View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
 import { Text } from "@/components/Text";
@@ -17,10 +17,11 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useTokenTransactionalData } from "@/hooks/useTokenTransactionalData";
 import { PUBLIC_RESERVED_SIGNA_FOR_TX_FEE } from "@/types/constants";
 import { SignaSymbol } from "@/components/SignaSymbol";
+import { Button } from "@/components/Button";
 
 export const HoldingsSelection = () => {
   const { t } = useTranslation();
-  const { iconColor, tokens } = useAppTheme();
+  const { iconColor } = useAppTheme();
   const { NativeTicker } = useTicker();
   const {
     accountData: { balance, tokenBalance },
@@ -78,55 +79,47 @@ export const HoldingsSelection = () => {
 
   return (
     <Fragment>
-      <View className="gap-4 w-full">
-        <Pressable
-          onPress={showDialog}
-          disabled={!tokenBalance.length}
-          className="w-full rounded-lg active:opacity-80 ripple-[#333] ripple-bordered"
-        >
-          <Card>
-            <View className="w-full flex flex-row justify-between items-center">
-              <AvailableBalanceSummary
-                asset={asset}
-                isAssetSigna={isAssetSigna}
-                readableTicker={readableTicker}
-                readableAvailableBalance={Math.max(
-                  0,
-                  readableAvailableBalance -
-                    (isAssetSigna ? PUBLIC_RESERVED_SIGNA_FOR_TX_FEE : 0)
-                )}
-                avatarIpfsHash={avatarIpfsHash || null}
-              />
-
-              {!!tokenBalance.length && (
-                <View
-                  className="border rounded-lg px-2 py-4 opacity-80 flex flex-col items-center gap-1 max-w-28"
-                  style={{
-                    borderColor: tokens.border,
-                  }}
-                >
-                  <MaterialIcons
-                    name="currency-exchange"
-                    size={28}
-                    color={iconColor.primary}
-                  />
-
-                  <Text
-                    size="extraSmall"
-                    color="primary"
-                    className="text-center"
-                  >
-                    {t("transfer.changeAsset")}
-                  </Text>
-                </View>
+      <View className="w-full gap-4">
+        <Card>
+          <View className="flex flex-row items-center justify-center gap-3 w-full">
+            <AvailableBalanceSummary
+              asset={asset}
+              isAssetSigna={isAssetSigna}
+              readableTicker={readableTicker}
+              readableAvailableBalance={Math.max(
+                0,
+                readableAvailableBalance -
+                  (isAssetSigna ? PUBLIC_RESERVED_SIGNA_FOR_TX_FEE : 0)
               )}
-            </View>
-            <Text size="medium" color="muted">
-              {"("} {t("reservedBalance")} {PUBLIC_RESERVED_SIGNA_FOR_TX_FEE}{" "}
-              <SignaSymbol /> {")"}
-            </Text>
-          </Card>
-        </Pressable>
+              avatarIpfsHash={avatarIpfsHash || null}
+            />
+          </View>
+          {!!tokenBalance.length && (
+            <Button
+              icon={
+                <MaterialIcons
+                  name="currency-exchange"
+                  size={28}
+                  color={iconColor.blackout}
+                />
+              }
+              type="blackout"
+              title={t("transfer.changeAsset")}
+              size="small"
+              fullWidth
+              titleClassName="font-medium"
+              extraClassNames="mt-2 px-4"
+              pressableProps={{
+                onPress: showDialog,
+                disabled: !tokenBalance.length,
+              }}
+            />
+          )}
+          <Text size="medium" color="muted" className="mt-2">
+            ({t("reservedBalance")} {PUBLIC_RESERVED_SIGNA_FOR_TX_FEE}{" "}
+            <SignaSymbol />)
+          </Text>
+        </Card>
 
         <AmountBox />
       </View>

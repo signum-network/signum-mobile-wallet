@@ -7,9 +7,8 @@ import {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { ScrollView, View } from "react-native";
-import { useGlobalSearchParams } from "expo-router";
+import { useGlobalSearchParams, useFocusEffect } from "expo-router";
 import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
-import { useFocusEffect } from "expo-router";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Amount, ChainValue } from "@signumjs/util";
 import { AttachmentMessage, AttachmentEncryptedMessage } from "@signumjs/core";
@@ -45,7 +44,7 @@ export const TransferScreen = () => {
   const { ledgerService } = useLedgerService();
   const { isWatchOnly, publicKey, accountId } = useAccount();
   const { currentNetwork } = useNodeHostStore();
-  const { asset } = useGlobalSearchParams<GlobalSearchParams>();
+    const { asset: routeAsset } = useGlobalSearchParams<GlobalSearchParams>();
   const { accounts } = useAccountStore();
 
   const [isSigningTransaction, setIsSigningTransaction] = useState(false);
@@ -62,7 +61,7 @@ export const TransferScreen = () => {
     defaultValues: {
       activeStep: Steps.Recipient,
       recipient: "",
-      asset: asset || "0",
+      asset: routeAsset || "0",
       includeMemo: false,
       memo: "",
       isMemoEncrypted: false,
@@ -85,13 +84,22 @@ export const TransferScreen = () => {
 
   useFocusEffect(
     useCallback(() => {
-      return () => {
-        methods.reset();
-        setIsSigningTransaction(false);
-        setIsComplete(false);
-        setTransactionId("");
-      };
-    }, [])
+      const initialAsset = routeAsset || "0";
+
+      methods.reset({
+        activeStep: Steps.Recipient,
+        recipient: "",
+        asset: initialAsset,
+        includeMemo: false,
+        memo: "",
+        isMemoEncrypted: false,
+        isMemoBinary: false,
+      });
+      setIsSigningTransaction(false);
+      setIsComplete(false);
+      setTransactionId("");
+      return () => {};
+    }, [routeAsset, methods])
   );
 
   const onSubmit: SubmitHandler<TransactionCreation> = async (data) => {
