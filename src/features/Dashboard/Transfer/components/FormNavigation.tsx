@@ -46,7 +46,8 @@ export const FormNavigation = () => {
   const hasFeeFunds =
     isAssetSigna || signaAvailableBalance >= PUBLIC_RESERVED_SIGNA_FOR_TX_FEE;
 
-  const canCompleteSecondStep = amountNum > 0 && amountNum <= available && hasFeeFunds;
+  const EPS = 1e-8;
+  const canCompleteSecondStep = amountNum > 0 && amountNum - available <= EPS && hasFeeFunds;
 
   const canCompleteThirdStep =
     !includeMemo ||

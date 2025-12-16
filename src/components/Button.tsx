@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import type { LinkProps } from "expo-router/build/link/Link";
 import { Link } from "expo-router";
 import { Pressable, PressableProps, Text, View } from "react-native";
@@ -37,12 +37,13 @@ export const Button = ({
   titleClassName,
 }: Props) => {
   const { tokens } = useAppTheme();
+  const [isPressed, setIsPressed] = useState(false);
 
   const heightClass =
     size === "small" ? "h-12" : size === "large" ? "h-16" : "h-14";
 
   const classNames = clsx(
-    "flex flex-row justify-center items-center py-1 active:opacity-80 ripple-[#333] ripple-bordered",
+    "flex flex-row justify-center items-center py-1 ripple-[#333] ripple-bordered",
     heightClass,
     fullWidth && "w-full",
     wide && "!px-16",
@@ -120,15 +121,27 @@ export const Button = ({
     </>
   );
 
+  const handlePressIn: PressableProps["onPressIn"] = (e) => {
+    setIsPressed(true);
+    pressableProps?.onPressIn?.(e);
+  };
+
+  const handlePressOut: PressableProps["onPressOut"] = (e) => {
+    setIsPressed(false);
+    pressableProps?.onPressOut?.(e);
+  };
+
   const pressable = (
     <Pressable
       disabled={disabled}
       className={classNames}
+      {...pressableProps}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
       style={{
         backgroundColor,
-        opacity: disabled ? 0.7 : 1,
+        opacity: disabled ? 0.7 : isPressed ? 0.7 : 1,
       }}
-      {...pressableProps}
     >
       {Inner}
     </Pressable>
