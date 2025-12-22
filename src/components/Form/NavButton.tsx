@@ -1,7 +1,7 @@
 import { View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { PUBLIC_CURRENT_OS } from "@/types/constants";
-import { Button, type Props as ButtonProps } from "../Button";
+import { Button, type ButtonProps as ButtonProps } from "../Button";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
 const DEFAULT_HEIGHT = 78;

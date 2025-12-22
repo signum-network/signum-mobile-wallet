@@ -26,6 +26,12 @@ export class AccountService extends LedgerSubService {
     );
   }
 
+    parseTransactionBytes(transactionBytes: string) {
+        return handleError(async () => {
+            return this.context.ledger.transaction.parseTransactionBytes(transactionBytes)
+        })
+    }
+
   fetchAccountBalance(accountId: string): Promise<Balance> {
     return handleError(async () =>
       this.context.ledger.account.getAccountBalance(accountId)

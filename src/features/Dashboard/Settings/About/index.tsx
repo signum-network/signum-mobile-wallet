@@ -11,6 +11,7 @@ import { AppHeader } from "@/components/AppHeader";
 
 import * as Application from "expo-application";
 import * as Linking from "expo-linking";
+import {ResetWalletDialog} from "@/features/Dashboard/Settings/Home/components/ResetWalletDialog";
 
 export const AboutScreen = () => {
   const { t } = useTranslation();
@@ -106,6 +107,7 @@ export const AboutScreen = () => {
             </Text>
           </View>
         </Card>
+          <ResetWalletDialog variant="accent" />
       </View>
     </>
   );

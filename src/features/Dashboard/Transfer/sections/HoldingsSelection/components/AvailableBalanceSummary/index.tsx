@@ -11,7 +11,6 @@ interface Props {
   isAssetSigna: boolean;
   readableTicker: string;
   readableAvailableBalance: number;
-  avatarIpfsHash: string | null;
 }
 
 export const AvailableBalanceSummary = ({
@@ -19,7 +18,6 @@ export const AvailableBalanceSummary = ({
   isAssetSigna,
   readableTicker,
   readableAvailableBalance,
-  avatarIpfsHash,
 }: Props) => {
   const { t } = useTranslation();
 
@@ -33,12 +31,7 @@ export const AvailableBalanceSummary = ({
           />
         </View>
       ) : (
-        <TokenAvatar
-          loading={!readableTicker}
-          tokenId={asset}
-          avatarIpfsHash={avatarIpfsHash || undefined}
-          extraClassNames="size-10"
-        />
+        <TokenAvatar tokenId={asset} extraClassNames="size-10"/>
       )}
 
       <View className="flex flex-col">

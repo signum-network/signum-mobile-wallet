@@ -5,7 +5,7 @@ import { Pressable, PressableProps, Text, View } from "react-native";
 import clsx from "clsx";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
-export interface Props {
+export interface ButtonProps {
   type?: "primary" | "secondary" | "error" | "blackout" | "link";
   size?: "small" | "medium" | "large";
   linkProps?: LinkProps;
@@ -35,7 +35,7 @@ export const Button = ({
   disabled = false,
   extraClassNames,
   titleClassName,
-}: Props) => {
+}: ButtonProps) => {
   const { tokens } = useAppTheme();
   const [isPressed, setIsPressed] = useState(false);
 
@@ -115,7 +115,7 @@ export const Button = ({
 
   const Inner = (
     <>
-      {icon && <View className={title ? "mr-4" : undefined}>{icon}</View>}
+      {icon && <View className={title ? "mr-2" : undefined}>{icon}</View>}
       {title && TextContent}
       {children}
     </>

@@ -1,0 +1,172 @@
+import {useEffect, useState} from "react";
+import {useTranslation} from "react-i18next";
+import {ScrollView, View} from "react-native";
+import {useGlobalSearchParams, useRouter} from "expo-router";
+import type {Transaction} from "@signumjs/core";
+import {useQueryClient} from "@tanstack/react-query";
+import {useAccount} from "@/hooks/useAccount";
+import {useLedgerService} from "@/hooks/useLedgerService";
+import {WatchOnlyAccountCard} from "@/components/Account/WatchOnlyAccountCard";
+import {SigningDialog} from "@/components/SigningDialog";
+import {Text} from "@/components/Text";
+import {Card} from "@/components/Card";
+import {Button} from "@/components/Button";
+import {readSecretKey} from "@/utils/sec/handleSecretKeys";
+import {KeyboardDismissView} from "@/components/KeyboardDismissView";
+import {TransactionPreview} from "./sections/TransactionPreview";
+import {SuccessSection} from "./sections/SuccessSection";
+import {ConfirmationSection} from "./sections/ConfirmationSection";
+import type {GlobalSearchParams} from "./utils/types";
+import {useNodeHostStore} from "@/hooks/useNodeHostStore";
+
+export const SignScreen = () => {
+    const {t} = useTranslation();
+    const router = useRouter();
+    const {ledgerService} = useLedgerService();
+    const {isWatchOnly, publicKey, accountId} = useAccount();
+    const {currentNetwork} = useNodeHostStore();
+    const queryClient = useQueryClient();
+    const {transactionBytes} = useGlobalSearchParams<GlobalSearchParams>();
+
+    const [parsedTx, setParsedTx] = useState<Transaction | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isSigning, setIsSigning] = useState(false);
+    const [isComplete, setIsComplete] = useState(false);
+    const [transactionId, setTransactionId] = useState("");
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (!transactionBytes) {
+            setError(t("Invalid transaction bytes"));
+            setIsLoading(false);
+            return;
+        }
+
+        parseTransaction(transactionBytes);
+    }, [transactionBytes]);
+
+    const parseTransaction = async (txb: string) => {
+        try {
+            setIsLoading(true);
+            setError(null);
+
+            if (!ledgerService) {
+                throw new Error("Ledger service not available");
+            }
+
+            const parsed = await ledgerService.account.parseTransactionBytes(txb);
+
+            setParsedTx(parsed as Transaction);
+        } catch (err: any) {
+            console.error("Failed to parse transaction:", err);
+            setError(err?.message || "Failed to parse transaction");
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleSign = async () => {
+        if (!parsedTx || !ledgerService) return;
+
+        try {
+            const secretKeys = await readSecretKey(publicKey);
+
+            if (!secretKeys) {
+                throw new Error("Unable to read secret keys");
+            }
+
+            setIsSigning(true);
+
+            const {signPrivateKey} = secretKeys;
+
+            const confirmation =
+                await ledgerService.ledgerInstance.transaction.signAndBroadcastTransaction(
+                    {
+                        unsignedHexMessage: transactionBytes,
+                        senderPrivateKey: signPrivateKey,
+                        senderPublicKey: publicKey,
+                    }
+                );
+
+            if (confirmation?.transaction) {
+                setTransactionId(confirmation.transaction);
+            }
+
+            setIsComplete(true);
+            // delay the cache invalidation to get time from network - intentional timeout without cleanup -
+            setTimeout(() => {
+                queryClient.invalidateQueries({
+                    queryKey: ["fetchAccountTransactionsBasicOverview", accountId, currentNetwork],
+                })
+            }, 5_000)
+        } catch (err: any) {
+            console.error("Failed to sign transaction:", err);
+            alert("Error: " + (err?.message || JSON.stringify(err)));
+        } finally {
+            setIsSigning(false);
+        }
+    };
+
+    if (isWatchOnly) {
+        return (
+            <KeyboardDismissView>
+                <ScrollView className="flex-1 p-4">
+                    <WatchOnlyAccountCard/>
+                </ScrollView>
+            </KeyboardDismissView>
+        );
+    }
+
+    if (isLoading) {
+        return (
+            <KeyboardDismissView>
+                <ScrollView className="flex-1 p-4">
+                    <Card>
+                        <Text className="text-center">{t("Loading transaction...")}</Text>
+                    </Card>
+                </ScrollView>
+            </KeyboardDismissView>
+        );
+    }
+
+    if (error || !parsedTx) {
+        return (
+            <KeyboardDismissView>
+                <ScrollView className="flex-1 p-4">
+                    <Card>
+                        <Text className="text-center" color="error">
+                            {error || t("Failed to load transaction")}
+                        </Text>
+                        <Button
+                            type="blackout"
+                            title={t("Go Back")}
+                            pressableProps={{onPress: () => router.back()}}
+                            fullWidth
+                        />
+                    </Card>
+                </ScrollView>
+            </KeyboardDismissView>
+        );
+    }
+
+    return (
+        <KeyboardDismissView>
+            <ScrollView className="flex-1 p-4">
+                <SigningDialog visible={isSigning}/>
+
+                <View className="gap-4 w-full">
+                    {isComplete && <SuccessSection transactionId={transactionId}/>}
+
+                    <TransactionPreview transaction={parsedTx}/>
+
+                    {!isComplete && (
+                        <ConfirmationSection
+                            onConfirm={handleSign}
+                            isDisabled={isSigning}
+                        />
+                    )}
+                </View>
+            </ScrollView>
+        </KeyboardDismissView>
+    );
+};

@@ -15,6 +15,9 @@
   "committedBalance": "Committed balance",
   "reservedBalance": "Reserved balance",
   "resetApp": "A reset is happening, and all accounts will be erased from the app",
+  "deeplink": {
+    "unsupportedAction": "Got a valid deep link, but cannot handle the action: {{action}}"
+  },
   "recipient": "Recipient",
   "or": "OR",
   "copyToClipboard": "Copy to clipboard",
@@ -71,7 +74,8 @@
     "loginPassCodeDescription": "A passcode is used to protect the wallet",
     "loginCorrectPassCode": "Welcome back",
     "verifyItsYou": "Verify it's you",
-    "loginPassCodeTooManyAttempts": "You've tried logging in too many times. If you keep entering incorrect information, the app will reset and delete all accounts.\n\nYou have {{count}} attempt(s) left"
+    "loginPassCodeTooManyAttempts": "You've tried logging in too many times. If you keep entering incorrect information, the app will reset and delete all accounts.\n\nYou have {{count}} attempt(s) left",
+    "resetWallet": "Reset Wallet"
   },
   "accountWizard": {
     "quickStart": {
@@ -181,7 +185,9 @@
       "switchedNode": "Switched node successfully!",
       "customNodeOptions": "Custom node options",
       "customNodeOptionsDescription": "What do you want to do with {{name}}?",
-      "useThisCustomNode": "Use this custom node"
+      "useThisCustomNode": "Use this custom node",
+      "refresh": "Refresh",
+      "refreshedNodeHosts": "Node list refreshed successfully!"
     },
     "currency": {
       "title": "Currency",
@@ -238,6 +244,14 @@
       "contact": "Contact",
       "links": "Links",
       "nonCustodial": "Non-custodial"
+    },
+    "reset": {
+      "button": "Reset Wallet",
+      "confirmTitle": "Are you absolutely sure?",
+      "confirmDescription": "This action will permanently delete all your accounts, settings, and data from this device. This cannot be undone.",
+      "warningBox": "Make sure you have backed up your secret phrases before proceeding!",
+      "confirm": "Yes, reset everything",
+      "error": "An error occurred while resetting the wallet. Please try again."
     }
   },
   "deposit": {
@@ -379,5 +393,62 @@
     "removeCommitmentLockedForgedBlockSecondDescription": "If your miner does not find a block or add commitment in 4 days, you can remove commitment. Reminder: the commitment funds will always be on your account",
     "addedCommitmentSuccessFeedback": "The committed balance is getting updated, newly added commitment becomes active for mining after 1,440 blocks (around 4 days)",
     "removedCommitmentSuccessFeedback": "Congrats, the committed balance is being updated"
+  },
+  "sign": {
+    "addingCommitment": "Adding Commitment",
+    "removingCommitment": "Removing Commitment",
+    "aliasName": "Alias Name",
+    "aliasTLD": "Top-Level Domain (TLD)",
+    "aliasContent": "Alias Content",
+    "aliasData": "Alias Data",
+    "accountName": "Account Name",
+    "accountDescription": "Account Description",
+    "attachmentData": "Attachment Data",
+    "buyer": "Buyer",
+    "seller": "Seller",
+    "contractReference": "Contract Reference",
+    "aliasCreationExplanation": "Creating a new alias that can be used as a human-readable address.",
+    "decimals": "Decimals",
+    "distributingToHoldersOf": "Distributing To Holders Of",
+    "distributing": "Distributing",
+    "every": "Every",
+    "days": "days",
+    "seconds": "seconds",
+    "initialBalance": "Initial Balance",
+    "issuer": "Issuer",
+    "minimumHolding": "Minimum holding",
+    "mintingQuantity": "Minting Quantity",
+    "mintingExplanation": "Minting creates new tokens and adds them to your account.",
+    "newOwner": "New Owner",
+    "orderDetails": "Order Details",
+    "paymentAmount": "Payment Amount",
+    "paymentFrequency": "Payment Frequency",
+    "poolRewardRecipient": "Pool / Reward Recipient",
+    "pricePerToken": "Price per Token",
+    "price": "Price",
+    "quantity": "Quantity",
+    "sender": "Sender",
+    "subscription": "Subscription",
+    "switchToJsonHint": "Switch to JSON view to see all transaction data.",
+    "ownershipTransferWarning": "The new owner will have full control over the token, including minting and management rights.",
+    "genericTransactionHint": "This transaction type doesn't have a specialized preview yet.",
+    "subscriptionCancelExplanation": "This will cancel the subscription and stop all future payments.",
+    "buyOrderCancelExplanation": "This will cancel your buy order for this token.",
+    "sellOrderCancelExplanation": "This will cancel your sell order for this token.",
+    "removeCommitmentExplanation": "This will decrease your mining power by removing committed SIGNA from the network.",
+    "addCommitmentExplanation": "This will increase your mining power by committing SIGNA to the network.",
+    "tokenDetails": "Token Details",
+    "tokenName": "Token Name",
+    "totalSupply": "Total Supply",
+    "totalValue": "Total Value",
+    "transactionDetails": "Transaction Details",
+    "treasuryAccount": "Treasury Account",
+    "ownershipTransferWarningTitle": "Warning: This will permanently transfer ownership of the token to the new owner.",
+    "addTreasuryAccountExplanation": "Adding a treasury account that will have special permissions for managing this token.",
+    "contractCreationExplanation": "Creating a smart contract that will be deployed to the blockchain. The initial balance will be transferred to the contract.",
+    "poolAssignmentExplanation": "This will assign your mining rewards to the specified pool or recipient. Your blocks will still show your account as the miner, but rewards will go to the recipient.",
+    "accountInfoExplanation": "This will update your account's public profile information visible to other users on the network.",
+    "subscriptionCreationExplanation": "A recurring payment will be automatically sent to the recipient at the specified frequency.",
+    "distributionExplanation": "This will distribute assets proportionally to all token holders who meet the minimum threshold."
   }
 }

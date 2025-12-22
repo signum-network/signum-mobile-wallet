@@ -6,6 +6,7 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { StackActions } from "@react-navigation/native";
 import InactivityGuard from "@/features/Auth/components/InactivityGuard";
+import {PUBLIC_INACTIVITY_AUTO_LOCK} from "@/types/constants";
 
 type TabBarIconProperties = { color: string };
 
@@ -21,8 +22,8 @@ export default function Layout() {
 
   return (
     <InactivityGuard
-      timeoutMs={5 * 60_000}
-      backgroundGraceMs={5 * 60_000}
+      timeoutMs={PUBLIC_INACTIVITY_AUTO_LOCK}
+      backgroundGraceMs={PUBLIC_INACTIVITY_AUTO_LOCK}
       onLogout={() => {
         // handled elsewhere
       }}
@@ -140,6 +141,7 @@ export default function Layout() {
         />
 
         <Tabs.Screen name="subscriptions" options={{ href: null }} />
+        <Tabs.Screen name="sign" options={{ href: null }} />
       </Tabs>
     </InactivityGuard>
   );

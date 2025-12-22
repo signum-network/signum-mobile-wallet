@@ -31,12 +31,11 @@ export const AssetCard = ({
   const { t } = useTranslation();
   const { accountId, isWatchOnly } = useAccount();
   const { ticker, decimals, account } = useTokenMetadata(asset);
-  const { priceNQT, avatarIpfsHash, lastUpdated } =
-    useTokenTransactionalData(asset);
+  const { priceNQT, isLoading } = useTokenTransactionalData(asset);
   const { price, ticker: marketTicker } = useActiveMarketRate();
 
   const isLoadingMetadata = !ticker;
-  const isLoadingTransactionalData = !lastUpdated || !price;
+  const isLoadingTransactionalData = !isLoading || !price;
 
   const totalTokenBalance = ChainValue.create(decimals).setAtomic(balanceQNT);
 
@@ -115,11 +114,7 @@ export const AssetCard = ({
       className="w-full flex flex-row items-center justify-between gap-2 py-4 ripple-[#333] ripple-bordered"
     >
       <View className="flex flex-row items-center justify-start gap-2 flex-1 w-6/12">
-        <TokenAvatar
-          loading={isLoadingMetadata}
-          tokenId={asset}
-          avatarIpfsHash={avatarIpfsHash || undefined}
-        />
+        <TokenAvatar tokenId={asset}/>
 
         <View className="flex-1 flex items-start flex-col gap-1">
           {isLoadingMetadata ? (

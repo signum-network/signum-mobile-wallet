@@ -5,6 +5,7 @@ import { AccountInitializer } from "./AccountInitializer";
 import { OnlineManagerInitializer } from "./OnlineManagerInitializer";
 import { MarketInitializer } from "./MarketInitializer";
 import { TopLevelDomainInitializer } from "./TopLevelDomainInitializer";
+import { DeepLinkInitializer } from "./DeepLinkInitializer";
 
 const queryClient = new QueryClient();
 
@@ -16,6 +17,7 @@ export const DataInitializer = ({ children }: ChildrenProps) => {
       <OnlineManagerInitializer />
       <MarketInitializer />
       <TopLevelDomainInitializer />
+      <DeepLinkInitializer />
 
       {children}
     </QueryClientProvider>

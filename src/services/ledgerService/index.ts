@@ -24,6 +24,7 @@ export class LedgerService {
     this.tokenService = new TokenService(context);
   }
 
+
   get ledgerInstance() {
     return this.ledger;
   }

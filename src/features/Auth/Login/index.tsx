@@ -5,25 +5,24 @@ import { router } from "expo-router";
 import { useAppStore } from "@/hooks/useAppStore";
 import { PinAuthenticator } from "@/features/Auth/components/PinAuthenticator";
 import { PUBLIC_PIN_MAX_ATTEMPTS, PUBLIC_PIN_LENGTH } from "@/types/constants";
-import { AccountType } from "@/types/account";
 import { generateHash } from "@/utils/sec/generateHash";
-import { readPin, deletePin } from "@/utils/sec/handlePin";
-import { deleteSecretKey } from "@/utils/sec/handleSecretKeys";
+import { readPin } from "@/utils/sec/handlePin";
 import { useAccountStore } from "@/hooks/useAccountStore";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { useResetApp } from "@/hooks/useResetApp";
 import * as LocalAuthentication from "expo-local-authentication";
 import { recipientsStore } from "@/states/recipientsStore";
+import {ResetWalletDialog} from "@/features/Dashboard/Settings/Home/components/ResetWalletDialog";
 
 const initialValues = [...new Array(PUBLIC_PIN_LENGTH)];
 
 export const LoginAuthScreen = () => {
   const { t } = useTranslation();
-  const { accounts, isAccountEnrolled, resetAccountStore } = useAccountStore();
+  const { isAccountEnrolled } = useAccountStore();
   const {
     authMethod,
     failedAuthAttempts,
     setFailedAuthAttempts,
-    resetAppStore,
   } = useAppStore();
 
   const { tokens } = useAppTheme();
@@ -33,6 +32,12 @@ export const LoginAuthScreen = () => {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const [value, setValues] = useState<string[]>(initialValues);
+
+  const { resetApp } = useResetApp({
+    onSuccess: () => {
+      alert(t("resetApp"));
+    },
+  });
 
   const resetValues = () => setValues(initialValues);
 
@@ -96,33 +101,10 @@ export const LoginAuthScreen = () => {
     );
   };
 
-  const resetApp = () => {
+  const handleResetApp = async () => {
     setLocked(true);
-
-    alert(t("resetApp"));
     Keyboard.dismiss();
-
-    const promises: Promise<boolean>[] = [];
-
-    Object.values(accounts).forEach((account) => {
-      if (account.type === AccountType.mnemonic) {
-        promises.push(deleteSecretKey(account.publicKey));
-      }
-    });
-
-    deletePin().then(() => {
-      resetAppStore();
-
-      recipientsStore.getState().clear();
-
-      Promise.allSettled(promises).then(() => {
-        resetAccountStore();
-
-        setTimeout(() => {
-          router.replace("/terms");
-        }, 1000);
-      });
-    });
+    await resetApp();
   };
 
   useEffect(() => {
@@ -135,7 +117,7 @@ export const LoginAuthScreen = () => {
 
   useEffect(() => {
     if (failedAuthAttempts === PUBLIC_PIN_MAX_ATTEMPTS) {
-      resetApp();
+      handleResetApp();
     } else if (failedAuthAttempts >= PUBLIC_PIN_MAX_ATTEMPTS - 2) {
       alert(
         t("auth.loginPassCodeTooManyAttempts", {
@@ -147,7 +129,7 @@ export const LoginAuthScreen = () => {
 
   return (
     <View
-      className="flex-1 items-center justify-start pt-24"
+      className="flex-1 items-center justify-between pt-24 pb-8 px-4"
       style={{
         backgroundColor: tokens.background,
       }}
@@ -165,6 +147,7 @@ export const LoginAuthScreen = () => {
         onReset={resetValues}
         disabled={loading || locked}
       />
+        <ResetWalletDialog variant="ghost" />
     </View>
   );
 };

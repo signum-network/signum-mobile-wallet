@@ -1,15 +1,17 @@
-import { eq } from "drizzle-orm";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { differenceInMinutes } from "date-fns";
-import { useAccount } from "@/hooks/useAccount";
-import { useDatabase } from "@/hooks/useDatabase";
-import { useNodeHostStore } from "@/hooks/useNodeHostStore";
-import { useLedgerService } from "@/hooks/useLedgerService";
+import {eq} from "drizzle-orm";
+import {useQuery, useQueryClient} from "@tanstack/react-query";
+import {differenceInMinutes} from "date-fns";
+import {useAccount} from "@/hooks/useAccount";
+import {useDatabase} from "@/hooks/useDatabase";
+import {useNodeHostStore} from "@/hooks/useNodeHostStore";
+import {useLedgerService} from "@/hooks/useLedgerService";
 import {
-  tokensTransactionalData,
-  defaultTokenTransactionalData,
-  type TokenTransactionalData,
+    tokensTransactionalData,
+    defaultTokenTransactionalData,
+    type TokenTransactionalData,
 } from "@/db/schema";
+import {useTokenMetadata} from "@/hooks/useTokenMetadata";
+import {src44} from "@signumjs/standards"
 
 // Explainer time:
 // I used the long polling method
@@ -18,101 +20,113 @@ import {
 // Last, revalidate the token UI list, so it is sorted by estimated signa value
 
 export const useTokenTransactionalData = (
-  tokenId = ""
-): TokenTransactionalData => {
-  const { accountId } = useAccount();
-  const { ledgerService } = useLedgerService();
-  const { isActiveNodeSynced, currentNetwork } = useNodeHostStore();
-  const db = useDatabase();
-  const queryClient = useQueryClient();
+    tokenId = ""
+): TokenTransactionalData & { isLoading: boolean } => {
+    const {accountId} = useAccount();
+    const {ledgerService} = useLedgerService();
+    const {isActiveNodeSynced, currentNetwork} = useNodeHostStore();
+    const db = useDatabase();
+    const queryClient = useQueryClient();
+    const {description} = useTokenMetadata()
 
-  const { data } = useQuery({
-    queryKey: ["fetchTokenTransactionalData", tokenId],
-    queryFn: async () => {
-      if (!ledgerService) return defaultTokenTransactionalData;
-      const currentDate = new Date();
+    const {data, isLoading} = useQuery({
+        queryKey: ["fetchTokenTransactionalData", tokenId],
+        queryFn: async () => {
+            if (!ledgerService) return defaultTokenTransactionalData;
+            const currentDate = new Date();
 
-      const query = await db
-        .select()
-        .from(tokensTransactionalData)
-        .where(eq(tokensTransactionalData.id, tokenId));
+            const query = await db
+                .select()
+                .from(tokensTransactionalData)
+                .where(eq(tokensTransactionalData.id, tokenId));
 
-      const row = !!query.length && query[0];
+            const row = !!query.length && query[0];
 
-      const getTokenPriceNQT = async () => {
-        return await ledgerService.token.fetchTokenPriceNQT(tokenId);
-      };
+            const getTokenPriceNQT = async () => {
+                return await ledgerService.token.fetchTokenPriceNQT(tokenId);
+            };
 
-      const getAvatarIpfsHash = async () => {
-        return await ledgerService.token.fetchTokenBrandLogoHash(tokenId);
-      };
+            // it's possible to create a token with an ipfs hash already.
+            // But it can be changed afterwards -> fetchBrandLogoHash()
+            const getOriginalIpfsHashSync =  () => {
+                if (!description) return null;
+                try {
+                    return src44.DescriptorData.parse(description).avatar?.ipfsCid;
+                } catch {
+                    return null;
+                }
+            }
 
-      const invalidateTokenQuery = async () => {
-        await queryClient.invalidateQueries({
-          queryKey: ["fetchAccountTokenHoldings", accountId, currentNetwork],
-        });
-      };
+            const getAvatarIpfsHash = async () => {
+                return await ledgerService.token.fetchTokenBrandLogoHash(tokenId);
+            };
 
-      // Update the existing row
-      if (row) {
-        const lastRequestDate = new Date(row.lastUpdated);
+            const invalidateTokenQuery = async () => {
+                await queryClient.invalidateQueries({
+                    queryKey: ["fetchAccountTokenHoldings", accountId, currentNetwork],
+                });
+            };
 
-        if (differenceInMinutes(currentDate, lastRequestDate) < 4) return row;
+            // Update the existing row
+            if (row) {
+                const lastRequestDate = new Date(row.lastUpdated);
 
-        try {
-          const tokenPriceNQT = await getTokenPriceNQT();
-          const avatarIpfsHash = await getAvatarIpfsHash();
+                if (differenceInMinutes(currentDate, lastRequestDate) < 4) return row;
 
-          const updatePayload: TokenTransactionalData = {
-            id: tokenId,
-            avatarIpfsHash,
-            priceNQT: tokenPriceNQT,
-            lastUpdated: currentDate.toString(),
-          };
+                try {
+                    const originalIpfsHash = getOriginalIpfsHashSync();
+                    const [tokenPriceNQT, avatarIpfsHash] = await Promise.all([getTokenPriceNQT(), getAvatarIpfsHash()])
 
-          await db
-            .update(tokensTransactionalData)
-            .set(updatePayload)
-            .where(eq(tokensTransactionalData.id, tokenId));
+                    const updatePayload: TokenTransactionalData = {
+                        id: tokenId,
+                        avatarIpfsHash: avatarIpfsHash || originalIpfsHash,
+                        priceNQT: tokenPriceNQT,
+                        lastUpdated: currentDate.toString(),
+                    };
 
-          return updatePayload;
-        } catch (e) {
-          return row;
-        } finally {
-          await invalidateTokenQuery();
-        }
-      }
+                    await db
+                        .update(tokensTransactionalData)
+                        .set(updatePayload)
+                        .where(eq(tokensTransactionalData.id, tokenId));
 
-      // Insert the new row
-      try {
-        const tokenPriceNQT = await getTokenPriceNQT();
-        const avatarIpfsHash = await getAvatarIpfsHash();
+                    return updatePayload;
+                } catch (e) {
+                    return row;
+                } finally {
+                    await invalidateTokenQuery();
+                }
+            }
 
-        const insertPayload: TokenTransactionalData = {
-          id: tokenId,
-          avatarIpfsHash,
-          priceNQT: tokenPriceNQT,
-          lastUpdated: currentDate.toString(),
-        };
+            // Insert the new row
+            try {
+                const originalIpfsHash = getOriginalIpfsHashSync();
+                const [tokenPriceNQT, avatarIpfsHash] = await Promise.all([getTokenPriceNQT(), getAvatarIpfsHash()])
+                const insertPayload: TokenTransactionalData = {
+                    id: tokenId,
+                    avatarIpfsHash : avatarIpfsHash || originalIpfsHash,
+                    priceNQT: tokenPriceNQT,
+                    lastUpdated: currentDate.toString(),
+                };
 
-        await db.insert(tokensTransactionalData).values(insertPayload);
+                await db.insert(tokensTransactionalData).values(insertPayload);
 
-        return insertPayload;
-      } catch (e) {
-        return defaultTokenTransactionalData;
-      } finally {
-        await invalidateTokenQuery();
-      }
-    },
-    refetchInterval: 120_000,
-    staleTime: 120_000,
-    enabled: !!(
-      isActiveNodeSynced &&
-      !!ledgerService &&
-      !!tokenId &&
-      tokenId !== "0"
-    ),
-  });
+                return insertPayload;
+            } catch (e) {
+                return defaultTokenTransactionalData;
+            } finally {
+                await invalidateTokenQuery();
+            }
+        },
+        refetchInterval: 120_000,
+        staleTime: 120_000,
+        enabled: !!(
+            isActiveNodeSynced &&
+            !!ledgerService &&
+            !!tokenId &&
+            tokenId !== "0"
+        ),
+    });
 
-  return data ?? defaultTokenTransactionalData;
+    return !data ? {...defaultTokenTransactionalData, isLoading} : {...data, isLoading};
+
 };

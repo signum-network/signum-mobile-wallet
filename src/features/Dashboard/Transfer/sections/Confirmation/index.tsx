@@ -5,7 +5,6 @@ import { Amount } from "@signumjs/util";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useTicker } from "@/hooks/useTicker";
 import { useTokenMetadata } from "@/hooks/useTokenMetadata";
-import { useTokenTransactionalData } from "@/hooks/useTokenTransactionalData";
 import { Button } from "@/components/Button";
 import { Text } from "@/components/Text";
 import { Card } from "@/components/Card";
@@ -48,7 +47,6 @@ export const Confirmation = ({
   const fee = watch("fee");
 
   const { ticker: tokenTicker } = useTokenMetadata(asset);
-  const { avatarIpfsHash } = useTokenTransactionalData(asset);
 
   const isAssetSigna = asset === "0";
   const readableTicker = isAssetSigna ? NativeTicker : tokenTicker;
@@ -142,12 +140,7 @@ export const Confirmation = ({
                 />
               </View>
             ) : (
-              <TokenAvatar
-                loading={!readableTicker}
-                tokenId={asset}
-                avatarIpfsHash={avatarIpfsHash || undefined}
-                extraClassNames="size-10"
-              />
+              <TokenAvatar tokenId={asset} extraClassNames="size-10"/>
             )}
 
             <View className="flex-1 flex items-start flex-col gap-1">
