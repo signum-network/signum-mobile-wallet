@@ -14,7 +14,6 @@ import { AvailableBalanceSummary } from "./components/AvailableBalanceSummary";
 import { AssetPickerDialog } from "./components/AssetPickerDialog";
 import { AmountBox } from "./components/AmountBox";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { useTokenTransactionalData } from "@/hooks/useTokenTransactionalData";
 import { PUBLIC_RESERVED_SIGNA_FOR_TX_FEE } from "@/types/constants";
 import { SignaSymbol } from "@/components/SignaSymbol";
 import { Button } from "@/components/Button";
@@ -30,7 +29,6 @@ export const HoldingsSelection = () => {
 
   const asset = watch("asset");
   const { ticker: tokenTicker, decimals } = useTokenMetadata(asset);
-  const { avatarIpfsHash } = useTokenTransactionalData(asset);
 
   const [isDialogVisible, setIsDialogVisible] = useState(false);
   const showDialog = () => setIsDialogVisible(true);
@@ -91,7 +89,6 @@ export const HoldingsSelection = () => {
                 readableAvailableBalance -
                   (isAssetSigna ? PUBLIC_RESERVED_SIGNA_FOR_TX_FEE : 0)
               )}
-              avatarIpfsHash={avatarIpfsHash || null}
             />
           </View>
           {!!tokenBalance.length && (

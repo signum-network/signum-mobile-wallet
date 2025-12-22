@@ -12,12 +12,22 @@ import { Text } from "./Text";
 import { Button } from "./Button";
 import { Dialog } from "./Dialog";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
-import { findSignumAddress } from "@/utils/findSignumAddress";
+import type {Address} from "@signumjs/core";
+import {asAddress} from "@/utils/account/asAddress";
 
 interface Props {
   onCodeScanned: (code: BarcodeScanningResult) => void;
-  expected: "address" | "passphrase";
+  expected: "address" | "seed";
 }
+
+function getAddressFromScannedData(scannedData: string): Address | null {
+    try{
+        return asAddress(scannedData)
+    }catch {
+        return null
+    }
+}
+
 
 export const CameraDialog = ({ onCodeScanned, expected }: Props) => {
   const { t } = useTranslation();
@@ -65,9 +75,9 @@ export const CameraDialog = ({ onCodeScanned, expected }: Props) => {
     if (!scannedData) return;
 
     if (expected === "address") {
-      const address = findSignumAddress(scannedData);
+      const address = getAddressFromScannedData(scannedData);
       if (address) {
-        onCodeScanned({ ...code, data: address });
+        onCodeScanned({ ...code, data: address.getReedSolomonAddress(true) });
         hideDialog();
       } else {
         showErrorText(t("invalidQRCode"));
@@ -75,15 +85,9 @@ export const CameraDialog = ({ onCodeScanned, expected }: Props) => {
       return;
     }
 
-    if (expected === "passphrase") {
-      const words = scannedData.split(/\s+/).filter(Boolean);
-      if (words.length >= 10 && words.length <= 20) {
+    if (expected === "seed") {
+        // seed can be any data, so we don't need to validate it
         onCodeScanned({ ...code, data: scannedData });
-        hideDialog();
-      } else {
-        showErrorText(t("invalidQRCode"));
-      }
-      return;
     }
   };
 

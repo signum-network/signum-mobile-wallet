@@ -209,7 +209,7 @@ export const ImportScreen = () => {
                     {t("accountWizard.importAccount.importMnemonicHint")}
                   </Text>
                   <CameraDialog
-                    expected={"passphrase"}
+                    expected="seed"
                     onCodeScanned={onCodeScanned}
                   />
                   <SeedPhraseField />
@@ -221,7 +221,7 @@ export const ImportScreen = () => {
                     {t("accountWizard.importAccount.importWatchOnlyHint")}
                   </Text>
                   <CameraDialog
-                    expected={"address"}
+                    expected="address"
                     onCodeScanned={onCodeScanned}
                   />
                   <AccountIdField />
