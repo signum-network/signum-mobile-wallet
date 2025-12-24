@@ -35,6 +35,15 @@ export const SignScreen = () => {
     const [transactionId, setTransactionId] = useState("");
     const [error, setError] = useState<string | null>(null);
 
+    function resetState() {
+        setParsedTx(null);
+        setIsLoading(true);
+        setIsSigning(false);
+        setIsComplete(false);
+        setTransactionId("");
+        setError(null);
+    }
+
     useEffect(() => {
         if (!transactionBytes) {
             setError(t("Invalid transaction bytes"));
@@ -47,9 +56,7 @@ export const SignScreen = () => {
 
     const parseTransaction = async (txb: string) => {
         try {
-            setIsLoading(true);
-            setError(null);
-
+            resetState();
             if (!ledgerService) {
                 throw new Error("Ledger service not available");
             }
@@ -69,6 +76,7 @@ export const SignScreen = () => {
         if (!parsedTx || !ledgerService) return;
 
         try {
+            console.log("Signing transaction...", publicKey);
             const secretKeys = await readSecretKey(publicKey);
 
             if (!secretKeys) {
@@ -98,6 +106,8 @@ export const SignScreen = () => {
                 queryClient.invalidateQueries({
                     queryKey: ["fetchAccountTransactionsBasicOverview", accountId, currentNetwork],
                 })
+                resetState();
+                router.push('/dashboard/overview')
             }, 5_000)
         } catch (err: any) {
             console.error("Failed to sign transaction:", err);

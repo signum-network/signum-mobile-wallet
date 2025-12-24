@@ -149,7 +149,8 @@ export const PinAuthenticator = ({
           >
             <Image
               source={{ uri: signumTransparentSymbol }}
-              style={{ width: 54, height: 54, resizeMode: "contain" }}
+              contentFit="contain"
+              style={{ width: 54, height: 54 }}
             />
           </View>
           <View className="h-20 justify-center">

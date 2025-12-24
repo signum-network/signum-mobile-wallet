@@ -141,7 +141,7 @@ export default function Layout() {
         />
 
         <Tabs.Screen name="subscriptions" options={{ href: null }} />
-        <Tabs.Screen name="sign" options={{ href: null }} />
+        <Tabs.Screen name="deeplink" options={{ href: null }} />
       </Tabs>
     </InactivityGuard>
   );

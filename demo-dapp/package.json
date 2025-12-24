@@ -1,0 +1,26 @@
+{
+  "name": "signum-mobile-wallet-demo-dapp",
+  "version": "1.0.0",
+  "description": "Demo dApp for testing Signum Mobile Wallet deep link integration",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "vite build",
+    "preview": "vite preview --host",
+    "serve": "python3 -m http.server 8000",
+    "serve:node": "npx http-server -p 8000 -c-1"
+  },
+  "keywords": [
+    "signum",
+    "blockchain",
+    "wallet",
+    "deeplink",
+    "demo"
+  ],
+  "author": "Signum Network",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "vite": "^5.0.0"
+  }
+}

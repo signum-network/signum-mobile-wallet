@@ -8,18 +8,6 @@ import { AccountActivationCard } from "./components/AccountActivationCard";
 import { accountStore } from "@/states/accountStore";
 import { AppAlert } from "../AppAlert";
 
-// Protect screen from:
-// No accounts imported
-// Inactive accounts
-
-// Screens to be protected:
-// Account Holdings Overview
-// Account Transactions activity
-// Subscriptions
-// Tokens
-// Transfer funds
-// Commitment management
-
 export const ProtectedScreen = ({ children }: ChildrenProps) => {
   const { publicKey, isAuthenticated } = useAccount();
   const { isTestnet, isActiveNodeSynced } = useNodeHostStore();

@@ -9,10 +9,10 @@ import { Button } from "@/components/Button";
 import { NoAccountsFoundCard } from "@/components/Account/NoAccountsFoundCard";
 import { BottomButtonsContainer } from "../../components/BottomButtonsContainer";
 import { DashboardScreenContainer } from "../../components/DashboardScreenContainer";
-import { AccountCard } from "./components/AccountCard";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { HorizontalDivider } from "@/components/HorizontalDivider";
+import {AccountCard} from "@/components/Account/AccountCard";
 
 export const AccountManager = () => {
   const { t } = useTranslation();

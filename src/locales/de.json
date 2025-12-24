@@ -16,7 +16,27 @@
   "reservedBalance": "Reserviertes Guthaben",
   "resetApp": "Es wird ein Zurücksetzen durchgeführt, alle Konten werden aus der App gelöscht",
   "deeplink": {
-    "unsupportedAction": "Gültiger Deep-Link erhalten, aber die Aktion kann nicht verarbeitet werden: {{action}}"
+    "unsupportedAction": "Gültiger Deep-Link erhalten, aber die Aktion kann nicht verarbeitet werden: {{action}}",
+    "missingUnsignedTransactionBytes": "Fehlende unsignierte Transaktionsbytes in Deep-Link-Nutzlast",
+    "missingAppName": "Fehlender App-Name in Deep-Link-Nutzlast",
+    "missingCallback": "Fehlende Callback-URL in Deep-Link-Nutzlast",
+    "networkMismatch": "Netzwerk-Konflikt: Wallet ist auf {{currentNetwork}}, aber dApp forderte {{requestedNetwork}} an",
+    "noMnemonicAccounts": "Keine vollständigen Konten verfügbar. Nur Nur-Ansicht-Konten gefunden."
+  },
+  "connectDApp": {
+    "title": "Mit dApp verbinden?",
+    "unknownApp": "Unbekannte dApp",
+    "permissions": "Diese dApp wird in der Lage sein:",
+    "permissionViewAddress": "Ihre Kontoadresse und öffentlichen Schlüssel anzuzeigen",
+    "permissionRequestSignatures": "Transaktionssignaturen anzufordern",
+    "securityNotice": "Verbinden Sie sich nur mit dApps, denen Sie vertrauen. Teilen Sie niemals Ihre geheime Phrase oder private Schlüssel.",
+    "selectAccount": "Konto zum Teilen auswählen:",
+    "noAccounts": "Keine Konten verfügbar",
+    "noAccountsAvailable": "Keine Konten verfügbar",
+    "noAccountsDescription": "Sie benötigen mindestens ein vollständiges Konto (nicht nur-Ansicht), um sich mit dApps zu verbinden.",
+    "reject": "Ablehnen",
+    "connect": "Verbinden",
+    "connectionFailed": "Verbindung fehlgeschlagen"
   },
   "recipient": "Empfänger",
   "or": "ODER",

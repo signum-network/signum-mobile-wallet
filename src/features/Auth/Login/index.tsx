@@ -12,6 +12,7 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import { useResetApp } from "@/hooks/useResetApp";
 import * as LocalAuthentication from "expo-local-authentication";
 import { recipientsStore } from "@/states/recipientsStore";
+import { pendingDeepLinkStore } from "@/states/pendingDeepLinkStore";
 import {ResetWalletDialog} from "@/features/Dashboard/Settings/Home/components/ResetWalletDialog";
 
 const initialValues = [...new Array(PUBLIC_PIN_LENGTH)];
@@ -24,6 +25,7 @@ export const LoginAuthScreen = () => {
     failedAuthAttempts,
     setFailedAuthAttempts,
   } = useAppStore();
+  const { pendingDeepLink, clearPendingDeepLink } = pendingDeepLinkStore();
 
   const { tokens } = useAppTheme();
 
@@ -93,6 +95,13 @@ export const LoginAuthScreen = () => {
       () => {
         if (!isAccountEnrolled) {
           router.replace("/account-wizard");
+        } else if (pendingDeepLink) {
+          // Navigate to pending deep link if it exists
+          clearPendingDeepLink();
+          router.replace({
+            pathname: pendingDeepLink.pathname as any,
+            params: pendingDeepLink.params,
+          });
         } else {
           router.replace("/dashboard/overview");
         }

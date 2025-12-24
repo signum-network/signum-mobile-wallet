@@ -1,10 +1,10 @@
 import { ProtectedScreen } from "@/features/Dashboard/components/ProtectedScreen";
-import { SignScreen } from "@/features/Dashboard/Sign";
+import { ConnectDAppScreen } from "@/features/Dashboard/Deeplinking/ConnectDApp";
 
 export default function Screen() {
   return (
     <ProtectedScreen>
-      <SignScreen />
+      <ConnectDAppScreen />
     </ProtectedScreen>
   );
 }

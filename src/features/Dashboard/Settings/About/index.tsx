@@ -52,7 +52,8 @@ export const AboutScreen = () => {
           >
             <Image
               source={{ uri: signumTransparentSymbol }}
-              style={{ width: 54, height: 54, resizeMode: "contain" }}
+              contentFit="contain"
+              style={{ width: 54, height: 54 }}
             />
           </View>
 

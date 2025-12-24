@@ -8,7 +8,7 @@ import {useActiveMarketRate} from "@/hooks/useActiveMarketRate";
 import {formatNumber} from "@/utils/formatNumber";
 import {signumBlueSymbolPicture} from "@/assets";
 import type {ParsedTransaction} from "../../utils/parseTransaction";
-import {tryGetJSON} from "@/features/Dashboard/Sign/utils/tryGetJson";
+import {tryGetJSON} from "../../utils/tryGetJson";
 import {JsonView} from "@/components/JsonView";
 
 interface Props {

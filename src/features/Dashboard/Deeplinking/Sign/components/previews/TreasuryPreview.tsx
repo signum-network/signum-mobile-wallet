@@ -63,9 +63,7 @@ export const TreasuryPreview = ({ transaction, parsed }: Props) => {
       {/* Explanation */}
       <Card>
         <Text size="small" color="muted">
-          {t(
-            "Adding a treasury account that will have special permissions for managing this token."
-          )}
+          {t('sign.addTreasuryAccountExplanation')}
         </Text>
       </Card>
 

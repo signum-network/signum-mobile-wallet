@@ -36,6 +36,13 @@
       "when": 1743259395507,
       "tag": "0004_wet_hellion",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1766510337210,
+      "tag": "0005_sticky_longshot",
+      "breakpoints": true
     }
   ]
 }

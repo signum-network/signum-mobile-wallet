@@ -8,7 +8,6 @@ export const clearDatabase = async (
     // Delete in order - cascading deletes will handle tokensTransactionalData
     await db.delete(schema.tokens);
     await db.delete(schema.distributionAmounts);
-    await db.delete(schema.accountPublicKeys);
   } catch (error) {
     console.error("Error clearing database:", error);
     throw error;

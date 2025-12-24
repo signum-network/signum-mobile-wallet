@@ -302,25 +302,38 @@ export const AccountCard = ({ publicKey, type, walletName }: Props) => {
                 {!isSecured ? (
                   activationInProgress ? (
                     <Pulse>
-                      <Text
-                        color="primary"
-                        size="small"
-                        className="font-medium"
-                      >
-                        ⏳ {t("unsafeAccount.activating")}
-                      </Text>
+                      <View className="flex-row items-center gap-1">
+                        <Ionicons name="hourglass-outline" size={14} color={iconColor.primary} />
+                        <Text
+                          color="primary"
+                          size="small"
+                          className="font-medium"
+                        >
+                          {t("unsafeAccount.activating")}
+                        </Text>
+                      </View>
                     </Pulse>
                   ) : (
-                    <Text color="error" size="small" className="font-medium">
-                      ⚠️ {t("settings.account.unsecuredAccount")}
-                    </Text>
+                    <View className="flex-row items-center gap-1">
+                      <Ionicons name="warning-outline" size={14} color={iconColor.red} />
+                      <Text color="error" size="small" className="font-medium">
+                        {t("settings.account.unsecuredAccount")}
+                      </Text>
+                    </View>
                   )
                 ) : (
-                  <Text color="primary" size="small" className="font-medium">
-                    {type === AccountType.watchOnly
-                      ? `🕵️ ${t("watchOnly")}`
-                      : `🤖 ${t("fullAccount")}`}
-                  </Text>
+                  <View className="flex-row items-center gap-1">
+                    <Ionicons
+                      name={type === AccountType.watchOnly ? "eye-outline" : "shield-checkmark-outline"}
+                      size={14}
+                      color={iconColor.primary}
+                    />
+                    <Text color="primary" size="small" className="font-medium">
+                      {type === AccountType.watchOnly
+                        ? t("watchOnly")
+                        : t("fullAccount")}
+                    </Text>
+                  </View>
                 )}
               </View>
             </View>
