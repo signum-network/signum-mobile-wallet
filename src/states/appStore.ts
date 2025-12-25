@@ -15,6 +15,7 @@ interface State {
   failedAuthAttempts: number;
   isOnline: boolean;
   minerMode: boolean;
+  isUnlocked: boolean;
 }
 
 interface Actions {
@@ -27,6 +28,7 @@ interface Actions {
   setFailedAuthAttempts: (value: number) => void;
   setIsOnline: (value: boolean) => void;
   setMinerMode: (value: boolean) => void;
+  setIsUnlocked: (value: boolean) => void;
 }
 
 const systemScheme = Appearance.getColorScheme(); // "light" | "dark" | null
@@ -43,6 +45,7 @@ const initialState: State = {
   failedAuthAttempts: 0,
   isOnline: true,
   minerMode: false,
+  isUnlocked: false,
 };
 
 export const appStore = create<State & Actions>()(
@@ -59,11 +62,16 @@ export const appStore = create<State & Actions>()(
       setFailedAuthAttempts: (value) => set({ failedAuthAttempts: value }),
       setIsOnline: (value) => set({ isOnline: value }),
       setMinerMode: (value) => set({ minerMode: value }),
+      setIsUnlocked: (value) => set({ isUnlocked: value }),
     }),
     {
       name: "app-storage",
       storage: createJSONStorage(() => AsyncStorage),
       version: 1,
+      partialize: (state) => {
+        const { isUnlocked, ...rest } = state;
+        return rest;
+      },
     }
   )
 );

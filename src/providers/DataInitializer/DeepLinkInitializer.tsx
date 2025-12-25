@@ -1,35 +1,51 @@
-import {useEffect} from "react";
+import {useEffect, useState, useRef} from "react";
 import {Linking} from "react-native";
-import {useRouter, usePathname} from "expo-router";
+import {useRouter} from "expo-router";
 import {useTranslation} from "react-i18next";
 import {src22} from "@signumjs/standards";
 import {useNodeHostStore} from "@/hooks/useNodeHostStore";
 import {useAccountStore} from "@/hooks/useAccountStore";
+import {useAppStore} from "@/hooks/useAppStore";
 import {pendingDeepLinkStore} from "@/states/pendingDeepLinkStore";
 
 const EXPO_DEVELOPMENT_CLIENT = "expo-development-client";
 
 export const DeepLinkInitializer = () => {
     const router = useRouter();
-    const pathname = usePathname();
     const {currentNetwork} = useNodeHostStore()
     const {accounts} = useAccountStore();
+    const {isUnlocked} = useAppStore();
     const {t} = useTranslation();
-    const {setPendingDeepLink} = pendingDeepLinkStore();
-
+    const {setPendingDeepLink, pendingDeepLink} = pendingDeepLinkStore();
+    const [routingRequested, setRoutingRequested] = useState(false);
+    const lastProcessedUrl = useRef<string | null>(null);
     useEffect(() => {
         // Handle deep link when app is already open
         const subscription = Linking.addEventListener("url", ({url}) => {
-            handleDeepLink(url);
+            console.log('[DeepLink] Received URL:', url);
+            if (url !== lastProcessedUrl.current) {
+                lastProcessedUrl.current = url;
+                handleDeepLink(url);
+            }
+            // Handle deep link when app opens from closed state
+            Linking.getInitialURL().then((url) => {
+                if (url && url !== lastProcessedUrl.current) {
+                    lastProcessedUrl.current = url;
+                    handleDeepLink(url);
+                }
+            })
         });
-
-        // Handle deep link when app opens from closed state
-        Linking.getInitialURL().then((url) => {
-            if (url) handleDeepLink(url);
-        });
-
         return () => subscription.remove();
     }, []);
+
+    useEffect(() => {
+        if (routingRequested && isUnlocked && pendingDeepLink) {
+            console.log('[DeepLink] Navigating to pending deep link:', pendingDeepLink.pathname, 'with params:', pendingDeepLink.params);
+            setRoutingRequested(false)
+            router.push( pendingDeepLink.pathname as any);
+        }
+    }, [pendingDeepLink, isUnlocked, routingRequested, setRoutingRequested]);
+
 
     const handleDeepLink = (url: string) => {
         try {
@@ -37,21 +53,19 @@ export const DeepLinkInitializer = () => {
                 return;
             }
 
-            // Check if app is locked
-            const isLocked = pathname === "/auth/login";
+            console.log('[DeepLink] Processing URL:', url);
 
             // Parse deep link using SignumJS SRC22 parser
             const parsed = src22.parseDeeplink(url);
 
             if (parsed.action === "sign" && parsed.decodedPayload) {
-
                 const payload = parsed.decodedPayload as any;
+                console.log('[DeepLink] Sign payload:', payload);
                 if (!payload) {
                     console.error("Missing unsignedTransactionBytes in payload");
                     alert(t("deeplink.missingUnsignedTransactionBytes"))
                     return;
                 }
-
                 const {unsignedTransactionBytes, network = ""} = payload;
                 if (!unsignedTransactionBytes) {
                     console.error("Missing unsignedTransactionBytes in payload");
@@ -64,25 +78,17 @@ export const DeepLinkInitializer = () => {
                     return;
                 }
 
-                // If app is locked, store the deep link for later
-                if (isLocked) {
-                    setPendingDeepLink({
-                        pathname: "/dashboard/deeplink/sign",
-                        params: {transactionBytes: unsignedTransactionBytes},
-                    });
-                    return;
-                }
-
-                // Navigate to sign screen
-                router.push({
-                    pathname: "/dashboard/deeplink/sign",
+                console.log('[DeepLink] Storing sign request as pending');
+                setPendingDeepLink({
+                    pathname: "/dashboard/deeplink/sign" as const,
                     params: {transactionBytes: unsignedTransactionBytes},
                 });
+                setRoutingRequested(true);
             } else if (parsed.action === "connect" && parsed.decodedPayload) {
                 const payload = parsed.decodedPayload as any;
                 console.log('[DeepLink] Connect payload:', payload);
                 const {appName, callbackUrl, network = ""} = payload;
-                console.log('[DeepLink] Extracted:', { appName, callbackUrl, network });
+                console.log('[DeepLink] Extracted:', {appName, callbackUrl, network});
                 if (!appName) {
                     console.error("Missing appName in payload");
                     alert(t("deeplink.missingAppName"))
@@ -115,31 +121,19 @@ export const DeepLinkInitializer = () => {
                     return;
                 }
 
-                // If app is locked, store the deep link for later
-                if (isLocked) {
-                    setPendingDeepLink({
-                        pathname: "/dashboard/deeplink/connectDapp",
-                        params: {
-                            appName,
-                            callbackUrl,
-                            network
-                        }
-                    });
-                    return;
-                }
 
-                // Navigate to connection approval screen
-                router.push({
-                    pathname: "/dashboard/deeplink/connectDapp",
+                console.log('[DeepLink] Storing connect request as pending');
+                setPendingDeepLink({
+                    pathname: "/dashboard/deeplink/connectDapp" as const,
                     params: {
                         appName,
                         callbackUrl,
                         network
                     }
                 });
-            }
-            else {
-                alert(t("deeplink.unsupportedAction", { action: parsed.action }));
+                setRoutingRequested(true);
+            } else {
+                alert(t("deeplink.unsupportedAction", {action: parsed.action}));
             }
         } catch (error) {
             console.error("Deep link parsing error:", error);

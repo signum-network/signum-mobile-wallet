@@ -5,8 +5,6 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { StackActions } from "@react-navigation/native";
-import InactivityGuard from "@/features/Auth/components/InactivityGuard";
-import {PUBLIC_INACTIVITY_AUTO_LOCK} from "@/types/constants";
 
 type TabBarIconProperties = { color: string };
 
@@ -21,13 +19,6 @@ export default function Layout() {
   const tabBarInactiveColor = tokens.textMuted;
 
   return (
-    <InactivityGuard
-      timeoutMs={PUBLIC_INACTIVITY_AUTO_LOCK}
-      backgroundGraceMs={PUBLIC_INACTIVITY_AUTO_LOCK}
-      onLogout={() => {
-        // handled elsewhere
-      }}
-    >
       <Tabs
         screenOptions={{
           headerShown: false,
@@ -143,6 +134,5 @@ export default function Layout() {
         <Tabs.Screen name="subscriptions" options={{ href: null }} />
         <Tabs.Screen name="deeplink" options={{ href: null }} />
       </Tabs>
-    </InactivityGuard>
   );
 }

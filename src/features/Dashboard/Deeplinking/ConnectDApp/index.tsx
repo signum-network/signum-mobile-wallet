@@ -1,7 +1,7 @@
 import {useMemo, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {Linking, ScrollView, View} from "react-native";
-import {useGlobalSearchParams, useRouter} from "expo-router";
+import {useRouter} from "expo-router";
 import {useAccountStore} from "@/hooks/useAccountStore";
 import {KeyboardDismissView} from "@/components/KeyboardDismissView";
 import {Text} from "@/components/Text";
@@ -10,6 +10,7 @@ import {Button} from "@/components/Button";
 import {AccountCard} from "@/components/Account/AccountCard";
 import {Image} from "expo-image";
 import {signumBlueSymbolPicture} from "@/assets";
+import {pendingDeepLinkStore} from "@/states/pendingDeepLinkStore";
 
 type ConnectSearchParams = {
     appName?: string;
@@ -27,8 +28,6 @@ export const ConnectDAppScreen = () => {
     const {t} = useTranslation();
     const router = useRouter();
     const {accounts, activeAccount} = useAccountStore();
-    const { appName, callbackUrl, network } = useGlobalSearchParams<ConnectSearchParams>();
-
     const [isConnecting, setIsConnecting] = useState(false);
 
     const walletAccount = useMemo(() => {
@@ -36,6 +35,14 @@ export const ConnectDAppScreen = () => {
     }, [accounts, activeAccount]);
 
     const canConnect = walletAccount?.type === "mnemonic";
+
+    const {pendingDeepLink, clearPendingDeepLink} = pendingDeepLinkStore()
+    if (!pendingDeepLink) {
+        return null;
+    }
+
+    const {appName, callbackUrl, network} = pendingDeepLink.params as ConnectSearchParams;
+    console.log("ConnectDAppScreen", {appName, callbackUrl, network})
 
     // Filter to only mnemonic (full) accounts - watch-only can't sign
     const handleApprove = async () => {
@@ -48,20 +55,20 @@ export const ConnectDAppScreen = () => {
 
             // Open callback URL
             await Linking.openURL(url.toString());
-
-            // Navigate back
-            router.back();
         } catch (error: any) {
             console.error("Failed to connect to dApp:", error);
             alert(t("connectDApp.connectionFailed") + ": " + error.message);
         } finally {
             setIsConnecting(false);
+            clearPendingDeepLink()
+            router.back()
         }
     };
 
     const handleReject = () => {
         alert(t('connectDApp.connectionRejected'))
-        router.back();
+        clearPendingDeepLink()
+        router.back()
     };
 
     if (!walletAccount) {
@@ -87,7 +94,7 @@ export const ConnectDAppScreen = () => {
         );
     }
 
-    if(!callbackUrl){
+    if (!callbackUrl) {
         return (
             <KeyboardDismissView>
                 <ScrollView className="flex-1 p-4">

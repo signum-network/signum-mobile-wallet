@@ -35,7 +35,7 @@
     "noAccountsAvailable": "No Accounts Available",
     "noAccountsDescription": "You need at least one full account (not watch-only) to connect to dApps.",
     "noCallback": "No callback URL provided",
-    "callbackDescription": "The callback URL is required to return the current accounts public key to the dApp. It is required to dispatch a transaction signature request.",
+    "noCallbackDescription": "The callback URL is required to return the current accounts public key to the dApp. It is required to dispatch a transaction signature request.",
     "reject": "Reject",
     "connect": "Connect",
     "connectionFailed": "Connection failed",
@@ -275,7 +275,8 @@
       "warningBox": "Make sure you have backed up your secret phrases before proceeding!",
       "confirm": "Yes, reset everything",
       "error": "An error occurred while resetting the wallet. Please try again."
-    }
+    },
+    "lock": "Lock wallet"
   },
   "deposit": {
     "title": "Receive",

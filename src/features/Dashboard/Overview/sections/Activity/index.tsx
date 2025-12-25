@@ -105,7 +105,7 @@ export const Activity = () => {
               title={t("overview.loadMore")}
               type="secondary"
               icon={
-                <Ionicons name="search" size={24} color={iconColor.default} />
+                <Ionicons name="add-circle-outline" size={24} color={iconColor.muted} />
               }
               linkProps={{
                 href: "/dashboard/overview/activity",

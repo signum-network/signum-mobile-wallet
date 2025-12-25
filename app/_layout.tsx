@@ -10,6 +10,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomInsetDecor } from "@/components/BottomInsetDecor";
 import { useFonts } from "expo-font";
 import { useEffect } from "react";
+import {AuthGuard} from "@/features/Auth/components/AuthGuard";
 
 
 
@@ -51,7 +52,9 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <AppProviders>
-        <Stack screenOptions={{ headerShown: false }} />
+        <AuthGuard>
+          <Stack screenOptions={{ headerShown: false }} />
+        </AuthGuard>
       </AppProviders>
       <BottomInsetDecor />
     </GestureHandlerRootView>

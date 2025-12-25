@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {ScrollView, View} from "react-native";
-import {useGlobalSearchParams, useRouter} from "expo-router";
+import {useRouter} from "expo-router";
 import type {Transaction} from "@signumjs/core";
 import {useQueryClient} from "@tanstack/react-query";
 import {useAccount} from "@/hooks/useAccount";
@@ -16,9 +16,15 @@ import {KeyboardDismissView} from "@/components/KeyboardDismissView";
 import {TransactionPreview} from "./sections/TransactionPreview";
 import {SuccessSection} from "./sections/SuccessSection";
 import {ConfirmationSection} from "./sections/ConfirmationSection";
-import type {GlobalSearchParams} from "./utils/types";
 import {useNodeHostStore} from "@/hooks/useNodeHostStore";
+import {pendingDeepLinkStore} from "@/states/pendingDeepLinkStore";
 
+type SignDeeplinkParams = {
+    transactionBytes: string;
+}
+
+
+// TODO: translate
 export const SignScreen = () => {
     const {t} = useTranslation();
     const router = useRouter();
@@ -26,7 +32,6 @@ export const SignScreen = () => {
     const {isWatchOnly, publicKey, accountId} = useAccount();
     const {currentNetwork} = useNodeHostStore();
     const queryClient = useQueryClient();
-    const {transactionBytes} = useGlobalSearchParams<GlobalSearchParams>();
 
     const [parsedTx, setParsedTx] = useState<Transaction | null>(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -34,6 +39,15 @@ export const SignScreen = () => {
     const [isComplete, setIsComplete] = useState(false);
     const [transactionId, setTransactionId] = useState("");
     const [error, setError] = useState<string | null>(null);
+    const {pendingDeepLink, clearPendingDeepLink} = pendingDeepLinkStore()
+    const {transactionBytes} = pendingDeepLink?.params as SignDeeplinkParams ?? {};
+
+    useEffect(() => {
+        if (transactionBytes) {
+            parseTransaction(transactionBytes);
+        }
+
+    }, [transactionBytes]);
 
     function resetState() {
         setParsedTx(null);
@@ -43,16 +57,6 @@ export const SignScreen = () => {
         setTransactionId("");
         setError(null);
     }
-
-    useEffect(() => {
-        if (!transactionBytes) {
-            setError(t("Invalid transaction bytes"));
-            setIsLoading(false);
-            return;
-        }
-
-        parseTransaction(transactionBytes);
-    }, [transactionBytes]);
 
     const parseTransaction = async (txb: string) => {
         try {
@@ -69,6 +73,7 @@ export const SignScreen = () => {
             setError(err?.message || "Failed to parse transaction");
         } finally {
             setIsLoading(false);
+            clearPendingDeepLink();
         }
     };
 
@@ -116,6 +121,11 @@ export const SignScreen = () => {
             setIsSigning(false);
         }
     };
+
+    const handleReject = () => {
+        resetState();
+        router.back();
+    }
 
     if (isWatchOnly) {
         return (
@@ -170,10 +180,23 @@ export const SignScreen = () => {
                     <TransactionPreview transaction={parsedTx}/>
 
                     {!isComplete && (
-                        <ConfirmationSection
-                            onConfirm={handleSign}
-                            isDisabled={isSigning}
-                        />
+                        <View className="flex flex-col gap-2">
+                            <View>
+                                <ConfirmationSection
+                                    onConfirm={handleSign}
+                                    isDisabled={isSigning}
+                                />
+                            </View>
+                            <View>
+                                <Button
+                                    type="secondary"
+                                    title={t("connectDApp.reject")}
+                                    pressableProps={{onPress: handleReject}}
+                                    fullWidth
+                                    disabled={isSigning}
+                                />
+                            </View>
+                        </View>
                     )}
                 </View>
             </ScrollView>
