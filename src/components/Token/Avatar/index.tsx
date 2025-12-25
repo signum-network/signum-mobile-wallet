@@ -34,7 +34,7 @@ export const TokenAvatar = ({
     return (
         <View
             className={clsx([
-                "size-11 overflow-hidden rounded-lg",
+                "size-11 overflow-hidden rounded",
                 !ipfsImage && "pr-1",
                 extraClassNames && extraClassNames,
             ])}
@@ -49,7 +49,7 @@ export const TokenAvatar = ({
                 <View className="relative">
                     <HashIconAvatarNativeSVG seed={tokenId}/>
                     <View className="absolute left-[3px] flex justify-center items-center w-full h-full text-white">
-                        <Text size="large" className="font-bold let">{ticker.slice(0, 3).toUpperCase()}</Text>
+                        <Text size="medium" className="font-bold let">{ticker.slice(0, 3).toUpperCase()}</Text>
                     </View>
                 </View>
             )}

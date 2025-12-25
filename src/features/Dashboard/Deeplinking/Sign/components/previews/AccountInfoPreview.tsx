@@ -16,7 +16,6 @@ interface Props {
 }
 
 
-
 export const AccountInfoPreview = ({ transaction, parsed }: Props) => {
   const { t } = useTranslation();
   const { NativeTicker } = useTicker();

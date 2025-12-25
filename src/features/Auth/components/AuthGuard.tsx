@@ -9,7 +9,10 @@ interface Props {
 }
 
 export const AuthGuard = ({children}: Props) => {
-    const {isUnlocked, setIsUnlocked} = useAppStore();
+    const {isUnlocked, setIsUnlocked, isAuthEnrolled} = useAppStore();
+
+    console.log("isUnlocked: ", isUnlocked);
+    console.log("isAuthEnrolled: ", isAuthEnrolled);
 
     // If locked, show login screen instead of children
     if (!isUnlocked) {

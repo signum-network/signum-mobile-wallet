@@ -8,6 +8,7 @@ interface Props {
   className?: string;
   fullWidth?: boolean;
   children: any;
+  style?: TextStyle;
 }
 
 export const Text = ({
@@ -15,6 +16,7 @@ export const Text = ({
   size = "medium",
   className,
   fullWidth,
+    style = {},
   children,
 }: Props) => {
   const { tokens } = useAppTheme();
@@ -46,7 +48,7 @@ export const Text = ({
   };
 
   return (
-    <NativeText className={classNames} style={colorStyle}>
+    <NativeText className={classNames} style={{...colorStyle, ...style}}>
       {children}
     </NativeText>
   );

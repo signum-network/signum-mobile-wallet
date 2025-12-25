@@ -1,5 +1,6 @@
 import {ScrollView} from "react-native";
 import {Text} from "@/components/Text";
+
 import clsx from "clsx";
 
 interface JsonViewProps {
@@ -10,8 +11,8 @@ interface JsonViewProps {
 export function JsonView({json, className}: JsonViewProps) {
 
     return (
-        <ScrollView className={clsx("max-h-96", className)}>
-            <Text size="small" className="font-mono">
+        <ScrollView className={clsx("h-[90%]", className)}>
+            <Text size="small" style={{fontFamily: "SpaceMono_400Regular"}}>
                 {JSON.stringify(json, null, 2)}
             </Text>
         </ScrollView>

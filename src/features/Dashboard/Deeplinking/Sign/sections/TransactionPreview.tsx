@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {View} from "react-native";
+import {ScrollView, View} from "react-native";
 import type {Transaction} from "@signumjs/core";
 import {TransactionType} from "@signumjs/core";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -25,6 +25,7 @@ import {CommitmentPreview} from "../components/previews/CommitmentPreview";
 import {PoolPreview} from "../components/previews/PoolPreview";
 import {ContractCreationPreview} from "../components/previews/ContractCreationPreview";
 import {SubscriptionPreview} from "../components/previews/SubscriptionPreview";
+import {useTranslation} from "react-i18next";
 
 interface Props {
     transaction: Transaction;
@@ -33,6 +34,7 @@ interface Props {
 export const TransactionPreview = ({transaction}: Props) => {
     const [viewMode, setViewMode] = useState<ViewMode>("parsed");
     const {iconColor} = useAppTheme();
+    const {t} = useTranslation()
 
     const parsed = parseSignumTransaction(transaction);
     const {type} = parsed;
@@ -45,7 +47,7 @@ export const TransactionPreview = ({transaction}: Props) => {
             case "burn":
                 // Only for payment type - Asset transfers use AssetTransferPreview
                 return transaction.type === TransactionType.Payment
-                    ? <PaymentPreview transaction={transaction} parsed={parsed}/>
+                    ? <PaymentPreview parsed={parsed}/>
                     : <TokenTransferPreview transaction={transaction} parsed={parsed}/>;
 
             // Asset operations
@@ -57,7 +59,7 @@ export const TransactionPreview = ({transaction}: Props) => {
             case "createBuyOrder":
             case "cancelSaleOrder":
             case "cancelBuyOrder":
-                return <OrderPreview transaction={transaction} parsed={parsed}/>;
+                return <OrderPreview parsed={parsed}/>;
             case "distribution":
                 return <DistributionPreview transaction={transaction} parsed={parsed}/>;
             case "addTreasuryAccount":
@@ -78,7 +80,7 @@ export const TransactionPreview = ({transaction}: Props) => {
             // Mining operations
             case "addCommitment":
             case "removeCommitment":
-                return <CommitmentPreview transaction={transaction} parsed={parsed}/>;
+                return <CommitmentPreview parsed={parsed}/>;
             case "joinPool":
                 return <PoolPreview transaction={transaction} parsed={parsed}/>;
 
@@ -98,19 +100,18 @@ export const TransactionPreview = ({transaction}: Props) => {
     };
 
     return (
-        <>
+        <ScrollView className="max-h-screen-safe-or-10">
             <ViewModeToggle mode={viewMode} onModeChange={setViewMode}/>
-
             <Card>
                 <View className="gap-4">
-                    <View className="flex flex-row items-center gap-2">
+                    <View className="w-full flex flex-row justify-center items-center gap-2">
                         <Ionicons
                             name={type.iconName as any}
                             size={32}
-                            color={iconColor.primary}
+                            color={iconColor.muted}
                         />
                         <Text size="large" className="font-bold">
-                            {type.i18nKey}
+                            {t(`sign.txTypes.${type.i18nKey}`)}
                         </Text>
                     </View>
                     {
@@ -120,6 +121,6 @@ export const TransactionPreview = ({transaction}: Props) => {
                     }
                 </View>
             </Card>
-        </>
+        </ScrollView>
     );
 };

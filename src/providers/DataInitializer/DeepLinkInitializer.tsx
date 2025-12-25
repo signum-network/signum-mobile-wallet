@@ -55,27 +55,20 @@ export const DeepLinkInitializer = () => {
 
             console.log('[DeepLink] Processing URL:', url);
 
-            // Parse deep link using SignumJS SRC22 parser
             const parsed = src22.parseDeeplink(url);
 
             if (parsed.action === "sign" && parsed.decodedPayload) {
                 const payload = parsed.decodedPayload as any;
                 console.log('[DeepLink] Sign payload:', payload);
                 if (!payload) {
-                    console.error("Missing unsignedTransactionBytes in payload");
-                    alert(t("deeplink.missingUnsignedTransactionBytes"))
-                    return;
+                    throw Error(t("deeplink.missingUnsignedTransactionBytes"))
                 }
                 const {unsignedTransactionBytes, network = ""} = payload;
                 if (!unsignedTransactionBytes) {
-                    console.error("Missing unsignedTransactionBytes in payload");
-                    alert(t("deeplink.missingUnsignedTransactionBytes"))
-                    return;
+                    throw new Error(t("deeplink.missingUnsignedTransactionBytes"))
                 }
                 if (network && network !== currentNetwork) {
-                    console.error("Network mismatch in payload - got ", network, " expected ", currentNetwork, "");
-                    alert(t("deeplink.networkMismatch", {currentNetwork, requestedNetwork: network}));
-                    return;
+                    throw new Error(t("deeplink.networkMismatch", {currentNetwork, requestedNetwork: network}));
                 }
 
                 console.log('[DeepLink] Storing sign request as pending');
@@ -88,39 +81,28 @@ export const DeepLinkInitializer = () => {
                 const payload = parsed.decodedPayload as any;
                 console.log('[DeepLink] Connect payload:', payload);
                 const {appName, callbackUrl, network = ""} = payload;
-                console.log('[DeepLink] Extracted:', {appName, callbackUrl, network});
+
                 if (!appName) {
-                    console.error("Missing appName in payload");
-                    alert(t("deeplink.missingAppName"))
-                    return;
+                    throw new Error(t("deeplink.missingAppName"))
                 }
 
                 if (!callbackUrl) {
-                    console.error("Missing callbackUrl in payload");
-                    alert(t("deeplink.missingCallback"))
-                    return;
+                    throw new Error(t("deeplink.missingCallback"))
                 }
 
-
                 if (network && network !== currentNetwork) {
-                    console.error("Network mismatch in payload - got ", network, " expected ", currentNetwork, "");
-                    alert(t("deeplink.networkMismatch", {currentNetwork, requestedNetwork: network}));
-                    return;
+                    throw new Error(t("deeplink.networkMismatch", {currentNetwork, requestedNetwork: network}));
                 }
 
                 // assert Url
                 new URL(callbackUrl);
-
                 const publicKeys = Object.values(accounts)
                     .filter((walletAccount) => walletAccount.type === "mnemonic")
                     .map((walletAccount) => walletAccount.publicKey)
 
                 if (publicKeys.length === 0) {
-                    console.error("No mnemonic accounts found in wallet");
-                    alert(t("deeplink.noMnemonicAccounts"));
-                    return;
+                    throw new Error(t("deeplink.noMnemonicAccounts"));
                 }
-
 
                 console.log('[DeepLink] Storing connect request as pending');
                 setPendingDeepLink({
@@ -133,10 +115,11 @@ export const DeepLinkInitializer = () => {
                 });
                 setRoutingRequested(true);
             } else {
-                alert(t("deeplink.unsupportedAction", {action: parsed.action}));
+                throw new Error(t("deeplink.unsupportedAction", {action: parsed.action}));
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error("Deep link parsing error:", error);
+            alert(t(error.message))
         }
     };
 

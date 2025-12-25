@@ -62,9 +62,12 @@ export const useNodeHostStore = () => {
 
   const currentNetwork: networks = isTestnet ? "testnet" : "mainnet";
 
+  const addressPrefix = isTestnet ? "TS" : "S";
+
   return {
     connectionType,
     activeNodeHost,
+      addressPrefix,
     isActiveNodeAvailable,
     isActiveNodeSynced,
     activeNodeSyncedPercentage,

@@ -356,7 +356,7 @@ function parseTransactionType(tx: Transaction): ParsedTransactionType {
 }
 
 function parsePaymentSubType(tx: Transaction): ParsedTransactionType {
-    return !tx.recipient
+    return tx.recipient === BURN_ADDRESS
         ? {
             i18nKey: "burn",
             iconName: "flame",
@@ -364,7 +364,7 @@ function parsePaymentSubType(tx: Transaction): ParsedTransactionType {
         }
         : {
             i18nKey: "transferTo",
-            iconName: "arrow-forward",
+            iconName: "swap-vertical-outline",
             hasAmount: true,
         };
 }
@@ -396,7 +396,7 @@ function parseAssetSubType(tx: Transaction): ParsedTransactionType {
     switch (tx.subtype) {
         case TransactionAssetSubtype.AssetTransfer:
         case TransactionAssetSubtype.AssetMultiTransfer:
-            return !tx.recipient
+            return tx.recipient === BURN_ADDRESS
                 ? {
                     i18nKey: "burn",
                     iconName: "flame",
@@ -530,7 +530,7 @@ function parseArbitrarySubType(tx: Transaction): ParsedTransactionType {
             };
         case TransactionArbitrarySubtype.AliasAssignment:
             return {
-                i18nKey: "aliasCreation",
+                i18nKey: "aliasClaim",
                 iconName: "person-add",
                 hasAmount: false,
             };

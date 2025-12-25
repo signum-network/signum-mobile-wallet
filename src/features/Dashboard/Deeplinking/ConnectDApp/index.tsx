@@ -42,18 +42,15 @@ export const ConnectDAppScreen = () => {
     }
 
     const {appName, callbackUrl, network} = pendingDeepLink.params as ConnectSearchParams;
-    console.log("ConnectDAppScreen", {appName, callbackUrl, network})
 
     // Filter to only mnemonic (full) accounts - watch-only can't sign
     const handleApprove = async () => {
         if (!callbackUrl) return;
         try {
             setIsConnecting(true);
-            // Build callback URL with account info
+            // Open callback URL
             const url = new URL(callbackUrl);
             url.searchParams.set("publicKey", activeAccount);
-
-            // Open callback URL
             await Linking.openURL(url.toString());
         } catch (error: any) {
             console.error("Failed to connect to dApp:", error);

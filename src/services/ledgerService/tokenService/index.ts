@@ -57,7 +57,7 @@ export class TokenService extends LedgerSubService {
   fetchTokenBrandLogoHash(tokenId: string) {
     return handleError<string>(async () => {
       const { ledger } = this.context;
-
+      // and now check, if there's newer data
       const client = new src44.DescriptorDataClient(ledger);
       const brandingList = await client.getAssetBranding(tokenId);
       const branding = brandingList?.[0] ?? "";

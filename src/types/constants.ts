@@ -6,7 +6,7 @@ export const PUBLIC_PIN_MAX_ATTEMPTS = 5;
 
 export const PUBLIC_PIN_HASH_ITERATIONS = 100000;
 
-export const PUBLIC_INACTIVITY_AUTO_LOCK = 5 * 60_000;
+export const PUBLIC_INACTIVITY_AUTO_LOCK = (__DEV__ ? 30 : 5) * 60_000;
 
 export const PUBLIC_SIGNUM_PUBLIC_RESOURCES_URL =
   "https://signum-network.github.io/public-resources";
