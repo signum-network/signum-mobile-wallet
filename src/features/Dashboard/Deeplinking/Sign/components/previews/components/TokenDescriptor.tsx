@@ -6,14 +6,21 @@ import {useMemo} from "react";
 import {src44} from "@signumjs/standards";
 import {useTokenMetadata} from "@/hooks/useTokenMetadata";
 import {useTranslation} from "react-i18next";
+import {Amount, ChainValue} from "@signumjs/util";
+import {useTokenTransactionalData} from "@/hooks/useTokenTransactionalData";
+import {useTicker} from "@/hooks/useTicker";
 
 interface Props {
     tokenId: string
+    quantity?: string
 }
 
-export function TokenDescriptor({tokenId} : Props) {
+export function TokenDescriptor({tokenId, quantity = ""}: Props) {
     const {t} = useTranslation();
     const tokenMetadata = useTokenMetadata(tokenId);
+    const {priceNQT} = useTokenTransactionalData(tokenId)
+    const {NativeTicker} = useTicker()
+
     const tokenDescription = useMemo(() => {
         try {
             const descriptor = src44.DescriptorData.parse(tokenMetadata.description ?? "")
@@ -33,9 +40,16 @@ export function TokenDescriptor({tokenId} : Props) {
             <Card>
                 <View className="flex flex-row items-center justify-start gap-2 w-full">
                     <TokenAvatar tokenId={tokenId ?? ""}/>
-                    <Text className="font-medium">
-                        {tokenMetadata.ticker || tokenId}
-                    </Text>
+                    <View className="flex flex-col items-start">
+                        <Text className="font-medium">
+                            {quantity ? ChainValue.create(tokenMetadata.decimals).setAtomic(quantity).getCompound() + " " : ""}
+                            {tokenMetadata.ticker || tokenId}
+                        </Text>
+                        {priceNQT !== undefined &&
+                            <Text size="extraSmall"
+                                  color="muted">{Amount.fromPlanck(priceNQT).getSigna()} {NativeTicker}</Text>
+                        }
+                    </View>
                 </View>
                 {tokenDescription && (
                     <Text size="small" color="muted">

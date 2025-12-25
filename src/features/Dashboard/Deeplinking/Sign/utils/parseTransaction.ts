@@ -19,7 +19,7 @@ export type ParsedTransactionExpense = {
     tokenId?: string;
     refHash?: string;
     tokenName?: string;
-    tokenDecimals?: string;
+    tokenDecimals?: number;
     aliasName?: string;
     hash?: string;
     amount?: Amount;
@@ -38,9 +38,7 @@ export type ParsedTransaction = {
     txType: number;
     txSubtype: number;
     amount?: Amount;
-    delegate?: string;
     type: ParsedTransactionType;
-    contractAddress?: string;
     expenses: ParsedTransactionExpense[];
     fee: Amount;
     isSelf: boolean;
@@ -281,14 +279,25 @@ function parseAssetExpenses(tx: Transaction): ParsedTransactionExpense[] {
                 },
             ];
         case TransactionAssetSubtype.AssetTransfer:
-        default:
-            return [
+        default: {
+            const multiExpenses: ParsedTransactionExpense[] = [];
+            const amount = Amount.fromPlanck(tx.amountNQT || 0);
+            if (amount.greaterOrEqual(Amount.Zero())) {
+                multiExpenses.push({
+                    to: tx.recipient!,
+                    amount,
+                    tokenId: SIGNA_TOKEN_ID,
+                });
+            }
+            multiExpenses.push(
                 {
                     to: tx.recipient || BURN_ADDRESS,
                     tokenId: tx.attachment?.asset,
                     quantity: tx.attachment?.quantityQNT,
                 },
-            ];
+            )
+            return multiExpenses;
+        }
     }
 }
 

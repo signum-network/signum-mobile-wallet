@@ -4,7 +4,7 @@ import { Image } from "expo-image";
 import { src44 } from "@signumjs/standards";
 import clsx from "clsx";
 import HashIconNativeSVG from "@/components/Account/Avatar/HashIconNativeSVG";
-import { PUBLIC_IPFS_GATEWAY } from "@/types/constants";
+import {toIpfsUrl} from "@/utils/toIpsUrl";
 
 interface Props {
   loading: boolean;
@@ -13,11 +13,7 @@ interface Props {
   extraClassNames?: string;
 }
 
-function toIpfsUrl(cid?: string | null) {
-  if (!cid) return null;
-  const base = String(PUBLIC_IPFS_GATEWAY).replace(/\/+$/, ""); // trim trailing /
-  return `${base}/${cid}`;
-}
+
 
 export const AccountAvatar = ({
   loading,

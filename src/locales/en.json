@@ -420,13 +420,27 @@
     "addedCommitmentSuccessFeedback": "The committed balance is getting updated, newly added commitment becomes active for mining after 1,440 blocks (around 4 days)",
     "removedCommitmentSuccessFeedback": "Congrats, the committed balance is being updated"
   },
+  "nft": {
+    "creation": "NFT Creation",
+    "operation": "NFT Operation",
+    "pay": "NFT Payment",
+    "makeOffer": "NFT Offer Creation",
+    "acceptOffer": "NFT Offer Acceptance",
+    "cancelOffer": "NFT Offer Cancellation",
+    "like": "NFT Like",
+    "putForAuction": "NFT Put for Auction",
+    "putForSale": "NFT Put for Sale",
+    "putNotForSale": "NFT Remove from Sale",
+    "transferRoyalties": "NFT Royalties Transfer",
+    "transferOwnership": "NFT Ownership Transfer"
+  },
   "sign": {
     "txTypes": {
-      "transferTo": "Transfer",
+      "transferTo": "Payment",
       "burn": "Burn",
       "subscriptionCancellation": "Subscription Cancellation",
       "subscriptionCreation": "Subscription Creation",
-      "transaction": "Transaction",
+      "transaction": "Transaction (Generic)",
       "distribution": "Distribution",
       "createSaleOrder": "Sale Order",
       "createBuyOrder": "Buy Order",
@@ -445,6 +459,7 @@
       "aliasBuy": "Alias Buy",
       "aliasSell": "Alias Sale"
     },
+    "plusTokens": "includes token values in {{ticker}}",
     "andMoreRecipients": "...and more {{count}} recipients",
     "signRequest": "Sign Request",
     "addingCommitment": "Adding Commitment",
@@ -483,7 +498,7 @@
     "subscription": "Subscription",
     "switchToJsonHint": "Switch to JSON view to see all transaction data.",
     "ownershipTransferWarning": "The new owner will have full control over the token, including minting and management rights.",
-    "genericTransactionHint": "This transaction type doesn't have a specialized preview yet.",
+    "genericTransactionHint": "This transaction type doesn't have a specialized preview yet. Cost calculations may be inaccurate.",
     "subscriptionCancelExplanation": "This will cancel the subscription and stop all future payments.",
     "buyOrderCancelExplanation": "This will cancel your buy order for this token.",
     "sellOrderCancelExplanation": "This will cancel your sell order for this token.",

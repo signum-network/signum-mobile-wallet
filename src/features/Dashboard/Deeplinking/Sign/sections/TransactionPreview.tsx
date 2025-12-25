@@ -95,7 +95,7 @@ export const TransactionPreview = ({transaction}: Props) => {
 
             // Fallback for unknown types
             default:
-                return <GenericPreview transaction={transaction} parsed={parsed}/>;
+                return <GenericPreview parsed={parsed}/>;
         }
     };
 

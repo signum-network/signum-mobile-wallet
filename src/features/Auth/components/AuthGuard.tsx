@@ -9,17 +9,12 @@ interface Props {
 }
 
 export const AuthGuard = ({children}: Props) => {
-    const {isUnlocked, setIsUnlocked, isAuthEnrolled} = useAppStore();
+    const {isUnlocked, setIsUnlocked} = useAppStore();
 
-    console.log("isUnlocked: ", isUnlocked);
-    console.log("isAuthEnrolled: ", isAuthEnrolled);
-
-    // If locked, show login screen instead of children
     if (!isUnlocked) {
         return <LoginAuthScreen/>;
     }
 
-    // If unlocked, render children with touch listener for inactivity reset
     return (
         <InactivityGuard
             timeoutMs={PUBLIC_INACTIVITY_AUTO_LOCK}
