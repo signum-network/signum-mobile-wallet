@@ -10,8 +10,8 @@ import { asRSAddress } from "@/utils/account/asRSAddress";
 import * as Clipboard from "expo-clipboard";
 import QRCode from "react-qr-code";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { AccountSwitcher } from "@/components/Account/Switcher";
 import { AppHeader } from "@/components/AppHeader";
+import {AccountSwitcherFancy} from "@/components/Account/SwitcherFancy";
 
 export const DepositScreen = () => {
   const { t } = useTranslation();
@@ -29,7 +29,7 @@ export const DepositScreen = () => {
     <View className="flex-1 flex flex-col items-start justify-start mb-8 gap-4">
       <AppHeader title={t("deposit.title")} />
       <View className="w-full px-4 gap-4">
-        <AccountSwitcher href="/dashboard/account" />
+        <AccountSwitcherFancy href="/dashboard/account" />
       </View>
       <View className="flex flex-1 flex-col items-center w-full px-4">
         <Card>

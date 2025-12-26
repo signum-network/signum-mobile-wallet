@@ -140,7 +140,7 @@ export function NftDescriptor({transaction, account, label}: Props) {
                     )}
                 </View>
                 <View className="flex flex-col items-start flex-1">
-                    <Text size="large" color="muted" className="font-bold">{nftMetaData?.name || "NFT"}</Text>
+                    <Text size="large" color="muted" className="font-bold text-ellipsis whitespace-nowrap overflow-hidden">{nftMetaData?.name || "NFT"}</Text>
                     <Text size="small" color="muted">{nftMetaData?.description || "No description available"}</Text>
                 </View>
             </View>

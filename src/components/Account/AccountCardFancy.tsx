@@ -1,6 +1,9 @@
 import { Dimensions, View, Pressable, Alert } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
+import { Image } from "expo-image";
+import { useMemo } from "react";
+import { src44 } from "@signumjs/standards";
 import { useNodeHostStore } from "@/hooks/useNodeHostStore";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { Address } from "@signumjs/core";
@@ -12,7 +15,6 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { Text } from "@/components/Text";
-import { AccountAvatar } from "@/components/Account/Avatar";
 import { useTicker } from "@/hooks/useTicker";
 import { useAccountStore } from "@/hooks/useAccountStore";
 import { AccountType } from "@/types/account";
@@ -26,6 +28,8 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { Pulse } from "@/components/Puls";
 import { asRSAddress } from "@/utils/account/asRSAddress";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { toIpfsUrl } from "@/utils/toIpsUrl";
+import HashIconNativeSVG from "@/components/Account/Avatar/HashIconNativeSVG";
 
 interface Props {
   publicKey: string;
@@ -33,17 +37,10 @@ interface Props {
   walletName: string;
 }
 
-export const ITEM_HEIGHT = 116;
+export const ITEM_HEIGHT = 140;
 const WIDTH_SCREEN = Dimensions.get("window").width;
 
-/**
- * @deprecated Use AccountCardFancy instead
- * @param publicKey
- * @param type
- * @param walletName
- * @constructor
- */
-export const AccountCard = ({ publicKey, type, walletName }: Props) => {
+export const AccountCardFancy = ({ publicKey, type, walletName }: Props) => {
   const { t } = useTranslation();
   const { ledgerService } = useLedgerService();
   const { NativeTicker } = useTicker();
@@ -100,7 +97,22 @@ export const AccountCard = ({ publicKey, type, walletName }: Props) => {
   const networkData = currentAccount?.[currentNetwork];
   const activationInProgress = !!networkData?.activationInProgress;
 
-  // TODO: Remove "transactions history", "subscription" from account
+  const images = useMemo(() => {
+    if (!isSecured || !currentAccount?.[currentNetwork]?.description) return null;
+    try {
+      const descriptor = src44.DescriptorData.parse(
+        currentAccount[currentNetwork].description,
+        false
+      );
+      return {
+        avatarUrl: toIpfsUrl(descriptor?.avatar?.ipfsCid) ?? null,
+        backgroundUrl: toIpfsUrl(descriptor?.background?.ipfsCid) ?? null,
+      };
+    } catch {
+      return null;
+    }
+  }, [isSecured, currentAccount, currentNetwork]);
+
   const removeAccount = async () => {
     itemHeight.set(0);
 
@@ -180,7 +192,7 @@ export const AccountCard = ({ publicKey, type, walletName }: Props) => {
   const transformStyle = useAnimatedStyle(() => ({
     transform: [
       { translateX: swipeTranslateX.value },
-      { scale: withTiming(pressed.value ? 1.05 : 1) },
+      { scale: withTiming(pressed.value ? 1.02 : 1) },
     ],
   }));
 
@@ -258,7 +270,7 @@ export const AccountCard = ({ publicKey, type, walletName }: Props) => {
     <GestureDetector gesture={pan}>
       <Animated.View style={itemHeightStyle}>
         <Animated.View
-          className="!rounded-lg pr-4 flex flex-row items-center justify-end"
+          className="!rounded-xl pr-4 flex flex-row items-center justify-end"
           style={{
             height: ITEM_HEIGHT,
             position: "absolute",
@@ -277,87 +289,167 @@ export const AccountCard = ({ publicKey, type, walletName }: Props) => {
         </Animated.View>
 
         <Animated.View
-          className="border !rounded-lg"
+          className="!rounded-xl overflow-hidden"
           style={[
             transformStyle,
             {
               width: "100%",
               height: ITEM_HEIGHT,
-              backgroundColor: tokens.surface,
-              borderColor: tokens.border,
+              borderWidth: isCurrentAccount ? 3 : 0,
+              borderColor: isCurrentAccount ? tokens.success : "transparent",
             },
           ]}
         >
           <Pressable
             onPress={changeActiveAccount}
-            className="flex flex-row items-center justify-between p-4 ripple-[#333] ripple-bordered !rounded-lg w-full"
+            className="w-full h-full relative"
           >
-            <View className="flex flex-row gap-4 items-center justify-start flex-1">
-              <AccountAvatar
-                loading={!isSecured}
-                accountId={accountId}
-                description={currentAccount[currentNetwork].description}
-              />
-
-              <View className="flex flex-col gap-1">
-                <Text className="font-bold">{walletName}</Text>
-                <Text color="muted">{asRSAddress(accountId)}</Text>
-                <Text color="muted" className="font-bold">
-                  {formatNumber({ value: availableBalance })} {NativeTicker}
-                </Text>
-
-                {!isSecured ? (
-                  activationInProgress ? (
-                    <Pulse>
-                      <View className="flex-row items-center gap-1">
-                        <Ionicons name="hourglass-outline" size={14} color={iconColor.primary} />
-                        <Text
-                          color="primary"
-                          size="small"
-                          className="font-medium"
-                        >
-                          {t("unsafeAccount.activating")}
-                        </Text>
-                      </View>
-                    </Pulse>
-                  ) : (
-                    <View className="flex-row items-center gap-1">
-                      <Ionicons name="warning-outline" size={14} color={iconColor.red} />
-                      <Text color="error" size="small" className="font-medium">
-                        {t("settings.account.unsecuredAccount")}
-                      </Text>
-                    </View>
-                  )
-                ) : (
-                  <View className="flex-row items-center gap-1">
-                    <Ionicons
-                      name={type === AccountType.watchOnly ? "eye-outline" : "shield-checkmark-outline"}
-                      size={14}
-                      color={iconColor.primary}
-                    />
-                    <Text color="primary" size="small" className="font-medium">
-                      {type === AccountType.watchOnly
-                        ? t("watchOnly")
-                        : t("fullAccount")}
-                    </Text>
-                  </View>
-                )}
-              </View>
+            {/* Background Layer */}
+            <View className="absolute inset-0">
+              {images?.backgroundUrl ? (
+                <>
+                  <Image
+                    source={images.backgroundUrl}
+                    contentFit="cover"
+                    cachePolicy="memory-disk"
+                    transition={200}
+                    style={{ width: "100%", height: "100%" }}
+                  />
+                  {/* Dark overlay for text readability */}
+                  <View
+                    style={{
+                      position: "absolute",
+                      width: "100%",
+                      height: "100%",
+                      backgroundColor: isCurrentAccount
+                        ? "rgba(0,0,0,0.4)"
+                        : "rgba(0,0,0,0.5)",
+                    }}
+                  />
+                </>
+              ) : (
+                <View
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    backgroundColor: isCurrentAccount
+                      ? tokens.primarySoft
+                      : tokens.surface,
+                  }}
+                />
+              )}
             </View>
 
+            {/* Active Account Badge */}
             {isCurrentAccount && (
-              <View className="flex flex-col items-center justify-center">
-                <Ionicons
-                  name="checkmark-circle"
-                  size={20}
-                  color={iconColor.green}
-                />
-
-                <Text color="success" className="font-bold" size="small">
-                  {t("settings.account.active")}
-                </Text>
+              <View className="absolute top-2 right-2 z-10">
+                <View className="bg-white/90 rounded-full px-3 py-1 flex flex-row items-center gap-1 shadow-lg">
+                  <Ionicons name="checkmark-circle" size={16} color={tokens.success} />
+                  <Text color="success" size="extraSmall" className="font-bold">
+                    {t("settings.account.active")}
+                  </Text>
+                </View>
               </View>
             )}
+
+            {/* Content Layer */}
+            <View className="relative w-full h-full p-3 flex flex-row items-center justify-between">
+              {/* Left: Avatar and Info */}
+              <View className="flex flex-row gap-3 items-center flex-1">
+                {/* Large Avatar */}
+                <View className="size-20 rounded-full overflow-hidden border-3 border-white/30 shadow-xl bg-white/10">
+                  {images?.avatarUrl ? (
+                    <Image
+                      source={images.avatarUrl}
+                      contentFit="cover"
+                      cachePolicy="memory-disk"
+                      transition={200}
+                      recyclingKey={accountId}
+                      style={{ width: "100%", height: "100%" }}
+                    />
+                  ) : (
+                    <View className="w-full h-full flex items-center justify-center">
+                      <HashIconNativeSVG seed={accountId} />
+                    </View>
+                  )}
+                </View>
+
+                {/* Account Info */}
+                <View className="flex flex-col flex-1 gap-0.5">
+                  <Text
+                    color={images?.backgroundUrl ? "white" : "content"}
+                    className="font-bold"
+                  >
+                    {walletName}
+                  </Text>
+                  <Text
+                    color={images?.backgroundUrl ? "white" : "muted"}
+                    size="small"
+                    style={images?.backgroundUrl ? { opacity: 0.9 } : {}}
+                  >
+                    {asRSAddress(accountId)}
+                  </Text>
+                  <Text
+                    color={images?.backgroundUrl ? "white" : "muted"}
+                    size="small"
+                    className="font-bold"
+                    style={images?.backgroundUrl ? { opacity: 0.95 } : {}}
+                  >
+                    {formatNumber({ value: availableBalance })} {NativeTicker}
+                  </Text>
+
+                  {/* Account Status */}
+                  {!isSecured ? (
+                    activationInProgress ? (
+                      <Pulse>
+                        <View className="flex-row items-center gap-1 bg-white/20 rounded-full px-2 py-0.5 self-start mt-0.5">
+                          <Ionicons
+                            name="hourglass-outline"
+                            size={12}
+                            color={images?.backgroundUrl ? "white" : iconColor.primary}
+                          />
+                          <Text
+                            color={images?.backgroundUrl ? "white" : "primary"}
+                            size="extraSmall"
+                            className="font-medium"
+                          >
+                            {t("unsafeAccount.activating")}
+                          </Text>
+                        </View>
+                      </Pulse>
+                    ) : (
+                      <View className="flex-row items-center gap-1 bg-red-500/80 rounded-full px-2 py-0.5 self-start mt-0.5">
+                        <Ionicons name="warning-outline" size={12} color="white" />
+                        <Text color="white" size="extraSmall" className="font-medium">
+                          {t("settings.account.unsecuredAccount")}
+                        </Text>
+                      </View>
+                    )
+                  ) : (
+                    <View className="flex-row items-center gap-1 bg-white/20 rounded-full px-2 py-0.5 self-start mt-0.5">
+                      <Ionicons
+                        name={
+                          type === AccountType.watchOnly
+                            ? "eye-outline"
+                            : "shield-checkmark-outline"
+                        }
+                        size={12}
+                        color={images?.backgroundUrl ? "white" : iconColor.primary}
+                      />
+                      <Text
+                        color={images?.backgroundUrl ? "white" : "primary"}
+                        size="extraSmall"
+                        className="font-medium"
+                      >
+                        {type === AccountType.watchOnly
+                          ? t("watchOnly")
+                          : t("fullAccount")}
+                      </Text>
+                    </View>
+                  )}
+                </View>
+              </View>
+            </View>
           </Pressable>
         </Animated.View>
       </Animated.View>

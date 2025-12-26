@@ -189,6 +189,13 @@ function parseArbitraryExpenses(tx: Transaction): ParsedTransactionExpense[] {
                     amount: Amount.fromPlanck(tx.amountNQT || 0),
                 },
             ];
+            case TransactionArbitrarySubtype.TopLevelDomainAssignment:
+                return [
+                    {
+                        to: tx.sender,
+                        amount: Amount.fromPlanck(tx.amountNQT || 0),
+                    }
+                ]
         case TransactionArbitrarySubtype.AccountInfo:
         case TransactionArbitrarySubtype.Message:
         default:
@@ -540,19 +547,25 @@ function parseArbitrarySubType(tx: Transaction): ParsedTransactionType {
         case TransactionArbitrarySubtype.AliasAssignment:
             return {
                 i18nKey: "aliasClaim",
-                iconName: "person-add",
+                iconName: "globe-outline",
                 hasAmount: false,
             };
         case TransactionArbitrarySubtype.AliasBuy:
             return {
                 i18nKey: "aliasBuy",
-                iconName: "person",
+                iconName: "globe-outline",
                 hasAmount: true,
             };
         case TransactionArbitrarySubtype.AliasSale:
             return {
                 i18nKey: "aliasSell",
-                iconName: "person",
+                iconName: "globe-outline",
+                hasAmount: true,
+            };
+        case TransactionArbitrarySubtype.TopLevelDomainAssignment:
+            return {
+                i18nKey: "tldAssignment",
+                iconName: "planet-outline",
                 hasAmount: true,
             };
         default:

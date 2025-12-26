@@ -1,43 +1,54 @@
 import {View} from "react-native";
 import {useTranslation} from "react-i18next";
-import {Image} from "expo-image";
 import {Text} from "@/components/Text";
 import {Card} from "@/components/Card";
-import {useTicker} from "@/hooks/useTicker";
-import {useActiveMarketRate} from "@/hooks/useActiveMarketRate";
-import {formatNumber} from "@/utils/formatNumber";
-import {signumBlueSymbolPicture} from "@/assets";
 import type {ParsedTransaction} from "../../utils/parseTransaction";
 import {tryGetJSON} from "../../utils/tryGetJson";
 import {JsonView} from "@/components/JsonView";
+import {AccountDescriptor, SignaDescriptor, TotalAmount} from "./components";
+import {useQuery} from "@tanstack/react-query";
+import {useNodeHostStore} from "@/hooks/useNodeHostStore";
+import {useLedgerService} from "@/hooks/useLedgerService";
+import {PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MILLISECONDS} from "@/types/constants";
+import {Amount} from "@signumjs/util";
 
 interface Props {
     parsed: ParsedTransaction;
 }
 
+function toTld(tld?: string) {
+    return tld === "0" ? "signum" : tld;
+}
+
 export const AliasPreview = ({parsed}: Props) => {
     const {t} = useTranslation();
-    const {NativeTicker} = useTicker();
-    const {price, symbol} = useActiveMarketRate();
-
-    const feeSigna = Number(parsed.fee.getSigna());
-    const feeMarketValue = price ? feeSigna * price : 0;
+    const {ledgerService} = useLedgerService()
+    const {currentNetwork} = useNodeHostStore()
 
     const expense = parsed.expenses[0];
     const operationType = parsed.type.i18nKey;
 
-    const isCreation = operationType === "aliasCreation";
+    const isCreation = operationType === "aliasClaim";
     const isBuy = operationType === "aliasBuy";
     const isSell = operationType === "aliasSell";
+    const aliasId = parsed.transaction.attachment?.alias || "";
 
-    const amount = expense.amount ? Number(expense.amount.getSigna()) : 0;
-    const marketValue = price && amount ? amount * price : 0;
+    const { data: loadedAlias } = useQuery({
+        queryKey: ["fetchAlias", aliasId, currentNetwork],
+        queryFn: async () => {
+            if(!ledgerService) return;
+            return ledgerService.ledgerInstance.alias.getAliasById(aliasId)
+        },
+        refetchInterval: PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MILLISECONDS,
+        staleTime: PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MILLISECONDS,
+        enabled: Boolean(aliasId) && Boolean(ledgerService),
+    });
 
-    const aliasName = parsed.transaction.attachment?.aliasName || "";
-    const tld = parsed.transaction.attachment?.tld || "";
-    const aliasContent = parsed.transaction.attachment?.aliasURI || "";
+    const aliasName = parsed.transaction.attachment?.aliasName || loadedAlias?.aliasName || "";
+    const tld = toTld(parsed.transaction.attachment?.tld || loadedAlias?.tld || "");
+    const aliasContent = parsed.transaction.attachment?.uri || loadedAlias?.aliasURI || "";
     const json = tryGetJSON(aliasContent);
-
+    const total = isBuy ? parsed.fee.clone().add(expense.amount ?? Amount.Zero()) : parsed.fee;
     return (
         <>
             {/* Alias Name */}
@@ -47,10 +58,18 @@ export const AliasPreview = ({parsed}: Props) => {
                 </Text>
 
                 <Card>
-                    <Text className="font-medium">
-                        {aliasName || expense.aliasName || "Unknown"}
-                        {tld && <Text color="muted">.{tld}</Text>}
-                    </Text>
+                    <View className="flex flex-row items-center justify-between gap-2 w-full">
+                        <View className="flex-1 min-w-0">
+                            <Text className="font-medium text-ellipsis whitespace-nowrap overflow-hidden">
+                                {aliasName || expense.aliasName || "Unknown"}
+                            </Text>
+                        </View>
+                        {tld && (
+                            <View className="ml-1 bg-gray-50 border border-gray-50 rounded-md px-1 flex-shrink-0">
+                                <Text color="muted">{tld}</Text>
+                            </View>
+                        )}
+                    </View>
                 </Card>
             </View>
 
@@ -60,46 +79,19 @@ export const AliasPreview = ({parsed}: Props) => {
                     <Text size="large" color="muted" className="font-bold">
                         {json ? t("sign.aliasData") : t("sign.aliasContent")}
                     </Text>
-
-                    {json ? (
-                        <Card>
-                            <JsonView json={json} />
-                        </Card>
-                    ) : (
-                        <Card>
-                            <Text className="font-medium">{aliasContent}</Text>
-                        </Card>
-                    )}
+                    <Card>
+                        {json ? <JsonView json={json}/> : <Text className="font-medium">{aliasContent}</Text>}
+                    </Card>
                 </View>
             )}
 
             {/* Price (for Buy/Sell) */}
-            {(isBuy || isSell) && amount > 0 && (
+            {(isBuy || isSell) && (
                 <View className="w-full flex flex-col gap-1">
                     <Text size="large" color="muted" className="font-bold">
                         {t("sign.price")}
                     </Text>
-
-                    <View className="flex flex-row items-center justify-start gap-2 w-full">
-                        <View className="size-10">
-                            <Image
-                                source={{uri: signumBlueSymbolPicture}}
-                                style={{width: "100%", height: "100%", borderRadius: 8}}
-                            />
-                        </View>
-
-                        <View className="flex-1 flex items-start flex-col gap-1">
-                            <Text className="font-medium">
-                                {`${formatNumber({value: amount})} ${NativeTicker}`}
-                            </Text>
-
-                            {!!marketValue && (
-                                <Text size="small" color="muted">
-                                    {`${symbol}${formatNumber({value: marketValue, isFiat: true})}`}
-                                </Text>
-                            )}
-                        </View>
-                    </View>
+                    <SignaDescriptor amount={expense.amount}/>
                 </View>
             )}
 
@@ -109,10 +101,7 @@ export const AliasPreview = ({parsed}: Props) => {
                     <Text size="large" color="muted" className="font-bold">
                         {isBuy ? t("sign.seller") : t("sign.buyer")}
                     </Text>
-
-                    <Card>
-                        <Text className="font-medium">{expense.to}</Text>
-                    </Card>
+                    <AccountDescriptor accountId={expense.to}/>
                 </View>
             )}
 
@@ -125,22 +114,8 @@ export const AliasPreview = ({parsed}: Props) => {
                 </Card>
             )}
 
-            {/* Fees */}
-            <View className="w-full flex flex-col gap-1">
-                <Text size="large" color="muted" className="font-bold">
-                    {t("fees")}
-                </Text>
+            <TotalAmount fee={parsed.fee} total={total}/>
 
-                <View className="flex-1 flex items-start flex-col gap-1">
-                    <Text className="font-medium">{`${feeSigna} ${NativeTicker}`}</Text>
-
-                    {!!feeMarketValue && (
-                        <Text size="small" color="muted">
-                            {`${symbol}${formatNumber({value: feeMarketValue})}`}
-                        </Text>
-                    )}
-                </View>
-            </View>
         </>
     );
 };

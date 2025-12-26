@@ -21,11 +21,14 @@ export const AccountAvatar = ({
   description,
   extraClassNames,
 }: Props) => {
-  const ipfsImage = useMemo(() => {
+  const images = useMemo(() => {
     if (loading || !description) return null;
     try {
       const descriptor = src44.DescriptorData.parse(description, false);
-      return toIpfsUrl(descriptor?.avatar?.ipfsCid) ?? null;
+      return {
+          avatarUrl: toIpfsUrl(descriptor?.avatar?.ipfsCid) ?? null,
+          backgroundUrl: toIpfsUrl(descriptor?.background?.ipfsCid) ?? null
+      }
     } catch {
       return null;
     }
@@ -34,14 +37,32 @@ export const AccountAvatar = ({
   return (
     <View
       className={clsx([
-        "size-11 overflow-hidden rounded-md",
-        !ipfsImage && "pr-1",
+        "size-11 overflow-hidden rounded-md relative",
+        !images?.avatarUrl && "pr-1",
         extraClassNames && extraClassNames,
       ])}
     >
-      {ipfsImage ? (
+      {/* Background Image Layer */}
+      {images?.backgroundUrl && (
         <Image
-          source={ipfsImage}
+          source={images.backgroundUrl}
+          contentFit="cover"
+          cachePolicy="memory-disk"
+          transition={200}
+          recyclingKey={`${accountId}-bg`}
+          style={{
+            position: 'absolute',
+            width: "100%",
+            height: "100%",
+            opacity: 0.3
+          }}
+        />
+      )}
+
+      {/* Avatar/Icon Layer */}
+      {images?.avatarUrl ? (
+        <Image
+          source={images.avatarUrl}
           contentFit="cover"
           cachePolicy="memory-disk"
           transition={200}

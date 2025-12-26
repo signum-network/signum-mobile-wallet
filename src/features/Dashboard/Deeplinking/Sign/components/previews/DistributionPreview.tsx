@@ -1,155 +1,107 @@
-import { View } from "react-native";
-import { useTranslation } from "react-i18next";
-import type { Transaction } from "@signumjs/core";
-import { ChainValue } from "@signumjs/util";
-import { Image } from "expo-image";
-import { Text } from "@/components/Text";
-import { Card } from "@/components/Card";
-import { useTicker } from "@/hooks/useTicker";
-import { useActiveMarketRate } from "@/hooks/useActiveMarketRate";
-import { useTokenMetadata } from "@/hooks/useTokenMetadata";
-import { formatNumber } from "@/utils/formatNumber";
-import { signumBlueSymbolPicture } from "@/assets";
-import type { ParsedTransaction } from "../../utils/parseTransaction";
+import {View} from "react-native";
+import {useTranslation} from "react-i18next";
+import type {Transaction} from "@signumjs/core";
+import {Amount, ChainValue} from "@signumjs/util";
+import {Text} from "@/components/Text";
+import {Card} from "@/components/Card";
+import {useTokenMetadata} from "@/hooks/useTokenMetadata";
+import {formatNumber} from "@/utils/formatNumber";
+import type {ParsedTransaction} from "../../utils/parseTransaction";
+import {
+    SignaDescriptor,
+    TokenDescriptor,
+    TotalAmount
+} from "@/features/Dashboard/Deeplinking/Sign/components/previews/components";
+import {useQuery} from "@tanstack/react-query";
+import {useNodeHostStore} from "@/hooks/useNodeHostStore";
+import {useLedgerService} from "@/hooks/useLedgerService";
 
 interface Props {
-  transaction: Transaction;
-  parsed: ParsedTransaction;
+    transaction: Transaction;
+    parsed: ParsedTransaction;
 }
 
-export const DistributionPreview = ({ parsed }: Props) => {
-  const { t } = useTranslation();
-  const { NativeTicker } = useTicker();
-  const { price, symbol } = useActiveMarketRate();
+export const DistributionPreview = ({parsed}: Props) => {
+    const {t} = useTranslation();
+    const {currentNetwork} = useNodeHostStore();
+    const {ledgerService} = useLedgerService()
 
-  const feeSigna = Number(parsed.fee.getSigna());
-  const feeMarketValue = price ? feeSigna * price : 0;
+    // First expense is the base token (whose holders receive distribution)
+    const baseTokenExpense = parsed.expenses[0];
+    const baseTokenMetadata = useTokenMetadata(baseTokenExpense.tokenId);
 
-  // First expense is the base token (whose holders receive distribution)
-  const baseTokenExpense = parsed.expenses[0];
-  const baseTokenMetadata = useTokenMetadata(baseTokenExpense.tokenId);
+    // Second expense (if exists) is the distribution asset
+    const distributionExpense = parsed.expenses[1];
 
-  // Second expense (if exists) is the distribution asset
-  const distributionExpense = parsed.expenses[1];
-  const distributionTokenId = distributionExpense?.tokenId || "0";
-  const distributionTokenMetadata = useTokenMetadata(distributionTokenId);
+    // Distribution amount (from first expense if SIGNA, or second expense if token)
+    const distributionAmount = baseTokenExpense.amount ?? Amount.Zero()
 
-  // Distribution amount (from first expense if SIGNA, or second expense if token)
-  const distributionAmount = baseTokenExpense.amount
-    ? Number(baseTokenExpense.amount.getSigna())
-    : 0;
-  const distributionMarketValue =
-    price && distributionAmount ? distributionAmount * price : 0;
+    // Minimum quantity threshold
+    const minimumQuantity = ChainValue.create(baseTokenMetadata.decimals)
+        .setAtomic(baseTokenExpense.quantity || "0")
+        .getCompound();
 
-  // Format distribution token quantity if it's a token distribution
-  const distributionQuantity = distributionExpense?.quantity || "0";
-  const formattedDistributionQuantity = ChainValue.create(
-    distributionTokenMetadata.decimals
-  )
-    .setAtomic(distributionQuantity)
-    .getCompound();
+    const { data: distributionInfo, isLoading } = useQuery({
+        queryKey: ["calculateDistributionFee", baseTokenExpense, currentNetwork],
+        queryFn: async () => {
+            if(!ledgerService) return;
+            if(!baseTokenExpense) return ;
+            return ledgerService.token.calculateDistributionFee(baseTokenExpense.tokenId ?? "0", baseTokenExpense.quantity ?? "0")
+        },
+        enabled: Boolean(ledgerService) && Boolean(baseTokenExpense),
+    })
 
-  // Minimum quantity threshold
-  const minimumQuantity = baseTokenExpense.quantity || "0";
-  const formattedMinimumQuantity = ChainValue.create(baseTokenMetadata.decimals)
-    .setAtomic(minimumQuantity)
-    .getCompound();
-
-  const isSignaDistribution = distributionTokenId === "0";
-
-  return (
-    <>
-      {/* Base Token (Holders Receiving Distribution) */}
-      <View className="w-full flex flex-col gap-1">
-        <Text size="large" color="muted" className="font-bold">
-          {t("sign.distributingToHoldersOf")}
-        </Text>
-
-        <Card>
-          <Text className="font-medium">
-            {baseTokenMetadata.ticker || baseTokenExpense.tokenId}
-          </Text>
-          {baseTokenMetadata.description && (
-            <Text size="small" color="muted">
-              {baseTokenMetadata.description}
-            </Text>
-          )}
-          <Text size="small" color="muted" className="mt-1">
-            {t("sign.minimumHolding")}: {formatNumber({ value: Number(formattedMinimumQuantity) })}
-          </Text>
-        </Card>
-      </View>
-
-      {/* Distribution Amount/Asset */}
-      <View className="w-full flex flex-col gap-1">
-        <Text size="large" color="muted" className="font-bold">
-          {t("sign.distributing")}
-        </Text>
-
-        {isSignaDistribution ? (
-          <View className="flex flex-row items-center justify-start gap-2 w-full">
-            <View className="size-10">
-              <Image
-                source={{ uri: signumBlueSymbolPicture }}
-                style={{ width: "100%", height: "100%", borderRadius: 8 }}
-              />
-            </View>
-
-            <View className="flex-1 flex items-start flex-col gap-1">
-              <Text className="font-medium">
-                {`${formatNumber({ value: distributionAmount })} ${NativeTicker}`}
-              </Text>
-
-              {!!distributionMarketValue && (
-                <Text size="small" color="muted">
-                  {`${symbol}${formatNumber({
-                    value: distributionMarketValue,
-                    isFiat: true,
-                  })}`}
+    const total = parsed.fee.clone()
+        .add(distributionAmount)
+        .add(distributionInfo?.fee ?? Amount.Zero())
+    return (
+        <>
+            {/* Base Token (Holders Receiving Distribution) */}
+            <View className="w-full flex flex-col gap-1">
+                <Text size="large" color="muted" className="font-bold">
+                    {t("sign.distributingToHoldersOf")}
                 </Text>
-              )}
+
+                <Card>
+                    <TokenDescriptor tokenId={baseTokenMetadata.id}/>
+                    <View className="flex flex-row items-center justify-between gap-2 w-full mt-1">
+
+                    <Text size="small" color="muted" className="mt-1">
+                        {t("sign.minimumHolding")}: {formatNumber({value: Number(minimumQuantity)})}
+                    </Text>
+                    <Text size="small" color="muted" className="mt-1">
+                        {isLoading
+                            ? t("loading")
+                            : t("sign.holdersCount", {count: distributionInfo?.numberOfAccounts ?? 0})
+                        }
+                    </Text>
+                    </View>
+                </Card>
             </View>
-          </View>
-        ) : (
-          <Card>
-            <Text className="font-medium">
-              {formatNumber({ value: Number(formattedDistributionQuantity) })}{" "}
-              {distributionTokenMetadata.ticker || distributionTokenId}
-            </Text>
-            {distributionTokenMetadata.description && (
-              <Text size="small" color="muted">
-                {distributionTokenMetadata.description}
-              </Text>
-            )}
-          </Card>
-        )}
-      </View>
 
-      {/* Explanation */}
-      <Card>
-        <Text size="small" color="muted">
-          {t(
-            "This will distribute assets proportionally to all token holders who meet the minimum threshold."
-          )}
-        </Text>
-      </Card>
+            {/* Distribution Amount/Asset */}
+            <View className="w-full flex flex-col gap-1">
+                <Text size="large" color="muted" className="font-bold">
+                    {t("sign.distributing")}
+                </Text>
 
-      {/* Fees */}
-      <View className="w-full flex flex-col gap-1">
-        <Text size="large" color="muted" className="font-bold">
-          {t("fees")}
-        </Text>
+                {distributionAmount.greater(Amount.Zero()) && (
+                    <SignaDescriptor amount={distributionAmount}/>
+                )}
+                {distributionExpense.tokenId && distributionExpense.tokenId !== "0" && (
+                    <TokenDescriptor tokenId={distributionExpense.tokenId} quantity={distributionExpense.quantity}/>
+                )}
+            </View>
 
-        <View className="flex-1 flex items-start flex-col gap-1">
-          <Text className="font-medium">{`${feeSigna} ${NativeTicker}`}</Text>
+            {/* Explanation */}
+            <Card>
+                <Text size="small" color="muted">
+                    {t("sign.distributionExplanation")}
+                </Text>
+            </Card>
 
-          {!!feeMarketValue && (
-            <Text size="small" color="muted">
-              {`${symbol}${formatNumber({ value: feeMarketValue })}`}
-            </Text>
-          )}
-        </View>
-      </View>
-    </>
-  );
+            {/* Fees */}
+            <TotalAmount fee={parsed.fee.add(distributionInfo?.fee ?? Amount.Zero())} total={ total }/>
+        </>
+    );
 };

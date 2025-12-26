@@ -7,10 +7,10 @@ import {KeyboardDismissView} from "@/components/KeyboardDismissView";
 import {Text} from "@/components/Text";
 import {Card} from "@/components/Card";
 import {Button} from "@/components/Button";
-import {AccountCard} from "@/components/Account/AccountCard";
 import {Image} from "expo-image";
 import {signumBlueSymbolPicture} from "@/assets";
 import {pendingDeepLinkStore} from "@/states/pendingDeepLinkStore";
+import {AccountCardFancy} from "@/components/Account";
 
 type ConnectSearchParams = {
     appName?: string;
@@ -151,7 +151,7 @@ export const ConnectDAppScreen = () => {
                     </Card>
 
                     {/* Account Selection Card */}
-                    <AccountCard
+                    <AccountCardFancy
                         publicKey={walletAccount.publicKey}
                         type={walletAccount.type}
                         walletName={walletAccount.walletName}

@@ -457,8 +457,11 @@
       "updateAccountInfo": "Account Info Update",
       "aliasClaim": "Alias Claim or Update",
       "aliasBuy": "Alias Buy",
-      "aliasSell": "Alias Sale"
+      "aliasSell": "Alias Sale or Transfer",
+      "tldAssignment": "Top Level Domain Acquisition"
     },
+    "tld": "Top-Level Domain",
+    "tldExplanation": "The TLD is the last part of the domain name. It is used to define the type of the domain of alias. With your custom TLD you can create aliases like 'foo.mydomain'",
     "plusTokens": "includes token values in {{ticker}}",
     "andMoreRecipients": "...and more {{count}} recipients",
     "signRequest": "Sign Request",
@@ -470,7 +473,9 @@
     "aliasData": "Alias Data",
     "accountName": "Account Name",
     "accountDescription": "Account Description",
+    "accountImages": "Account Profile Images",
     "attachmentData": "Attachment Data",
+    "accountInfoExplainer": "This will update your account's public profile information visible to other users on the network. Note that you can use SRC44 spec to define your own avatar and other profile description.",
     "buyer": "Buyer",
     "seller": "Seller",
     "contractReference": "Contract Reference",
@@ -516,6 +521,7 @@
     "poolAssignmentExplanation": "This will assign your mining rewards to the specified pool or recipient. Your blocks will still show your account as the miner, but rewards will go to the recipient.",
     "accountInfoExplanation": "This will update your account's public profile information visible to other users on the network.",
     "subscriptionCreationExplanation": "A recurring payment will be automatically sent to the recipient at the specified frequency.",
-    "distributionExplanation": "This will distribute assets proportionally to all token holders who meet the minimum threshold."
+    "distributionExplanation": "This will distribute assets proportionally to all token holders who meet the minimum threshold.",
+    "holdersCount": "Total of {{count}} holders",
   }
 }

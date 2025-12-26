@@ -235,6 +235,7 @@ const NftCreation = {
     "requestProcessingTime": 32
 }
 
+// @ts-ignore
 const NftInteraction = {
     "type": 0,
     "subtype": 0,
@@ -268,12 +269,204 @@ const NftInteraction = {
     "requestProcessingTime": 1
 }
 
+// @ts-ignore
+const AliasAssignment = {
+    "type": 1,
+    "subtype": 1,
+    "timestamp": 358628990,
+    "deadline": 1440,
+    "senderPublicKey": "0cbe58e77ae222840c7da3641b3091a462062f0954cce8c833527285ca4ba005",
+    "amountNQT": "0",
+    "feeNQT": "60000000",
+    "signature": "a05f8da80a71a78d3ad4b802a6c3938f58ea63cead4c89a19a07215e5dada901f60be177052f013e3dc998ef7e376db4b57f23b08931a16f7929e43f97f515b3",
+    "signatureHash": "1dc94d93291a1bc02f971aef2013f51469fbf7554474991902ae15f186cb5ee2",
+    "fullHash": "05c116ff5ec6e056d57ae9cdce82a8438d5148cd5fbc491718b3b125eb51df34",
+    "transaction": "6260221593353896197",
+    "attachment": {
+        "version.AliasAssignment": 2,
+        "alias": "signarank_token_water",
+        "uri": "{\"vs\":1,\"nm\":\"CTWATER\",\"id\":\"9614362460388221276\",\"ds\":\"Fluid as ancient oceans, persistent as the tide. CTWATER tokens flow through combat with adaptive grace, eroding defenses with patient inevitability. Each droplet joins the deluge, amplifying your strikes into tsunamis of power. Drown your foes in overwhelming force—become the endless current.\",\"av\":{\"bafkreiepled6fwoethm7n4kae65srfrpaca4v35dtq3lw3neudckkvmg4a\":\"image/jpeg\"}}",
+        "tld": "0"
+    },
+    "attachmentBytes": "02157369676e6172616e6b5f746f6b656e5f7761746572b4017b227673223a312c226e6d223a2243545741544552222c226964223a2239363134333632343630333838323231323736222c226473223a22466c75696420617320616e6369656e74206f6365616e732c2070657273697374656e742061732074686520746964652e204354574154455220746f6b656e7320666c6f77207468726f75676820636f6d62617420776974682061646170746976652067726163652c2065726f64696e6720646566656e73657320776974682070617469656e7420696e657669746162696c6974792e20456163682064726f706c6574206a6f696e73207468652064656c7567652c20616d706c696679696e6720796f757220737472696b657320696e746f207473756e616d6973206f6620706f7765722e2044726f776e20796f757220666f657320696e206f7665727768656c6d696e6720666f726365e280946265636f6d652074686520656e646c6573732063757272656e742e222c226176223a7b226261666b72656965706c65643666776f6574686d376e346b61653635737266727061636134763335647471336c77336e657564636b6b766d673461223a22696d6167652f6a706567227d7d0000000000000000",
+    "sender": "15494782160211780241",
+    "senderRS": "S-RANK-AYKR-LJBJ-F864G",
+    "height": 1487599,
+    "version": 2,
+    "ecBlockId": "552274248194591120",
+    "ecBlockHeight": 1487588,
+    "cashBackId": "15346065480176948044",
+    "block": "10677277385965285733",
+    "confirmations": 1443,
+    "blockTimestamp": 358629254,
+    "requestProcessingTime": 2
+}
+
+// @ts-ignore
+const AliasSell = {
+    "type": 1,
+    "subtype": 6,
+    "timestamp": 350886871,
+    "deadline": 1440,
+    "senderPublicKey": "a776986f016b52c3701478902af5a6bdf0c917a656f726b9c69d917861434d2e",
+    "recipient": "6815821449111209138",
+    "recipientRS": "S-837L-HW5E-PF3Z-7BP7X",
+    "amountNQT": "0",
+    "feeNQT": "1000000",
+    "signature": "b133acf4f2d8252e0e1e563cf6ebb79767c6b77da049256e6b744cffb7301a0cf01da405c5e2e951d9343a02c4ddd16843090a68c889aeb13e41b079e4281fe3",
+    "signatureHash": "d1ba1b693f74bfaf08d579d9ce3adc54401311a34114f8089d5e14e4da98ae70",
+    "fullHash": "7da60b28a5f9f4944e98ec558c659232606988d8aa729fda86943b88dd2c3ec9",
+    "transaction": "10733478299667506813",
+    "attachment": {
+        "version.AliasSell": 2,
+        "alias": "5649759538149357109",
+        "priceNQT": "0"
+    },
+    "attachmentBytes": "023576c4c15dfa674e0000000000000000",
+    "sender": "4575517562750960384",
+    "senderRS": "S-C2S2-ZERP-XRPG-52WZY",
+    "height": 1455361,
+    "version": 2,
+    "ecBlockId": "5277218634261349155",
+    "ecBlockHeight": 1455349,
+    "cashBackId": "6815821449111209138",
+    "block": "8188888340404756158",
+    "confirmations": 33688,
+    "blockTimestamp": 350887057,
+    "requestProcessingTime": 2
+}
+
+// @ts-ignore
+const AliasBuy = {
+    "type": 1,
+    "subtype": 7,
+    "timestamp": 310024786,
+    "deadline": 1440,
+    "senderPublicKey": "289e590d062fd2ca90f96655324c0cc24e5bcb5c6e129086aaa9010ea1ebf631",
+    "recipient": "13657951110994294056",
+    "recipientRS": "S-GXBA-7JP9-NR7S-DCQ4V",
+    "amountNQT": "1000000",
+    "feeNQT": "1000000",
+    "signature": "e5dfdd7b26c9fd8f35185939a090e9ab04ae158284a2018525cb7334f8cf1400d7eb026b0f8ea72baa9b78b249b9b14294bdd988f54c528966407e83e4f43015",
+    "signatureHash": "31fca73f9dc07ce527d2aebbfde0af780d21ecd81bc2b8e21e897595e69f812f",
+    "fullHash": "ad4ca596edcb034ce7dea740773b1c8f926d4978dffd24eb564951df15aa68ce",
+    "transaction": "5477445793107758253",
+    "attachment": {
+        "version.AliasBuy": 2,
+        "alias": "5121993133738267681"
+    },
+    "attachmentBytes": "022194751e9ef91447",
+    "sender": "2379674988958835449",
+    "senderRS": "S-DSRT-TFGW-TJBF-4FL34",
+    "height": 1285541,
+    "version": 2,
+    "ecBlockId": "1342421415808838193",
+    "ecBlockHeight": 1285529,
+    "cashBackId": "13420738867631717395",
+    "block": "3519448829487069880",
+    "confirmations": 203513,
+    "blockTimestamp": 310024993,
+    "requestProcessingTime": 48
+}
+
+// @ts-ignore
+const AccountInfo = {
+    "type": 1,
+    "subtype": 5,
+    "timestamp": 355767495,
+    "deadline": 1440,
+    "senderPublicKey": "21fd0dd366001b7a9b9051ccbed5d4e738804698c72c4215506cd32ebad4a23c",
+    "amountNQT": "0",
+    "feeNQT": "4000000",
+    "signature": "65f0c2ae0ea09efa55167f86f0e27a5a13b48eb46a85f43a9d371c2a00f94e021c15490397d983e9622842123726c7260d7c1881b6d1c0c1ce8bb1558911a6e2",
+    "signatureHash": "d75b037644a87427594b26cdc2c785006780b18fd09511bf25a60a85cca78cd1",
+    "fullHash": "5507d1b51bdc4abd97d0f42d84354112b59f31f188bbe5b5b2ffa361473da9ad",
+    "transaction": "13639956433017571157",
+    "attachment": {
+        "version.AccountInfo": 1,
+        "name": "JustForFun",
+        "description": "{\"nm\":\"JustForFun\",\"ds\":\"-\",\"si\":{\"QmNfwMZAfNmG4kdeyHtjwwpbgcSDvbwAGTpATYfR5trTzB\":\"image/webp\"},\"av\":{\"QmdjwhcLJHKBMUpt5RSgHJyhYnQBK1RabFRQN8TESKRqBh\":\"image/png\"},\"bg\":{\"QmdfQhmWoPeRPrWUcM6TirGbzMhQp69NqxWKPMTJb2tvZx\":\"image/webp\"},\"tw\":\"https://twitter.com/BubbaX12\",\"sc\":[],\"vs\":1,\"tp\":\"hum\"}"
+    },
+    "attachmentBytes": "010a4a757374466f7246756e28017b226e6d223a224a757374466f7246756e222c226473223a222d222c227369223a7b22516d4e66774d5a41664e6d47346b64657948746a7777706267635344766277414754704154596652357472547a42223a22696d6167652f77656270227d2c226176223a7b22516d646a7768634c4a484b424d55707435525367484a7968596e51424b315261624652514e385445534b52714268223a22696d6167652f706e67227d2c226267223a7b22516d646651686d576f50655250725755634d3654697247627a4d68517036394e7178574b504d544a623274765a78223a22696d6167652f77656270227d2c227477223a2268747470733a2f2f747769747465722e636f6d2f4275626261583132222c227363223a5b5d2c227673223a312c227470223a2268756d227d",
+    "sender": "12321901348576797154",
+    "senderRS": "S-9AH4-ZS5P-BCFS-CH32Q",
+    "height": 1475681,
+    "version": 2,
+    "ecBlockId": "6627171883849180304",
+    "ecBlockHeight": 1475670,
+    "cashBackId": "13420738867631717395",
+    "block": "17210829931958635200",
+    "confirmations": 13380,
+    "blockTimestamp": 355767679,
+    "requestProcessingTime": 6
+}
+
+// @ts-ignore
+const TldAssign = {
+    "type": 1,
+    "subtype": 8,
+    "timestamp": 277474450,
+    "deadline": 20,
+    "senderPublicKey": "41074bdc6430fc0eafffab07682c092922c39475ddfaaf09451dc9950c1bc45f",
+    "amountNQT": "10000000000000",
+    "feeNQT": "1000000",
+    "signature": "1cd3e70c9a2e0633efd38453f23a405acd4e3d00b93fc39b54054c39733ab0045543b0b10617d4b3e9deff63f765e13a5a246ccf814c5df3b418ef6fd080e43c",
+    "signatureHash": "81f3dfb88acaef5928d7c1abb949088f0b635c9bbb43aedb581752f1f07c1c64",
+    "fullHash": "598e18a1bc431ea614e5dd0e96c20f863c10bb4adc8903cc20bcd9ff8e90a25c",
+    "transaction": "11970079337033010777",
+    "attachment": {
+        "version.TLDAssignment": 1,
+        "tld": "nostr"
+    },
+    "attachmentBytes": "01056e6f737472",
+    "sender": "8952122635653861124",
+    "senderRS": "S-5MS6-5FBY-74H4-9N4HS",
+    "height": 1150002,
+    "version": 2,
+    "ecBlockId": "11982308580065253952",
+    "ecBlockHeight": 1149991,
+    "cashBackId": "8952122635653861124",
+    "block": "16760537394786822433",
+    "confirmations": 339073,
+    "blockTimestamp": 277474602,
+    "requestProcessingTime": 9
+}
+
+const Distribution = {
+    "type": 2,
+    "subtype": 8,
+    "timestamp": 358967314,
+    "deadline": 1440,
+    "senderPublicKey": "010c0fe9f4f0da47000000000000000000000000000000000000000000000000",
+    "amountNQT": "1400000000",
+    "feeNQT": "0",
+    "transaction": "18272204999090662765",
+    "attachment": {
+        "version.AssetDistributeToHolders": 1,
+        "asset": "9381200141252723234",
+        "quantityMinimumQNT": 1,
+        "assetToDistribute": "9518219425200752102",
+        "quantityQNT": "10000"
+    },
+    "attachmentBytes": "0122823622d3b730820100000000000000e6455035238217841027000000000000",
+    "sender": "5177715656288570369",
+    "senderRS": "S-Y523-YMNJ-NZBR-6JRQH",
+    "height": 1489007,
+    "version": 1,
+    "ecBlockId": "0",
+    "ecBlockHeight": 0,
+    "cashBackId": "0",
+    "block": "12097271883525001420",
+    "confirmations": 76,
+    "blockTimestamp": 358967314,
+    "requestProcessingTime": 3
+}
 
 export default function Screen() {
     return (
         <ProtectedScreen>
             {/* @ts-ignore*/}
-            <TransactionPreview transaction={NftInteraction} />
+            <TransactionPreview transaction={Distribution} />
         </ProtectedScreen>
     );
 }

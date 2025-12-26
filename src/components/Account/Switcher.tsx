@@ -15,6 +15,11 @@ interface Props {
   href: "/dashboard/settings/account" | "/dashboard/account";
 }
 
+/**
+ * @deprecated use AccountSwitcherFancy instead
+ * @param href
+ * @constructor
+ */
 export const AccountSwitcher = ({ href }: Props) => {
   const { t } = useTranslation();
   const { iconColor, tokens } = useAppTheme();

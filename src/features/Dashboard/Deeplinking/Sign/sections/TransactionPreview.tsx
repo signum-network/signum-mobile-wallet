@@ -25,6 +25,7 @@ import {CommitmentPreview} from "../components/previews/CommitmentPreview";
 import {PoolPreview} from "../components/previews/PoolPreview";
 import {ContractCreationPreview} from "../components/previews/ContractCreationPreview";
 import {SubscriptionPreview} from "../components/previews/SubscriptionPreview";
+import {TldAssignmentPreview} from "../components/previews/TldAssignmentPreview";
 import {useTranslation} from "react-i18next";
 
 interface Props {
@@ -72,11 +73,12 @@ export const TransactionPreview = ({transaction}: Props) => {
                 return <MessagePreview transaction={transaction} parsed={parsed}/>;
             case "updateAccountInfo":
                 return <AccountInfoPreview transaction={transaction} parsed={parsed}/>;
-            case "aliasCreation":
+            case "aliasClaim":
             case "aliasBuy":
             case "aliasSell":
-                return <AliasPreview parsed={parsed}/>;
-
+                return <AliasPreview parsed={parsed}/>
+            case "tldAssignment":
+                return <TldAssignmentPreview parsed={parsed}/>
             // Mining operations
             case "addCommitment":
             case "removeCommitment":
@@ -104,20 +106,20 @@ export const TransactionPreview = ({transaction}: Props) => {
             <ViewModeToggle mode={viewMode} onModeChange={setViewMode}/>
             <Card>
                 <View className="gap-4">
-                    <View className="w-full flex flex-row justify-center items-center gap-2">
+                    <View className="flex flex-row justify-center items-center gap-1">
                         <Ionicons
                             name={type.iconName as any}
                             size={32}
-                            color={iconColor.muted}
+                            color={iconColor.primary}
                         />
-                        <Text size="large" className="font-bold">
+                        <Text size="large" className="font-bold" color="primary">
                             {t(`sign.txTypes.${type.i18nKey}`)}
                         </Text>
                     </View>
                     {
                         viewMode === "json"
-                        ? <JsonPreview transaction={transaction}/>
-                        : renderParsedView()
+                            ? <JsonPreview transaction={transaction}/>
+                            : renderParsedView()
                     }
                 </View>
             </Card>

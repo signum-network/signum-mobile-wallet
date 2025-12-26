@@ -12,7 +12,7 @@ import { DashboardScreenContainer } from "../../components/DashboardScreenContai
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { HorizontalDivider } from "@/components/HorizontalDivider";
-import {AccountCard} from "@/components/Account/AccountCard";
+import {AccountCardFancy} from "@/components/Account";
 
 export const AccountManager = () => {
   const { t } = useTranslation();
@@ -62,7 +62,7 @@ export const AccountManager = () => {
               key={accountsList.length}   
               data={accountsList}
               keyExtractor={({ publicKey }) => publicKey}
-              renderItem={({ item }) => <AccountCard {...item} />}
+              renderItem={({ item }) => <AccountCardFancy {...item} />}
               contentContainerStyle={{ paddingBottom: insets.bottom + 60 }}
             />
           </View>
