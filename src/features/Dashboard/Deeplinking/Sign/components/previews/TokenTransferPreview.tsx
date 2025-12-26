@@ -1,6 +1,5 @@
 import {View} from "react-native";
 import {useTranslation} from "react-i18next";
-import type {Transaction} from "@signumjs/core";
 import {Amount, ChainValue} from "@signumjs/util";
 import {Text} from "@/components/Text";
 import type {ParsedTransaction} from "../../utils/parseTransaction";
@@ -15,7 +14,6 @@ import {useTokenMetadata} from "@/hooks/useTokenMetadata";
 import {useTicker} from "@/hooks/useTicker";
 
 interface Props {
-    transaction: Transaction;
     parsed: ParsedTransaction;
 }
 

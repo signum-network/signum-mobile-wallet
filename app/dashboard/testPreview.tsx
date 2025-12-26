@@ -143,6 +143,41 @@ const RemoveCommitment = {
 }
 
 // @ts-ignore
+const TokenIssuance = {
+    "type": 2,
+    "subtype": 0,
+    "timestamp": 358628410,
+    "deadline": 120,
+    "senderPublicKey": "0cbe58e77ae222840c7da3641b3091a462062f0954cce8c833527285ca4ba005",
+    "amountNQT": "0",
+    "feeNQT": "15000000000",
+    "signature": "6be927ef5f26c7f21f068cc6be16801fd64abfb7f0ab88dd78b5d883a692f70bf2eaa084db24cb856073da20ca2caaf69189abf3d548592507f9446117f139f7",
+    "signatureHash": "dcb5663834242e9992f5caaea06249c1d53cde8ab21426d78e3faae467e1c6e9",
+    "fullHash": "518d6ac926badc6d6a19dbfe82b42b1a58ede5fbef42b267fc2a076234e0f549",
+    "transaction": "7916406920761216337",
+    "attachment": {
+        "version.AssetIssuance": 2,
+        "name": "CTMAGNET",
+        "description": "{\"vs\":1,\"nm\":\"CTMAGNET\",\"id\":\"\",\"ds\":\"Polarized from cosmic fields, attractive and repulsive in perfect balance. CTMAGNET tokens pull victory toward you while pushing defeat away. Each pole strengthens your magnetic dominance, warping trajectories and fates. Control the invisible forces that bind reality—become the lodestone of war.\",\"av\":{\"bafkreicxckspupmtllqhn4nj64obspl26uemqsbrszti55opjlnrnanu3q\":\"image/jpeg\"}}",
+        "decimals": 0,
+        "mintable": true,
+        "quantityQNT": "1000"
+    },
+    "attachmentBytes": "020843544d41474e4554a4017b227673223a312c226e6d223a2243544d41474e4554222c226964223a22222c226473223a22506f6c6172697a65642066726f6d20636f736d6963206669656c64732c206174747261637469766520616e6420726570756c7369766520696e20706572666563742062616c616e63652e2043544d41474e455420746f6b656e732070756c6c20766963746f727920746f7761726420796f75207768696c652070757368696e672064656665617420617761792e204561636820706f6c6520737472656e677468656e7320796f7572206d61676e6574696320646f6d696e616e63652c2077617270696e67207472616a6563746f7269657320616e642066617465732e20436f6e74726f6c2074686520696e76697369626c6520666f7263657320746861742062696e64207265616c697479e280946265636f6d6520746865206c6f646573746f6e65206f66207761722e222c226176223a7b226261666b7265696378636b737075706d746c6c71686e346e6a36346f6273706c323675656d71736272737a746935356f706a6c6e726e616e753371223a22696d6167652f6a706567227d7de8030000000000000001",
+    "sender": "15494782160211780241",
+    "senderRS": "S-RANK-AYKR-LJBJ-F864G",
+    "height": 1487596,
+    "version": 2,
+    "ecBlockId": "2050528233562144107",
+    "ecBlockHeight": 1487586,
+    "cashBackId": "15346065480176948044",
+    "block": "17379123848125830435",
+    "confirmations": 1511,
+    "blockTimestamp": 358628464,
+    "requestProcessingTime": 5
+}
+
+// @ts-ignore
 const TokenMint = {
     "type": 2,
     "subtype": 6,
@@ -150,7 +185,7 @@ const TokenMint = {
     "deadline": 1440,
     "senderPublicKey": "3eba832d8f2c82fe000000000000000000000000000000000000000000000000",
     "amountNQT": "0",
-    "feeNQT": "0",
+    "feeNQT": "20000000",
     "transaction": "3773589494784925124",
     "attachment": {
         "version.AssetMint": 1,
@@ -432,6 +467,7 @@ const TldAssign = {
     "requestProcessingTime": 9
 }
 
+// @ts-ignore
 const Distribution = {
     "type": 2,
     "subtype": 8,
@@ -462,11 +498,40 @@ const Distribution = {
     "requestProcessingTime": 3
 }
 
+// @ts-ignore
+const AddTreasury = {
+    "type": 2,
+    "subtype": 7,
+    "timestamp": 351103346,
+    "deadline": 1440,
+    "senderPublicKey": "cb331f06d243b0fd579b5969e20870266051dc7e9618109947058d614ab90f4f",
+    "recipient": "6815821449111209138",
+    "recipientRS": "S-837L-HW5E-PF3Z-7BP7X",
+    "amountNQT": "0",
+    "feeNQT": "1000000",
+    "referencedTransactionFullHash": "b3a32abbfe061619fdbd3a0614166b5790ccbd486cbe1f07d74eeac86ee32ff0",
+    "signature": "1836087420979d6b65012eb3a74f7d084e8e223531856ab9f5411d44e8203d0f4b95273de6e1c3bdaff2eb0e79f146b68ecef8c327fbb3a5d57aba7d77a56e5c",
+    "signatureHash": "46ca9c10d413cf2685f6edfb32568837e673b82ce1b8811ab8516c61c4546bb1",
+    "fullHash": "9292347567ec6f1bb7fc689f3163a88cfff8357b6adac9cc56680a216cc2ec21",
+    "transaction": "1977058690531103378",
+    "sender": "6815821449111209138",
+    "senderRS": "S-837L-HW5E-PF3Z-7BP7X",
+    "height": 1456261,
+    "version": 2,
+    "ecBlockId": "16932561710995130365",
+    "ecBlockHeight": 1456250,
+    "cashBackId": "13420738867631717395",
+    "block": "3249516572680036243",
+    "confirmations": 32853,
+    "blockTimestamp": 351103355,
+    "requestProcessingTime": 1
+}
+
 export default function Screen() {
     return (
         <ProtectedScreen>
             {/* @ts-ignore*/}
-            <TransactionPreview transaction={Distribution} />
+            <TransactionPreview transaction={AddTreasury} />
         </ProtectedScreen>
     );
 }

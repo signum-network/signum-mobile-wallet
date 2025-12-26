@@ -1,6 +1,5 @@
 import {View} from "react-native";
 import {useTranslation} from "react-i18next";
-import type {Transaction} from "@signumjs/core";
 import {Text} from "@/components/Text";
 import {Card} from "@/components/Card";
 import type {ParsedTransaction} from "../../utils/parseTransaction";
@@ -10,7 +9,6 @@ import {
 } from "./components";
 
 interface Props {
-    transaction: Transaction;
     parsed: ParsedTransaction;
 }
 

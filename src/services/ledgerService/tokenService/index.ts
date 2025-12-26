@@ -72,4 +72,12 @@ export class TokenService extends LedgerSubService {
         })
     }
 
+    fetchTokenByRef(referenceHash: string) {
+        return handleError(async  () =>{
+            const {ledger} = this.context;
+            const transaction = await ledger.transaction.getTransactionByFullHash(referenceHash);
+            return ledger.asset.getAsset({assetId: transaction.transaction})
+        })
+    }
+
 }

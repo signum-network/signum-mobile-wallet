@@ -523,5 +523,6 @@
     "subscriptionCreationExplanation": "A recurring payment will be automatically sent to the recipient at the specified frequency.",
     "distributionExplanation": "This will distribute assets proportionally to all token holders who meet the minimum threshold.",
     "holdersCount": "Total of {{count}} holders",
+    "tokenDescription": "Token Description"
   }
 }

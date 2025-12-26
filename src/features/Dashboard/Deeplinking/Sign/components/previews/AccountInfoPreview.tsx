@@ -1,6 +1,5 @@
 import {View} from "react-native";
 import {useTranslation} from "react-i18next";
-import type {Transaction} from "@signumjs/core";
 import {Text} from "@/components/Text";
 import {Card} from "@/components/Card";
 import type {ParsedTransaction} from "../../utils/parseTransaction";
@@ -11,15 +10,14 @@ import {toIpfsUrl} from "@/utils/toIpsUrl";
 import {Image} from "expo-image";
 
 interface Props {
-    transaction: Transaction;
     parsed: ParsedTransaction;
 }
 
 
-export const AccountInfoPreview = ({transaction, parsed}: Props) => {
+export const AccountInfoPreview = ({parsed}: Props) => {
     const {t} = useTranslation();
-    const accountName = transaction.attachment?.name || "";
-    const accountDescription = transaction.attachment?.description || "";
+    const accountName = parsed.transaction.attachment?.name || "";
+    const accountDescription = parsed.transaction.attachment?.description || "";
     const json = tryGetJSON(accountDescription);
 
     const avatarCid = Object.keys(json?.av ?? {})

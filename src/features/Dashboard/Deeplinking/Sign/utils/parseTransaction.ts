@@ -426,7 +426,7 @@ function parseAssetSubType(tx: Transaction): ParsedTransactionType {
         case TransactionAssetSubtype.AssetDistributeToHolders:
             return {
                 i18nKey: "distribution",
-                iconName: "git-network",
+                iconName: "rainy-outline",
                 hasAmount: true,
             };
         case TransactionAssetSubtype.AskOrderPlacement:
@@ -456,7 +456,7 @@ function parseAssetSubType(tx: Transaction): ParsedTransactionType {
         case TransactionAssetSubtype.AssetIssuance:
             return {
                 i18nKey: "tokenIssuance",
-                iconName: "create",
+                iconName: "nuclear-outline",
                 hasAmount: false,
             };
         case TransactionAssetSubtype.AssetMint:

@@ -1,6 +1,5 @@
 import {View} from "react-native";
 import {useTranslation} from "react-i18next";
-import type {Transaction} from "@signumjs/core";
 import {Amount, ChainValue} from "@signumjs/util";
 import {Text} from "@/components/Text";
 import {Card} from "@/components/Card";
@@ -17,7 +16,6 @@ import {useNodeHostStore} from "@/hooks/useNodeHostStore";
 import {useLedgerService} from "@/hooks/useLedgerService";
 
 interface Props {
-    transaction: Transaction;
     parsed: ParsedTransaction;
 }
 

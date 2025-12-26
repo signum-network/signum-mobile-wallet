@@ -9,6 +9,7 @@ import {useTranslation} from "react-i18next";
 import {Amount, ChainValue} from "@signumjs/util";
 import {useTokenTransactionalData} from "@/hooks/useTokenTransactionalData";
 import {useTicker} from "@/hooks/useTicker";
+import {formatNumber} from "@/utils/formatNumber";
 
 interface Props {
     tokenId: string
@@ -31,6 +32,7 @@ export function TokenDescriptor({tokenId, quantity = ""}: Props) {
 
     }, [tokenMetadata.description]);
 
+    const value = quantity ? ChainValue.create(tokenMetadata.decimals).setAtomic(quantity).getCompound() : ""
     return <>
         <View className="w-min-full flex flex-col gap-1">
             <Text size="large" color="muted" className="font-bold">
@@ -41,13 +43,14 @@ export function TokenDescriptor({tokenId, quantity = ""}: Props) {
                 <View className="flex flex-row items-center justify-start gap-2 w-full">
                     <TokenAvatar tokenId={tokenId ?? ""}/>
                     <View className="flex flex-col items-start">
-                        <Text className="font-medium">
-                            {quantity ? ChainValue.create(tokenMetadata.decimals).setAtomic(quantity).getCompound() + " " : ""}
-                            {tokenMetadata.ticker || tokenId}
-                        </Text>
+                            <Text className="font-medium">
+                                {value ? formatNumber({value: Number(value), maximumFractionDigits: tokenMetadata.decimals}) : ""}
+                                {tokenMetadata.ticker}
+                            </Text>
                         {priceNQT !== undefined &&
                             <Text size="extraSmall"
-                                  color="muted">{Amount.fromPlanck(priceNQT).getSigna()} {NativeTicker}</Text>
+                                  color="muted">
+                                {formatNumber({value: Number(Amount.fromPlanck(priceNQT).getSigna())})} {NativeTicker}</Text>
                         }
                     </View>
                 </View>

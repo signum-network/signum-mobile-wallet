@@ -43,54 +43,43 @@ export const TransactionPreview = ({transaction}: Props) => {
     const renderParsedView = () => {
         // Route to specific preview based on i18nKey
         switch (type.i18nKey) {
-            // Payments (SIGNA transfers)
             case "transferTo":
             case "burn":
-                // Only for payment type - Asset transfers use AssetTransferPreview
                 return transaction.type === TransactionType.Payment
                     ? <PaymentPreview parsed={parsed}/>
-                    : <TokenTransferPreview transaction={transaction} parsed={parsed}/>;
-
-            // Asset operations
+                    : <TokenTransferPreview parsed={parsed}/>;
             case "tokenIssuance":
                 return <TokenIssuancePreview parsed={parsed}/>;
             case "tokenMint":
-                return <TokenMintPreview transaction={transaction} parsed={parsed}/>;
+                return <TokenMintPreview parsed={parsed}/>;
             case "createSaleOrder":
             case "createBuyOrder":
             case "cancelSaleOrder":
             case "cancelBuyOrder":
                 return <OrderPreview parsed={parsed}/>;
             case "distribution":
-                return <DistributionPreview transaction={transaction} parsed={parsed}/>;
+                return <DistributionPreview parsed={parsed}/>;
             case "addTreasuryAccount":
-                return <TreasuryPreview transaction={transaction} parsed={parsed}/>;
+                return <TreasuryPreview parsed={parsed}/>;
             case "transferOwnership":
                 return <OwnershipPreview transaction={transaction} parsed={parsed}/>;
-
-            // Arbitrary operations
             case "messageTo":
                 return <MessagePreview transaction={transaction} parsed={parsed}/>;
             case "updateAccountInfo":
-                return <AccountInfoPreview transaction={transaction} parsed={parsed}/>;
+                return <AccountInfoPreview parsed={parsed}/>;
             case "aliasClaim":
             case "aliasBuy":
             case "aliasSell":
                 return <AliasPreview parsed={parsed}/>
             case "tldAssignment":
                 return <TldAssignmentPreview parsed={parsed}/>
-            // Mining operations
             case "addCommitment":
             case "removeCommitment":
                 return <CommitmentPreview parsed={parsed}/>;
             case "joinPool":
                 return <PoolPreview transaction={transaction} parsed={parsed}/>;
-
-            // Smart contract
             case "contractCreation":
-                return <ContractCreationPreview transaction={transaction} parsed={parsed}/>;
-
-            // Advanced payment
+                return <ContractCreationPreview parsed={parsed}/>;
             case "subscriptionCreation":
             case "subscriptionCancellation":
                 return <SubscriptionPreview transaction={transaction} parsed={parsed}/>;
