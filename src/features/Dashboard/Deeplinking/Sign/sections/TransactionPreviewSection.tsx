@@ -17,7 +17,7 @@ import {TokenMintPreview} from "../components/previews/TokenMintPreview";
 import {OrderPreview} from "../components/previews/OrderPreview";
 import {DistributionPreview} from "../components/previews/DistributionPreview";
 import {TreasuryPreview} from "../components/previews/TreasuryPreview";
-import {OwnershipPreview} from "../components/previews/OwnershipPreview";
+import {OwnershipTransferPreview} from "../components/previews/OwnershipTransferPreview";
 import {MessagePreview} from "../components/previews/MessagePreview";
 import {AccountInfoPreview} from "../components/previews/AccountInfoPreview";
 import {AliasPreview} from "../components/previews/AliasPreview";
@@ -32,7 +32,7 @@ interface Props {
     transaction: Transaction;
 }
 
-export const TransactionPreview = ({transaction}: Props) => {
+export const TransactionPreviewSection = ({transaction}: Props) => {
     const [viewMode, setViewMode] = useState<ViewMode>("parsed");
     const {iconColor} = useAppTheme();
     const {t} = useTranslation()
@@ -62,9 +62,9 @@ export const TransactionPreview = ({transaction}: Props) => {
             case "addTreasuryAccount":
                 return <TreasuryPreview parsed={parsed}/>;
             case "transferOwnership":
-                return <OwnershipPreview transaction={transaction} parsed={parsed}/>;
+                return <OwnershipTransferPreview parsed={parsed}/>;
             case "messageTo":
-                return <MessagePreview transaction={transaction} parsed={parsed}/>;
+                return <MessagePreview parsed={parsed}/>;
             case "updateAccountInfo":
                 return <AccountInfoPreview parsed={parsed}/>;
             case "aliasClaim":
@@ -77,7 +77,7 @@ export const TransactionPreview = ({transaction}: Props) => {
             case "removeCommitment":
                 return <CommitmentPreview parsed={parsed}/>;
             case "joinPool":
-                return <PoolPreview transaction={transaction} parsed={parsed}/>;
+                return <PoolPreview parsed={parsed}/>;
             case "contractCreation":
                 return <ContractCreationPreview parsed={parsed}/>;
             case "subscriptionCreation":

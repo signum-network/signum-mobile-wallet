@@ -4,23 +4,23 @@ import {Text} from "@/components/Text";
 import {Card} from "@/components/Card";
 import type {ParsedTransaction} from "../../utils/parseTransaction";
 import {
+    useQueryResolveTokenRef
+} from "./lib/useQueryResolveTokenRef";
+import {
     AccountDescriptor,
     TokenDescriptor,
     TotalAmount
 } from "./components";
-import {
-    useQueryResolveTokenRef
-} from "./lib/useQueryResolveTokenRef";
 
 interface Props {
     parsed: ParsedTransaction;
 }
 
-export const TreasuryPreview = ({parsed}: Props) => {
+export const OwnershipTransferPreview = ({parsed}: Props) => {
     const {t} = useTranslation();
-    const { token } = useQueryResolveTokenRef(parsed.transaction?.referencedTransactionFullHash ?? "")
-    // Token ID from attachment
-    const expense = parsed.expenses[0]!;
+    const {token} = useQueryResolveTokenRef(parsed.transaction?.referencedTransactionFullHash ?? "")
+    const expense = parsed.expenses[0];// New owner address
+
 
     return (
         <>
@@ -30,20 +30,22 @@ export const TreasuryPreview = ({parsed}: Props) => {
             {/* Treasury Account */}
             <View className="w-full flex flex-col gap-1">
                 <Text size="large" color="muted" className="font-bold">
-                    {t("sign.treasuryAccount")}
+                    {t("sign.newOwner")}
                 </Text>
                 <AccountDescriptor accountId={expense.to}/>
             </View>
 
-            {/* Explanation */}
+            {/* Warning */}
             <Card>
-                <Text size="small" color="muted">
-                    {t('sign.addTreasuryAccountExplanation')}
+                <Text size="small" color="error">
+                    ⚠️ {t("sign.ownershipTransferWarningTitle")}
+                </Text>
+                <Text size="small" color="muted" className="mt-1">
+                    {t("sign.ownershipTransferWarning")}
                 </Text>
             </Card>
 
-            {/* Fees */}
             <TotalAmount fee={parsed.fee} total={parsed.fee}/>
         </>
-    )
-}
+    );
+};

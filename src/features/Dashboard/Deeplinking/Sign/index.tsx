@@ -13,11 +13,11 @@ import {Card} from "@/components/Card";
 import {Button} from "@/components/Button";
 import {readSecretKey} from "@/utils/sec/handleSecretKeys";
 import {KeyboardDismissView} from "@/components/KeyboardDismissView";
-import {TransactionPreview} from "./sections/TransactionPreview";
 import {SuccessSection} from "./sections/SuccessSection";
 import {ConfirmationSection} from "./sections/ConfirmationSection";
 import {useNodeHostStore} from "@/hooks/useNodeHostStore";
 import {pendingDeepLinkStore} from "@/states/pendingDeepLinkStore";
+import {TransactionPreviewSection} from "./sections/TransactionPreviewSection";
 
 type SignDeeplinkParams = {
     transactionBytes: string;
@@ -177,7 +177,7 @@ export const SignScreen = () => {
                 <View className="gap-4 w-full">
                     {isComplete && <SuccessSection transactionId={transactionId}/>}
 
-                    <TransactionPreview transaction={parsedTx}/>
+                    <TransactionPreviewSection transaction={parsedTx}/>
 
                     {!isComplete && (
                         <View className="flex flex-col gap-2">

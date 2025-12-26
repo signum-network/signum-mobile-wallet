@@ -86,8 +86,8 @@ export const OrderPreview = ({parsed}: Props) => {
                 </Card>
             )}
 
-            <TotalAmount fee={parsed.fee} total={total} />
             <MessageAttachment transaction={parsed.transaction} />
+            <TotalAmount fee={parsed.fee} total={total} />
         </>
     );
 };

@@ -2,7 +2,7 @@
 
 
 import {ProtectedScreen} from "@/features/Dashboard/components/ProtectedScreen";
-import {TransactionPreview} from "@/features/Dashboard/Deeplinking/Sign/sections/TransactionPreview";
+import {TransactionPreviewSection} from "@/features/Dashboard/Deeplinking/Sign/sections/TransactionPreviewSection";
 import type {Transaction} from "@signumjs/core";
 
 // @ts-ignore
@@ -527,11 +527,108 @@ const AddTreasury = {
     "requestProcessingTime": 1
 }
 
+// @ts-ignore
+const TransferOwnerhsip = {
+    "type": 2,
+    "subtype": 10,
+    "timestamp": 350886833,
+    "deadline": 1440,
+    "senderPublicKey": "a776986f016b52c3701478902af5a6bdf0c917a656f726b9c69d917861434d2e",
+    "recipient": "6815821449111209138",
+    "recipientRS": "S-837L-HW5E-PF3Z-7BP7X",
+    "amountNQT": "0",
+    "feeNQT": "15000000000",
+    "referencedTransactionFullHash": "e980faee75ec6fdaf8aab5daa8881672497a66b34ab8e53fb3f3bfc0f1d8dc4a",
+    "signature": "0e19558f98ed95f22ba77769099a33b43e962663f43cf46c669294f9deefaa0dd6116905c01d2f3d8ec8153088fd7268958372d7f5fb2cad3da5186d8e86e884",
+    "signatureHash": "d8762b8d57e111b5951ab10540f7c7849c59c21672592f5c6468c7f57444ce55",
+    "fullHash": "8f0a9ad2ffd37f14cd46d94ce728fe2691d4485456b33e5f91da2a53ba7efa05",
+    "transaction": "1477132298504243855",
+    "sender": "4575517562750960384",
+    "senderRS": "S-C2S2-ZERP-XRPG-52WZY",
+    "height": 1455361,
+    "version": 2,
+    "ecBlockId": "5277218634261349155",
+    "ecBlockHeight": 1455349,
+    "cashBackId": "6815821449111209138",
+    "block": "8188888340404756158",
+    "confirmations": 33977,
+    "blockTimestamp": 350887057,
+    "requestProcessingTime": 8
+}
+
+// @ts-ignore
+const Message = {
+    "type": 1,
+    "subtype": 0,
+    "timestamp": 358783639,
+    "deadline": 20,
+    "senderPublicKey": "2090fdbac5d520b8b900bc250785736c8e280a22c6444fb380be1f355c37d26b",
+    "recipient": "8999741399032476831",
+    "recipientRS": "S-CF6Z-5UMV-NKZZ-93ETT",
+    "amountNQT": "0",
+    "feeNQT": "4000000",
+    "signature": "d1511b3928c4fb3544f8419dc17971287f544111997b2061dff05d345b82eb0507bd77dc2b1a571f7e3e37f5da0b8fd7c1bcadd71d9e59a4724c4b4bffc33e84",
+    "signatureHash": "2b08d4f6e950d9fe58ea95bdac395a42c2eed77a557f39b4eacd605155564626",
+    "fullHash": "a0d8b8e7a54f1cb8772624092931af5a56e10ec8ebd5bdcdcce41d7816f2c5c1",
+    "transaction": "13266566176302487712",
+    "attachment": {
+        "version.Message": 1,
+        "message": "{\"market\":\"2\",\"rate\":\"72500\"}",
+        "messageIsText": true
+        // "message": "2b08d4f6e950d9fe58ea95bdac395a42c2eed77a557f39b4eacd605155564626".repeat(10),
+        // "messageIsText": false
+    },
+    "attachmentBytes": "011d0000807b226d61726b6574223a2232222c2272617465223a223732353030227d",
+    "sender": "14824288707213599573",
+    "senderRS": "S-UAUP-37NN-K8KZ-ENMGV",
+    "height": 1488241,
+    "version": 2,
+    "ecBlockId": "16573429253419650671",
+    "ecBlockHeight": 1488230,
+    "cashBackId": "14824288707213599573",
+    "block": "537673217012198433",
+    "confirmations": 1101,
+    "blockTimestamp": 358783661,
+    "requestProcessingTime": 2
+}
+
+
+const JoinPool = {
+    "type": 20,
+    "subtype": 0,
+    "timestamp": 358951372,
+    "deadline": 1440,
+    "senderPublicKey": "58efa1ddb9df42f6e30c7546ecbd106a084308596243b7a82f2b9a071ec01b5e",
+    "recipient": "11055356809051900004",
+    "recipientRS": "S-S456-G8QD-HZQ7-B66VL",
+    "amountNQT": "0",
+    "feeNQT": "1000000",
+    "signature": "81760479f7e0ba94efd213b4197e3187f8156585ae502089a6d831b99aba340fe77a75f43ddb8138bcc97ef9ad35b2f4ddc7e52fb92e870472f69c108b0a559e",
+    "signatureHash": "44fdbf69d8915f7ac1025b856d4cfa975836504ba4e99c99f632948f827b2c84",
+    "fullHash": "7f2092f5dc021d501de38574634b885d9a95e46b9b76d19d2f86968e762dcbde",
+    "transaction": "5772773445394899071",
+    "attachment": {
+        "version.RewardRecipientAssignment": 1
+    },
+    "attachmentBytes": "01",
+    "sender": "11193340718119171506",
+    "senderRS": "S-KFFL-4J6Q-5TZX-BWPPQ",
+    "height": 1488942,
+    "version": 2,
+    "ecBlockId": "15592949142302668280",
+    "ecBlockHeight": 1488931,
+    "cashBackId": "13420738867631717395",
+    "block": "8150343049528619316",
+    "confirmations": 413,
+    "blockTimestamp": 358951517,
+    "requestProcessingTime": 4
+}
+
 export default function Screen() {
     return (
         <ProtectedScreen>
             {/* @ts-ignore*/}
-            <TransactionPreview transaction={AddTreasury} />
+            <TransactionPreviewSection transaction={JoinPool} />
         </ProtectedScreen>
     );
 }

@@ -33,8 +33,6 @@ export function AccountDescriptor({accountId}: Props) {
         }
     }, [account]);
 
-
-
     return (<>
         <Card>
             <View className="flex flex-row items-center justify-start gap-2 min-w-full">

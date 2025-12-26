@@ -518,11 +518,12 @@
     "ownershipTransferWarningTitle": "Warning: This will permanently transfer ownership of the token to the new owner.",
     "addTreasuryAccountExplanation": "Treasury accounts are excluded from distribution to token holders. This cannot be undone.",
     "contractCreationExplanation": "Creating a smart contract that will be deployed to the blockchain. The initial balance will be transferred to the contract.",
-    "poolAssignmentExplanation": "This will assign your mining rewards to the specified pool or recipient. Your blocks will still show your account as the miner, but rewards will go to the recipient.",
+    "poolAssignmentExplanation": "This will assign your mining rewards to the specified pool or recipient. Your blocks will still show your account as the miner, but rewards will go to the pool. which re-shares the mining rewards with the pool participants.",
     "accountInfoExplanation": "This will update your account's public profile information visible to other users on the network.",
     "subscriptionCreationExplanation": "A recurring payment will be automatically sent to the recipient at the specified frequency.",
     "distributionExplanation": "This will distribute assets proportionally to all token holders who meet the minimum threshold.",
     "holdersCount": "Total of {{count}} holders",
-    "tokenDescription": "Token Description"
+    "tokenDescription": "Token Description",
+    "invalidHexFormat": "Invalid hex format"
   }
 }
