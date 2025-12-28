@@ -17,6 +17,15 @@ type Props = {
   descriptionOverride?: string;
 };
 
+/**
+ * @deprecated Use RecipientAccountRowFancy instead
+ * @param publicKey
+ * @param walletName
+ * @param onSelect
+ * @param selectedRS
+ * @param descriptionOverride
+ * @constructor
+ */
 export const RecipientAccountRow: React.FC<Props> = ({
   publicKey,
   walletName,

@@ -21,8 +21,8 @@ export const ConfirmationSection = ({ onConfirm, isDisabled }: Props) => {
       </Text>
 
       <Button
-        icon={<Ionicons name="send" size={24} color={iconColor.blackout} />}
-        type="blackout"
+        icon={<Ionicons name="send" size={24} color={iconColor.default} />}
+        type="primary"
         size="large"
         title={t("transfer.confirmTransaction")}
         pressableProps={{

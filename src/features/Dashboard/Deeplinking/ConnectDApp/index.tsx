@@ -129,6 +129,7 @@ export const ConnectDAppScreen = () => {
                             <Image
                                 source={{uri: getFavIcon(callbackUrl || "")}}
                                 contentFit="contain"
+                                cachePolicy="memory-disk"
                                 style={{width: 54, height: 54}}
                                 onError={() => signumBlueSymbolPicture}
                             />
@@ -138,12 +139,12 @@ export const ConnectDAppScreen = () => {
                         </View>
                         {network && (
                             <View
-                                className="mx-auto my-2 border rounded p-2 border-gray-200 dark:border-gray-700 bg-gray-200">
+                                className="mx-auto my-2 border rounded p-2 border-gray-200 dark:border-gray-700 bg-gray-200 dark:bg-gray-700">
                                 <Text>{network.toUpperCase()}</Text>
                             </View>
                         )}
                         <View
-                            className="border bg-amber-100 border-yellow-400 dark:border-yellow-600 rounded-lg p-4 mb-4">
+                            className="border bg-yellow-50 dark:bg-yellow-900/20 border-yellow-400 dark:border-yellow-600 rounded-lg p-4 mb-4">
                             <Text size="small">
                                 {t("connectDApp.securityNotice")}
                             </Text>

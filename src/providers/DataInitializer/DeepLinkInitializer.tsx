@@ -1,4 +1,4 @@
-import {useEffect, useState, useRef} from "react";
+import {useEffect, useState, useRef, useCallback} from "react";
 import {Linking} from "react-native";
 import {useRouter} from "expo-router";
 import {useTranslation} from "react-i18next";
@@ -19,7 +19,17 @@ export const DeepLinkInitializer = () => {
     const {setPendingDeepLink, pendingDeepLink} = pendingDeepLinkStore();
     const [routingRequested, setRoutingRequested] = useState(false);
     const lastProcessedUrl = useRef<string | null>(null);
+
     useEffect(() => {
+
+        // Handle deep link when app opens from closed state
+        Linking.getInitialURL().then((url) => {
+            if (url && url !== lastProcessedUrl.current) {
+                lastProcessedUrl.current = url;
+                handleDeepLink(url);
+            }
+        })
+
         // Handle deep link when app is already open
         const subscription = Linking.addEventListener("url", ({url}) => {
             console.log('[DeepLink] Received URL:', url);
@@ -27,13 +37,7 @@ export const DeepLinkInitializer = () => {
                 lastProcessedUrl.current = url;
                 handleDeepLink(url);
             }
-            // Handle deep link when app opens from closed state
-            Linking.getInitialURL().then((url) => {
-                if (url && url !== lastProcessedUrl.current) {
-                    lastProcessedUrl.current = url;
-                    handleDeepLink(url);
-                }
-            })
+
         });
         return () => subscription.remove();
     }, []);
@@ -43,11 +47,12 @@ export const DeepLinkInitializer = () => {
             console.log('[DeepLink] Navigating to pending deep link:', pendingDeepLink.pathname, 'with params:', pendingDeepLink.params);
             setRoutingRequested(false)
             router.push( pendingDeepLink.pathname as any);
+            lastProcessedUrl.current = null;
         }
     }, [pendingDeepLink, isUnlocked, routingRequested, setRoutingRequested]);
 
 
-    const handleDeepLink = (url: string) => {
+    const handleDeepLink = useCallback((url: string) => {
         try {
             if (!url.startsWith("signum://") || url.includes(EXPO_DEVELOPMENT_CLIENT)) {
                 return;
@@ -106,7 +111,7 @@ export const DeepLinkInitializer = () => {
 
                 console.log('[DeepLink] Storing connect request as pending');
                 setPendingDeepLink({
-                    pathname: "/dashboard/deeplink/connectDapp" as const,
+                    pathname: "/dashboard/deeplink/connect" as const,
                     params: {
                         appName,
                         callbackUrl,
@@ -121,7 +126,7 @@ export const DeepLinkInitializer = () => {
             console.error("Deep link parsing error:", error);
             alert(t(error.message))
         }
-    };
+    },[currentNetwork, accounts]);
 
     return null;
 };

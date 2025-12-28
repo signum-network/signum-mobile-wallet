@@ -131,8 +131,11 @@ export function AppNavigation() {
                 name="settings"
             />
 
+            {/* hidden screens for deep linking */}
             <Tabs.Screen name="subscriptions" options={{href: null}}/>
+            <Tabs.Screen name="index" options={{href: null}}/>
             <Tabs.Screen name="deeplink" options={{href: null}}/>
+
         </Tabs>
     );
 }

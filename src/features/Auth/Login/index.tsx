@@ -11,7 +11,6 @@ import {useAccountStore} from "@/hooks/useAccountStore";
 import {useAppTheme} from "@/hooks/useAppTheme";
 import {useResetApp} from "@/hooks/useResetApp";
 import * as LocalAuthentication from "expo-local-authentication";
-import {recipientsStore} from "@/states/recipientsStore";
 import {ResetWalletDialog} from "@/components/ResetWalletDialog";
 
 const initialValues = [...new Array(PUBLIC_PIN_LENGTH)];
@@ -85,8 +84,6 @@ export const LoginAuthScreen = () => {
 
     const onSuccess = () => {
         setFailedAuthAttempts(0);
-        recipientsStore.getState().purgeExpired();
-
         setTimeout(() => {
             // Set unlocked - AuthGuard will:
             // 1. Reveal Stack

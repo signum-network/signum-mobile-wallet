@@ -394,6 +394,11 @@
     "addedCommitmentSuccessFeedback": "El saldo comprometido se actualizará; el compromiso añadido será efectivo para minado después de 1.440 bloques (≈ 4 días)",
     "removedCommitmentSuccessFeedback": "Enhorabuena, el saldo comprometido se está actualizando"
   },
+  "notFound": {
+    "title": "Página no encontrada",
+    "description": "La página que buscas no existe. Es posible que haya sido movida o eliminada.",
+    "goHome": "Ir al inicio"
+  },
   "sign": {
     "addingCommitment": "Agregando Compromiso",
     "removingCommitment": "Eliminando Compromiso",
@@ -449,6 +454,14 @@
     "poolAssignmentExplanation": "Esto asignará tus recompensas de minería al pool o destinatario especificado. Tus bloques seguirán mostrando tu cuenta como minero, pero las recompensas irán al destinatario.",
     "accountInfoExplanation": "Esto actualizará la información de perfil público de tu cuenta visible para otros usuarios en la red.",
     "subscriptionCreationExplanation": "Un pago recurrente se enviará automáticamente al destinatario con la frecuencia especificada.",
-    "distributionExplanation": "Esto distribuirá activos proporcionalmente a todos los titulares de tokens que cumplan con el umbral mínimo."
+    "distributionExplanation": "Esto distribuirá activos proporcionalmente a todos los titulares de tokens que cumplan con el umbral mínimo.",
+    "loadingTitle": "Analizando Transacción",
+    "loadingDescription": "Por favor espere mientras analizamos los detalles de la transacción...",
+    "errorTitle": "Error de Transacción",
+    "errorDescription": "No pudimos analizar la transacción. Por favor intente nuevamente o contacte a la dApp.",
+    "errorGoBack": "Volver",
+    "holdersCount": "Total de {{count}} titulares",
+    "tokenDescription": "Descripción del Token",
+    "invalidHexFormat": "Formato hexadecimal inválido"
   }
 }

@@ -1,8 +1,8 @@
 /* @ts-nocheck */
 
-
 import {ProtectedScreen} from "@/features/Dashboard/components/ProtectedScreen";
 import {TransactionPreviewSection} from "@/features/Dashboard/Deeplinking/Sign/sections/TransactionPreviewSection";
+import {AppHeader} from "@/components/AppHeader";
 import type {Transaction} from "@signumjs/core";
 
 // @ts-ignore
@@ -592,7 +592,7 @@ const Message = {
     "requestProcessingTime": 2
 }
 
-
+// @ts-ignore
 const JoinPool = {
     "type": 20,
     "subtype": 0,
@@ -624,11 +624,21 @@ const JoinPool = {
     "requestProcessingTime": 4
 }
 
+/**
+ * Hey Contributor,
+ * Use this to develop on Signing Screens for deeplinking....
+ * Change the transaction to preview a specific transaction.
+ *
+ */
+
 export default function Screen() {
     return (
-        <ProtectedScreen>
-            {/* @ts-ignore*/}
-            <TransactionPreviewSection transaction={JoinPool} />
-        </ProtectedScreen>
+        <>
+            <AppHeader title="Transaction Preview" />
+            <ProtectedScreen>
+                {/* @ts-ignore*/}
+                <TransactionPreviewSection transaction={NftInteraction} />
+            </ProtectedScreen>
+        </>
     );
 }

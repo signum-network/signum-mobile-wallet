@@ -2,7 +2,7 @@ import {AuthGuard} from "@/features/Auth/components/AuthGuard";
 import {AppNavigation} from "@/components/AppNavigation";
 
 export default function Layout() {
-  return (
+    return (
       <AuthGuard>
         <AppNavigation />
       </AuthGuard>

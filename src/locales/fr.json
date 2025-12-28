@@ -394,6 +394,11 @@
     "addedCommitmentSuccessFeedback": "Le solde engagé est en cours de mise à jour ; l’engagement nouvellement ajouté devient actif pour le minage après 1 440 blocs (environ 4 jours)",
     "removedCommitmentSuccessFeedback": "Bravo, le solde engagé est en cours de mise à jour"
   },
+  "notFound": {
+    "title": "Page introuvable",
+    "description": "La page que vous recherchez n'existe pas. Elle a peut-être été déplacée ou supprimée.",
+    "goHome": "Aller à l'accueil"
+  },
   "sign": {
     "addingCommitment": "Ajout d'Engagement",
     "removingCommitment": "Retrait d'Engagement",
@@ -449,6 +454,14 @@
     "poolAssignmentExplanation": "Cela attribuera vos récompenses de minage au pool ou destinataire spécifié. Vos blocs montreront toujours votre compte comme mineur, mais les récompenses iront au destinataire.",
     "accountInfoExplanation": "Cela mettra à jour les informations de profil public de votre compte visibles par les autres utilisateurs du réseau.",
     "subscriptionCreationExplanation": "Un paiement récurrent sera automatiquement envoyé au destinataire à la fréquence spécifiée.",
-    "distributionExplanation": "Cela distribuera des actifs proportionnellement à tous les détenteurs de jetons qui remplissent le seuil minimum."
+    "distributionExplanation": "Cela distribuera des actifs proportionnellement à tous les détenteurs de jetons qui remplissent le seuil minimum.",
+    "loadingTitle": "Analyse de la Transaction",
+    "loadingDescription": "Veuillez patienter pendant que nous analysons les détails de la transaction...",
+    "errorTitle": "Erreur de Transaction",
+    "errorDescription": "Nous n'avons pas pu analyser la transaction. Veuillez réessayer ou contacter la dApp.",
+    "errorGoBack": "Retour",
+    "holdersCount": "Total de {{count}} détenteurs",
+    "tokenDescription": "Description du Jeton",
+    "invalidHexFormat": "Format hexadécimal invalide"
   }
 }

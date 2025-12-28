@@ -46,11 +46,22 @@ export const SettingsScreen = () => {
                         description={t("settings.about.description")}
                         href="/dashboard/settings/about"
                     />
+
+                    {__DEV__ && (
+
+                        <SettingsCard
+                            icon={<Ionicons name="code-slash-outline" size={24} color={iconColor.default}/>}
+                            title="Development"
+                            description="Useful for development, testing and debugging purposes."
+                            href="/dashboard/settings/dev"
+                        />
+
+                    )}
                     <Button
                         icon={<Ionicons name="lock-closed" color={iconColor.blackout} size={24}/>}
                         title={t("settings.lock")}
                         type="blackout"
-                        pressableProps={{onPress: () => setIsUnlocked(false) }}
+                        pressableProps={{onPress: () => setIsUnlocked(false)}}
                         fullWidth
                     />
                 </View>

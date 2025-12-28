@@ -414,6 +414,11 @@
     "addedCommitmentSuccessFeedback": "Das gebundene Guthaben wird aktualisiert; neu hinzugefügtes Commitment wird nach 1.440 Blöcken (ca. 4 Tage) fürs Mining aktiv",
     "removedCommitmentSuccessFeedback": "Glückwunsch, das gebundene Guthaben wird aktualisiert"
   },
+  "notFound": {
+    "title": "Seite nicht gefunden",
+    "description": "Die gesuchte Seite existiert nicht. Sie wurde möglicherweise verschoben oder gelöscht.",
+    "goHome": "Zur Startseite"
+  },
   "sign": {
     "addingCommitment": "Commitment hinzufügen",
     "removingCommitment": "Commitment entfernen",
@@ -469,6 +474,14 @@
     "poolAssignmentExplanation": "Dies weist deine Mining-Belohnungen dem angegebenen Pool oder Empfänger zu. Deine Blöcke zeigen weiterhin dein Konto als Miner, aber die Belohnungen gehen an den Empfänger.",
     "accountInfoExplanation": "Dies aktualisiert die öffentlichen Profilinformationen deines Kontos, die für andere Nutzer im Netzwerk sichtbar sind.",
     "subscriptionCreationExplanation": "Eine wiederkehrende Zahlung wird automatisch an den Empfänger in der angegebenen Häufigkeit gesendet.",
-    "distributionExplanation": "Dies verteilt Assets proportional an alle Token-Inhaber, die die Mindestschwelle erfüllen."
+    "distributionExplanation": "Dies verteilt Assets proportional an alle Token-Inhaber, die die Mindestschwelle erfüllen.",
+    "loadingTitle": "Transaktion wird analysiert",
+    "loadingDescription": "Bitte warten Sie, während wir die Transaktionsdetails analysieren...",
+    "errorTitle": "Transaktionsfehler",
+    "errorDescription": "Die Transaktion konnte nicht analysiert werden. Bitte versuchen Sie es erneut oder kontaktieren Sie die dApp.",
+    "errorGoBack": "Zurück",
+    "holdersCount": "Insgesamt {{count}} Inhaber",
+    "tokenDescription": "Token-Beschreibung",
+    "invalidHexFormat": "Ungültiges Hex-Format"
   }
 }

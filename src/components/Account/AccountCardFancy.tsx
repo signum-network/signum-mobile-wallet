@@ -98,7 +98,7 @@ export const AccountCardFancy = ({ publicKey, type, walletName }: Props) => {
   const activationInProgress = !!networkData?.activationInProgress;
 
   const images = useMemo(() => {
-    if (!isSecured || !currentAccount?.[currentNetwork]?.description) return null;
+    if (!currentAccount?.[currentNetwork]?.description) return null;
     try {
       const descriptor = src44.DescriptorData.parse(
         currentAccount[currentNetwork].description,
@@ -111,7 +111,7 @@ export const AccountCardFancy = ({ publicKey, type, walletName }: Props) => {
     } catch {
       return null;
     }
-  }, [isSecured, currentAccount, currentNetwork]);
+  }, [currentAccount, currentNetwork]);
 
   const removeAccount = async () => {
     itemHeight.set(0);
@@ -376,16 +376,34 @@ export const AccountCardFancy = ({ publicKey, type, walletName }: Props) => {
 
                 {/* Account Info */}
                 <View className="flex flex-col flex-1 gap-0.5">
-                  <Text
-                    color={images?.backgroundUrl ? "white" : "content"}
-                    className="font-bold"
-                  >
-                    {walletName}
-                  </Text>
+                  {images?.backgroundUrl ? (
+                    <View className="bg-black/30 rounded-lg px-2 py-1 self-start">
+                      <Text
+                        color="white"
+                        className="font-bold"
+                        style={{
+                          textShadowColor: 'rgba(0, 0, 0, 0.75)',
+                          textShadowOffset: { width: 0, height: 1 },
+                          textShadowRadius: 3,
+                        }}
+                      >
+                        {walletName}
+                      </Text>
+                    </View>
+                  ) : (
+                    <Text color="content" className="font-bold">
+                      {walletName}
+                    </Text>
+                  )}
+
                   <Text
                     color={images?.backgroundUrl ? "white" : "muted"}
                     size="small"
-                    style={images?.backgroundUrl ? { opacity: 0.9 } : {}}
+                    style={images?.backgroundUrl ? {
+                      textShadowColor: 'rgba(0, 0, 0, 0.75)',
+                      textShadowOffset: { width: 0, height: 1 },
+                      textShadowRadius: 3,
+                    } : {}}
                   >
                     {asRSAddress(accountId)}
                   </Text>
@@ -393,7 +411,11 @@ export const AccountCardFancy = ({ publicKey, type, walletName }: Props) => {
                     color={images?.backgroundUrl ? "white" : "muted"}
                     size="small"
                     className="font-bold"
-                    style={images?.backgroundUrl ? { opacity: 0.95 } : {}}
+                    style={images?.backgroundUrl ? {
+                      textShadowColor: 'rgba(0, 0, 0, 0.75)',
+                      textShadowOffset: { width: 0, height: 1 },
+                      textShadowRadius: 3,
+                    } : {}}
                   >
                     {formatNumber({ value: availableBalance })} {NativeTicker}
                   </Text>
@@ -434,10 +456,10 @@ export const AccountCardFancy = ({ publicKey, type, walletName }: Props) => {
                             : "shield-checkmark-outline"
                         }
                         size={12}
-                        color={images?.backgroundUrl ? "white" : iconColor.primary}
+                        color={images?.backgroundUrl ? "white" : iconColor.muted}
                       />
                       <Text
-                        color={images?.backgroundUrl ? "white" : "primary"}
+                        color={images?.backgroundUrl ? "white" : "muted"}
                         size="extraSmall"
                         className="font-medium"
                       >

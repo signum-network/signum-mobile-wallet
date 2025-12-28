@@ -5,11 +5,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite --host",
-    "build": "vite build",
-    "preview": "vite preview --host",
-    "serve": "python3 -m http.server 8000",
-    "serve:node": "npx http-server -p 8000 -c-1"
+    "dev": "vite --host"
   },
   "keywords": [
     "signum",

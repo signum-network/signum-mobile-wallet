@@ -1,4 +1,4 @@
-import {useMemo} from "react";
+import {useMemo, useState} from "react";
 import {View} from "react-native";
 import {Image} from "expo-image";
 import clsx from "clsx";
@@ -19,6 +19,9 @@ export const TokenAvatar = ({
                             }: Props) => {
     const {ticker} = useTokenMetadata(tokenId)
     const {avatarIpfsHash, isLoading} = useTokenTransactionalData(tokenId);
+    const [avatarLoaded, setAvatarLoaded] = useState(false);
+
+
     const ipfsImage = useMemo(() => {
         if (isLoading) return null;
         try {
@@ -31,6 +34,11 @@ export const TokenAvatar = ({
         return null;
     }, [isLoading, avatarIpfsHash]);
 
+    // Reset loaded states when images change
+    useMemo(() => {
+        setAvatarLoaded(false);
+    }, [avatarIpfsHash]);
+
     return (
         <View
             className={clsx([
@@ -40,19 +48,26 @@ export const TokenAvatar = ({
             ])}
         >
             {ipfsImage ? (
-                <Image
-                    source={ipfsImage}
-                    contentFit="cover"
-                    style={{width: "100%", height: "100%", backgroundColor: "rgba(0,0,0,0.05)"}}
-                />
-            ) : (
-                <View className="relative">
-                    <HashIconAvatarNativeSVG seed={tokenId}/>
-                    <View className="absolute left-[3px] flex justify-center items-center w-full h-full text-white">
-                        <Text size="medium" className="font-bold let">{ticker.slice(0, 3).toUpperCase()}</Text>
-                    </View>
-                </View>
-            )}
+                !avatarLoaded ? <DefaultTokenIcon tokenId={tokenId} ticker={ticker}/> :
+                    <Image
+                        source={ipfsImage}
+                        contentFit="cover"
+                        style={{width: "100%", height: "100%", backgroundColor: "rgba(0,0,0,0.05)"}}
+                        onLoad={() => setAvatarLoaded(true)}
+                        onError={() => setAvatarLoaded(false)}
+                    />
+            ) : (<DefaultTokenIcon tokenId={tokenId} ticker={ticker}/>)}
         </View>
     );
 };
+
+const DefaultTokenIcon = ({tokenId, ticker}: Props & { ticker: string }) => {
+    return (
+        <View className="relative">
+            <HashIconAvatarNativeSVG seed={tokenId}/>
+            <View className="absolute left-[3px] flex justify-center items-center w-full h-full text-white">
+                <Text size="medium" className="font-bold let">{ticker.slice(0, 3).toUpperCase()}</Text>
+            </View>
+        </View>
+    )
+}

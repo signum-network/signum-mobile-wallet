@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <title>Signum Mobile Wallet - Demo dApp</title>
     <style>
         * {
@@ -222,294 +223,300 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <div class="card">
-            <h1>🚀 Signum Mobile Wallet</h1>
-            <p class="subtitle">Demo dApp - Test Deep Link Integration</p>
+<div class="container">
+    <!-- Header -->
+    <div class="card">
+        <h1>🚀 Signum Mobile Wallet</h1>
+        <p class="subtitle">Demo dApp - Test Deep Link Integration</p>
 
-            <div id="connectionStatus" class="status disconnected">
-                ❌ Not Connected
-            </div>
-
-            <div id="walletInfo" style="display: none;" class="wallet-info">
-                <!-- Will be populated after connection -->
-            </div>
+        <div id="connectionStatus" class="status disconnected">
+            ❌ Not Connected
         </div>
 
-        <!-- Network Selection -->
-        <div class="card">
-            <h2>⚙️ Configuration</h2>
-
-            <div class="input-group">
-                <label for="networkSelect">Network:</label>
-                <select id="networkSelect" onchange="updateNetwork()">
-                    <option value="testnet">Testnet</option>
-                    <option value="mainnet">Mainnet</option>
-                </select>
-            </div>
-
-            <div class="input-group">
-                <label for="nodeHost">Node URL:</label>
-                <input type="text" id="nodeHost" value="https://europe3.testnet.signum.network">
-            </div>
-        </div>
-
-        <!-- Connect Action -->
-        <div class="card">
-            <h2>🔗 Step 1: Connect Wallet</h2>
-            <p class="subtitle">Request user's public key to generate transactions</p>
-
-            <button onclick="connectWallet()">Connect Wallet</button>
-            <button onclick="disconnectWallet()" class="secondary" id="disconnectBtn" disabled>Disconnect</button>
-
-            <div id="connectDeeplink" class="deeplink-preview" style="display: none;">
-                <!-- Will show deep link -->
-            </div>
-        </div>
-
-        <!-- Sign Transaction -->
-        <div class="card">
-            <h2>✍️ Step 2: Send Transaction</h2>
-            <p class="subtitle">Create and sign a transaction</p>
-
-            <div class="input-group">
-                <label for="recipientInput">Recipient Address:</label>
-                <input type="text" id="recipientInput" placeholder="TS-QAJA-QW5Y-SWVP-4RVP4"
-                       value="TS-QAJA-QW5Y-SWVP-4RVP4">
-            </div>
-
-            <div class="input-group">
-                <label for="amountInput">Amount (SIGNA):</label>
-                <input type="number" id="amountInput" placeholder="1.0" value="1.0" step="0.01">
-            </div>
-
-            <div class="input-group">
-                <label for="messageInput">Message (optional):</label>
-                <input type="text" id="messageInput" placeholder="Test payment from demo dApp">
-            </div>
-
-            <button onclick="sendTransaction()" id="sendBtn" disabled>Send Transaction</button>
-
-            <div id="signDeeplink" class="deeplink-preview" style="display: none;">
-                <!-- Will show deep link -->
-            </div>
-        </div>
-
-        <!-- Activity Log -->
-        <div class="card">
-            <h2>📋 Activity Log</h2>
-            <button onclick="clearLog()" class="secondary">Clear Log</button>
-            <div id="activityLog" class="log">
-                <div class="log-entry log-info">
-                    <span class="log-timestamp">[Ready]</span> Demo dApp loaded. Click "Connect Wallet" to begin.
-                </div>
-            </div>
+        <div id="walletInfo" style="display: none;" class="wallet-info">
+            <!-- Will be populated after connection -->
         </div>
     </div>
 
-    <!-- Load SignumJS from CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/@signumjs/crypto/dist/signumjs.crypto.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@signumjs/core/dist/signumjs.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@signumjs/standards/dist/signumjs.standards.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@signumjs/util/dist/signumjs.util.min.js"></script>
+    <!-- Network Selection -->
+    <div class="card">
+        <h2>⚙️ Configuration</h2>
 
-    <script defer>
+        <div class="input-group">
+            <label for="networkSelect">Network:</label>
+            <select id="networkSelect" onchange="updateNetwork()">
+                <option value="testnet">Testnet</option>
+                <option value="mainnet">Mainnet</option>
+            </select>
+        </div>
 
-        const {LedgerClientFactory, Address} = sig$;
-        const {Amount} = sig$util;
-        const {src22} = sig$standards;
-        const {getAccountIdFromPublicKey} = sig$crypto;
+        <div class="input-group">
+            <label for="nodeHost">Node URL:</label>
+            <input type="text" id="nodeHost" value="https://europe3.testnet.signum.network">
+        </div>
+    </div>
 
-        // State
-        let connectedWallet = null;
-        let currentNetwork = 'testnet';
-        let ledgerService = null;
+    <!-- Connect Action -->
+    <div class="card">
+        <h2>🔗 Step 1: Connect Wallet</h2>
+        <p class="subtitle">Request user's public key to generate transactions</p>
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            initializeLedger();
-            handleCallback();
+        <button onclick="connectWallet()">Connect Wallet</button>
+        <button onclick="disconnectWallet()" class="secondary" id="disconnectBtn" disabled>Disconnect</button>
+
+        <div id="connectDeeplink" class="deeplink-preview" style="display: none;">
+            <!-- Will show deep link -->
+        </div>
+    </div>
+
+    <!-- Sign Transaction -->
+    <div class="card">
+        <h2>✍️ Step 2: Send Transaction</h2>
+        <p class="subtitle">Create and sign a transaction</p>
+
+        <div class="input-group">
+            <label for="recipientInput">Recipient Address:</label>
+            <input type="text" id="recipientInput" placeholder="TS-QAJA-QW5Y-SWVP-4RVP4"
+                   value="TS-QAJA-QW5Y-SWVP-4RVP4">
+        </div>
+
+        <div class="input-group">
+            <label for="amountInput">Amount (SIGNA):</label>
+            <input type="number" id="amountInput" placeholder="1.0" value="1.0" step="0.01">
+        </div>
+
+        <div class="input-group">
+            <label for="messageInput">Message (optional):</label>
+            <input type="text" id="messageInput" placeholder="Test payment from demo dApp">
+        </div>
+
+        <button onclick="sendTransaction()" id="sendBtn" disabled>Send Transaction</button>
+
+        <div id="signDeeplink" class="deeplink-preview" style="display: none;">
+            <!-- Will show deep link -->
+        </div>
+    </div>
+
+    <!-- Activity Log -->
+    <div class="card">
+        <h2>📋 Activity Log</h2>
+        <button onclick="clearLog()" class="secondary">Clear Log</button>
+        <div id="activityLog" class="log">
+            <div class="log-entry log-info">
+                <span class="log-timestamp">[Ready]</span> Demo dApp loaded. Click "Connect Wallet" to begin.
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Load SignumJS from CDN -->
+<script src="https://cdn.jsdelivr.net/npm/@signumjs/crypto/dist/signumjs.crypto.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@signumjs/core/dist/signumjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@signumjs/standards/dist/signumjs.standards.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@signumjs/util/dist/signumjs.util.min.js"></script>
+
+<script defer>
+
+    const {LedgerClientFactory, Address, AttachmentMessage} = sig$;
+    const {Amount} = sig$util;
+    const {src22} = sig$standards;
+    const {getAccountIdFromPublicKey} = sig$crypto;
+
+    // State
+    let connectedWallet = null;
+    let currentNetwork = 'testnet';
+    let ledgerService = null;
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+        initializeLedger();
+        updateUI();
+        handleCallback();
+    });
+
+    function initializeLedger() {
+        const nodeHost = document.getElementById('nodeHost').value;
+        ledgerService = LedgerClientFactory.createClient({
+            nodeHost: nodeHost
+        });
+        log('Ledger service initialized: ' + nodeHost, 'info');
+    }
+
+    function updateNetwork() {
+        currentNetwork = document.getElementById('networkSelect').value;
+
+        if (currentNetwork === 'testnet') {
+            document.getElementById('nodeHost').value = 'https://europe3.testnet.signum.network';
+        } else {
+            document.getElementById('nodeHost').value = 'https://europe.signum.network';
+        }
+
+        initializeLedger();
+        log('Switched to ' + currentNetwork, 'info');
+    }
+
+    function connectWallet() {
+        const callbackUrl = window.location.origin + window.location.pathname + '?action=connected';
+
+        const deeplink = src22.createDeeplink({
+            version: 'v1',
+            action: 'connect',
+            payload: {
+                appName: 'Example dApp',
+                callbackUrl,
+                network: currentNetwork
+            }
         });
 
-        function initializeLedger() {
-            const nodeHost = document.getElementById('nodeHost').value;
-            ledgerService = LedgerClientFactory.createClient({
-                nodeHost: nodeHost
-            });
-            log('Ledger service initialized: ' + nodeHost, 'info');
+        log('Generated connect deep link', 'info');
+        document.getElementById('connectDeeplink').style.display = 'block';
+        document.getElementById('connectDeeplink').textContent = deeplink;
+        // Open deep link
+        window.location.href = deeplink;
+    }
+
+    function disconnectWallet() {
+        connectedWallet = null;
+        localStorage.clear()
+        updateUI();
+        log('Disconnected from wallet', 'info');
+    }
+
+    async function sendTransaction() {
+        if (!connectedWallet) {
+            alert('Please connect wallet first');
+            return;
         }
 
-        function updateNetwork() {
-            currentNetwork = document.getElementById('networkSelect').value;
+        try {
+            const recipient = document.getElementById('recipientInput').value;
+            const amount = parseFloat(document.getElementById('amountInput').value);
+            const message = document.getElementById('messageInput').value;
 
-            if (currentNetwork === 'testnet') {
-                document.getElementById('nodeHost').value = 'https://europe3.testnet.signum.network';
-            } else {
-                document.getElementById('nodeHost').value = 'https://europe.signum.network';
+            if (!recipient) {
+                alert('Please enter recipient address');
+                return;
             }
 
-            initializeLedger();
-            log('Switched to ' + currentNetwork, 'info');
-        }
+            log('Creating unsigned transaction...', 'info');
 
-        function connectWallet() {
-            const callbackUrl = window.location.origin + window.location.pathname + '?action=connected';
+            // Convert amount to planck (1 SIGNA = 100,000,000 planck)
+            const amountPlanck = Amount.fromSigna(amount).getPlanck();
+            const feePlanck = Amount.fromSigna(0.02).getPlanck();
+            const recipientId = Address.fromReedSolomonAddress(recipient).getNumericId();
 
+            const attachment = message
+                ? new AttachmentMessage({
+                    message,
+                    messageIsText: true
+                }) : undefined;
+
+            // Create unsigned transaction
+            const params = {
+                recipientId,
+                amountPlanck,
+                feePlanck,
+                senderPublicKey: connectedWallet.publicKey,
+                attachment
+            };
+
+            const unsignedTx = await ledgerService.transaction.sendAmountToSingleRecipient(params);
+
+            log('Unsigned transaction created', 'success');
+            log('Transaction bytes: ' + unsignedTx.unsignedTransactionBytes.substring(0, 40) + '...', 'info');
+
+            // Create sign deep link
             const deeplink = src22.createDeeplink({
                 version: 'v1',
-                action: 'connect',
+                action: 'sign',
                 payload: {
-                    appName: 'Example dApp',
-                    callbackUrl,
+                    unsignedTransactionBytes: unsignedTx.unsignedTransactionBytes,
                     network: currentNetwork
                 }
             });
 
-            log('Generated connect deep link', 'info');
-            document.getElementById('connectDeeplink').style.display = 'block';
-            document.getElementById('connectDeeplink').textContent = deeplink;
+            log('Generated sign deep link', 'info');
+            document.getElementById('signDeeplink').style.display = 'block';
+            document.getElementById('signDeeplink').textContent = deeplink;
 
             // Open deep link
             window.location.href = deeplink;
+
+        } catch (error) {
+            log('Error creating transaction: ' + error.message, 'error');
+            console.error(error);
         }
+    }
 
-        function disconnectWallet() {
-            connectedWallet = null;
-            updateUI();
-            log('Disconnected from wallet', 'info');
-        }
+    function handleCallback() {
+        const params = new URLSearchParams(window.location.search);
+        const action = params.get('action');
 
-        async function sendTransaction() {
-            if (!connectedWallet) {
-                alert('Please connect wallet first');
-                return;
-            }
-
-            try {
-                const recipient = document.getElementById('recipientInput').value;
-                const amount = parseFloat(document.getElementById('amountInput').value);
-                const message = document.getElementById('messageInput').value;
-
-                if (!recipient) {
-                    alert('Please enter recipient address');
-                    return;
-                }
-
-                log('Creating unsigned transaction...', 'info');
-
-                // Convert amount to planck (1 SIGNA = 100,000,000 planck)
-                const amountPlanck = Amount.fromSigna(amount).getPlanck();
-                const feePlanck = Amount.fromSigna(0.02).getPlanck();
-                const recipientId = Address.fromReedSolomonAddress(recipient).getNumericId();
-                // Create unsigned transaction
-                const params = {
-                    recipientId,
-                    amountPlanck,
-                    feePlanck,
-                    senderPublicKey: connectedWallet.publicKey
-                };
-
-                if (message) {
-                    params.message = message;
-                    params.messageIsText = true;
-                }
-
-                const unsignedTx = await ledgerService.transaction.sendAmountToSingleRecipient(params);
-
-                log('Unsigned transaction created', 'success');
-                log('Transaction bytes: ' + unsignedTx.unsignedTransactionBytes.substring(0, 40) + '...', 'info');
-
-                // Create sign deep link
-                const deeplink = src22.createDeeplink({
-                    version: 'v1',
-                    action: 'sign',
-                    payload: {
-                        unsignedTransactionBytes: unsignedTx.unsignedTransactionBytes,
-                        network: currentNetwork
-                    }
-                });
-
-                log('Generated sign deep link', 'info');
-                document.getElementById('signDeeplink').style.display = 'block';
-                document.getElementById('signDeeplink').textContent = deeplink;
-
-                // Open deep link
-                window.location.href = deeplink;
-
-            } catch (error) {
-                log('Error creating transaction: ' + error.message, 'error');
-                console.error(error);
+        // only connected callback us necessary
+        if (action === 'connected') {
+            // Handle connect callback
+            const publicKey = params.get('publicKey').toLowerCase();
+            if (publicKey) {
+                localStorage.setItem('publicKey', publicKey);
+                updateUI();
+                // Clean URL
+                window.history.replaceState({}, document.title, window.location.pathname);
             }
         }
+    }
 
-        function handleCallback() {
-            const params = new URLSearchParams(window.location.search);
-            const action = params.get('action');
+    function updateUI() {
 
-            // only connected callback us necessary
-            if (action === 'connected') {
-                // Handle connect callback
-                const publicKey = params.get('publicKey').toLowerCase();
-                if (publicKey) {
-                    const accountId = getAccountIdFromPublicKey(publicKey);
-                    const accountRS = Address.fromNumericId(accountId).getReedSolomonAddress();
-                    connectedWallet = { publicKey, accountId, accountRS };
-                    updateUI();
-                    log('Wallet connected successfully!', 'success');
-                    log('Address: ' + accountRS, 'info');
-                    log('Public Key: ' + publicKey, 'info');
-
-                    // Clean URL
-                    window.history.replaceState({}, document.title, window.location.pathname);
-                }
-            }
+        const publicKey = localStorage.getItem('publicKey');
+        if (publicKey) {
+            const accountId = getAccountIdFromPublicKey(publicKey);
+            const accountRS = Address.fromNumericId(accountId).getReedSolomonAddress();
+            connectedWallet = {publicKey, accountId, accountRS};
         }
 
-        function updateUI() {
-            const statusEl = document.getElementById('connectionStatus');
-            const walletInfoEl = document.getElementById('walletInfo');
-            const sendBtn = document.getElementById('sendBtn');
-            const disconnectBtn = document.getElementById('disconnectBtn');
+        const statusEl = document.getElementById('connectionStatus');
+        const walletInfoEl = document.getElementById('walletInfo');
+        const sendBtn = document.getElementById('sendBtn');
+        const disconnectBtn = document.getElementById('disconnectBtn');
 
-            if (connectedWallet) {
-                statusEl.className = 'status connected';
-                statusEl.innerHTML = '✅ Connected to Wallet';
+        if (connectedWallet) {
+            statusEl.className = 'status connected';
+            statusEl.innerHTML = '✅ Connected to Wallet';
 
-                walletInfoEl.style.display = 'block';
-                walletInfoEl.innerHTML = `
+            walletInfoEl.style.display = 'block';
+            walletInfoEl.innerHTML = `
                     <div><strong>Address:</strong> <code>${connectedWallet.accountRS}</code></div>
                     <div><strong>Account ID:</strong> <code>${connectedWallet.accountId}</code></div>
                     <div><strong>Public Key:</strong> <code>${connectedWallet.publicKey}</code></div>
                 `;
 
-                sendBtn.disabled = false;
-                disconnectBtn.disabled = false;
-            } else {
-                statusEl.className = 'status disconnected';
-                statusEl.innerHTML = '❌ Not Connected';
-                walletInfoEl.style.display = 'none';
-                sendBtn.disabled = true;
-                disconnectBtn.disabled = true;
-            }
+            sendBtn.disabled = false;
+            disconnectBtn.disabled = false;
+        } else {
+            statusEl.className = 'status disconnected';
+            statusEl.innerHTML = '❌ Not Connected';
+            walletInfoEl.style.display = 'none';
+            sendBtn.disabled = true;
+            disconnectBtn.disabled = true;
         }
+    }
 
-        function log(message, type = 'info') {
-            const logEl = document.getElementById('activityLog');
-            const timestamp = new Date().toLocaleTimeString();
+    function log(message, type = 'info') {
+        const logEl = document.getElementById('activityLog');
+        const timestamp = new Date().toLocaleTimeString();
 
-            const entry = document.createElement('div');
-            entry.className = 'log-entry log-' + type;
-            entry.innerHTML = `<span class="log-timestamp">[${timestamp}]</span> ${message}`;
+        const entry = document.createElement('div');
+        entry.className = 'log-entry log-' + type;
+        entry.innerHTML = `<span class="log-timestamp">[${timestamp}]</span> ${message}`;
 
-            logEl.appendChild(entry);
-            logEl.scrollTop = logEl.scrollHeight;
-        }
+        logEl.appendChild(entry);
+        logEl.scrollTop = logEl.scrollHeight;
+    }
 
-        function clearLog() {
-            document.getElementById('activityLog').innerHTML = '';
-            log('Log cleared', 'info');
-        }
-    </script>
+    function clearLog() {
+        document.getElementById('activityLog').innerHTML = '';
+        log('Log cleared', 'info');
+    }
+</script>
 </body>
 </html>
