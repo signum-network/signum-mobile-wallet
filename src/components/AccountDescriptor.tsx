@@ -4,6 +4,8 @@ import { useMemo } from "react";
 import { src44 } from "@signumjs/standards";
 import { useQueryAccount } from "@/hooks/useQueryAccount";
 import { GenericAccountCard } from "@/components/Account/GenericAccountCard";
+import { BurnAccountCard } from "@/features/Dashboard/Transfer/components/BurnAccountCard";
+import { BurnWarning } from "@/components/BurnWarning";
 
 interface Props {
     accountId: string;
@@ -20,6 +22,18 @@ export function AccountDescriptor({ accountId }: Props) {
             return account?.description ?? "";
         }
     }, [account]);
+
+    // Burn Address
+    const isBurnAddress = accountId === "0" || accountId.includes("2222-2222-2222-2222");
+
+    if (isBurnAddress) {
+        return (
+            <View className="w-full flex flex-col gap-2">
+                <BurnAccountCard onSelect={() => {}} isSelected={true} />
+                <BurnWarning />
+            </View>
+        );
+    }
 
     if (isLoading || !account) return null;
 

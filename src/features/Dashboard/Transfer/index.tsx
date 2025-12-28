@@ -122,16 +122,19 @@ export const TransferScreen = () => {
       const { signPrivateKey, agreementPrivateKey } = secretKeys;
 
       const recipientId = asAddress(recipient).getNumericId();
-      const recipientPublicKey = await getAccountPublicKey(recipientId);
 
-      if (!recipientPublicKey) return alert(t("accountDoesNotExists"));
+      let recipientPublicKey = undefined;
+      if(recipientId !== "0") {
+        recipientPublicKey = await getAccountPublicKey(recipientId);
+        if (!recipientPublicKey) return alert(t("accountDoesNotExists"));
+      }
 
       const feePlanck = Amount.fromPlanck(fee).getPlanck();
-
       let attachment = undefined;
 
       if (includeMemo) {
-        if (isMemoEncrypted) {
+        if (isMemoEncrypted && recipientPublicKey) {
+            // can only encrypt with
           const encryptedPayload = await encryptMessage(
             memo,
             recipientPublicKey,

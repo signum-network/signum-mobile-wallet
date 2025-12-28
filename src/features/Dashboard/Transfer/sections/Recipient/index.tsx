@@ -9,6 +9,7 @@ import {TextInput} from "@/components/TextInput";
 import {CameraDialog} from "@/components/CameraDialog";
 import type {TransactionCreation} from "../../utils/types";
 import {ResolvingAccountCard} from "../../components/ResolvingAccountCard";
+import {BurnAccountCard} from "../../components/BurnAccountCard";
 import {useAccountStore} from "@/hooks/useAccountStore";
 import {HorizontalDivider} from "@/components/HorizontalDivider";
 import {Address} from "@signumjs/core";
@@ -77,9 +78,17 @@ export const Recipient = () => {
         enabled: Boolean(activeAccount) && Boolean(ledgerService),
     });
 
+    const recipient = watch("recipient");
+
     const handleSelect = (accountId: string) => {
         setValue("recipient", asRSAddress(accountId) ?? "", {shouldValidate: true, shouldDirty: true});
     };
+
+    const handleBurnSelect = () => {
+        setValue("recipient", "0", {shouldValidate: true, shouldDirty: true});
+    };
+
+    const isBurnAccountSelected = recipient === "0" || recipient?.includes("2222-2222-2222-2222");
 
     const selectedAccountRS = (watch("recipient") as string) || "";
     const selectedAccountId = useMemo(() => {
@@ -89,8 +98,6 @@ export const Recipient = () => {
             return ""
         }
     }, [selectedAccountRS]);
-
-    const recipient = watch("recipient")
 
     return (
         <>
@@ -140,6 +147,20 @@ export const Recipient = () => {
                         selectedAccountId={selectedAccountId}
                         onSelect={handleSelect}
                     />
+
+                    <View className="my-2 border-b h-2"/>
+
+                    {/* Burn Account Section - At the bottom */}
+                    <View className="mb-4">
+                        <Text size="medium" className="font-medium mb-2 px-1">
+                            {t("transfer.specialAccounts")}
+                        </Text>
+                        <BurnAccountCard
+                            onSelect={handleBurnSelect}
+                            isSelected={isBurnAccountSelected}
+                        />
+                    </View>
+
                     <View className="h-24"/>
                 </ScrollView>
             </View>

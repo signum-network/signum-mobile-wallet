@@ -365,12 +365,17 @@
   "transfer": {
     "title": "Transfer",
     "recipientDescription": "Set the recipient for the payment",
+    "specialAccounts": "Special Accounts",
+    "burnAccount": "Burn Account",
+    "burnAccountDescription": "Permanently destroy coins",
     "yourAccounts": "Your accounts",
     "recentRecipients": "Recent recipients",
     "resolvedRecipientAddress": "Account address: {{address}}",
     "resolvedRecipientAddressHint": "Use this suggestion as a helpful tool to ensure you send to the correct account",
     "recipientBurnAddress": "Burn Address",
     "recipientBurnAddressHint": "Funds sent to this address will be burned forever",
+    "burnWarningTitle": "Permanent Destruction Warning",
+    "burnWarningDescription": "You are about to permanently destroy these funds. Once burned, they cannot be recovered by anyone, ever. This action is irreversible. Please verify the amount carefully.",
     "yourSelfRecipientHint": "You are trying to send to yourself, you can't do that here",
     "stepper": {
       "goBackwards": "Press to go back",

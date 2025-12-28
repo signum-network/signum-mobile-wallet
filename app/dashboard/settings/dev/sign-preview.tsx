@@ -40,6 +40,40 @@ const SinglePayment = {
 }
 
 // @ts-ignore
+const Burn = {
+    "type": 0,
+    "subtype": 0,
+    "timestamp": 358945802,
+    "deadline": 1440,
+    "senderPublicKey": "45bafd320ca89d8fa716202620db414fee1e1a2503f6f995d6f2f126b144637c",
+    "recipient": "0",
+    "recipientRS": "S-2222-2222-2222-22222",
+    "amountNQT": "100000000",
+    "feeNQT": "1000000",
+    "signature": "de013bf37ce30ab2f2b4457a7d1056b3f94dbca057128836b7ebef7b2c03fe074c349a092f12c1b373e6cf68f41cef30b693f0beb7d6134ecf614dd6b9e97395",
+    "signatureHash": "e92941fcf5623da91a44d08db8f0c56c3f93ea81955b4d2d75c76b4c58784864",
+    "fullHash": "0dfc0a1f887f8d1800857c41eaa9400aab25c25f88db16c7e8a2ab671a822f96",
+    "transaction": "1769210451239566349",
+    "attachment": {
+        "version.Message": 1,
+        "message": "0.32",
+        "messageIsText": true
+    },
+    "attachmentBytes": "0104000080302e3332",
+    "sender": "7692793722974812285",
+    "senderRS": "S-BG5X-6A46-NKQN-8DLJP",
+    "height": 1488918,
+    "version": 2,
+    "ecBlockId": "9830475282879550177",
+    "ecBlockHeight": 1488907,
+    "cashBackId": "7692793722974812285",
+    "block": "12461984490200011444",
+    "confirmations": 67,
+    "blockTimestamp": 358945840,
+    "requestProcessingTime": 3
+}
+
+// @ts-ignore
 const MultiOut: Transaction = {
     "type": 0,
     "subtype": 1,
@@ -637,7 +671,7 @@ export default function Screen() {
             <AppHeader title="Transaction Preview" />
             <ProtectedScreen>
                 {/* @ts-ignore*/}
-                <TransactionPreviewSection transaction={Message} />
+                <TransactionPreviewSection transaction={Burn} />
             </ProtectedScreen>
         </>
     );

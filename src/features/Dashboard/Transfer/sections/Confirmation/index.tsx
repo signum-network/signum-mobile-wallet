@@ -10,6 +10,7 @@ import {Card} from "@/components/Card";
 import {openTransactionLink} from "@/utils/explorer/openLink";
 import {type TransactionCreation} from "../../utils/types";
 import {ResolvingAccountCard} from "../../components/ResolvingAccountCard";
+import {BurnWarning} from "@/components/BurnWarning";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import * as Clipboard from "expo-clipboard";
 import {SignaDescriptor} from "@/components/SignaDescriptor";
@@ -116,6 +117,11 @@ export const Confirmation = ({
                     </Text>
                     <ResolvingAccountCard recipient={recipient}/>
                 </View>
+
+                {/* Burn Address Warning */}
+                {(recipient === "0" || recipient?.includes("2222-2222-2222-2222")) && (
+                    <BurnWarning />
+                )}
 
                 <View className="w-full flex flex-col gap-1">
                     <Text size="large" color="muted" className="font-bold">
