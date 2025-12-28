@@ -23,6 +23,7 @@ export interface GenericAccountCardProps {
   watchOnly?: boolean;
   height?: number;
   statusIndicators?: StatusIndicator[];
+  showStatusIndicators?: boolean;
   images?: AccountImages | null;
   children?: (props: RenderPropsContext) => ReactNode;
   onPress?: () => void;
@@ -33,6 +34,7 @@ export interface GenericAccountCardProps {
 export interface RenderPropsContext {
   showBackground: boolean;
   account: Account;
+  statusIndicators: StatusIndicator[];
 }
 
 export interface AccountAvatarProps {

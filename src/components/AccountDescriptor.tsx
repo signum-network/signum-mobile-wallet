@@ -1,66 +1,78 @@
-import {View} from "react-native";
-import {Text} from "@/components/Text";
-import {Card} from "@/components/Card";
-import {useMemo} from "react";
-import {src44} from "@signumjs/standards";
-import {AccountAvatar} from "@/components/Account/Avatar";
-import {useNodeHostStore} from "@/hooks/useNodeHostStore";
-import {Address} from "@signumjs/core";
-import {useQueryAccount} from "@/hooks/useQueryAccount";
+import { View } from "react-native";
+import { Text } from "@/components/Text";
+import { useMemo } from "react";
+import { src44 } from "@signumjs/standards";
+import { useQueryAccount } from "@/hooks/useQueryAccount";
+import { GenericAccountCard } from "@/components/Account/GenericAccountCard";
 
 interface Props {
-    accountId: string
+    accountId: string;
 }
 
-export function AccountDescriptor({accountId}: Props) {
-    const {addressPrefix} = useNodeHostStore()
-    const {isLoading, data: account} = useQueryAccount(accountId);
-
-    const address = useMemo(() => {
-        try {
-            return Address.fromNumericId(accountId, addressPrefix).getReedSolomonAddress(true);
-        } catch {
-            return ""
-        }
-    }, [accountId, addressPrefix]);
+export function AccountDescriptor({ accountId }: Props) {
+    const { isLoading, data: account } = useQueryAccount(accountId);
 
     const description = useMemo(() => {
         try {
-            const d = src44.DescriptorData.parse(account?.description ?? "", false)
-            return d.description ?? ""
+            const d = src44.DescriptorData.parse(account?.description ?? "", false);
+            return d.description ?? "";
         } catch {
-            return account?.description ?? ""
+            return account?.description ?? "";
         }
     }, [account]);
 
-    return (<>
-        <Card>
-            <View className="flex flex-row items-center justify-start gap-2 min-w-full">
-                <AccountAvatar accountId={accountId} loading={isLoading} description={account?.description || ""}/>
-                <View className="flex flex-col items-start">
-                    <View className="flex flex-row items-center justify-start gap-2 w-full">
+    if (isLoading || !account) return null;
 
-                        <Text className="font-medium">
-                            {address || accountId}
+    const backgroundStyle =  {
+        textShadowColor: "rgba(0, 0, 0, 0.75)",
+        textShadowOffset: { width: 0, height: 1 },
+        textShadowRadius: 3,
+    }
+
+    return (
+        <View className="w-full">
+            <GenericAccountCard account={account} height={80}>
+                {({ showBackground }) => (
+                    <View className="flex flex-col flex-1">
+                        <Text
+                            className="font-medium"
+                            color={showBackground ? "white" : "content"}
+                            style={
+                                showBackground ? backgroundStyle : {}
+                            }
+                        >
+                            {account.accountRS || account.account}
                         </Text>
-                        <View className="flex flex-row gap-x-1 items-center">
-                            {account?.isAT && <Text size="small" color="muted">🤖</Text>}
-                            {account?.isSecured && <Text size="small" color="muted">🔒</Text>}
-                        </View>
+                        {account.name && (
+                            <Text
+                                size="small"
+                                color={showBackground ? "white" : "muted"}
+                                style={
+                                    showBackground ? backgroundStyle : {}
+                                }
+
+                            >
+                                {account.name}
+                            </Text>
+                        )}
+
+                        {description && (
+                            <Text
+                                size="small"
+                                color={showBackground ? "white" : "muted"}
+                                className="mt-1"
+                                style={
+                                    showBackground ? backgroundStyle : {}
+                                }
+
+                            >
+                                {description}
+                            </Text>
+                        )}
                     </View>
-                    {account?.name && (
-                        <Text size="extraSmall" color="muted">{account.name}</Text>
-                    )}
-                </View>
-            </View>
-            {description && (
-                <Text size="small" color="muted">
-                    {description}
-                </Text>
-            )}
-        </Card>
+                )}
+            </GenericAccountCard>
 
-    </>
-    )
-
+        </View>
+    );
 }

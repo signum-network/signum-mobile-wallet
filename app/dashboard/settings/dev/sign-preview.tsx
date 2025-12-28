@@ -637,7 +637,7 @@ export default function Screen() {
             <AppHeader title="Transaction Preview" />
             <ProtectedScreen>
                 {/* @ts-ignore*/}
-                <TransactionPreviewSection transaction={NftInteraction} />
+                <TransactionPreviewSection transaction={Message} />
             </ProtectedScreen>
         </>
     );
