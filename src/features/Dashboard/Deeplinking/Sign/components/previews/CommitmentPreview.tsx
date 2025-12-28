@@ -3,8 +3,8 @@ import {useTranslation} from "react-i18next";
 import {Text} from "@/components/Text";
 import {Card} from "@/components/Card";
 import type {ParsedTransaction} from "../../utils/parseTransaction";
-import {SignaDescriptor, TotalAmount} from "./components";
-
+import {TotalAmount} from "@/components/TotalAmount";
+import {SignaDescriptor} from "@/components/SignaDescriptor";
 interface Props {
     parsed: ParsedTransaction;
 }

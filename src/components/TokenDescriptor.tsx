@@ -45,7 +45,7 @@ export function TokenDescriptor({tokenId, quantity = ""}: Props) {
                     <View className="flex flex-col items-start">
                             <Text className="font-medium">
                                 {value ? formatNumber({value: Number(value), maximumFractionDigits: tokenMetadata.decimals}) : ""}
-                                {tokenMetadata.ticker}
+                                &nbsp;{tokenMetadata.ticker}
                             </Text>
                         {priceNQT !== undefined &&
                             <Text size="extraSmall"

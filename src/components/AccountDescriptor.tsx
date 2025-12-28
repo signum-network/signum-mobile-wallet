@@ -6,7 +6,7 @@ import {src44} from "@signumjs/standards";
 import {AccountAvatar} from "@/components/Account/Avatar";
 import {useNodeHostStore} from "@/hooks/useNodeHostStore";
 import {Address} from "@signumjs/core";
-import {useQueryAccount} from "../lib/useQueryAccount";
+import {useQueryAccount} from "@/hooks/useQueryAccount";
 
 interface Props {
     accountId: string

@@ -2,11 +2,9 @@ import {View} from "react-native";
 import {useTranslation} from "react-i18next";
 import {Text} from "@/components/Text";
 import type {ParsedTransaction} from "../../utils/parseTransaction";
-import {
-    AccountDescriptor,
-    MessageAttachment,
-    TotalAmount
-} from "./components";
+import {AccountDescriptor} from "@/components/AccountDescriptor";
+import {MessageAttachment} from "@/components/MessageAttachment";
+import {TotalAmount} from "@/components/TotalAmount";
 
 interface Props {
     parsed: ParsedTransaction;

@@ -3,9 +3,13 @@ import {useTranslation} from "react-i18next";
 import {Text} from "@/components/Text";
 import type {ParsedTransaction} from "../../utils/parseTransaction";
 import {Amount} from "@signumjs/util";
-import {TotalAmount, MessageAttachment, AccountDescriptor, SignaDescriptor, NftDescriptor} from "./components";
 import type {Account, Transaction} from "@signumjs/core";
-import {useQueryAccount} from "./lib/useQueryAccount";
+import {AccountDescriptor} from "@/components/AccountDescriptor";
+import {SignaDescriptor} from "@/components/SignaDescriptor";
+import {TotalAmount} from "@/components/TotalAmount";
+import {MessageAttachment} from "@/components/MessageAttachment";
+import {NftDescriptor} from "@/components/NftDescriptor";
+import {useQueryAccount} from "@/hooks/useQueryAccount";
 
 
 interface Props {

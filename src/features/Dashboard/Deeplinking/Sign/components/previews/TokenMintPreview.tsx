@@ -1,7 +1,8 @@
 import {useTranslation} from "react-i18next";
 import {Text} from "@/components/Text";
 import type {ParsedTransaction} from "../../utils/parseTransaction";
-import {TokenDescriptor, TotalAmount} from "./components"
+import {TokenDescriptor} from "@/components/TokenDescriptor";
+import {TotalAmount} from "@/components/TotalAmount";
 
 interface Props {
     parsed: ParsedTransaction;

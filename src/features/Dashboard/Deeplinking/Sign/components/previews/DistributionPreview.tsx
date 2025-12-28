@@ -6,14 +6,12 @@ import {Card} from "@/components/Card";
 import {useTokenMetadata} from "@/hooks/useTokenMetadata";
 import {formatNumber} from "@/utils/formatNumber";
 import type {ParsedTransaction} from "../../utils/parseTransaction";
-import {
-    SignaDescriptor,
-    TokenDescriptor,
-    TotalAmount
-} from "@/features/Dashboard/Deeplinking/Sign/components/previews/components";
 import {useQuery} from "@tanstack/react-query";
 import {useNodeHostStore} from "@/hooks/useNodeHostStore";
 import {useLedgerService} from "@/hooks/useLedgerService";
+import {TokenDescriptor} from "@/components/TokenDescriptor";
+import {SignaDescriptor} from "@/components/SignaDescriptor";
+import {TotalAmount} from "@/components/TotalAmount";
 
 interface Props {
     parsed: ParsedTransaction;

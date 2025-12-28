@@ -5,9 +5,9 @@ import {Card} from "@/components/Card";
 import type {ParsedTransaction} from "../../utils/parseTransaction";
 import {tryGetJSON} from "../../utils/tryGetJson";
 import {JsonView} from "@/components/JsonView";
-import {TotalAmount} from "./components";
 import {toIpfsUrl} from "@/utils/toIpsUrl";
 import {Image} from "expo-image";
+import {TotalAmount} from "@/components/TotalAmount";
 
 interface Props {
     parsed: ParsedTransaction;

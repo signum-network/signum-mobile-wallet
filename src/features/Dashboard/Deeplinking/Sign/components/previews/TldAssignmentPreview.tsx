@@ -3,9 +3,11 @@ import {useTranslation} from "react-i18next";
 import {Text} from "@/components/Text";
 import {Card} from "@/components/Card";
 import type {ParsedTransaction} from "../../utils/parseTransaction";
-import {AccountDescriptor, SignaDescriptor, TotalAmount} from "./components";
 import {Amount} from "@signumjs/util";
 import {useAppTheme} from "@/hooks/useAppTheme";
+import {AccountDescriptor} from "@/components/AccountDescriptor";
+import {SignaDescriptor} from "@/components/SignaDescriptor";
+import {TotalAmount} from "@/components/TotalAmount";
 
 interface Props {
     parsed: ParsedTransaction;

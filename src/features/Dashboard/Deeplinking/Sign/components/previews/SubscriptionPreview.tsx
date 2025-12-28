@@ -15,6 +15,8 @@ interface Props {
   parsed: ParsedTransaction;
 }
 
+// FIXME: THIS NEEDS TO BE REFACTORED
+
 export const SubscriptionPreview = ({ transaction, parsed }: Props) => {
   const { t } = useTranslation();
   const { NativeTicker } = useTicker();

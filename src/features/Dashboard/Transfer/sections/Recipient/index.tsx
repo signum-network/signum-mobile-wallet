@@ -8,7 +8,7 @@ import {Card} from "@/components/Card";
 import {TextInput} from "@/components/TextInput";
 import {CameraDialog} from "@/components/CameraDialog";
 import type {TransactionCreation} from "../../utils/types";
-import {ResolvedAccountCard} from "../../components/ResolvedAccountCard";
+import {ResolvingAccountCard} from "../../components/ResolvingAccountCard";
 import {useAccountStore} from "@/hooks/useAccountStore";
 import {HorizontalDivider} from "@/components/HorizontalDivider";
 import {Address} from "@signumjs/core";
@@ -48,49 +48,6 @@ export const Recipient = () => {
         return result
     }, [accounts, activeAccount])
 
-    // const recipientList = recipients.filter((r) => !accountsSet.has(r.publicKey));
-    //
-    // useEffect(() => {
-    //     let cancelled = false;
-    //     const loadProfiles = async () => {
-    //         if (!ledgerService || recipientList.length === 0) return;
-    //
-    //         const entries = await Promise.all(
-    //             recipientList.map(async (r) => {
-    //                 try {
-    //                     const accountId = Address.fromPublicKey(r.publicKey).getNumericId();
-    //                     const acc = await ledgerService.ledgerInstance.account.getAccount({
-    //                         accountId,
-    //                     });
-    //
-    //                     const rawName = (acc?.name ?? "").trim();
-    //                     const shortName =
-    //                         rawName.length > 30 ? `${rawName.slice(0, 30)}…` : rawName;
-    //                     return [
-    //                         r.publicKey,
-    //                         {
-    //                             name: shortName || undefined,
-    //                             description: acc?.description ?? "",
-    //                         },
-    //                     ] as const;
-    //                 } catch {
-    //                     return [r.publicKey, {name: undefined, description: ""}] as const;
-    //                 }
-    //             })
-    //         );
-    //
-    //         if (!cancelled) {
-    //             setRecipientProfiles(Object.fromEntries(entries));
-    //         }
-    //     };
-    //
-    //
-    //
-    //     loadProfiles();
-    //     return () => {
-    //         cancelled = true;
-    //     };
-    // }, [ledgerService, recipientList]);
 
     const {data: recentRecipientAccountIdSet = new Set<string>()} = useQuery({
         queryKey: ["fetchRecentRecipients", activeAccount, permanentAccountIdSet, currentNetwork],
@@ -103,9 +60,10 @@ export const Recipient = () => {
                     includeIndirect: false,
                 })
 
+                const activeAccountId = Address.fromPublicKey(activeAccount).getNumericId();
                 for (const outgoingTransaction of outgoingTransactions.transactions) {
                     const recipientId = outgoingTransaction.recipient;
-                    if (recipientId && !permanentAccountIdSet.has(recipientId)) {
+                    if (recipientId && !permanentAccountIdSet.has(recipientId) && activeAccountId !== recipientId) {
                         uniqueRecipientIds.add(recipientId)
                     }
                     if (uniqueRecipientIds.size >= MAX_RECENT_RECIPIENTS) {
@@ -123,25 +81,6 @@ export const Recipient = () => {
         setValue("recipient", asRSAddress(accountId) ?? "", {shouldValidate: true, shouldDirty: true});
     };
 
-    // const uniqueRecentRecipientIds = useMemo(() => {
-    //
-    //     if (!recentRecipientAccountIdSet || recentRecipientAccountIdSet.length === 0) return []
-    //
-    //     // we filter out accounts that are already in the list of permanently added accounts
-    //     const permanentAccounts = permanentAccountIdSet
-    //         .map(acc => {
-    //             try {
-    //                 return Address.fromPublicKey(acc.publicKey).getNumericId()
-    //             } catch {
-    //                 return ""
-    //             }
-    //         }).filter(acc => acc !== "")
-    //     const unique = new Set(permanentAccounts)
-    //     recentRecipientAccountIdSet.forEach(accountId => unique.add(accountId))
-    //     return Array.from(unique);
-    // }, [accounts, recentRecipientAccountIdSet]);
-
-
     const selectedAccountRS = (watch("recipient") as string) || "";
     const selectedAccountId = useMemo(() => {
         try {
@@ -150,6 +89,8 @@ export const Recipient = () => {
             return ""
         }
     }, [selectedAccountRS]);
+
+    const recipient = watch("recipient")
 
     return (
         <>
@@ -181,7 +122,7 @@ export const Recipient = () => {
                             name="recipient"
                         />
                         <CameraDialog expected="address" onCodeScanned={onCodeScanned}/>
-                        <ResolvedAccountCard simple/>
+                        <ResolvingAccountCard recipient={recipient}/>
                     </Card>
                     <HorizontalDivider/>
                 </View>

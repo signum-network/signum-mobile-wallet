@@ -3,10 +3,8 @@ import {useTranslation} from "react-i18next";
 import {Text} from "@/components/Text";
 import {Card} from "@/components/Card";
 import type {ParsedTransaction} from "../../utils/parseTransaction";
-import {
-    TotalAmount,
-    NftDescriptor
-} from "./components";
+import {NftDescriptor} from "@/components/NftDescriptor";
+import {TotalAmount} from "@/components/TotalAmount";
 
 interface Props {
     parsed: ParsedTransaction;

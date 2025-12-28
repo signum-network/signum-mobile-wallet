@@ -3,12 +3,12 @@ import {useTranslation} from "react-i18next";
 import {Text} from "@/components/Text";
 import {Card} from "@/components/Card";
 import type {ParsedTransaction} from "../../utils/parseTransaction";
-import {
-    AccountDescriptor, MessageAttachment,
-    SignaDescriptor, TokenDescriptor,
-    TotalAmount
-} from "./components";
 import {useMemo} from "react";
+import {AccountDescriptor} from "@/components/AccountDescriptor";
+import {SignaDescriptor} from "@/components/SignaDescriptor";
+import {TokenDescriptor} from "@/components/TokenDescriptor";
+import {TotalAmount} from "@/components/TotalAmount";
+import {MessageAttachment} from "@/components/MessageAttachment";
 
 interface Props {
     parsed: ParsedTransaction;

@@ -3,13 +3,13 @@ import {useTranslation} from "react-i18next";
 import {Text} from "@/components/Text";
 import {Card} from "@/components/Card";
 import type {ParsedTransaction} from "../../utils/parseTransaction";
-import {TotalAmount} from "./components";
 import {useMemo} from "react";
 import {src44} from "@signumjs/standards";
 import clsx from "clsx";
 import {Image} from "expo-image";
 import HashIconAvatarNativeSVG from "@/components/Account/Avatar/HashIconNativeSVG";
 import {toIpfsUrl} from "@/utils/toIpsUrl";
+import {TotalAmount} from "@/components/TotalAmount";
 
 interface Props {
     parsed: ParsedTransaction;

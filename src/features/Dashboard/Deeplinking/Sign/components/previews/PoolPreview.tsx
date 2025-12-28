@@ -3,7 +3,8 @@ import { useTranslation } from "react-i18next";
 import { Text } from "@/components/Text";
 import { Card } from "@/components/Card";
 import type { ParsedTransaction } from "../../utils/parseTransaction";
-import {AccountDescriptor, TotalAmount} from "./components";
+import {AccountDescriptor} from "@/components/AccountDescriptor";
+import {TotalAmount} from "@/components/TotalAmount";
 
 interface Props {
   parsed: ParsedTransaction;

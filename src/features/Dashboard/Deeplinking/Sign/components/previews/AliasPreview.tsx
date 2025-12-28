@@ -5,12 +5,14 @@ import {Card} from "@/components/Card";
 import type {ParsedTransaction} from "../../utils/parseTransaction";
 import {tryGetJSON} from "../../utils/tryGetJson";
 import {JsonView} from "@/components/JsonView";
-import {AccountDescriptor, SignaDescriptor, TotalAmount} from "./components";
+import {TotalAmount} from "@/components/TotalAmount";
 import {useQuery} from "@tanstack/react-query";
 import {useNodeHostStore} from "@/hooks/useNodeHostStore";
 import {useLedgerService} from "@/hooks/useLedgerService";
 import {PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MILLISECONDS} from "@/types/constants";
 import {Amount} from "@signumjs/util";
+import {SignaDescriptor} from "@/components/SignaDescriptor";
+import {AccountDescriptor} from "@/components/AccountDescriptor";
 
 interface Props {
     parsed: ParsedTransaction;

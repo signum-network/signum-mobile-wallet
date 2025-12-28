@@ -3,15 +3,14 @@ import {useTranslation} from "react-i18next";
 import {Amount, ChainValue} from "@signumjs/util";
 import {Text} from "@/components/Text";
 import type {ParsedTransaction} from "../../utils/parseTransaction";
-import {
-    AccountDescriptor,
-    MessageAttachment, TokenDescriptor,
-    TotalAmount,
-    SignaDescriptor
-} from "./components";
 import {useTokenTransactionalData} from "@/hooks/useTokenTransactionalData";
 import {useTokenMetadata} from "@/hooks/useTokenMetadata";
 import {useTicker} from "@/hooks/useTicker";
+import {TotalAmount} from "@/components/TotalAmount";
+import {AccountDescriptor} from "@/components/AccountDescriptor";
+import {SignaDescriptor} from "@/components/SignaDescriptor";
+import {TokenDescriptor} from "@/components/TokenDescriptor";
+import {MessageAttachment} from "@/components/MessageAttachment";
 
 interface Props {
     parsed: ParsedTransaction;

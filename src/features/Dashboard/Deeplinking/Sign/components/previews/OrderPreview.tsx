@@ -7,7 +7,9 @@ import {useTicker} from "@/hooks/useTicker";
 import {useTokenMetadata} from "@/hooks/useTokenMetadata";
 import {formatNumber} from "@/utils/formatNumber";
 import type {ParsedTransaction} from "../../utils/parseTransaction";
-import {MessageAttachment, TotalAmount, TokenDescriptor} from "./components";
+import {TokenDescriptor} from "@/components/TokenDescriptor";
+import {MessageAttachment} from "@/components/MessageAttachment";
+import {TotalAmount} from "@/components/TotalAmount";
 
 interface Props {
     parsed: ParsedTransaction;

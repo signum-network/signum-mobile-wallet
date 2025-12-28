@@ -3,14 +3,10 @@ import {useTranslation} from "react-i18next";
 import {Text} from "@/components/Text";
 import {Card} from "@/components/Card";
 import type {ParsedTransaction} from "../../utils/parseTransaction";
-import {
-    useQueryResolveTokenRef
-} from "./lib/useQueryResolveTokenRef";
-import {
-    AccountDescriptor,
-    TokenDescriptor,
-    TotalAmount
-} from "./components";
+import {TokenDescriptor} from "@/components/TokenDescriptor";
+import {AccountDescriptor} from "@/components/AccountDescriptor";
+import {TotalAmount} from "@/components/TotalAmount";
+import {useQueryResolveTokenRef} from "@/hooks/useQueryResolveTokenRef";
 
 interface Props {
     parsed: ParsedTransaction;
