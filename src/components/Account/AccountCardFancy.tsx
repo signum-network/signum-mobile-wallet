@@ -37,7 +37,7 @@ interface Props {
   walletName: string;
 }
 
-export const ITEM_HEIGHT = 140;
+const ITEM_HEIGHT = 140;
 const WIDTH_SCREEN = Dimensions.get("window").width;
 
 export const AccountCardFancy = ({ publicKey, type, walletName }: Props) => {
