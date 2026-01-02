@@ -1,7 +1,7 @@
 import { View, ActivityIndicator } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useLedgerService } from "@/hooks/useLedgerService";
-import { useAccount } from "@/hooks/useAccount";
+import { useWalletAccount } from "@/hooks/useWalletAccount";
 import { useAccountStore } from "@/hooks/useAccountStore";
 import { useNodeHostStore } from "@/hooks/useNodeHostStore";
 import { useAppTheme } from "@/hooks/useAppTheme";
@@ -21,7 +21,7 @@ export const AccountActivationCard = () => {
     accountId,
     publicKey,
     accountData: { loading, activationInProgress },
-  } = useAccount();
+  } = useWalletAccount();
   const { updateAccountPublicKeyActivationStatus } = useAccountStore();
   const { currentNetwork } = useNodeHostStore();
 

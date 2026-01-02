@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { ScrollView, View } from "react-native";
 import { useQuery } from "@tanstack/react-query";
 import { Amount, ChainValue } from "@signumjs/util";
-import { useAccount } from "@/hooks/useAccount";
+import { useWalletAccount } from "@/hooks/useWalletAccount";
 import { useNodeHostStore } from "@/hooks/useNodeHostStore";
 import { useDatabase } from "@/hooks/useDatabase";
 import { DashboardScreenContainer } from "../components/DashboardScreenContainer";
@@ -20,7 +20,7 @@ export const TokensScreen = () => {
   const {
     accountId,
     accountData: { tokenBalance },
-  } = useAccount();
+  } = useWalletAccount();
   const db = useDatabase();
   const { isActiveNodeSynced, currentNetwork } = useNodeHostStore();
 

@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
 import { useFormContext } from "react-hook-form";
 import { NumericFormat } from "react-number-format";
-import { useAccount } from "@/hooks/useAccount";
+import { useWalletAccount } from "@/hooks/useWalletAccount";
 import { useTicker } from "@/hooks/useTicker";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useNetworkFees } from "@/hooks/useNetworkFees";
@@ -42,7 +42,7 @@ export const Operation = ({
   const { t } = useTranslation();
   const { NativeTicker } = useTicker();
   const { iconColor } = useAppTheme();
-  const { isWatchOnly, publicKey, accountId } = useAccount();
+  const { isWatchOnly, publicKey, accountId } = useWalletAccount();
   const { cheap } = useNetworkFees({});
   const { ledgerService } = useLedgerService();
   const { isActiveNodeSynced, currentNetwork, activeNodeNumberOfBlocks } =

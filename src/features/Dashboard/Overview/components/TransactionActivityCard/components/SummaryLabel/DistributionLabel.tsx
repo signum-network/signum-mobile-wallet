@@ -1,6 +1,6 @@
 import { eq, and } from "drizzle-orm";
 import { useQuery } from "@tanstack/react-query";
-import { useAccount } from "@/hooks/useAccount";
+import { useWalletAccount } from "@/hooks/useWalletAccount";
 import { useDatabase } from "@/hooks/useDatabase";
 import { useLedgerService } from "@/hooks/useLedgerService";
 import { useNodeHostStore } from "@/hooks/useNodeHostStore";
@@ -16,7 +16,7 @@ export const DistributionLabel = ({
   transaction,
   assetToDistribute,
 }: Props) => {
-  const { accountId } = useAccount();
+  const { accountId } = useWalletAccount();
   const { ledgerService } = useLedgerService();
   const { isActiveNodeSynced } = useNodeHostStore();
   const db = useDatabase();

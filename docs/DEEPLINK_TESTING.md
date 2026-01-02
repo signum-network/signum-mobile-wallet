@@ -206,35 +206,6 @@ Deploy smart contracts using contract references (CIP templates).
 
 **"Insufficient balance"**: Account doesn't have enough SIGNA for transaction + fees
 
-## Development Notes
-
-### File Structure
-
-```
-src/
-├── providers/
-│   └── DataInitializer/
-│       └── DeepLinkInitializer.tsx    # Deep link handler
-├── features/
-│   └── Dashboard/
-│       └── Sign/
-│           ├── index.tsx               # Main screen logic
-│           ├── sections/
-│           │   ├── TransactionPreview.tsx
-│           │   ├── SuccessSection.tsx
-│           │   └── ConfirmationSection.tsx
-│           └── utils/
-│               └── types.ts
-└── services/
-    └── ledgerService/
-        └── accountService/
-            └── index.ts                # parseTransactionBytes method
-
-app/
-└── dashboard/
-    └── sign/
-        └── index.tsx                   # Route wrapper
-```
 
 ### Key Components
 

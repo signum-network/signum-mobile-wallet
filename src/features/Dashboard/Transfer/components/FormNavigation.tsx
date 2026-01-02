@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { Alert } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
-import { useAccount } from "@/hooks/useAccount";
+import { useWalletAccount } from "@/hooks/useWalletAccount";
 import { FormNavButton } from "@/components/Form/NavButton";
 import { asAddress } from "@/utils/account/asAddress";
 import { getAccountPublicKey } from "@/utils/account/getAccountPublicKey";
@@ -14,7 +14,7 @@ export const FormNavigation = () => {
   const {
     accountId,
     accountData: { balance },
-  } = useAccount();
+  } = useWalletAccount();
   const { watch, setValue } = useFormContext<TransactionCreation>();
 
   const activeStep = watch("activeStep");

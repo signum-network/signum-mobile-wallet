@@ -1,7 +1,7 @@
 import { View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { FlashList } from "@shopify/flash-list";
-import { useAccount } from "@/hooks/useAccount";
+import { useWalletAccount } from "@/hooks/useWalletAccount";
 import { Dialog } from "@/components/Dialog";
 import { Button } from "@/components/Button";
 import { Text } from "@/components/Text";
@@ -22,7 +22,7 @@ export const AssetPickerDialog = ({
   const { t } = useTranslation();
   const {
     accountData: { tokenBalance },
-  } = useAccount();
+  } = useWalletAccount();
 
   const maxVisibleTokenRows = 6;
   const rowsToShow = Math.min(tokenBalance.length, maxVisibleTokenRows);

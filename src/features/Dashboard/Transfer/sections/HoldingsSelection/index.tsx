@@ -6,7 +6,7 @@ import { useFormContext } from "react-hook-form";
 import { Text } from "@/components/Text";
 import { Card } from "@/components/Card";
 import { useTokenMetadata } from "@/hooks/useTokenMetadata";
-import { useAccount } from "@/hooks/useAccount";
+import { useWalletAccount } from "@/hooks/useWalletAccount";
 import { useTicker } from "@/hooks/useTicker";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import type { TransactionCreation } from "../../utils/types";
@@ -24,7 +24,7 @@ export const HoldingsSelection = () => {
   const { NativeTicker } = useTicker();
   const {
     accountData: { balance, tokenBalance },
-  } = useAccount();
+  } = useWalletAccount();
   const { watch, setValue } = useFormContext<TransactionCreation>();
 
   const asset = watch("asset");

@@ -1,11 +1,16 @@
 import {useState, useMemo} from "react";
-import {View, Pressable} from "react-native";
+import {View, Pressable, ActivityIndicator} from "react-native";
+import {useTranslation} from "react-i18next";
 import {useAppTheme} from "@/hooks/useAppTheme";
 import {AccountAvatar} from "./AccountAvatar";
 import {BackgroundLayer} from "./BackgroundLayer";
 import {StatusIndicators} from "./StatusIndicators";
 import {useAccountCardData} from "./useAccountCardData";
 import type {GenericAccountCardProps} from "./types";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import {Text} from "@/components/Text";
+
+type ImageLoadState = "loading" | "loaded" | "error";
 
 export const GenericAccountCard: React.FC<GenericAccountCardProps> = ({
                                                                           account,
@@ -19,9 +24,10 @@ export const GenericAccountCard: React.FC<GenericAccountCardProps> = ({
                                                                           isSelected = false,
                                                                           className = "",
                                                                       }) => {
-    const {tokens} = useAppTheme();
-    const [avatarLoaded, setAvatarLoaded] = useState(false);
-    const [backgroundLoaded, setBackgroundLoaded] = useState(false);
+    const {t} = useTranslation();
+    const {tokens, iconColor} = useAppTheme();
+    const [avatarLoadState, setAvatarLoadState] = useState<ImageLoadState>("loading");
+    const [backgroundLoadState, setBackgroundLoadState] = useState<ImageLoadState>("loading");
 
     // Auto-generate images and status indicators
     const {images, statusIndicators} = useAccountCardData({
@@ -33,11 +39,20 @@ export const GenericAccountCard: React.FC<GenericAccountCardProps> = ({
 
     // Reset loaded states when images change
     useMemo(() => {
-        setAvatarLoaded(false);
-        setBackgroundLoaded(false);
+        setAvatarLoadState(images?.avatarUrl ? "loading" : "loaded");
+        setBackgroundLoadState(images?.backgroundUrl ? "loading" : "loaded");
     }, [images?.avatarUrl, images?.backgroundUrl]);
 
-    const showBackground = !!(images?.backgroundUrl && backgroundLoaded);
+    // Combined IPFS loading state
+    const hasAvatarIpfs = !!images?.avatarUrl;
+    const hasBackgroundIpfs = !!images?.backgroundUrl;
+    const hasAnyIpfs = hasAvatarIpfs || hasBackgroundIpfs;
+    const isLoadingIpfs = (hasAvatarIpfs && avatarLoadState === "loading") ||
+                          (hasBackgroundIpfs && backgroundLoadState === "loading");
+    const hasIpfsError = (hasAvatarIpfs && avatarLoadState === "error") ||
+                         (hasBackgroundIpfs && backgroundLoadState === "error");
+
+    const showBackground = !!(images?.backgroundUrl && backgroundLoadState === "loaded");
 
     const content = (
         <View
@@ -52,9 +67,9 @@ export const GenericAccountCard: React.FC<GenericAccountCardProps> = ({
             <BackgroundLayer
                 backgroundUrl={images?.backgroundUrl ?? null}
                 isSelected={isSelected}
-                onLoad={() => setBackgroundLoaded(true)}
-                onError={() => setBackgroundLoaded(false)}
-                isLoaded={backgroundLoaded}
+                onLoad={() => setBackgroundLoadState("loaded")}
+                onError={() => setBackgroundLoadState("error")}
+                isLoaded={backgroundLoadState === "loaded"}
                 accountId={account.account}
             />
 
@@ -66,9 +81,9 @@ export const GenericAccountCard: React.FC<GenericAccountCardProps> = ({
                         accountId={account.account}
                         avatarUrl={images?.avatarUrl ?? null}
                         size={64}
-                        onLoad={() => setAvatarLoaded(true)}
-                        onError={() => setAvatarLoaded(false)}
-                        isLoaded={avatarLoaded}
+                        onLoad={() => setAvatarLoadState("loaded")}
+                        onError={() => setAvatarLoadState("error")}
+                        isLoaded={avatarLoadState === "loaded"}
                     />
 
                     {/* Custom Content via Render Props */}
@@ -86,6 +101,64 @@ export const GenericAccountCard: React.FC<GenericAccountCardProps> = ({
                         </View>
                     )}
                 </View>
+
+                {/* IPFS Loading/Error Indicator at Bottom */}
+                {hasAnyIpfs && (isLoadingIpfs || hasIpfsError) && (
+                    <View
+                        className="absolute bottom-1 left-2 flex-row items-center gap-1 px-2 py-0.5 rounded-full"
+                        style={{
+                            backgroundColor: showBackground
+                                ? 'rgba(0, 0, 0, 0.5)'
+                                : 'rgba(0, 0, 0, 0.1)'
+                        }}
+                    >
+                        {isLoadingIpfs && (
+                            <>
+                                <ActivityIndicator
+                                    size="small"
+                                    color={showBackground ? "white" : tokens.primary}
+                                />
+                                <Text
+                                    size="extraSmall"
+                                    color={showBackground ? "white" : "muted"}
+                                    style={{
+                                        fontSize: 10,
+                                        ...(showBackground && {
+                                            textShadowColor: "rgba(0, 0, 0, 0.75)",
+                                            textShadowOffset: { width: 0, height: 1 },
+                                            textShadowRadius: 2,
+                                        })
+                                    }}
+                                >
+                                    {t("ipfs.loading")}
+                                </Text>
+                            </>
+                        )}
+                        {hasIpfsError && (
+                            <>
+                                <Ionicons
+                                    name="warning"
+                                    size={14}
+                                    color={showBackground ? "white" : iconColor.red}
+                                />
+                                <Text
+                                    size="extraSmall"
+                                    color={showBackground ? "white" : "error"}
+                                    style={{
+                                        fontSize: 10,
+                                        ...(showBackground && {
+                                            textShadowColor: "rgba(0, 0, 0, 0.75)",
+                                            textShadowOffset: { width: 0, height: 1 },
+                                            textShadowRadius: 2,
+                                        })
+                                    }}
+                                >
+                                    {t("ipfs.error")}
+                                </Text>
+                            </>
+                        )}
+                    </View>
+                )}
             </View>
         </View>
     );

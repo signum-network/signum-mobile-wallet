@@ -1,7 +1,7 @@
 import {eq} from "drizzle-orm";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {differenceInMinutes} from "date-fns";
-import {useAccount} from "@/hooks/useAccount";
+import {useWalletAccount} from "@/hooks/useWalletAccount";
 import {useDatabase} from "@/hooks/useDatabase";
 import {useNodeHostStore} from "@/hooks/useNodeHostStore";
 import {useLedgerService} from "@/hooks/useLedgerService";
@@ -22,7 +22,7 @@ import {src44} from "@signumjs/standards"
 export const useTokenTransactionalData = (
     tokenId = ""
 ): TokenTransactionalData & { isLoading: boolean } => {
-    const {accountId} = useAccount();
+    const {accountId} = useWalletAccount();
     const {ledgerService} = useLedgerService();
     const {isActiveNodeSynced, currentNetwork} = useNodeHostStore();
     const db = useDatabase();

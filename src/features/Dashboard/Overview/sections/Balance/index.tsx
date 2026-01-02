@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { Card } from "@/components/Card";
 import { Text } from "@/components/Text";
-import { useAccount } from "@/hooks/useAccount";
+import { useWalletAccount } from "@/hooks/useWalletAccount";
 import { useTicker } from "@/hooks/useTicker";
 import { useActiveMarketRate } from "@/hooks/useActiveMarketRate";
 import { formatNumber } from "@/utils/formatNumber";
@@ -15,7 +15,7 @@ export const Balance = () => {
   const { price, symbol } = useActiveMarketRate();
   const {
     accountData: { balance },
-  } = useAccount();
+  } = useWalletAccount();
 
   const totalBalance = useMemo(() => {
     return balance?.totalBalance?.getSigna

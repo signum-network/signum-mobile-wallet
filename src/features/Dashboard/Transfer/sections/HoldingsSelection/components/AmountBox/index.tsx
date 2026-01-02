@@ -12,7 +12,7 @@ import { useNumberSeparator } from "@/hooks/useNumberSeparator";
 import { useActiveMarketRate } from "@/hooks/useActiveMarketRate";
 import type { TransactionCreation } from "../../../../utils/types";
 import { PUBLIC_RESERVED_SIGNA_FOR_TX_FEE } from "@/types/constants";
-import { useAccount } from "@/hooks/useAccount";
+import { useWalletAccount } from "@/hooks/useWalletAccount";
 
 export const AmountBox = () => {
   const { t } = useTranslation();
@@ -22,7 +22,7 @@ export const AmountBox = () => {
 
   const {
     accountData: { balance },
-  } = useAccount();
+  } = useWalletAccount();
   const signaAvailableBalance =
     balance?.availableBalance?.getSigna
       ? Number(balance.availableBalance.getSigna())

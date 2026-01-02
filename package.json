@@ -60,6 +60,7 @@
     "i18next": "^23.16.8",
     "intl-pluralrules": "^2.0.1",
     "js-sha3": "^0.9.3",
+    "multiformats": "^13.4.2",
     "nativewind": "^4.1.23",
     "qrcode-generator": "^2.0.4",
     "react": "19.1.0",

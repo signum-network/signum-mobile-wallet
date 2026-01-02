@@ -2,7 +2,7 @@ import { Fragment } from "react";
 import { ScrollView, View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/Button";
-import { useAccount } from "@/hooks/useAccount";
+import { useWalletAccount } from "@/hooks/useWalletAccount";
 import { BottomButtonsContainer } from "../components/BottomButtonsContainer";
 import { DashboardScreenContainer } from "../components/DashboardScreenContainer";
 import { Balance } from "./sections/Balance";
@@ -12,7 +12,7 @@ import {AccountSwitcherFancy} from "@/components/Account/SwitcherFancy";
 
 export const OverviewScreen = () => {
   const { t } = useTranslation();
-  const { isWatchOnly } = useAccount();
+  const { isWatchOnly } = useWalletAccount();
 
   return (
     <Fragment>
