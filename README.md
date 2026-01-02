@@ -41,6 +41,16 @@ npx expo run:ios --no-build-cache
 npm run prebuild
 ```
 
+
+### Sqlite Migrations
+
+Change the schema in `src/db/schema.ts` and run:
+
+```bash
+npx drizzle-kit migrate
+```
+
+
 ---
 
 ## 🎨 Styling (Design Tokens + NativeWind)
@@ -225,9 +235,43 @@ Every time you upload a build to Google Play or App Store Connect.
 
 ## 🧪 Testing
 
-- **Preview builds** for internal QA  
-- **Development builds** for debugging  
-- **Production builds** for store submissions  
+- **Preview builds** for internal QA
+- **Development builds** for debugging
+- **Production builds** for store submissions
+
+### Deep Link Testing
+
+Test dApp integration deep links:
+
+```bash
+# Test transaction signing (sign action)
+npm run test-deeplink
+
+# Test dApp connection (connect action)
+npm run test-connect
+```
+
+See [Deep Link Testing Guide](./docs/DEEPLINK_TESTING.md) and [Connect dApp Flow](./docs/CONNECT_DAPP_FLOW.md) for details.
+
+### Demo Web dApp
+
+Test deep links in a real browser environment:
+
+```bash
+cd demo-dapp
+npm install
+npm run dev
+# Vite will show local and network URLs
+```
+
+The demo dApp provides:
+- ✅ Connect wallet flow (request public key)
+- ✅ Send transaction flow (sign & broadcast)
+- ✅ Network switching (Testnet/Mainnet)
+- ✅ Activity logging
+- ✅ No build required (pure HTML/JavaScript)
+
+See [Demo dApp README](./demo-dapp/README.md) for detailed instructions.
 
 ---
 

@@ -11,6 +11,7 @@ interface Props extends nodeHost {
   showNetwork?: boolean;
   isCustomNodeCard?: boolean;
   showPickButton?: boolean;
+  showSyncState?: boolean;
 }
 
 export const HostCard = ({
@@ -19,11 +20,12 @@ export const HostCard = ({
   isCustomNodeCard = false,
   showNetwork = false,
   showPickButton = false,
+    showSyncState = false,
   isTestnet,
 }: Props) => {
   const { t } = useTranslation();
   const { iconColor } = useAppTheme();
-  const { activeNodeHost } = useNodeHostStore();
+  const { activeNodeHost, activeNodeSyncedPercentage } = useNodeHostStore();
 
   const isCurrentActiveNode = activeNodeHost.url === url;
 
@@ -31,7 +33,18 @@ export const HostCard = ({
     <Card>
       <View className="w-full flex flex-row justify-between items-center">
         <View className="flex flex-col gap-1">
-          <Text>{name}</Text>
+            <View className="flex flex-row items-center justify-between w-full gap-1">
+                <Text>{name}</Text>
+                {isCurrentActiveNode && showSyncState && (
+                    <View className="flex-row flex items-center gap-1">
+                        {activeNodeSyncedPercentage === 100
+                            ? <Ionicons name="checkmark-circle" size={15} color={iconColor.green} />
+                            : <Ionicons name="refresh" size={15} color={iconColor.muted} spin={true} />
+                        }
+                        <Text size="small" color="muted">Sync {activeNodeSyncedPercentage}%</Text>
+                    </View>
+                )}
+            </View>
           <Text size="small" color="muted">
             {url}
           </Text>

@@ -1,150 +1,153 @@
-import { useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { useNodeHostStore } from "@/hooks/useNodeHostStore";
-import { useLedgerService } from "@/hooks/useLedgerService";
-import { useAppStore } from "@/hooks/useAppStore";
-import type { nodeHost, PublicNodeHost } from "@/types/nodeHost";
-import { LedgerClientFactory } from "@signumjs/core";
+import {useEffect} from "react";
+import {useQuery} from "@tanstack/react-query";
+import {useNodeHostStore} from "@/hooks/useNodeHostStore";
+import {useLedgerService} from "@/hooks/useLedgerService";
+import {useAppStore} from "@/hooks/useAppStore";
+import type {nodeHost, PublicNodeHost} from "@/types/nodeHost";
+import {ChainService} from "@signumjs/core";
+
 import {
-  PUBLIC_SIGNUM_PUBLIC_RESOURCES_URL,
-  PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MILLISECONDS,
+    PUBLIC_SIGNUM_PUBLIC_RESOURCES_URL,
+    PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MILLISECONDS,
 } from "@/types/constants";
 
 export const NodeHostInitializer = () => {
-  const { isOnline } = useAppStore();
-  const { ledgerService } = useLedgerService();
-  const {
-    connectionType,
-    activeNodeHost,
-    reliableNodeHost,
-    setActiveNodeHost,
-    setReliableNodeHost,
-    setTestnetReliableNodeHost,
-    setIsActiveNodeAvailable,
-    setIsActiveNodeSynced,
-    setActiveNodeSyncedPercentage,
-    setActiveNodeNumberOfBlocks,
-    resetActiveNodeHost,
-  } = useNodeHostStore();
+    const {isOnline} = useAppStore();
+    const {ledgerService} = useLedgerService();
+    const {
+        connectionType,
+        activeNodeHost,
+        reliableNodeHost,
+        setActiveNodeHost,
+        setReliableNodeHost,
+        setTestnetReliableNodeHost,
+        setIsActiveNodeAvailable,
+        setIsActiveNodeSynced,
+        setActiveNodeSyncedPercentage,
+        setActiveNodeNumberOfBlocks,
+        resetActiveNodeHost,
+    } = useNodeHostStore();
 
-  useQuery({
-    queryKey: ["fetchReliableNodeHosts"],
-    queryFn: () =>
-      fetch(`${PUBLIC_SIGNUM_PUBLIC_RESOURCES_URL}/nodes.json`).then(
-        async (res) => {
-          const response: any = await res.json();
+    useQuery({
+        queryKey: ["fetchReliableNodeHosts"],
+        queryFn: () =>
+            fetch(`${PUBLIC_SIGNUM_PUBLIC_RESOURCES_URL}/nodes.json`).then(
+                async (res) => {
+                    const response: any = await res.json();
+                    const reliableNodes: nodeHost[] = [];
+                    const testnetReliableNodes: nodeHost[] = [];
+                    const mainnetNodes = response.mainnet;
+                    const testnetNodes = response.testnet;
 
-          const reliableNodes: nodeHost[] = [];
-          const testnetReliableNodes: nodeHost[] = [];
+                    mainnetNodes.forEach(({name, url}: PublicNodeHost) => {
+                        if (url.includes("localhost")) return;
 
-          const mainnetNodes = response.mainnet;
-          const testnetNodes = response.testnet;
+                        reliableNodes.push({
+                            name,
+                            url,
+                            isTestnet: false,
+                        });
+                    });
 
-          mainnetNodes.forEach(({ name, url }: PublicNodeHost) => {
-            if (url.includes("localhost")) return;
+                    testnetNodes.forEach(({name, url}: PublicNodeHost) => {
+                        if (url.includes("localhost")) return;
 
-            reliableNodes.push({
-              name,
-              url,
-              isTestnet: false,
-            });
-          });
+                        testnetReliableNodes.push({
+                            name,
+                            url,
+                            isTestnet: true,
+                        });
+                    });
 
-          testnetNodes.forEach(({ name, url }: PublicNodeHost) => {
-            if (url.includes("localhost")) return;
+                    // Sorting the array alphabetically by the "name" property
+                    const sorter = (a: nodeHost, b: nodeHost) => {
+                        // Convert names to lowercase for case-insensitive sorting
+                        const nameA = a.name.toLowerCase();
+                        const nameB = b.name.toLowerCase();
 
-            testnetReliableNodes.push({
-              name,
-              url,
-              isTestnet: true,
-            });
-          });
+                        // Compare names
+                        if (nameA < nameB) return -1;
+                        if (nameA > nameB) return 1;
+                        return 0; // Names are equal
+                    };
 
-          // Sorting the array alphabetically by the "name" property
-          const sorter = (a: nodeHost, b: nodeHost) => {
-            // Convert names to lowercase for case-insensitive sorting
-            const nameA = a.name.toLowerCase();
-            const nameB = b.name.toLowerCase();
+                    reliableNodes.sort(sorter);
+                    testnetReliableNodes.sort(sorter);
 
-            // Compare names
-            if (nameA < nameB) return -1;
-            if (nameA > nameB) return 1;
-            return 0; // Names are equal
-          };
+                    setReliableNodeHost(reliableNodes);
+                    setTestnetReliableNodeHost(testnetReliableNodes);
 
-          reliableNodes.sort(sorter);
-          testnetReliableNodes.sort(sorter);
+                    return testnetNodes;
+                }
+            ),
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: false,
+        refetchInterval: false,
+        staleTime: Infinity,
+    });
 
-          setReliableNodeHost(reliableNodes);
-          setTestnetReliableNodeHost(testnetReliableNodes);
-
-          return testnetNodes;
+    useEffect(() => {
+        if (
+            !reliableNodeHost.length ||
+            activeNodeHost.name ||
+            connectionType === "manual"
+        ) {
+            return;
         }
-      ),
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-    refetchInterval: false,
-    staleTime: Infinity,
-  });
 
-  useEffect(() => {
-    if (
-      !reliableNodeHost.length ||
-      activeNodeHost.name ||
-      connectionType === "manual"
-    ) {
-      return;
-    }
+        async function determineBestNodeHost(nodeHosts: nodeHost[]) {
+                async function probe(url: string) {
+                    await new ChainService({ nodeHost: url}).query("getBlock")
+                    return url
+                }
 
-    (async () => {
-      const reliableNodeHostsUrls = reliableNodeHost.map((node) => node.url);
+                const urls = nodeHosts.map(node => node.url)
+                const fastestResponderUrl = await Promise.race(urls.map(probe))
+                const selectedHost = nodeHosts.find(node => node.url === fastestResponderUrl)
+                if (selectedHost) {
+                    setActiveNodeHost(selectedHost)
+                }
+        }
 
-      const probeClient = LedgerClientFactory.createClient({
-        nodeHost: reliableNodeHost[0].url,
-        reliableNodeHosts: reliableNodeHostsUrls,
-      });
+        determineBestNodeHost(reliableNodeHost);
 
-      await probeClient.service.selectBestHost().then((host) => {
-        const index = reliableNodeHostsUrls.indexOf(host);
-        setActiveNodeHost(reliableNodeHost[index]);
-      });
-    })();
-  }, [reliableNodeHost, activeNodeHost, connectionType]);
+    }, [reliableNodeHost, activeNodeHost, connectionType]);
 
-  // TODO: Once SignumJS has improved the selectBestHost method, clean the active node host if active node is syncing
-  useQuery({
-    queryKey: ["fetchBlockchainStatus", activeNodeHost.url],
-    queryFn: async () => {
-      if (!ledgerService) return;
+    // TODO: Once SignumJS has improved the selectBestHost method, clean the active node host if active node is syncing
+    useQuery({
+        queryKey: ["fetchBlockchainStatus", activeNodeHost.url],
+        queryFn: async () => {
+            if (!ledgerService) return;
 
-      try {
-        const status = await ledgerService.node.fetchBlockchainStatus();
-        const { numberOfBlocks, lastBlockchainFeederHeight } = status;
+            try {
+                setActiveNodeSyncedPercentage(0);
+                setActiveNodeNumberOfBlocks(0);
+                setIsActiveNodeAvailable(false);
+                const status = await ledgerService.node.fetchBlockchainStatus();
+                const {numberOfBlocks, lastBlockchainFeederHeight} = status;
 
-        setIsActiveNodeSynced(lastBlockchainFeederHeight - numberOfBlocks <= 1);
+                setIsActiveNodeSynced(lastBlockchainFeederHeight - numberOfBlocks <= 1);
+                const percentageRaw = (numberOfBlocks / lastBlockchainFeederHeight) * 100
+                setActiveNodeSyncedPercentage( Number(percentageRaw.toFixed(2)));
 
-        setActiveNodeSyncedPercentage(
-          (numberOfBlocks / lastBlockchainFeederHeight) * 100
-        );
+                setIsActiveNodeAvailable(true);
 
-        setIsActiveNodeAvailable(true);
+                setActiveNodeNumberOfBlocks(numberOfBlocks);
 
-        setActiveNodeNumberOfBlocks(numberOfBlocks);
+                return true;
+            } catch (error) {
+                // Node is unavailable, reset active node if connectionType === automatic
+                if (isOnline && connectionType === "automatic") resetActiveNodeHost();
 
-        return true;
-      } catch (error) {
-        // Node is unavailable, reset active node if connectionType === automatic
-        if (isOnline && connectionType === "automatic") resetActiveNodeHost();
+                setIsActiveNodeAvailable(false);
 
-        setIsActiveNodeAvailable(false);
+                return false;
+            }
+        },
+        refetchInterval: PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MILLISECONDS,
+        enabled: !!activeNodeHost.url,
+    });
 
-        return false;
-      }
-    },
-    refetchInterval: PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MILLISECONDS,
-    enabled: !!activeNodeHost.url,
-  });
-
-  return null;
+    return null;
 };

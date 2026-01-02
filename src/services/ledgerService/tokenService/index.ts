@@ -1,68 +1,83 @@
-import type { Token } from "@/db/schema";
-import { src44 } from "@signumjs/standards";
-import type { LedgerServiceContext } from "../ledgerServiceContext";
-import { LedgerSubService } from "../ledgerSubService";
-import { handleError } from "../handleError";
+import type {Token} from "@/db/schema";
+import {src44} from "@signumjs/standards";
+import type {LedgerServiceContext} from "../ledgerServiceContext";
+import {LedgerSubService} from "../ledgerSubService";
+import {handleError} from "../handleError";
 
 export class TokenService extends LedgerSubService {
-  constructor(context: LedgerServiceContext) {
-    super(context);
-  }
-
-  async exists(tokenId: string) {
-    try {
-      await this.context.ledger.asset.getAsset({ assetId: tokenId });
-      return true;
-    } catch (e: any) {
-      return false;
+    constructor(context: LedgerServiceContext) {
+        super(context);
     }
-  }
 
-  fetchMetaData(tokenId: string): Promise<Token> {
-    return handleError<Token>(async () => {
-      const { ledger } = this.context;
-      const { asset, name, description, decimals, account, issuer, mintable } =
-        await ledger.asset.getAsset({
-          assetId: tokenId,
+    async exists(tokenId: string) {
+        try {
+            await this.context.ledger.asset.getAsset({assetId: tokenId});
+            return true;
+        } catch (e: any) {
+            return false;
+        }
+    }
+
+    fetchMetaData(tokenId: string): Promise<Token> {
+        return handleError<Token>(async () => {
+            const {ledger} = this.context;
+            const {asset, name, description, decimals, account, issuer, mintable} =
+                await ledger.asset.getAsset({
+                    assetId: tokenId,
+                });
+
+            return {
+                id: asset,
+                ticker: name,
+                description,
+                decimals,
+                account,
+                issuer,
+                mintable,
+            };
         });
+    }
 
-      return {
-        id: asset,
-        ticker: name,
-        description,
-        decimals,
-        account,
-        issuer,
-        mintable,
-      };
-    });
-  }
+    fetchTokenPriceNQT(tokenId: string) {
+        return handleError<string>(async () => {
+            const {ledger} = this.context;
 
-  fetchTokenPriceNQT(tokenId: string) {
-    return handleError<string>(async () => {
-      const { ledger } = this.context;
+            const {trades} = await ledger.asset.getAssetTrades({
+                assetId: tokenId,
+                firstIndex: 0,
+                lastIndex: 0,
+            });
 
-      const { trades } = await ledger.asset.getAssetTrades({
-        assetId: tokenId,
-        firstIndex: 0,
-        lastIndex: 0,
-      });
+            if (!trades || !trades.length) return "0";
 
-      if (!trades || !trades.length) return "0";
+            return trades[0].price;
+        });
+    }
 
-      return trades[0].price;
-    });
-  }
+    fetchTokenBrandLogoHash(tokenId: string) {
+        return handleError<string>(async () => {
+            const {ledger} = this.context;
+            // and now check, if there's newer data
+            const client = new src44.DescriptorDataClient(ledger);
+            const brandingList = await client.getAssetBranding(tokenId);
+            const branding = brandingList?.[0] ?? "";
 
-  fetchTokenBrandLogoHash(tokenId: string) {
-    return handleError<string>(async () => {
-      const { ledger } = this.context;
+            return branding?.avatar?.ipfsCid ? branding.avatar?.ipfsCid : "";
+        });
+    }
 
-      const client = new src44.DescriptorDataClient(ledger);
-      const brandingList = await client.getAssetBranding(tokenId);
-      const branding = brandingList?.[0] ?? "";
+    calculateDistributionFee(tokenId: string, minimumQuantity: string) {
+        return handleError(async () => {
+            return this.context.ledger.asset.calculateDistributionFee({assetId: tokenId, minimumQuantity})
+        })
+    }
 
-      return branding?.avatar?.ipfsCid ? branding.avatar?.ipfsCid : "";
-    });
-  }
+    fetchTokenByRef(referenceHash: string) {
+        return handleError(async  () =>{
+            const {ledger} = this.context;
+            const transaction = await ledger.transaction.getTransactionByFullHash(referenceHash);
+            return ledger.asset.getAsset({assetId: transaction.transaction})
+        })
+    }
+
 }

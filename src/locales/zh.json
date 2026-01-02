@@ -15,6 +15,9 @@
   "committedBalance": "已承诺余额",
   "reservedBalance": "已保留余额",
   "resetApp": "将执行重置；应用中的所有账户都会被删除",
+  "deeplink": {
+    "unsupportedAction": "收到有效的深度链接，但无法处理该操作：{{action}}"
+  },
   "recipient": "收款方",
   "or": "或",
   "copyToClipboard": "复制到剪贴板",
@@ -71,7 +74,8 @@
     "loginPassCodeDescription": "代码可保护钱包",
     "loginCorrectPassCode": "欢迎回来",
     "verifyItsYou": "验证你的身份",
-    "loginPassCodeTooManyAttempts": "登录失败次数过多。若继续输入错误信息，应用将被重置且所有账户会被删除。\n\n你还剩 {{count}} 次尝试"
+    "loginPassCodeTooManyAttempts": "登录失败次数过多。若继续输入错误信息，应用将被重置且所有账户会被删除。\n\n你还剩 {{count}} 次尝试",
+    "resetWallet": "重置钱包"
   },
   "accountWizard": {
     "quickStart": {
@@ -181,7 +185,9 @@
       "switchedNode": "节点切换成功！",
       "customNodeOptions": "自定义节点选项",
       "customNodeOptionsDescription": "你希望对 {{name}} 执行什么操作？",
-      "useThisCustomNode": "使用此自定义节点"
+      "useThisCustomNode": "使用此自定义节点",
+      "refresh": "刷新",
+      "refreshedNodeHosts": "节点列表刷新成功！"
     },
     "currency": {
       "title": "法币",
@@ -238,6 +244,14 @@
       "contact": "联系",
       "links": "链接",
       "nonCustodial": "去托管"
+    },
+    "reset": {
+      "button": "重置钱包",
+      "confirmTitle": "您确定要这样做吗？",
+      "confirmDescription": "此操作将永久删除此设备上的所有帐户、设置和数据。此操作无法撤销。",
+      "warningBox": "在继续之前，请确保您已备份助记词！",
+      "confirm": "是的，重置所有内容",
+      "error": "重置钱包时出错。请重试。"
     }
   },
   "deposit": {
@@ -379,5 +393,75 @@
     "removeCommitmentLockedForgedBlockSecondDescription": "如果你的矿工 4 天内未找到区块，或你再添加承诺，你将可以移除承诺。注意：已承诺余额始终在你的账户中",
     "addedCommitmentSuccessFeedback": "承诺余额将被更新；新添加的承诺会在 1,440 个区块（≈ 4 天）后对挖矿生效",
     "removedCommitmentSuccessFeedback": "恭喜，承诺余额正在更新"
+  },
+  "notFound": {
+    "title": "页面未找到",
+    "description": "您要查找的页面不存在。它可能已被移动或删除。",
+    "goHome": "返回主页"
+  },
+  "sign": {
+    "addingCommitment": "添加承诺",
+    "removingCommitment": "移除承诺",
+    "aliasName": "别名",
+    "aliasTLD": "顶级域名 (TLD)",
+    "aliasContent": "别名内容",
+    "aliasData": "别名数据",
+    "accountName": "账户名称",
+    "accountDescription": "账户描述",
+    "attachmentData": "附件数据",
+    "buyer": "买方",
+    "seller": "卖方",
+    "contractReference": "合约参考",
+    "aliasCreationExplanation": "创建一个可以用作可读地址的新别名。",
+    "decimals": "小数位",
+    "distributingToHoldersOf": "分配给持有者",
+    "distributing": "分配中",
+    "every": "每",
+    "days": "天",
+    "seconds": "秒",
+    "initialBalance": "初始余额",
+    "issuer": "发行者",
+    "minimumHolding": "最低持有量",
+    "mintingQuantity": "铸造数量",
+    "mintingExplanation": "铸造创建新代币并将其添加到您的账户。",
+    "newOwner": "新所有者",
+    "orderDetails": "订单详情",
+    "paymentAmount": "支付金额",
+    "paymentFrequency": "支付频率",
+    "poolRewardRecipient": "矿池 / 奖励接收者",
+    "pricePerToken": "每个代币的价格",
+    "price": "价格",
+    "quantity": "数量",
+    "sender": "发送者",
+    "subscription": "订阅",
+    "switchToJsonHint": "切换到 JSON 视图以查看所有交易数据。",
+    "ownershipTransferWarning": "新所有者将完全控制代币，包括铸造和管理权限。",
+    "genericTransactionHint": "此交易类型尚未有专门的预览。",
+    "subscriptionCancelExplanation": "这将取消订阅并停止所有未来付款。",
+    "buyOrderCancelExplanation": "这将取消您对此代币的购买订单。",
+    "sellOrderCancelExplanation": "这将取消您对此代币的出售订单。",
+    "removeCommitmentExplanation": "这将通过从网络中移除承诺的 SIGNA 来降低您的挖矿能力。",
+    "addCommitmentExplanation": "这将通过向网络承诺 SIGNA 来增加您的挖矿能力。",
+    "tokenDetails": "代币详情",
+    "tokenName": "代币名称",
+    "totalSupply": "总供应量",
+    "totalValue": "总价值",
+    "transactionDetails": "交易详情",
+    "treasuryAccount": "财库账户",
+    "ownershipTransferWarningTitle": "警告：这将永久转移代币所有权给新所有者。",
+    "addTreasuryAccountExplanation": "添加财库账户，该账户将具有管理此代币的特殊权限。",
+    "contractCreationExplanation": "创建将部署到区块链的智能合约。初始余额将转移到合约。",
+    "poolAssignmentExplanation": "这将把您的挖矿奖励分配给指定的矿池或接收者。您的区块仍将显示您的账户作为矿工，但奖励将归接收者所有。",
+    "accountInfoExplanation": "这将更新您账户的公开资料信息，对网络中的其他用户可见。",
+    "subscriptionCreationExplanation": "定期付款将按指定频率自动发送给接收者。",
+    "distributionExplanation": "这将按比例将资产分配给所有满足最低门槛的代币持有者。",
+    "loadingTitle": "正在解析交易",
+    "loadingDescription": "请稍候，我们正在分析交易详情...",
+    "errorTitle": "交易错误",
+    "errorDescription": "我们无法解析交易。请重试或联系 dApp。",
+    "errorGoBack": "返回",
+    "holdersCount": "共 {{count}} 名持有者",
+    "tokenDescription": "代币描述",
+    "invalidHexFormat": "无效的十六进制格式"
   }
 }

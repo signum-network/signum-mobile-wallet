@@ -19,6 +19,7 @@ export const CurrentNode = () => {
         url={activeNodeHost.url || t("loading")}
         isTestnet={activeNodeHost.isTestnet}
         showNetwork
+        showSyncState
       />
     </View>
   );

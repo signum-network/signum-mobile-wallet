@@ -1,16 +1,14 @@
 import { eq } from "drizzle-orm";
 import { useQuery } from "@tanstack/react-query";
 import { useDatabase } from "@/hooks/useDatabase";
-import { useNodeHostStore } from "@/hooks/useNodeHostStore";
 import { useLedgerService } from "@/hooks/useLedgerService";
 import { tokens, defaultToken, type Token } from "@/db/schema";
 
-export const useTokenMetadata = (tokenId = ""): Token => {
+export const useTokenMetadata = (tokenId = ""): Token & { isLoading: boolean } => {
   const { ledgerService } = useLedgerService();
-  const { isActiveNodeSynced } = useNodeHostStore();
   const db = useDatabase();
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["fetchToken", tokenId],
     queryFn: async () => {
       if (!ledgerService || tokenId === "0") return defaultToken;
@@ -35,18 +33,11 @@ export const useTokenMetadata = (tokenId = ""): Token => {
         return defaultToken;
       }
     },
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-    refetchInterval: false,
-    staleTime: Infinity,
-    enabled: !!(
-      isActiveNodeSynced &&
-      !!ledgerService &&
-      !!tokenId &&
-      tokenId !== "0"
-    ),
+    enabled:
+      Boolean(ledgerService) &&
+      Boolean(tokenId && tokenId !== "0")
+    ,
   });
 
-  return data ?? defaultToken;
+  return data ? {...data, isLoading } : {...defaultToken, isLoading: true };
 };

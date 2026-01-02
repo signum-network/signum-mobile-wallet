@@ -15,6 +15,9 @@
   "committedBalance": "Saldo comprometido",
   "reservedBalance": "Saldo reservado",
   "resetApp": "Será feita uma redefinição; todas as contas serão removidas do app",
+  "deeplink": {
+    "unsupportedAction": "Recebeu um deep link válido, mas não é possível lidar com a ação: {{action}}"
+  },
   "recipient": "Destinatário",
   "or": "OU",
   "copyToClipboard": "Copiar para a área de transferência",
@@ -71,7 +74,8 @@
     "loginPassCodeDescription": "Um código protege a carteira",
     "loginCorrectPassCode": "Bem-vindo de volta",
     "verifyItsYou": "Verifique sua identidade",
-    "loginPassCodeTooManyAttempts": "Muitas tentativas de login falhas. Se continuar inserindo informações incorretas, o app será redefinido e todas as contas serão excluídas.\n\nVocê ainda tem {{count}} tentativa(s)"
+    "loginPassCodeTooManyAttempts": "Muitas tentativas de login falhas. Se continuar inserindo informações incorretas, o app será redefinido e todas as contas serão excluídas.\n\nVocê ainda tem {{count}} tentativa(s)",
+    "resetWallet": "Redefinir Carteira"
   },
   "accountWizard": {
     "quickStart": {
@@ -181,7 +185,9 @@
       "switchedNode": "Nó alterado com sucesso!",
       "customNodeOptions": "Opções do nó personalizado",
       "customNodeOptionsDescription": "O que você deseja fazer com {{name}}?",
-      "useThisCustomNode": "Usar este nó personalizado"
+      "useThisCustomNode": "Usar este nó personalizado",
+      "refresh": "Atualizar",
+      "refreshedNodeHosts": "Lista de nós atualizada com sucesso!"
     },
     "currency": {
       "title": "Moeda",
@@ -238,6 +244,14 @@
       "contact": "Contato",
       "links": "Links",
       "nonCustodial": "Não custodial"
+    },
+    "reset": {
+      "button": "Redefinir Carteira",
+      "confirmTitle": "Tem certeza absoluta?",
+      "confirmDescription": "Esta ação excluirá permanentemente todas as suas contas, configurações e dados deste dispositivo. Isso não pode ser desfeito.",
+      "warningBox": "Certifique-se de ter feito backup de suas frases secretas antes de prosseguir!",
+      "confirm": "Sim, redefinir tudo",
+      "error": "Ocorreu um erro ao redefinir a carteira. Por favor, tente novamente."
     }
   },
   "deposit": {
@@ -379,5 +393,75 @@
     "removeCommitmentLockedForgedBlockSecondDescription": "Se seu minerador não encontrar um bloco por 4 dias ou você adicionar compromisso, poderá remover. Observação: O saldo comprometido permanece sempre em sua conta",
     "addedCommitmentSuccessFeedback": "O saldo comprometido será atualizado; o compromisso adicionado ficará ativo para mineração após 1.440 blocos (≈ 4 dias)",
     "removedCommitmentSuccessFeedback": "Parabéns, o saldo comprometido está sendo atualizado"
+  },
+  "notFound": {
+    "title": "Página não encontrada",
+    "description": "A página que você está procurando não existe. Pode ter sido movida ou excluída.",
+    "goHome": "Ir para a página inicial"
+  },
+  "sign": {
+    "addingCommitment": "Adicionando Compromisso",
+    "removingCommitment": "Removendo Compromisso",
+    "aliasName": "Nome do Alias",
+    "aliasTLD": "Domínio de Nível Superior (TLD)",
+    "aliasContent": "Conteúdo do Alias",
+    "aliasData": "Dados do Alias",
+    "accountName": "Nome da Conta",
+    "accountDescription": "Descrição da Conta",
+    "attachmentData": "Dados Anexados",
+    "buyer": "Comprador",
+    "seller": "Vendedor",
+    "contractReference": "Referência do Contrato",
+    "aliasCreationExplanation": "Criar um novo alias que pode ser usado como endereço legível.",
+    "decimals": "Decimais",
+    "distributingToHoldersOf": "Distribuindo para Detentores de",
+    "distributing": "Distribuindo",
+    "every": "Cada",
+    "days": "dias",
+    "seconds": "segundos",
+    "initialBalance": "Saldo Inicial",
+    "issuer": "Emissor",
+    "minimumHolding": "Detenção mínima",
+    "mintingQuantity": "Quantidade de Cunhagem",
+    "mintingExplanation": "Cunhar cria novos tokens e os adiciona à sua conta.",
+    "newOwner": "Novo Proprietário",
+    "orderDetails": "Detalhes do Pedido",
+    "paymentAmount": "Valor do Pagamento",
+    "paymentFrequency": "Frequência de Pagamento",
+    "poolRewardRecipient": "Pool / Destinatário de Recompensas",
+    "pricePerToken": "Preço por Token",
+    "price": "Preço",
+    "quantity": "Quantidade",
+    "sender": "Remetente",
+    "subscription": "Assinatura",
+    "switchToJsonHint": "Mude para visualização JSON para ver todos os dados da transação.",
+    "ownershipTransferWarning": "O novo proprietário terá controle total sobre o token, incluindo direitos de cunhagem e gestão.",
+    "genericTransactionHint": "Este tipo de transação ainda não possui visualização especializada.",
+    "subscriptionCancelExplanation": "Isso cancelará a assinatura e interromperá todos os pagamentos futuros.",
+    "buyOrderCancelExplanation": "Isso cancelará sua ordem de compra para este token.",
+    "sellOrderCancelExplanation": "Isso cancelará sua ordem de venda para este token.",
+    "removeCommitmentExplanation": "Isso diminuirá seu poder de mineração ao remover SIGNA comprometido da rede.",
+    "addCommitmentExplanation": "Isso aumentará seu poder de mineração ao comprometer SIGNA na rede.",
+    "tokenDetails": "Detalhes do Token",
+    "tokenName": "Nome do Token",
+    "totalSupply": "Fornecimento Total",
+    "totalValue": "Valor Total",
+    "transactionDetails": "Detalhes da Transação",
+    "treasuryAccount": "Conta do Tesouro",
+    "ownershipTransferWarningTitle": "Aviso: Isso transferirá permanentemente a propriedade do token para o novo proprietário.",
+    "addTreasuryAccountExplanation": "Adicionar uma conta do tesouro que terá permissões especiais para gerenciar este token.",
+    "contractCreationExplanation": "Criar um contrato inteligente que será implantado na blockchain. O saldo inicial será transferido para o contrato.",
+    "poolAssignmentExplanation": "Isso atribuirá suas recompensas de mineração ao pool ou destinatário especificado. Seus blocos ainda mostrarão sua conta como minerador, mas as recompensas irão para o destinatário.",
+    "accountInfoExplanation": "Isso atualizará as informações de perfil público da sua conta visíveis para outros usuários na rede.",
+    "subscriptionCreationExplanation": "Um pagamento recorrente será enviado automaticamente ao destinatário na frequência especificada.",
+    "distributionExplanation": "Isso distribuirá ativos proporcionalmente a todos os detentores de tokens que atendem ao limite mínimo.",
+    "loadingTitle": "Analisando Transação",
+    "loadingDescription": "Por favor, aguarde enquanto analisamos os detalhes da transação...",
+    "errorTitle": "Erro de Transação",
+    "errorDescription": "Não foi possível analisar a transação. Por favor, tente novamente ou entre em contato com a dApp.",
+    "errorGoBack": "Voltar",
+    "holdersCount": "Total de {{count}} detentores",
+    "tokenDescription": "Descrição do Token",
+    "invalidHexFormat": "Formato hexadecimal inválido"
   }
 }

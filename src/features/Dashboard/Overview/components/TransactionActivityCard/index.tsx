@@ -41,7 +41,7 @@ export const TransactionActivityCard = (props: Transaction) => {
 
   const transactionReadableType = transactionTypeReader(type, subtype);
 
-  const isPending = !confirmations || confirmations < 2;
+  const isPending = confirmations === undefined;
   const timestampToDate = ChainTime.fromChainTimestamp(timestamp).getDate();
   const transactionDate = formatDistanceToNow(timestampToDate, {
     addSuffix: true,

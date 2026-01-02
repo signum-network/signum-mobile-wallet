@@ -1,6 +1,7 @@
 import { PropsWithChildren, useEffect, useRef } from "react";
 import { AppState, AppStateStatus, View } from "react-native";
-import { router, usePathname } from "expo-router";
+import { usePathname } from "expo-router";
+import { appStore } from "@/states/appStore";
 
 type Props = {
   /** Time until auto-logout when user is inactive (in ms) */
@@ -31,15 +32,16 @@ export default function InactivityGuard({
     bgTimer.current = null;
   };
 
-  /** Performs logout and navigation reset */
+  /** Performs logout and locks the app */
   const doLogout = () => {
     if (loggingOut.current) return; // prevent multiple triggers
     loggingOut.current = true;
     clearTimers();
+    appStore.getState().setIsUnlocked(false);
     try {
       onLogout?.();
     } catch {}
-    router.replace("/auth/login");
+    // No navigation needed - AuthGuard will show login automatically
   };
 
   /** Arms (or resets) the inactivity timer */

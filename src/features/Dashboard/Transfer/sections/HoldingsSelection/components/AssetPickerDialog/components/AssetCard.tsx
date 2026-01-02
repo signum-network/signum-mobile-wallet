@@ -3,7 +3,6 @@ import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { ChainValue } from "@signumjs/util";
 import { useTokenMetadata } from "@/hooks/useTokenMetadata";
-import { useTokenTransactionalData } from "@/hooks/useTokenTransactionalData";
 import { useTicker } from "@/hooks/useTicker";
 import { formatNumber } from "@/utils/formatNumber";
 import { Text } from "@/components/Text";
@@ -29,7 +28,6 @@ export const AssetCard = ({
   const { t } = useTranslation();
   const { NativeTicker } = useTicker();
   const { ticker: tokenTicker, decimals } = useTokenMetadata(asset);
-  const { avatarIpfsHash } = useTokenTransactionalData(asset);
   const { watch, setValue } = useFormContext<TransactionCreation>();
 
   const formAsset = watch("asset");
@@ -72,12 +70,7 @@ export const AssetCard = ({
             />
           </View>
         ) : (
-          <TokenAvatar
-            loading={!readableTicker}
-            tokenId={asset}
-            avatarIpfsHash={avatarIpfsHash || undefined}
-            extraClassNames="size-10"
-          />
+          <TokenAvatar tokenId={asset} extraClassNames="size-10"/>
         )}
 
         <View className="flex flex-col">

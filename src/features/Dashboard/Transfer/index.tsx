@@ -35,8 +35,6 @@ import { FeeSelection } from "./sections/FeeSelection";
 import { Confirmation } from "./sections/Confirmation";
 import { FormNavigation } from "./components/FormNavigation";
 import { FormStepper } from "./components/FormStepper";
-import { recipientsStore } from "@/states/recipientsStore";
-import { useAccountStore } from "@/hooks/useAccountStore";
 import { KeyboardDismissView } from "@/components/KeyboardDismissView";
 
 export const TransferScreen = () => {
@@ -44,8 +42,7 @@ export const TransferScreen = () => {
   const { ledgerService } = useLedgerService();
   const { isWatchOnly, publicKey, accountId } = useAccount();
   const { currentNetwork } = useNodeHostStore();
-    const { asset: routeAsset } = useGlobalSearchParams<GlobalSearchParams>();
-  const { accounts } = useAccountStore();
+  const { asset: routeAsset } = useGlobalSearchParams<GlobalSearchParams>();
 
   const [isSigningTransaction, setIsSigningTransaction] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
@@ -125,16 +122,19 @@ export const TransferScreen = () => {
       const { signPrivateKey, agreementPrivateKey } = secretKeys;
 
       const recipientId = asAddress(recipient).getNumericId();
-      const recipientPublicKey = await getAccountPublicKey(recipientId);
 
-      if (!recipientPublicKey) return alert(t("accountDoesNotExists"));
+      let recipientPublicKey = undefined;
+      if(recipientId !== "0") {
+        recipientPublicKey = await getAccountPublicKey(recipientId);
+        if (!recipientPublicKey) return alert(t("accountDoesNotExists"));
+      }
 
       const feePlanck = Amount.fromPlanck(fee).getPlanck();
-
       let attachment = undefined;
 
       if (includeMemo) {
-        if (isMemoEncrypted) {
+        if (isMemoEncrypted && recipientPublicKey) {
+            // can only encrypt with
           const encryptedPayload = await encryptMessage(
             memo,
             recipientPublicKey,
@@ -184,10 +184,6 @@ export const TransferScreen = () => {
       if (confirmation?.transaction) {
         // @ts-ignore
         setTransactionId(confirmation.transaction);
-        const isOwnAccount = !!accounts[recipientPublicKey];
-        if (!isOwnAccount) {
-          recipientsStore.getState().add(recipientPublicKey);
-        }
       }
 
       scrollToTop();
