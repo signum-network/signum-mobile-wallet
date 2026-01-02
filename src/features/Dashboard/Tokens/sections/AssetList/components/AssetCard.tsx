@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { router } from "expo-router";
 import { Amount, ChainValue } from "@signumjs/util";
-import { useAccount } from "@/hooks/useAccount";
+import { useWalletAccount } from "@/hooks/useWalletAccount";
 import { useTokenMetadata } from "@/hooks/useTokenMetadata";
 import { useTokenTransactionalData } from "@/hooks/useTokenTransactionalData";
 import { useActiveMarketRate } from "@/hooks/useActiveMarketRate";
@@ -29,7 +29,7 @@ export const AssetCard = ({
   unconfirmedBalanceQNT,
 }: TokenBalance) => {
   const { t } = useTranslation();
-  const { accountId, isWatchOnly } = useAccount();
+  const { accountId, isWatchOnly } = useWalletAccount();
   const { ticker, decimals, account } = useTokenMetadata(asset);
   const { priceNQT, isLoading } = useTokenTransactionalData(asset);
   const { price, ticker: marketTicker } = useActiveMarketRate();

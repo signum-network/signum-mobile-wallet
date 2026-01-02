@@ -5,7 +5,7 @@ import { useFocusEffect } from "expo-router";
 import { Amount } from "@signumjs/util";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useQueryClient } from "@tanstack/react-query";
-import { useAccount } from "@/hooks/useAccount";
+import { useWalletAccount } from "@/hooks/useWalletAccount";
 import { useNodeHostStore } from "@/hooks/useNodeHostStore";
 import { useLedgerService } from "@/hooks/useLedgerService";
 import { useNetworkFees } from "@/hooks/useNetworkFees";
@@ -25,7 +25,7 @@ export const CommitmentScreen = () => {
     accountId,
     publicKey,
     accountData: { balance },
-  } = useAccount();
+  } = useWalletAccount();
   const { cheap } = useNetworkFees({});
   const { currentNetwork } = useNodeHostStore();
 

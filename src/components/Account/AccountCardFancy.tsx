@@ -30,6 +30,7 @@ import { asRSAddress } from "@/utils/account/asRSAddress";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { toIpfsUrl } from "@/utils/toIpsUrl";
 import HashIconNativeSVG from "@/components/Account/Avatar/HashIconNativeSVG";
+import { router } from "expo-router";
 
 interface Props {
   publicKey: string;
@@ -470,8 +471,21 @@ export const AccountCardFancy = ({ publicKey, type, walletName }: Props) => {
                     </View>
                   )}
                 </View>
-              </View>
+
             </View>
+                {/* Edit Profile Button */}
+                {type === AccountType.mnemonic && isSecured && (
+                  <Pressable
+                    onPress={() => router.push(`/dashboard/account/${accountId}/profile`)}
+                    className="absolute bottom-1 left-5 bg-primary rounded-full px-3 py-1.5 flex-row items-center gap-1 bg-white/20 self-start mt-0.5"
+                  >
+                    <Ionicons name="create-outline" size={14} color="white" />
+                    <Text color="white" size="extraSmall" className="font-medium">
+                      {t("profile.edit")}
+                    </Text>
+                  </Pressable>
+                )}
+              </View>
           </Pressable>
         </Animated.View>
       </Animated.View>

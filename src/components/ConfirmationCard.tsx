@@ -10,7 +10,7 @@ interface Props {
   isDisabled: boolean;
 }
 
-export const ConfirmationSection = ({ onConfirm, isDisabled }: Props) => {
+export const ConfirmationCard = ({ onConfirm, isDisabled }: Props) => {
   const { t } = useTranslation();
   const { iconColor } = useAppTheme();
 

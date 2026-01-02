@@ -221,27 +221,6 @@ const typeName = getTransactionTypeName(
 // Returns: "Payment", "Asset Transfer", "Smart Contract Creation", etc.
 ```
 
-## File Structure
-
-```
-src/features/Dashboard/Sign/
-├── index.tsx                          # Main screen
-├── sections/
-│   ├── TransactionPreview.tsx         # Main preview router
-│   ├── SuccessSection.tsx
-│   └── ConfirmationSection.tsx
-├── components/
-│   ├── ViewModeToggle.tsx             # Parsed/JSON toggle
-│   ├── JsonView.tsx                   # Raw JSON display
-│   └── previews/
-│       ├── README.md                  # Implementation guide
-│       ├── PaymentPreview.tsx         # ✅ Payment transactions
-│       ├── GenericPreview.tsx         # Fallback for all others
-│       └── ... (add more here)
-└── utils/
-    ├── types.ts
-    └── transactionTypes.ts            # Type/subtype constants & helpers
-```
 
 ## Testing
 

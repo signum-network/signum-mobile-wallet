@@ -8,7 +8,7 @@ import type { Transaction } from "@signumjs/core";
 import { Text } from "@/components/Text";
 import { Card } from "@/components/Card";
 import { Button } from "@/components/Button";
-import { useAccount } from "@/hooks/useAccount";
+import { useWalletAccount } from "@/hooks/useWalletAccount";
 import { useLedgerService } from "@/hooks/useLedgerService";
 import { NoTransactionsFoundCard } from "@/components/Account/NoTransactionsFoundCard";
 import {
@@ -21,7 +21,7 @@ import { AppHeader } from "@/components/AppHeader";
 
 export const ActivityScreen = () => {
   const { t } = useTranslation();
-  const { accountId } = useAccount();
+  const { accountId } = useWalletAccount();
   const { ledgerService } = useLedgerService();
   const { isActiveNodeSynced, currentNetwork } = useNodeHostStore();
 

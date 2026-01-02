@@ -5,7 +5,7 @@ import {Image} from "expo-image";
 import {useMemo} from "react";
 import {src44} from "@signumjs/standards";
 import {useAppTheme} from "@/hooks/useAppTheme";
-import {useAccount} from "@/hooks/useAccount";
+import {useWalletAccount} from "@/hooks/useWalletAccount";
 import {useAccountStore} from "@/hooks/useAccountStore";
 import {Text} from "@/components/Text";
 import {asRSAddress} from "@/utils/account/asRSAddress";
@@ -27,7 +27,7 @@ export const AccountSwitcherFancy = ({href}: Props) => {
         isWatchOnly,
         walletName,
         accountData: {loading, description},
-    } = useAccount();
+    } = useWalletAccount();
     const {accountPublicKeys} = useAccountStore();
 
     const images = useMemo(() => {
