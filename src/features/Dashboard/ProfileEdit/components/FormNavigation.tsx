@@ -9,9 +9,7 @@ export const FormNavigation = () => {
   const { watch, setValue, formState } = useFormContext<ProfileEdit>();
 
   const activeStep = watch("activeStep");
-  const { isValid, errors } = formState;
-
-  console.log("Validation errors", errors, isValid, activeStep);
+  const { isValid } = formState;
 
   const FormNavButtonProps = useMemo(() => {
     switch (activeStep) {

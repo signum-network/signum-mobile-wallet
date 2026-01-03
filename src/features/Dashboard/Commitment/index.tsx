@@ -109,9 +109,6 @@ export const CommitmentScreen = () => {
       }
 
       setIsComplete(true);
-    } catch (error) {
-      alert("Error: " + JSON.stringify(error));
-    } finally {
       queryClient.invalidateQueries({
         queryKey: [
           "fetchAccountTransactionsBasicOverview",
@@ -119,6 +116,9 @@ export const CommitmentScreen = () => {
           currentNetwork,
         ],
       });
+    } catch (error) {
+      alert("Error: " + JSON.stringify(error));
+    } finally {
 
       setIsSigningTransaction(false);
     }

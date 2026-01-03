@@ -21,7 +21,6 @@ import {Text} from "@/components/Text";
 import {useAppTheme} from "@/hooks/useAppTheme";
 import {useTranslation} from "react-i18next";
 
-
 interface Props {
     accountId: string
 }
@@ -30,10 +29,11 @@ export const ProfileEditScreen = ({accountId}: Props) => {
     const {t} = useTranslation();
     const {tokens} = useAppTheme();
     const scrollRef: RefObject<ScrollView> = useRef(null!);
+    const draftDetectionRef = useRef(false);
     const formIsInitialized = useRef(false);
     const {data: account} = useQueryAccount(accountId);
-    const {currentNetwork}  = useNodeHostStore();
-    const { getDraft } = useProfileEditDraftStore();
+    const {currentNetwork} = useNodeHostStore();
+    const {getDraft} = useProfileEditDraftStore();
     const methods = useForm<ProfileEdit>({
         mode: "onChange",
         // @ts-ignore
@@ -56,7 +56,7 @@ export const ProfileEditScreen = ({accountId}: Props) => {
     const activeStep = methods.watch("activeStep")
 
     useEffect(() => {
-            if (account && accounts) {
+            if (account && accounts && !draftDetectionRef.current) {
                 // verify if this is also an registered account.
                 if (!accounts[account.publicKey]) {
                     router.push("/dashboard")
@@ -64,23 +64,21 @@ export const ProfileEditScreen = ({accountId}: Props) => {
                 }
                 methods.setValue("publicKey", account.publicKey)
                 // check for draft
-                if (getDraft(accountId, currentNetwork)) {
-                    methods.setValue("activeStep", Steps.DraftDialog)
-                }else{
-                    methods.setValue("activeStep", Steps.ProfileForm)
-                }
+                methods.setValue("activeStep", getDraft(accountId, currentNetwork) ? Steps.DraftDialog:  Steps.ProfileForm)
+                draftDetectionRef.current = true
             }
         },
-        [account, accounts, router, getDraft, currentNetwork, methods.setValue]
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [account, accounts, accountId, currentNetwork]
     )
 
     useEffect(() => {
-        if(account && activeStep === Steps.ProfileForm && !formIsInitialized.current){
+        if (account && activeStep === Steps.ProfileForm && !formIsInitialized.current) {
             const draft = getDraft(accountId, currentNetwork)
 
             const {setValue} = methods
 
-            try{
+            try {
                 const descriptor = src44.DescriptorData.parse(account.description, false)
                 setValue("name", descriptor.name || draft?.name || "")
                 setValue("description", descriptor.description || draft?.description || "")
@@ -89,19 +87,20 @@ export const ProfileEditScreen = ({accountId}: Props) => {
                 setValue("backgroundCid", descriptor.background.ipfsCid || draft?.backgroundCid || "")
                 setValue("backgroundMimeType", descriptor.background.mimeType || draft?.backgroundMimeType || "")
                 setValue("socialMediaLinks", descriptor.socialMediaLinks || draft?.socialMediaLinks || [])
-            }catch(e){
+            } catch (e) {
                 setValue("name", account.name || draft?.name || "")
                 setValue("description", account.description || draft?.description || "")
                 setValue("avatarCid", draft?.avatarCid || "")
                 setValue("avatarMimeType", draft?.avatarMimeType || "")
                 setValue("backgroundCid", draft?.backgroundCid || "")
                 setValue("backgroundMimeType", draft?.backgroundMimeType || "")
-                setValue("socialMediaLinks",  draft?.socialMediaLinks || [])
+                setValue("socialMediaLinks", draft?.socialMediaLinks || [])
             }
 
             formIsInitialized.current = true
         }
-    }, [activeStep, account, methods.setValue, getDraft, currentNetwork]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [activeStep, account, accountId, currentNetwork]);
 
 
     const scrollToTop = () => {
@@ -112,14 +111,14 @@ export const ProfileEditScreen = ({accountId}: Props) => {
         <KeyboardDismissView>
             <FormProvider {...methods}>
                 <View className="flex-1">
-                    {activeStep > Steps.DraftDialog  && <FormStepper/>}
+                    {activeStep > Steps.DraftDialog && <FormStepper/>}
 
                     <ScrollView ref={scrollRef}>
                         <View className="px-4 pt-4">
                             {activeStep === Steps.Initializing && (
                                 <Card>
                                     <View className="items-center justify-center py-16 gap-4">
-                                        <ActivityIndicator size="large" color={tokens.primary} />
+                                        <ActivityIndicator size="large" color={tokens.primary}/>
                                         <Text size="large" color="muted" className="text-center">
                                             {t("profile.loading")}
                                         </Text>
@@ -140,7 +139,7 @@ export const ProfileEditScreen = ({accountId}: Props) => {
                                 <ProfileForm/>
                             )}
                             {activeStep === Steps.Confirmation && (
-                                <ConfirmationProfileUpdate />
+                                <ConfirmationProfileUpdate/>
                             )}
                         </View>
                     </ScrollView>

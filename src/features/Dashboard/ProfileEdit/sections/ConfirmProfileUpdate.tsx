@@ -14,12 +14,15 @@ import {ConfirmationCard} from "@/components/ConfirmationCard";
 import {TotalAmount} from "@/components/TotalAmount";
 import type {ProfileEdit} from "@/features/Dashboard/ProfileEdit/utils/types";
 import {calculateDescriptorFee} from "@/features/Dashboard/ProfileEdit/utils/calculateDescriptorFee";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {ProfilePreview} from "@/features/Dashboard/ProfileEdit/components/ProfilePreview";
 import {readSecretKey} from "@/utils/sec/handleSecretKeys";
 import {useLedgerService} from "@/hooks/useLedgerService";
 import {useProfileEditDraftStore} from "@/hooks/useProfileEditDraftStore";
 import {useNodeHostStore} from "@/hooks/useNodeHostStore";
+import {router} from "expo-router";
+import {useQueryClient} from "@tanstack/react-query";
+import {Address} from "@signumjs/core";
 
 
 export const ConfirmationProfileUpdate = () => {
@@ -30,6 +33,7 @@ export const ConfirmationProfileUpdate = () => {
     const {currentNetwork} = useNodeHostStore()
     const [transactionId, setTransactionId] = useState("");
     const {clearDraft} = useProfileEditDraftStore()
+    const {invalidateQueries} =  useQueryClient()
 
     const publicKey = watch("publicKey");
     const name = watch("name");
@@ -54,6 +58,15 @@ export const ConfirmationProfileUpdate = () => {
     const descriptorLength = descriptorString.length;
     const feePlanck = calculateDescriptorFee(descriptorData);
     const feeAmount = Amount.fromPlanck(feePlanck);
+
+    useEffect(() => {
+        return () => {
+            if(transactionId){
+                clearDraft(publicKey, currentNetwork)
+            }
+        }
+    }, [transactionId]);
+
 
     const copyTransactionId = async () => {
         await Clipboard.setStringAsync(transactionId);
@@ -82,8 +95,20 @@ export const ConfirmationProfileUpdate = () => {
                 feePlanck
             })
 
-            clearDraft(publicKey, currentNetwork);
-            setTransactionId(transaction.id);
+            const accountId = Address.fromPublicKey(publicKey).getNumericId()
+            invalidateQueries({
+                queryKey: [
+                    "fetchAccountTransactionsBasicOverview",
+                    accountId,
+                    currentNetwork,
+                ],
+            });
+            setTransactionId(transaction.transaction);
+            setTimeout(() => {
+                    router.replace("/");
+                    clearDraft(publicKey, currentNetwork)
+                }, 5_000
+            );
 
         } catch (error: any) {
             console.error("Update failed", error.message);
@@ -113,31 +138,29 @@ export const ConfirmationProfileUpdate = () => {
                         </Text>
                     </View>
 
-                    {transactionId && (
-                        <View className="w-full flex flex-col items-center justify-center gap-4 px-4">
-                            <Button
-                                type="blackout"
-                                title={t("overview.copyTransactionId")}
-                                pressableProps={{onPress: copyTransactionId}}
-                                fullWidth
-                                size="small"
-                                icon={
-                                    <Ionicons name="copy" size={18} color={iconColor.blackout}/>
-                                }
-                                wide
-                            />
+                    <View className="w-full flex flex-col items-center justify-center gap-4 px-4">
+                        <Button
+                            type="blackout"
+                            title={t("overview.copyTransactionId")}
+                            pressableProps={{onPress: copyTransactionId}}
+                            fullWidth
+                            size="small"
+                            icon={
+                                <Ionicons name="copy" size={18} color={iconColor.blackout}/>
+                            }
+                            wide
+                        />
 
-                            <Button
-                                type="primary"
-                                title={t("overview.viewInExplorer")}
-                                pressableProps={{onPress: openTransactionInExplorer}}
-                                fullWidth
-                                size="small"
-                                icon={<Ionicons name="link" size={18} color="white"/>}
-                                wide
-                            />
-                        </View>
-                    )}
+                        <Button
+                            type="primary"
+                            title={t("overview.viewInExplorer")}
+                            pressableProps={{onPress: openTransactionInExplorer}}
+                            fullWidth
+                            size="small"
+                            icon={<Ionicons name="link" size={18} color="white"/>}
+                            wide
+                        />
+                    </View>
                 </Card>
             ) : (
                 <>

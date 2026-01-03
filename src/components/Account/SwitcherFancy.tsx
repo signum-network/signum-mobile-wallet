@@ -2,7 +2,7 @@ import {View, Pressable} from "react-native";
 import {router} from "expo-router";
 import {useTranslation} from "react-i18next";
 import {Image} from "expo-image";
-import {useMemo} from "react";
+import {useMemo, useState} from "react";
 import {src44} from "@signumjs/standards";
 import {useAppTheme} from "@/hooks/useAppTheme";
 import {useWalletAccount} from "@/hooks/useWalletAccount";
@@ -30,10 +30,19 @@ export const AccountSwitcherFancy = ({href}: Props) => {
     } = useWalletAccount();
     const {accountPublicKeys} = useAccountStore();
 
+    // Track image loading states
+    const [avatarLoaded, setAvatarLoaded] = useState(false);
+    const [avatarLoadError, setAvatarLoadError] = useState(false);
+    const [backgroundLoadError, setBackgroundLoadError] = useState(false);
+
     const images = useMemo(() => {
         if (loading || !description) return null;
         try {
             const descriptor = src44.DescriptorData.parse(description, false);
+            // Reset error and loading states when URLs change
+            setAvatarLoaded(false);
+            setAvatarLoadError(false);
+            setBackgroundLoadError(false);
             return {
                 avatarUrl: toIpfsUrl(descriptor?.avatar?.ipfsCid) ?? null,
                 backgroundUrl: toIpfsUrl(descriptor?.background?.ipfsCid) ?? null,
@@ -59,13 +68,14 @@ export const AccountSwitcherFancy = ({href}: Props) => {
         >
             {/* Background Layer */}
             <View className="absolute inset-0">
-                {images?.backgroundUrl ? (
+                {images?.backgroundUrl && !backgroundLoadError ? (
                     <>
                         <Image
                             source={images.backgroundUrl}
                             contentFit="cover"
                             cachePolicy="memory-disk"
                             transition={200}
+                            onError={() => setBackgroundLoadError(true)}
                             style={{width: "100%", height: "100%"}}
                         />
                         {/* Dark overlay for text readability */}
@@ -96,15 +106,33 @@ export const AccountSwitcherFancy = ({href}: Props) => {
                     {/* Large Avatar */}
                     <View
                         className="size-24 rounded-full overflow-hidden border-4 border-white/20 shadow-2xl bg-white/10">
-                        {images?.avatarUrl ? (
-                            <Image
-                                source={images.avatarUrl}
-                                contentFit="cover"
-                                cachePolicy="memory-disk"
-                                transition={200}
-                                recyclingKey={accountId}
-                                style={{width: "100%", height: "100%"}}
-                            />
+                        {images?.avatarUrl && !avatarLoadError ? (
+                            <>
+                                {/* Show HashIcon while loading */}
+                                {!avatarLoaded && (
+                                    <View className="w-full h-full flex items-center justify-center">
+                                        <HashIconNativeSVG seed={accountId}/>
+                                    </View>
+                                )}
+                                <Image
+                                    source={images.avatarUrl}
+                                    contentFit="cover"
+                                    cachePolicy="memory-disk"
+                                    transition={200}
+                                    recyclingKey={accountId}
+                                    onLoad={() => setAvatarLoaded(true)}
+                                    onError={() => {
+                                        setAvatarLoaded(false);
+                                        setAvatarLoadError(true);
+                                    }}
+                                    style={{
+                                        width: "100%",
+                                        height: "100%",
+                                        opacity: avatarLoaded ? 1 : 0,
+                                        position: avatarLoaded ? "relative" : "absolute",
+                                    }}
+                                />
+                            </>
                         ) : (
                             <View className="w-full h-full flex items-center justify-center">
                                 <HashIconNativeSVG seed={accountId}/>
@@ -114,7 +142,7 @@ export const AccountSwitcherFancy = ({href}: Props) => {
 
                     {/* Account Info */}
                     <View className="flex flex-col flex-1 gap-1">
-                        {images?.backgroundUrl ? (
+                        {images?.backgroundUrl && !backgroundLoadError ? (
                             <View className="bg-black/30 rounded-lg px-2 py-1 self-start">
                                 <Text
                                     color="white"
@@ -142,7 +170,7 @@ export const AccountSwitcherFancy = ({href}: Props) => {
                         <Text
                             color="white"
                             size="small"
-                            style={images?.backgroundUrl ? {
+                            style={images?.backgroundUrl && !backgroundLoadError ? {
                                 textShadowColor: 'rgba(0, 0, 0, 0.75)',
                                 textShadowOffset: {width: 0, height: 1},
                                 textShadowRadius: 3,

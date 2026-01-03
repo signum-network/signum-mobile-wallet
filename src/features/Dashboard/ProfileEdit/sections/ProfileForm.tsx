@@ -15,11 +15,11 @@ import {useProfileEditDraftStore} from "@/hooks/useProfileEditDraftStore";
 import {useNodeHostStore} from "@/hooks/useNodeHostStore";
 
 export const ProfileForm = () => {
-    const autoSaveInterval = useRef(0);
+    const debounceTimeout = useRef(0);
     const {t} = useTranslation();
     const {iconColor} = useAppTheme();
     const {currentNetwork} = useNodeHostStore();
-    const {watch, setValue, control, formState} = useFormContext<ProfileEdit>();
+    const {watch, setValue, control, formState, getValues} = useFormContext<ProfileEdit>();
     const {saveDraft} = useProfileEditDraftStore();
     const [showIpfsGuide, setShowIpfsGuide] = useState(false);
 
@@ -29,25 +29,21 @@ export const ProfileForm = () => {
     const socialMediaLinks = watch("socialMediaLinks");
     const formData = watch();
 
-
     useEffect(() => {
-
-        function saveFormData() {
-            if (formData && formState.isDirty) {
-                saveDraft(formData.publicKey, currentNetwork, formData)
-            }
+        if (formState.isDirty && debounceTimeout.current === 0) {
+            debounceTimeout.current = setTimeout(() => {
+                const currentFormData = getValues();
+                saveDraft(currentFormData.publicKey, currentNetwork, currentFormData as ProfileEdit);
+                debounceTimeout.current = 0;
+            }, 2_000)
         }
-
-        if (!autoSaveInterval.current) {
-            autoSaveInterval.current = setInterval(saveFormData, 5000);
-        }
-
         return () => {
-            saveFormData();
-            clearInterval(autoSaveInterval?.current ?? 0)
+            const currentFormData = getValues();
+            saveDraft(currentFormData.publicKey, currentNetwork, currentFormData as ProfileEdit);
+            clearTimeout(debounceTimeout.current);
         }
-
-    }, [formData, formState, currentNetwork]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [formState.isDirty, currentNetwork]);
 
 
     const {errors} = formState;

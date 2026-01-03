@@ -1,4 +1,4 @@
-import type {Account, Balance} from "@signumjs/core";
+import type {Account, Balance, TransactionId} from "@signumjs/core";
 import type {LedgerServiceContext} from "../ledgerServiceContext";
 import {LedgerSubService} from "../ledgerSubService";
 import {handleError} from "../handleError";
@@ -114,17 +114,17 @@ export class AccountService extends LedgerSubService {
         senderPrivateKey: string;
         descriptor: src44.DescriptorData;
         feePlanck: string;
-    }): Promise<any> {
+    }): Promise<TransactionId> {
         return handleError(async () => {
             const name = args.descriptor.name;
             const description = args.descriptor.stringify();
-            return this.context.ledger.account.setAccountInfo({
+            return (await this.context.ledger.account.setAccountInfo({
                 name,
                 description,
                 feePlanck: args.feePlanck,
                 senderPublicKey: args.senderPublicKey,
                 senderPrivateKey: args.senderPrivateKey,
-            });
+            })) as TransactionId;
         });
     }
 }
