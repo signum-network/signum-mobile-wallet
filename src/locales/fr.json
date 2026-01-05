@@ -563,6 +563,7 @@
     "background": "CID IPFS de l'Arrière-plan",
     "backgroundPlaceholder": "QmT5NvUtoM...",
     "backgroundHelper": "Identifiant de contenu IPFS pour votre image d'arrière-plan",
+    "mimeType": "Image Format",
     "ipfsInstructions": "Téléchargez votre image sur IPFS en utilisant Pinata, NFT.Storage, Storacha ou IPFS Desktop, puis collez le CID ici. Exemple : QmT5NvUtoM5nWFfrQdVrFtvGfKFmG7AHE8P34isapyhCxX",
     "profilePreview": "Aperçu du Profil",
     "confirmUpdate": "Confirmer la Mise à Jour du Profil",

@@ -33,7 +33,7 @@ export const ConfirmationProfileUpdate = () => {
     const {currentNetwork} = useNodeHostStore()
     const [transactionId, setTransactionId] = useState("");
     const {clearDraft} = useProfileEditDraftStore()
-    const {invalidateQueries} =  useQueryClient()
+    const queryClient = useQueryClient()
 
     const publicKey = watch("publicKey");
     const name = watch("name");
@@ -61,7 +61,7 @@ export const ConfirmationProfileUpdate = () => {
 
     useEffect(() => {
         return () => {
-            if(transactionId){
+            if (transactionId) {
                 clearDraft(publicKey, currentNetwork)
             }
         }
@@ -84,9 +84,12 @@ export const ConfirmationProfileUpdate = () => {
                 return;
             }
 
+
             const secretKeys = await readSecretKey(publicKey);
             if (!ledgerService || !secretKeys) throw new Error("invalid data");
             const {signPrivateKey} = secretKeys;
+
+            const address = Address.fromPublicKey(publicKey);
 
             const transaction = await ledgerService.account.setAccountDescriptor({
                 senderPublicKey: publicKey,
@@ -95,16 +98,17 @@ export const ConfirmationProfileUpdate = () => {
                 feePlanck
             })
 
-            const accountId = Address.fromPublicKey(publicKey).getNumericId()
-            invalidateQueries({
-                queryKey: [
-                    "fetchAccountTransactionsBasicOverview",
-                    accountId,
-                    currentNetwork,
-                ],
-            });
+
+
             setTransactionId(transaction.transaction);
             setTimeout(() => {
+                    queryClient.invalidateQueries({
+                        queryKey: [
+                            "fetchAccountTransactionsBasicOverview",
+                            address.getNumericId(),
+                            currentNetwork,
+                        ],
+                    });
                     router.replace("/");
                     clearDraft(publicKey, currentNetwork)
                 }, 5_000

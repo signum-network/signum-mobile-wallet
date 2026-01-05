@@ -6,6 +6,7 @@ import {useTranslation} from "react-i18next";
 import type {ProfileEdit} from "../utils/types";
 import {type Account, Address} from "@signumjs/core";
 import {useMemo} from "react";
+import {useNodeHostStore} from "@/hooks/useNodeHostStore";
 
 interface Props {
     formData: ProfileEdit;
@@ -13,6 +14,7 @@ interface Props {
 
 export const ProfilePreview = ({formData}: Props) => {
     const {t} = useTranslation();
+    const {addressPrefix} = useNodeHostStore()
 
 
     // Build descriptor from form data
@@ -43,7 +45,7 @@ export const ProfilePreview = ({formData}: Props) => {
             isAT: false
         } as Account;
 
-        const address = Address.fromPublicKey(publicKey);
+        const address = Address.fromPublicKey(publicKey, addressPrefix);
         return {
             account: address.getNumericId(),
             accountRS: address.getReedSolomonAddress(),
@@ -54,7 +56,7 @@ export const ProfilePreview = ({formData}: Props) => {
             isAT: false
         } as Account;
 
-    }, [publicKey, descriptorString]);
+    }, [publicKey, descriptorString, addressPrefix]);
 
     return (
         <View className="w-full flex flex-col gap-2">

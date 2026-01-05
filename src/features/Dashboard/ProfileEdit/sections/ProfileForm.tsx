@@ -10,6 +10,7 @@ import {useAppTheme} from "@/hooks/useAppTheme";
 import type {ProfileEdit} from "@/features/Dashboard/ProfileEdit/utils/types";
 import {ProfilePreview} from "@/features/Dashboard/ProfileEdit/components/ProfilePreview";
 import {IpfsUploadGuide} from "@/features/Dashboard/ProfileEdit/components/IpfsUploadGuide";
+import {MimeTypeSelector} from "@/features/Dashboard/ProfileEdit/components/MimeTypeSelector";
 import {useEffect, useRef, useState} from "react";
 import {useProfileEditDraftStore} from "@/hooks/useProfileEditDraftStore";
 import {useNodeHostStore} from "@/hooks/useNodeHostStore";
@@ -309,6 +310,22 @@ export const ProfileForm = () => {
                             </Text>
                         )}
 
+                        <View className="mt-3">
+                            <Text size="small" className="font-medium mb-2">
+                                {t("profile.mimeType")}
+                            </Text>
+                            <Controller
+                                control={control}
+                                render={({field: {onChange, value}}) => (
+                                    <MimeTypeSelector
+                                        value={value}
+                                        onChange={onChange}
+                                    />
+                                )}
+                                name="avatarMimeType"
+                            />
+                        </View>
+
                         <Text size="small" color="muted" className="mt-1">
                             {t("profile.ipfsInstructions")}
                         </Text>
@@ -347,6 +364,22 @@ export const ProfileForm = () => {
                                 {errors.backgroundCid.message}
                             </Text>
                         )}
+
+                        <View className="mt-3">
+                            <Text size="small" className="font-medium mb-2">
+                                {t("profile.mimeType")}
+                            </Text>
+                            <Controller
+                                control={control}
+                                render={({field: {onChange, value}}) => (
+                                    <MimeTypeSelector
+                                        value={value}
+                                        onChange={onChange}
+                                    />
+                                )}
+                                name="backgroundMimeType"
+                            />
+                        </View>
 
                         <Text size="small" color="muted" className="mt-1">
                             {t("profile.ipfsInstructions")}

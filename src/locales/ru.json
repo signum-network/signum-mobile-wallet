@@ -563,6 +563,7 @@
     "background": "IPFS CID Фона",
     "backgroundPlaceholder": "QmT5NvUtoM...",
     "backgroundHelper": "Идентификатор содержимого IPFS для фонового изображения",
+    "mimeType": "Image Format",
     "ipfsInstructions": "Загрузите изображение в IPFS с помощью Pinata, NFT.Storage, Storacha или IPFS Desktop, затем вставьте CID здесь. Пример: QmT5NvUtoM5nWFfrQdVrFtvGfKFmG7AHE8P34isapyhCxX",
     "profilePreview": "Предпросмотр Профиля",
     "confirmUpdate": "Подтвердить Обновление Профиля",
