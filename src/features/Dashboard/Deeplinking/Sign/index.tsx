@@ -181,7 +181,7 @@ export const SignScreen = () => {
                 <ScrollView className="flex-1 p-4" contentContainerClassName="justify-center">
                     <Card>
                         <View className="items-center gap-4 py-6">
-                            <ActivityIndicator size="large" color={iconColor.primary} />
+                            <ActivityIndicator size="large" color={iconColor.primary}/>
                             <View className="gap-2">
                                 <Text className="text-center text-lg font-semibold">
                                     {t("sign.loadingTitle")}

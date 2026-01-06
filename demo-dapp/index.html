@@ -426,12 +426,14 @@
             log('Transaction bytes: ' + unsignedTx.unsignedTransactionBytes.substring(0, 40) + '...', 'info');
 
             // Create sign deep link
+            const callbackUrl = window.location.origin + window.location.pathname + '?action=signed';
             const deeplink = src22.createDeeplink({
                 version: 'v1',
                 action: 'sign',
                 payload: {
                     unsignedTransactionBytes: unsignedTx.unsignedTransactionBytes,
-                    network: currentNetwork
+                    network: currentNetwork,
+                    callbackUrl
                 }
             });
 

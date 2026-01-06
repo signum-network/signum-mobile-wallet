@@ -68,18 +68,27 @@ export const DeepLinkInitializer = () => {
                 if (!payload) {
                     throw Error(t("deeplink.missingUnsignedTransactionBytes"))
                 }
-                const {unsignedTransactionBytes, network = ""} = payload;
+                const {unsignedTransactionBytes, network = "", callbackUrl} = payload;
                 if (!unsignedTransactionBytes) {
                     throw new Error(t("deeplink.missingUnsignedTransactionBytes"))
                 }
                 if (network && network !== currentNetwork) {
                     throw new Error(t("deeplink.networkMismatch", {currentNetwork, requestedNetwork: network}));
                 }
+                if (!callbackUrl) {
+                    throw new Error(t("deeplink.missingCallback"))
+                }
+
+                // assert Url
+                new URL(callbackUrl);
 
                 console.log('[DeepLink] Storing sign request as pending');
                 setPendingDeepLink({
                     pathname: "/dashboard/deeplink/sign" as const,
-                    params: {transactionBytes: unsignedTransactionBytes},
+                    params: {
+                        transactionBytes: unsignedTransactionBytes,
+                        callbackUrl,
+                    },
                 });
                 setRoutingRequested(true);
             } else if (parsed.action === "connect" && parsed.decodedPayload) {
