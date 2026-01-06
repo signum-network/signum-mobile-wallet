@@ -14,7 +14,7 @@ import { Amount, ChainValue } from "@signumjs/util";
 import { AttachmentMessage, AttachmentEncryptedMessage } from "@signumjs/core";
 import { encryptMessage } from "@signumjs/crypto";
 import { useQueryClient } from "@tanstack/react-query";
-import { useAccount } from "@/hooks/useAccount";
+import { useWalletAccount } from "@/hooks/useWalletAccount";
 import { useLedgerService } from "@/hooks/useLedgerService";
 import { useNodeHostStore } from "@/hooks/useNodeHostStore";
 import { WatchOnlyAccountCard } from "@/components/Account/WatchOnlyAccountCard";
@@ -40,7 +40,7 @@ import { KeyboardDismissView } from "@/components/KeyboardDismissView";
 export const TransferScreen = () => {
   const { t } = useTranslation();
   const { ledgerService } = useLedgerService();
-  const { isWatchOnly, publicKey, accountId } = useAccount();
+  const { isWatchOnly, publicKey, accountId } = useWalletAccount();
   const { currentNetwork } = useNodeHostStore();
   const { asset: routeAsset } = useGlobalSearchParams<GlobalSearchParams>();
 
@@ -189,9 +189,6 @@ export const TransferScreen = () => {
       scrollToTop();
 
       setIsComplete(true);
-    } catch (error) {
-      alert("Error: " + JSON.stringify(error));
-    } finally {
       queryClient.invalidateQueries({
         queryKey: [
           "fetchAccountTransactionsBasicOverview",
@@ -199,6 +196,9 @@ export const TransferScreen = () => {
           currentNetwork,
         ],
       });
+    } catch (error) {
+      alert("Error: " + JSON.stringify(error));
+    } finally {
 
       setIsSigningTransaction(false);
     }

@@ -2,7 +2,7 @@ import { Dimensions, View, Pressable, Alert } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
 import { Image } from "expo-image";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { src44 } from "@signumjs/standards";
 import { useNodeHostStore } from "@/hooks/useNodeHostStore";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
@@ -30,6 +30,7 @@ import { asRSAddress } from "@/utils/account/asRSAddress";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { toIpfsUrl } from "@/utils/toIpsUrl";
 import HashIconNativeSVG from "@/components/Account/Avatar/HashIconNativeSVG";
+import { router } from "expo-router";
 
 interface Props {
   publicKey: string;
@@ -97,6 +98,11 @@ export const AccountCardFancy = ({ publicKey, type, walletName }: Props) => {
   const networkData = currentAccount?.[currentNetwork];
   const activationInProgress = !!networkData?.activationInProgress;
 
+  // Track image loading states
+  const [avatarLoaded, setAvatarLoaded] = useState(false);
+  const [avatarLoadError, setAvatarLoadError] = useState(false);
+  const [backgroundLoadError, setBackgroundLoadError] = useState(false);
+
   const images = useMemo(() => {
     if (!currentAccount?.[currentNetwork]?.description) return null;
     try {
@@ -104,6 +110,10 @@ export const AccountCardFancy = ({ publicKey, type, walletName }: Props) => {
         currentAccount[currentNetwork].description,
         false
       );
+      // Reset loading and error states when URLs change
+      setAvatarLoaded(false);
+      setAvatarLoadError(false);
+      setBackgroundLoadError(false);
       return {
         avatarUrl: toIpfsUrl(descriptor?.avatar?.ipfsCid) ?? null,
         backgroundUrl: toIpfsUrl(descriptor?.background?.ipfsCid) ?? null,
@@ -306,13 +316,14 @@ export const AccountCardFancy = ({ publicKey, type, walletName }: Props) => {
           >
             {/* Background Layer */}
             <View className="absolute inset-0">
-              {images?.backgroundUrl ? (
+              {images?.backgroundUrl && !backgroundLoadError ? (
                 <>
                   <Image
                     source={images.backgroundUrl}
                     contentFit="cover"
                     cachePolicy="memory-disk"
                     transition={200}
+                    onError={() => setBackgroundLoadError(true)}
                     style={{ width: "100%", height: "100%" }}
                   />
                   {/* Dark overlay for text readability */}
@@ -358,15 +369,33 @@ export const AccountCardFancy = ({ publicKey, type, walletName }: Props) => {
               <View className="flex flex-row gap-3 items-center flex-1">
                 {/* Large Avatar */}
                 <View className="size-20 rounded-full overflow-hidden border-3 border-white/30 shadow-xl bg-white/10">
-                  {images?.avatarUrl ? (
-                    <Image
-                      source={images.avatarUrl}
-                      contentFit="cover"
-                      cachePolicy="memory-disk"
-                      transition={200}
-                      recyclingKey={accountId}
-                      style={{ width: "100%", height: "100%" }}
-                    />
+                  {images?.avatarUrl && !avatarLoadError ? (
+                    <>
+                      {/* Show HashIcon while loading */}
+                      {!avatarLoaded && (
+                        <View className="w-full h-full flex items-center justify-center">
+                          <HashIconNativeSVG seed={accountId} />
+                        </View>
+                      )}
+                      <Image
+                        source={images.avatarUrl}
+                        contentFit="cover"
+                        cachePolicy="memory-disk"
+                        transition={200}
+                        recyclingKey={accountId}
+                        onLoad={() => setAvatarLoaded(true)}
+                        onError={() => {
+                          setAvatarLoaded(false);
+                          setAvatarLoadError(true);
+                        }}
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          opacity: avatarLoaded ? 1 : 0,
+                          position: avatarLoaded ? "relative" : "absolute",
+                        }}
+                      />
+                    </>
                   ) : (
                     <View className="w-full h-full flex items-center justify-center">
                       <HashIconNativeSVG seed={accountId} />
@@ -376,7 +405,7 @@ export const AccountCardFancy = ({ publicKey, type, walletName }: Props) => {
 
                 {/* Account Info */}
                 <View className="flex flex-col flex-1 gap-0.5">
-                  {images?.backgroundUrl ? (
+                  {images?.backgroundUrl && !backgroundLoadError ? (
                     <View className="bg-black/30 rounded-lg px-2 py-1 self-start">
                       <Text
                         color="white"
@@ -397,9 +426,9 @@ export const AccountCardFancy = ({ publicKey, type, walletName }: Props) => {
                   )}
 
                   <Text
-                    color={images?.backgroundUrl ? "white" : "muted"}
+                    color={images?.backgroundUrl && !backgroundLoadError ? "white" : "muted"}
                     size="small"
-                    style={images?.backgroundUrl ? {
+                    style={images?.backgroundUrl && !backgroundLoadError ? {
                       textShadowColor: 'rgba(0, 0, 0, 0.75)',
                       textShadowOffset: { width: 0, height: 1 },
                       textShadowRadius: 3,
@@ -408,10 +437,10 @@ export const AccountCardFancy = ({ publicKey, type, walletName }: Props) => {
                     {asRSAddress(accountId)}
                   </Text>
                   <Text
-                    color={images?.backgroundUrl ? "white" : "muted"}
+                    color={images?.backgroundUrl && !backgroundLoadError ? "white" : "muted"}
                     size="small"
                     className="font-bold"
-                    style={images?.backgroundUrl ? {
+                    style={images?.backgroundUrl && !backgroundLoadError ? {
                       textShadowColor: 'rgba(0, 0, 0, 0.75)',
                       textShadowOffset: { width: 0, height: 1 },
                       textShadowRadius: 3,
@@ -428,10 +457,10 @@ export const AccountCardFancy = ({ publicKey, type, walletName }: Props) => {
                           <Ionicons
                             name="hourglass-outline"
                             size={12}
-                            color={images?.backgroundUrl ? "white" : iconColor.primary}
+                            color={images?.backgroundUrl && !backgroundLoadError ? "white" : iconColor.primary}
                           />
                           <Text
-                            color={images?.backgroundUrl ? "white" : "primary"}
+                            color={images?.backgroundUrl && !backgroundLoadError ? "white" : "primary"}
                             size="extraSmall"
                             className="font-medium"
                           >
@@ -456,10 +485,10 @@ export const AccountCardFancy = ({ publicKey, type, walletName }: Props) => {
                             : "shield-checkmark-outline"
                         }
                         size={12}
-                        color={images?.backgroundUrl ? "white" : iconColor.muted}
+                        color={images?.backgroundUrl && !backgroundLoadError ? "white" : iconColor.muted}
                       />
                       <Text
-                        color={images?.backgroundUrl ? "white" : "muted"}
+                        color={images?.backgroundUrl && !backgroundLoadError ? "white" : "muted"}
                         size="extraSmall"
                         className="font-medium"
                       >
@@ -470,8 +499,21 @@ export const AccountCardFancy = ({ publicKey, type, walletName }: Props) => {
                     </View>
                   )}
                 </View>
-              </View>
+
             </View>
+                {/* Edit Profile Button */}
+                {type === AccountType.mnemonic && isSecured && (
+                  <Pressable
+                    onPress={() => router.push(`/dashboard/account/${accountId}/profile`)}
+                    className="absolute bottom-1 left-5 bg-primary rounded-full px-3 py-1.5 flex-row items-center gap-1 bg-white/20 self-start mt-0.5"
+                  >
+                    <Ionicons name="create-outline" size={14} color="white" />
+                    <Text color="white" size="extraSmall" className="font-medium">
+                      {t("profile.edit")}
+                    </Text>
+                  </Pressable>
+                )}
+              </View>
           </Pressable>
         </Animated.View>
       </Animated.View>

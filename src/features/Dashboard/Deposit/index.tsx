@@ -4,7 +4,7 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import { Card } from "@/components/Card";
 import { Text } from "@/components/Text";
 import { Button } from "@/components/Button";
-import { useAccount } from "@/hooks/useAccount";
+import { useWalletAccount } from "@/hooks/useWalletAccount";
 import { asRSAddress } from "@/utils/account/asRSAddress";
 
 import * as Clipboard from "expo-clipboard";
@@ -15,7 +15,7 @@ import {AccountSwitcherFancy} from "@/components/Account/SwitcherFancy";
 
 export const DepositScreen = () => {
   const { t } = useTranslation();
-  const { accountId } = useAccount();
+  const { accountId } = useWalletAccount();
   const { iconColor } = useAppTheme();
 
   const rsAddress = `${asRSAddress(accountId)}`;

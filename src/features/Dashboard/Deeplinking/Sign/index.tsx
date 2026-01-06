@@ -4,7 +4,7 @@ import {ScrollView, View, ActivityIndicator} from "react-native";
 import {useRouter} from "expo-router";
 import {Address, type Transaction} from "@signumjs/core";
 import {useQueryClient} from "@tanstack/react-query";
-import {useAccount} from "@/hooks/useAccount";
+import {useWalletAccount} from "@/hooks/useWalletAccount";
 import {useLedgerService} from "@/hooks/useLedgerService";
 import {WatchOnlyAccountCard} from "@/components/Account/WatchOnlyAccountCard";
 import {SigningDialog} from "@/components/SigningDialog";
@@ -14,12 +14,12 @@ import {Button} from "@/components/Button";
 import {readSecretKey} from "@/utils/sec/handleSecretKeys";
 import {KeyboardDismissView} from "@/components/KeyboardDismissView";
 import {SuccessSection} from "./sections/SuccessSection";
-import {ConfirmationSection} from "./sections/ConfirmationSection";
 import {useNodeHostStore} from "@/hooks/useNodeHostStore";
 import {pendingDeepLinkStore} from "@/states/pendingDeepLinkStore";
 import {TransactionPreviewSection} from "./sections/TransactionPreviewSection";
 import {useAppTheme} from "@/hooks/useAppTheme";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import {ConfirmationCard} from "@/components/ConfirmationCard";
 
 type SignDeeplinkParams = {
     transactionBytes: string;
@@ -42,7 +42,7 @@ export const SignScreen = () => {
     const {t} = useTranslation();
     const router = useRouter();
     const {ledgerService} = useLedgerService();
-    const {isWatchOnly, publicKey} = useAccount();
+    const {isWatchOnly, publicKey} = useWalletAccount();
     const {currentNetwork} = useNodeHostStore();
     const queryClient = useQueryClient();
     const {iconColor} = useAppTheme();
@@ -225,7 +225,7 @@ export const SignScreen = () => {
                     {!isComplete && (
                         <View className="flex flex-col gap-2">
                             <View>
-                                <ConfirmationSection
+                                <ConfirmationCard
                                     onConfirm={handleSign}
                                     isDisabled={isSigning}
                                 />

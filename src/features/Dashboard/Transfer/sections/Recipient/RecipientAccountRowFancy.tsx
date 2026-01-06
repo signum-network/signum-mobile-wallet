@@ -57,6 +57,8 @@ export const RecipientAccountRowFancy: React.FC<Props> = ({
     const {ledgerService} = useLedgerService()
     const [avatarLoaded, setAvatarLoaded] = useState(false);
     const [backgroundLoaded, setBackgroundLoaded] = useState(false);
+    const [avatarLoadError, setAvatarLoadError] = useState(false);
+    const [backgroundLoadError, setBackgroundLoadError] = useState(false);
 
     const {data: account, isLoading} = useQuery({
         queryKey: ["fetchAccountDescription", accountId, currentNetwork],
@@ -103,6 +105,8 @@ export const RecipientAccountRowFancy: React.FC<Props> = ({
     useMemo(() => {
         setAvatarLoaded(false);
         setBackgroundLoaded(false);
+        setAvatarLoadError(false);
+        setBackgroundLoadError(false);
     }, [accountData?.avatarUrl, accountData?.backgroundUrl]);
 
 
@@ -118,7 +122,7 @@ export const RecipientAccountRowFancy: React.FC<Props> = ({
         return accountData;
     }, [nftMetaData, accountData]);
 
-    const showBackground = accountData?.backgroundUrl && backgroundLoaded;
+    const showBackground = accountData?.backgroundUrl && backgroundLoaded && !backgroundLoadError;
     const isSelected = selectedAccountId && selectedAccountId === accountId;
     return (
         <Pressable
@@ -132,7 +136,7 @@ export const RecipientAccountRowFancy: React.FC<Props> = ({
         >
             {/* Background Layer */}
             <View className="absolute inset-0">
-                {accountData?.backgroundUrl ? (
+                {accountData?.backgroundUrl && !backgroundLoadError ? (
                     <>
                         <Image
                             source={accountData.backgroundUrl}
@@ -141,7 +145,10 @@ export const RecipientAccountRowFancy: React.FC<Props> = ({
                             transition={200}
                             recyclingKey={`${accountId}-bg`}
                             onLoad={() => setBackgroundLoaded(true)}
-                            onError={() => setBackgroundLoaded(false)}
+                            onError={() => {
+                                setBackgroundLoaded(false);
+                                setBackgroundLoadError(true);
+                            }}
                             style={{
                                 width: "100%",
                                 height: "100%",
@@ -185,7 +192,7 @@ export const RecipientAccountRowFancy: React.FC<Props> = ({
                     {/* Avatar */}
                     <View
                         className="size-16 rounded-full overflow-hidden border-2 border-white/30 shadow-lg bg-white/10">
-                        {accountData?.avatarUrl ? (
+                        {accountData?.avatarUrl && !avatarLoadError ? (
                             <>
                                 {/* Show default avatar while loading */}
                                 {!avatarLoaded && (
@@ -201,7 +208,10 @@ export const RecipientAccountRowFancy: React.FC<Props> = ({
                                     transition={200}
                                     recyclingKey={accountId + "-avatar"}
                                     onLoad={() => setAvatarLoaded(true)}
-                                    onError={() => setAvatarLoaded(false)}
+                                    onError={() => {
+                                        setAvatarLoaded(false);
+                                        setAvatarLoadError(true);
+                                    }}
                                     style={{
                                         width: "100%",
                                         height: "100%",

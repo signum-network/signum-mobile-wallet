@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useAccount } from "@/hooks/useAccount";
+import { useWalletAccount } from "@/hooks/useWalletAccount";
 import { useAccountStore } from "@/hooks/useAccountStore";
 import { useNodeHostStore } from "@/hooks/useNodeHostStore";
 import { useLedgerService } from "@/hooks/useLedgerService";
@@ -10,7 +10,7 @@ import { PUBLIC_SIGNUM_FETCH_ACCOUNT_DATA_INTERVAL } from "@/types/constants";
 export const AccountInitializer = () => {
   const { ledgerService } = useLedgerService();
   const { isActiveNodeSynced, currentNetwork } = useNodeHostStore();
-  const { isAuthenticated, publicKey, accountId } = useAccount();
+  const { isAuthenticated, publicKey, accountId } = useWalletAccount();
   const { updateAccountActivationStatus, updateAccountData } =
     useAccountStore();
 
