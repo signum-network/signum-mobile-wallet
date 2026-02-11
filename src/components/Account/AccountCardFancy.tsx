@@ -30,7 +30,7 @@ import { asRSAddress } from "@/utils/account/asRSAddress";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { toIpfsUrl } from "@/utils/toIpsUrl";
 import HashIconNativeSVG from "@/components/Account/Avatar/HashIconNativeSVG";
-import { router } from "expo-router";
+import { Button } from "@/components/Button";
 
 interface Props {
   publicKey: string;
@@ -277,96 +277,100 @@ export const AccountCardFancy = ({ publicKey, type, walletName }: Props) => {
   const { iconColor, tokens } = useAppTheme();
 
   return (
-    <GestureDetector gesture={pan}>
-      <Animated.View style={itemHeightStyle}>
-        <Animated.View
-          className="!rounded-xl pr-4 flex flex-row items-center justify-end"
-          style={{
+  <GestureDetector gesture={pan}>
+    <Animated.View style={itemHeightStyle}>
+      {/* Swipe/Delete Layer */}
+      <Animated.View
+        className="!rounded-xl pr-4 flex flex-row items-center justify-end"
+        style={{
+          height: ITEM_HEIGHT,
+          position: "absolute",
+          right: "0%",
+          width: "95%",
+          backgroundColor: tokens.error,
+        }}
+      >
+        <View className="flex flex-row items-center gap-2">
+          <Text color="white" className="font-bold">
+            {t("settings.account.deleteAccount")}
+          </Text>
+          
+          <Ionicons name="trash-bin" size={24} color="white" />
+        </View>
+      </Animated.View>
+
+      {/* Foreground/Card Layer */}
+      <Animated.View
+        className="!rounded-xl overflow-hidden"
+        style={[
+          transformStyle,
+          {
+            width: "100%",
             height: ITEM_HEIGHT,
-            position: "absolute",
-            right: "0%",
-            width: "95%",
-            backgroundColor: tokens.error,
-          }}
-        >
-          <View className="flex flex-row items-center gap-2">
-            <Text color="white" className="font-bold">
-              {t("settings.account.deleteAccount")}
-            </Text>
-
-            <Ionicons name="trash-bin" size={24} color="white" />
-          </View>
-        </Animated.View>
-
-        <Animated.View
-          className="!rounded-xl overflow-hidden"
-          style={[
-            transformStyle,
-            {
-              width: "100%",
-              height: ITEM_HEIGHT,
-              borderWidth: isCurrentAccount ? 3 : 0,
-              borderColor: isCurrentAccount ? tokens.success : "transparent",
-            },
-          ]}
-        >
-          <Pressable
-            onPress={changeActiveAccount}
-            className="w-full h-full relative"
+            borderWidth: isCurrentAccount ? 3 : 0,
+            borderColor: isCurrentAccount ? tokens.success : "transparent",
+          },
+        ]}
+      >
+        <Pressable 
+          onPress={changeActiveAccount}
+          className="w-full h-full relative"
           >
-            {/* Background Layer */}
-            <View className="absolute inset-0">
-              {images?.backgroundUrl && !backgroundLoadError ? (
-                <>
-                  <Image
-                    source={images.backgroundUrl}
-                    contentFit="cover"
-                    cachePolicy="memory-disk"
-                    transition={200}
-                    onError={() => setBackgroundLoadError(true)}
-                    style={{ width: "100%", height: "100%" }}
-                  />
-                  {/* Dark overlay for text readability */}
-                  <View
-                    style={{
-                      position: "absolute",
-                      width: "100%",
-                      height: "100%",
-                      backgroundColor: isCurrentAccount
-                        ? "rgba(0,0,0,0.4)"
-                        : "rgba(0,0,0,0.5)",
-                    }}
-                  />
-                </>
-              ) : (
+          {/* Background Layer */}
+          <View className="absolute inset-0">
+            {images?.backgroundUrl && !backgroundLoadError ? (
+              <>
+                <Image
+                  source={images.backgroundUrl}
+                  contentFit="cover"
+                  cachePolicy="memory-disk"
+                  transition={200}
+                  onError={() => setBackgroundLoadError(true)}
+                  style={{ width: "100%", height: "100%" }}
+                />
+                {/* Dark overlay for text readability */}
                 <View
                   style={{
+                    position: "absolute",
                     width: "100%",
                     height: "100%",
                     backgroundColor: isCurrentAccount
-                      ? tokens.primarySoft
-                      : tokens.surface,
+                      ? "rgba(0,0,0,0.4)"
+                      : "rgba(0,0,0,0.5)",
                   }}
                 />
-              )}
-            </View>
-
-            {/* Active Account Badge */}
-            {isCurrentAccount && (
-              <View className="absolute top-2 right-2 z-10">
-                <View className="bg-white/90 rounded-full px-3 py-1 flex flex-row items-center gap-1 shadow-lg">
-                  <Ionicons name="checkmark-circle" size={16} color={tokens.success} />
-                  <Text color="success" size="extraSmall" className="font-bold">
-                    {t("settings.account.active")}
-                  </Text>
-                </View>
-              </View>
+              </>
+            ) : (
+              <View
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  backgroundColor: isCurrentAccount
+                   ? tokens.primarySoft
+                    : tokens.surface,
+                }}
+              />
             )}
+          </View>
 
-            {/* Content Layer */}
-            <View className="relative w-full h-full p-3 flex flex-row items-center justify-between">
-              {/* Left: Avatar and Info */}
-              <View className="flex flex-row gap-3 items-center flex-1">
+          {/* Active Account Badge */}
+          {isCurrentAccount && (
+            <View className="absolute top-2 right-2 z-10">
+              <View className="bg-white/90 rounded-full px-3 py-1 flex flex-row items-center gap-1 shadow-lg">
+                <Ionicons name="checkmark-circle" size={16} color={tokens.success} />
+                <Text color="success" size="extraSmall" className="font-bold">
+                  {t("settings.account.active")}
+                </Text>
+              </View>
+            </View>
+          )}
+
+          {/* Content Layer */}
+          <View className="relative w-full h-full p-3 flex flex-row items-center justify-between">
+            {/* Left block: Avatar + Button (column) + Info (right) */}
+            <View className="flex flex-row gap-3 items-center flex-1">
+              {/* Avatar + Button column */}
+              <View className="flex flex-col items-center gap-3">
                 {/* Large Avatar */}
                 <View className="size-20 rounded-full overflow-hidden border-3 border-white/30 shadow-xl bg-white/10">
                   {images?.avatarUrl && !avatarLoadError ? (
@@ -402,121 +406,120 @@ export const AccountCardFancy = ({ publicKey, type, walletName }: Props) => {
                     </View>
                   )}
                 </View>
+                  {/* Edit Profile Button (centered under avatar) */}
+                  {type === AccountType.mnemonic && isSecured && (
+                    <Button
+                      icon={<Ionicons name="create-outline" size={14} color="white" />}
+                      type="primary"
+                      size="extraSmall"
+                      title={t("profile.edit")}
+                      linkProps={{ href: `/dashboard/account/${accountId}/profile` }}
+                    />
+                  )}
+              </View>
 
-                {/* Account Info */}
-                <View className="flex flex-col flex-1 gap-0.5">
-                  {images?.backgroundUrl && !backgroundLoadError ? (
-                    <View className="bg-black/30 rounded-lg px-2 py-1 self-start">
-                      <Text
-                        color="white"
-                        className="font-bold"
-                        style={{
+              {/* Account Info */}
+              <View className="flex flex-col flex-1 gap-0.5">
+                {images?.backgroundUrl && !backgroundLoadError ? (
+                  <View className="bg-black/30 rounded-lg px-2 py-1 self-start">
+                    <Text
+                      color="white"
+                      size="large"
+                      className="font-bold"
+                      style={{
+                        textShadowColor: 'rgba(0, 0, 0, 0.75)',
+                        textShadowOffset: { width: 0, height: 1 },
+                        textShadowRadius: 3,
+                      }}
+                    >
+                      {walletName}
+                    </Text>
+                  </View>
+                ) : (
+                  <Text color="content" className="font-bold" size="large">
+                    {walletName}
+                  </Text>
+                )}
+
+                <Text
+                  color={images?.backgroundUrl && !backgroundLoadError ? "white" : "muted"}
+                  size="small"
+                  style={images?.backgroundUrl && !backgroundLoadError ? {
                           textShadowColor: 'rgba(0, 0, 0, 0.75)',
                           textShadowOffset: { width: 0, height: 1 },
                           textShadowRadius: 3,
-                        }}
-                      >
-                        {walletName}
-                      </Text>
-                    </View>
-                  ) : (
-                    <Text color="content" className="font-bold">
-                      {walletName}
-                    </Text>
-                  )}
+                        } : {}}
+                >
+                  {asRSAddress(accountId)}
+                </Text>
+                <Text
+                  color={images?.backgroundUrl && !backgroundLoadError ? "white" : "muted"}
+                  size="medium"
+                  className="font-bold"
+                  style={images?.backgroundUrl && !backgroundLoadError ? {
+                          textShadowColor: 'rgba(0, 0, 0, 0.75)',
+                          textShadowOffset: { width: 0, height: 1 },
+                          textShadowRadius: 3,
+                        } : {}}
+                >
+                  {formatNumber({ value: availableBalance })} {NativeTicker}
+                </Text>
 
-                  <Text
-                    color={images?.backgroundUrl && !backgroundLoadError ? "white" : "muted"}
-                    size="small"
-                    style={images?.backgroundUrl && !backgroundLoadError ? {
-                      textShadowColor: 'rgba(0, 0, 0, 0.75)',
-                      textShadowOffset: { width: 0, height: 1 },
-                      textShadowRadius: 3,
-                    } : {}}
-                  >
-                    {asRSAddress(accountId)}
-                  </Text>
-                  <Text
-                    color={images?.backgroundUrl && !backgroundLoadError ? "white" : "muted"}
-                    size="small"
-                    className="font-bold"
-                    style={images?.backgroundUrl && !backgroundLoadError ? {
-                      textShadowColor: 'rgba(0, 0, 0, 0.75)',
-                      textShadowOffset: { width: 0, height: 1 },
-                      textShadowRadius: 3,
-                    } : {}}
-                  >
-                    {formatNumber({ value: availableBalance })} {NativeTicker}
-                  </Text>
-
-                  {/* Account Status */}
-                  {!isSecured ? (
-                    activationInProgress ? (
-                      <Pulse>
-                        <View className="flex-row items-center gap-1 bg-white/20 rounded-full px-2 py-0.5 self-start mt-0.5">
-                          <Ionicons
-                            name="hourglass-outline"
-                            size={12}
-                            color={images?.backgroundUrl && !backgroundLoadError ? "white" : iconColor.primary}
-                          />
-                          <Text
-                            color={images?.backgroundUrl && !backgroundLoadError ? "white" : "primary"}
-                            size="extraSmall"
-                            className="font-medium"
-                          >
-                            {t("unsafeAccount.activating")}
-                          </Text>
-                        </View>
-                      </Pulse>
-                    ) : (
-                      <View className="flex-row items-center gap-1 bg-red-500/80 rounded-full px-2 py-0.5 self-start mt-0.5">
-                        <Ionicons name="warning-outline" size={12} color="white" />
-                        <Text color="white" size="extraSmall" className="font-medium">
-                          {t("settings.account.unsecuredAccount")}
+                {/* Account Status */}
+                {!isSecured ? (
+                  activationInProgress ? (
+                    <Pulse>
+                      <View className="flex-row items-center gap-1 bg-white/20 rounded-full px-2 py-0.5 self-start mt-0.5">
+                        <Ionicons
+                          name="hourglass-outline"
+                          size={12}
+                          color={images?.backgroundUrl && !backgroundLoadError ? "white" : iconColor.primary}
+                        />
+                        <Text
+                          color={images?.backgroundUrl && !backgroundLoadError ? "white" : "primary"}
+                          size="extraSmall"
+                          className="font-medium"
+                        >
+                          {t("unsafeAccount.activating")}
                         </Text>
                       </View>
-                    )
+                    </Pulse>
                   ) : (
-                    <View className="flex-row items-center gap-1 bg-white/20 rounded-full px-2 py-0.5 self-start mt-0.5">
-                      <Ionicons
-                        name={
-                          type === AccountType.watchOnly
-                            ? "eye-outline"
-                            : "shield-checkmark-outline"
-                        }
-                        size={12}
-                        color={images?.backgroundUrl && !backgroundLoadError ? "white" : iconColor.muted}
-                      />
-                      <Text
-                        color={images?.backgroundUrl && !backgroundLoadError ? "white" : "muted"}
-                        size="extraSmall"
-                        className="font-medium"
-                      >
-                        {type === AccountType.watchOnly
-                          ? t("watchOnly")
-                          : t("fullAccount")}
+                    <View className="flex-row items-center gap-1 bg-red-500/80 rounded-full px-2 py-0.5 self-start mt-0.5">
+                      <Ionicons name="warning-outline" size={12} color="white" />
+                      <Text color="white" size="extraSmall" className="font-medium">
+                        {t("settings.account.unsecuredAccount")}
                       </Text>
                     </View>
-                  )}
-                </View>
-
-            </View>
-                {/* Edit Profile Button */}
-                {type === AccountType.mnemonic && isSecured && (
-                  <Pressable
-                    onPress={() => router.push(`/dashboard/account/${accountId}/profile`)}
-                    className="absolute bottom-1 left-5 bg-primary rounded-full px-3 py-1.5 flex-row items-center gap-1 bg-white/20 self-start mt-0.5"
-                  >
-                    <Ionicons name="create-outline" size={14} color="white" />
-                    <Text color="white" size="extraSmall" className="font-medium">
-                      {t("profile.edit")}
+                  )
+                ) : (
+                  <View className="flex-row items-center gap-1 rounded-full py-0.5 self-start mt-0.5">
+                    <Ionicons
+                      name={
+                        type === AccountType.watchOnly
+                         ? "eye-outline"
+                         : "shield-checkmark-outline"
+                        }
+                      size={12}
+                      color={images?.backgroundUrl && !backgroundLoadError ? "white" : iconColor.muted}
+                    />
+                    <Text
+                      color={images?.backgroundUrl && !backgroundLoadError ? "white" : "muted"}
+                      size="extraSmall"
+                      className="font-medium"
+                    >
+                      {type === AccountType.watchOnly
+                       ? t("watchOnly") 
+                       : t("fullAccount")}
                     </Text>
-                  </Pressable>
+                  </View>
                 )}
               </View>
-          </Pressable>
-        </Animated.View>
+            </View>
+          </View>
+        </Pressable>
       </Animated.View>
-    </GestureDetector>
-  );
+    </Animated.View>
+  </GestureDetector>
+);
 };
