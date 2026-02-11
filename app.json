@@ -41,9 +41,6 @@
       ],
       "versionCode": 1
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
     "plugins": [
       "expo-router",
       "expo-secure-store",
