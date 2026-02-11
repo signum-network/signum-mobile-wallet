@@ -160,13 +160,13 @@ export const PinAuthenticator = ({
           </View>
         </View>
 
-        {/* Subtext */}
-        <Text className="mt-1" color={error ? "error" : "content"}>
-          {error ? errorLabel : complementaryLabel}
-        </Text>
+        {/* Subtext (fixed height to avoid layout jumps when label changes) */}
+        <View className="h-16 justify-center">
+          <Text color={error ? "error" : "content"} >
+            {error ? errorLabel : complementaryLabel}
+          </Text>
+        </View>
 
-        {/* Spacer */}
-        <View className="flex-1 min-h-12 max-h-24" />
 
         {/* PIN */}
         <View className="w-full max-w-md mx-auto px-8 items-center mb-4">
