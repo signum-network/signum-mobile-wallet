@@ -1,5 +1,5 @@
 import {useRef, type RefObject, useEffect} from "react";
-import {View, ScrollView, ActivityIndicator} from "react-native";
+import {View, ScrollView, ActivityIndicator, Platform, KeyboardAvoidingView} from "react-native";
 import {useForm, FormProvider} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {profileEditSchema} from "./utils/schemas";
@@ -9,7 +9,6 @@ import {ConfirmationProfileUpdate} from "./sections/ConfirmProfileUpdate";
 import {DraftDialog} from "./sections/DraftDialog";
 import {FormNavigation} from "./components/FormNavigation";
 import {FormStepper} from "./components/FormStepper";
-import {KeyboardDismissView} from "@/components/KeyboardDismissView";
 import {useQueryAccount} from "@/hooks/useQueryAccount";
 import {useAccountStore} from "@/hooks/useAccountStore";
 import {useRouter} from "expo-router";
@@ -108,12 +107,19 @@ export const ProfileEditScreen = ({accountId}: Props) => {
     };
 
     return (
-        <KeyboardDismissView>
+        <KeyboardAvoidingView
+            className="flex-1 w-full"
+            behavior={Platform.OS === "ios" ? "padding" : undefined}
+        >
             <FormProvider {...methods}>
                 <View className="flex-1">
                     {activeStep > Steps.DraftDialog && <FormStepper/>}
 
-                    <ScrollView ref={scrollRef}>
+                    <ScrollView
+                        ref={scrollRef}
+                        keyboardDismissMode="on-drag"
+                        keyboardShouldPersistTaps="handled"
+                    >
                         <View className="px-4 pt-4">
                             {activeStep === Steps.Initializing && (
                                 <Card>
@@ -147,6 +153,6 @@ export const ProfileEditScreen = ({accountId}: Props) => {
                     {activeStep !== Steps.DraftDialog && <FormNavigation/>}
                 </View>
             </FormProvider>
-        </KeyboardDismissView>
+        </KeyboardAvoidingView>
     );
 };
