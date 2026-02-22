@@ -28,14 +28,13 @@ export const AccountIdField = () => {
             control={control}
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
-                placeholder={t("example") + " S-5MS6..., 167552..."}
+                placeholder={t("example") + " S-5MS6..., 167552..., alias"}
                 onBlur={onBlur}
                 onChangeText={onChange}
                 returnKeyType="done"
                 value={value}
                 size="large"
                 textAlign="center"
-                maxLength={30}
               />
             )}
             name="account"
