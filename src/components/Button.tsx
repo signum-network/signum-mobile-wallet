@@ -8,7 +8,7 @@ import {useAppTheme} from "@/hooks/useAppTheme";
 
 export interface ButtonProps {
     type?: "primary" | "secondary" | "error" | "blackout" | "link";
-    size?: "small" | "medium" | "large";
+    size?: "extraSmall" | "small" | "medium" | "large";
     linkProps?: LinkProps;
     pressableProps?: PressableProps;
     title?: string;
@@ -46,11 +46,15 @@ export const Button = ({
     const longPressDelay = pressableProps?.delayLongPress || 0;
 
     const heightClass =
-        size === "small" ? "h-12" : size === "large" ? "h-16" : "h-14";
+        size === "extraSmall" ? "h-8" : size ===  "small" ? "h-12" : size === "large" ? "h-16" : "h-14";
+
+    const paddingClass =
+        size === "extraSmall" ? "px-2" : size === "small" ? "px-2" : "px-3";
 
     const classNames = clsx(
         "flex flex-row justify-center items-center py-1 ripple-[#333] ripple-bordered",
         heightClass,
+        paddingClass,
         fullWidth && "w-full",
         wide && "!px-16",
         rounded ? "rounded-full" : "rounded-lg",
@@ -58,8 +62,8 @@ export const Button = ({
     );
 
     const textSize =
-        size === "small" ? "text-sm" : size === "large" ? "text-xl" : "text-base";
-    const lineHeight = size === "small" ? 16 : size === "large" ? 22 : 18;
+        size === "extraSmall" ? "text-sm" : size === "small" ? "text-sm" : size === "large" ? "text-xl" : "text-base";
+    const lineHeight = size === "extraSmall" ? 14 : size === "small" ? 16 : size === "large" ? 22 : 18;
 
     let backgroundColor: string | undefined;
     let textColor: string | undefined;

@@ -71,7 +71,7 @@ export const Activity = () => {
   const isLoading = isPending && !transactions.length;
 
   return (
-    <View className="pb-60">
+    <View className="pb-72">
     <Card>
       <Text size="large" className="font-medium">
         {t("transaction_other")}

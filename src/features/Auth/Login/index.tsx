@@ -125,11 +125,22 @@ export const LoginAuthScreen = () => {
 
     return (
         <View
-            className="flex-1 items-center justify-between pt-24 pb-8 px-4"
+            className="flex-1 items-center justify-start"
             style={{
                 backgroundColor: tokens.background,
             }}
         >
+            {/* Top slot: show reset button only after first failed attempt */}
+            <View className="w-full mb-2 justify-center h-14 mt-4 px-4">
+                {failedAuthAttempts >= 1 ? (
+                    <ResetWalletDialog variant="ghost" />
+                ) : (
+                    <View className="opacity-0" pointerEvents="none">
+                        {/* Placeholder to keep layout height consistent */}
+                        <ResetWalletDialog variant="ghost" />
+                    </View>
+                )}
+            </View>
             <PinAuthenticator
                 label={t("auth.loginPassCodeTitle")}
                 complementaryLabel={t("auth.loginPassCodeDescription")}
@@ -143,7 +154,6 @@ export const LoginAuthScreen = () => {
                 onReset={resetValues}
                 disabled={loading}
             />
-            <ResetWalletDialog variant="ghost"/>
         </View>
     );
 };

@@ -66,7 +66,7 @@ export const ResetWalletDialog = ({variant}: Props) => {
 
                 <View className="w-full flex flex-col items-center justify-center gap-2 mt-4">
                     <Button
-                        icon={<Ionicons name="close" size={24}/>}
+                        icon={<Ionicons name="close" size={24} color={iconColor.default}/>}
                         title={t("cancel")}
                         type="secondary"
                         pressableProps={{onPress: hideDialog}}
