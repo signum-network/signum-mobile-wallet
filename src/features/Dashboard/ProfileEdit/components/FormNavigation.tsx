@@ -31,7 +31,7 @@ export const FormNavigation = () => {
 
   return (
     <FormNavButton
-      bottomOffset={0}
+      inline
       type="primary"
       title={t("continue")}
       hidden={activeStep === Steps.Confirmation}

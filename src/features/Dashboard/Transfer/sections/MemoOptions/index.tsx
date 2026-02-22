@@ -1,5 +1,5 @@
 import {useEffect, useMemo} from "react";
-import {View, ScrollView} from "react-native";
+import {View} from "react-native";
 import {useTranslation} from "react-i18next";
 import {useFormContext, Controller} from "react-hook-form";
 import {Text} from "@/components/Text";
@@ -53,8 +53,7 @@ export const MemoOptions = () => {
     }, [memo, includeMemo, isMemoEncrypted]);
 
     return (
-        <View>
-            <ScrollView>
+        <View className="w-full">
                 <View className="gap-4 w-full pb-32">
                     <FormCheckbox
                         value={includeMemo}
@@ -113,7 +112,6 @@ export const MemoOptions = () => {
                         </>
                     )}
                 </View>
-            </ScrollView>
         </View>
     );
 };

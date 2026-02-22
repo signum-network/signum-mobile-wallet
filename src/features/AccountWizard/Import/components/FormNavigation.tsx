@@ -4,7 +4,6 @@ import { useFormContext } from "react-hook-form";
 import { FormNavButton } from "@/components/Form/NavButton";
 import type { AccountImport } from "../utils/types";
 import { AccountType } from "@/types/account";
-import { useAccountStore } from "@/hooks/useAccountStore";
 
 interface Props {
   onSubmit: () => void;
@@ -13,7 +12,6 @@ interface Props {
 export const FormNavigation = ({ onSubmit }: Props) => {
   const { t } = useTranslation();
   const { watch } = useFormContext<AccountImport>();
-  const { isAccountEnrolled } = useAccountStore();
 
   const type = watch("type");
   const account = watch("account");
@@ -40,7 +38,7 @@ export const FormNavigation = ({ onSubmit }: Props) => {
 
   return (
     <FormNavButton
-      bottomOffset={isAccountEnrolled ? 0 : undefined}
+      inline
       type="primary"
       title={t("continue")}
       pressableProps={{ onPress: () => onSubmit() }}

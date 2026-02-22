@@ -122,9 +122,8 @@ export const CreateScreen = () => {
 
   return (
     <FormProvider {...methods}>
-      <FormNavigation onSubmit={methods.handleSubmit(onSubmit)} />
       <FormStepper />
-         <KeyboardAnimatedContainer baseBottom={isAccountEnrolled ? -70 : 36}> 
+         <KeyboardAnimatedContainer baseBottom={isAccountEnrolled ? -70 : 36}>
         <Dialog variant="full" visible={showDialog}>
           <View className="flex flex-col items-center justify-center gap-4 w-full">
             <Ionicons name="checkmark-circle" size={85} color={iconColor.green} />
@@ -144,9 +143,14 @@ export const CreateScreen = () => {
           </View>
         </Dialog>
 
-        <ScrollView ref={scrollRef} key={activeStep}>
+        <ScrollView
+          ref={scrollRef}
+          key={activeStep}
+          keyboardDismissMode="on-drag"
+          keyboardShouldPersistTaps="handled"
+        >
           <AccountWizardContainer>
-            {activeStep === Steps.AccountCreationAgreement && 
+            {activeStep === Steps.AccountCreationAgreement &&
             <Agreement />}
             {activeStep === Steps.SecretPhraseGeneration && (
               <SecretPhraseGeneration />
@@ -155,6 +159,7 @@ export const CreateScreen = () => {
               <SecretPhraseVerification />
             )}
           </AccountWizardContainer>
+          <FormNavigation onSubmit={methods.handleSubmit(onSubmit)} />
         </ScrollView>
       </KeyboardAnimatedContainer>
     </FormProvider>

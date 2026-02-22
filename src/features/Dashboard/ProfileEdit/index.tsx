@@ -113,7 +113,11 @@ export const ProfileEditScreen = ({accountId}: Props) => {
                 <View className="flex-1">
                     {activeStep > Steps.DraftDialog && <FormStepper/>}
 
-                    <ScrollView ref={scrollRef}>
+                    <ScrollView
+                        ref={scrollRef}
+                        keyboardDismissMode="on-drag"
+                        keyboardShouldPersistTaps="handled"
+                    >
                         <View className="px-4 pt-4">
                             {activeStep === Steps.Initializing && (
                                 <Card>
@@ -141,10 +145,10 @@ export const ProfileEditScreen = ({accountId}: Props) => {
                             {activeStep === Steps.Confirmation && (
                                 <ConfirmationProfileUpdate/>
                             )}
+
+                            {activeStep !== Steps.DraftDialog && <FormNavigation/>}
                         </View>
                     </ScrollView>
-
-                    {activeStep !== Steps.DraftDialog && <FormNavigation/>}
                 </View>
             </FormProvider>
         </KeyboardDismissView>

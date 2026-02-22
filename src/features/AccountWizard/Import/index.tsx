@@ -147,14 +147,15 @@ export const ImportScreen = () => {
 
   return (
     <FormProvider {...methods}>
-      <FormNavigation onSubmit={handleSubmit(onSubmit)} />
-
       <AppHeader
         title={t("accountWizard.quickStart.importCta")}
         onBack={goBackwards}
       />
       <KeyboardAnimatedContainer baseBottom={isAccountEnrolled ? -70 : 36}>
-        <ScrollView>
+        <ScrollView
+          keyboardDismissMode="on-drag"
+          keyboardShouldPersistTaps="handled"
+        >
           <AccountWizardContainer>
             <View className="flex flex-col items-center justify-center w-full gap-4">
               <Text size="extraLarge" className="font-bold text-center mt-8">
@@ -233,6 +234,8 @@ export const ImportScreen = () => {
 
             <WalletNameField />
           </AccountWizardContainer>
+
+          <FormNavigation onSubmit={handleSubmit(onSubmit)} />
         </ScrollView>
       </KeyboardAnimatedContainer>
     </FormProvider>

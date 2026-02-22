@@ -1,4 +1,4 @@
-import {View, ScrollView} from "react-native";
+import {View} from "react-native";
 import {useMemo} from "react";
 import {useTranslation} from "react-i18next";
 import {useFormContext, Controller} from "react-hook-form";
@@ -133,7 +133,7 @@ export const Recipient = () => {
                     </Card>
                     <HorizontalDivider/>
                 </View>
-                <ScrollView contentContainerStyle={{paddingBottom: 96}}>
+                <View>
                     <SelectableAccountList
                         title={t("transfer.yourAccounts")}
                         accountIds={Array.from(permanentAccountIdSet)}
@@ -161,8 +161,7 @@ export const Recipient = () => {
                         />
                     </View>
 
-                    <View className="h-24"/>
-                </ScrollView>
+                </View>
             </View>
         </>
     );

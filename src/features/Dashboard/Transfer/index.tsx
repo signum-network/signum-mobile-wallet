@@ -6,7 +6,7 @@ import {
   type RefObject,
 } from "react";
 import { useTranslation } from "react-i18next";
-import { ScrollView, View } from "react-native";
+import { ScrollView } from "react-native";
 import { useGlobalSearchParams, useFocusEffect } from "expo-router";
 import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -35,7 +35,7 @@ import { FeeSelection } from "./sections/FeeSelection";
 import { Confirmation } from "./sections/Confirmation";
 import { FormNavigation } from "./components/FormNavigation";
 import { FormStepper } from "./components/FormStepper";
-import { KeyboardDismissView } from "@/components/KeyboardDismissView";
+
 
 export const TransferScreen = () => {
   const { t } = useTranslation();
@@ -210,9 +210,15 @@ export const TransferScreen = () => {
     <FormProvider {...methods}>
       <SigningDialog visible={isSigningTransaction} />
       {!isComplete && <FormStepper />}
-      <View className="flex-1 items-start w-full px-4 py-4 gap-4">
+      <ScrollView
+        ref={scrollRef}
+        className="flex-1"
+        contentContainerClassName="items-start w-full px-4 py-4 gap-4"
+        keyboardDismissMode="on-drag"
+        keyboardShouldPersistTaps="handled"
+      >
         {activeStep === Steps.Recipient && <Recipient />}
-        {activeStep === Steps.HoldingsSelection &&   <KeyboardDismissView><HoldingsSelection /></KeyboardDismissView>}
+        {activeStep === Steps.HoldingsSelection && <HoldingsSelection />}
         {activeStep === Steps.MemoOptions && <MemoOptions />}
         {activeStep === Steps.FeeSelection && <FeeSelection />}
         {activeStep === Steps.Confirmation && (
@@ -223,8 +229,8 @@ export const TransferScreen = () => {
             disableOnSubmit={isSigningTransaction || isComplete}
           />
         )}
-      </View>
-      <FormNavigation />
+        <FormNavigation />
+      </ScrollView>
     </FormProvider>
   );
 };
