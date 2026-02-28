@@ -1,4 +1,4 @@
-import {useMemo, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {View} from "react-native";
 import {Image} from "expo-image";
 import clsx from "clsx";
@@ -34,6 +34,9 @@ export const TokenAvatar = ({
         return null;
     }, [isLoading, avatarIpfsHash]);
 
+    useEffect(() => {
+        setAvatarLoaded(false);
+    }, [avatarIpfsHash]);
 
     return (
         <View
@@ -54,7 +57,6 @@ export const TokenAvatar = ({
                         width: "100%",
                         height: "100%",
                         opacity: avatarLoaded ? 1 : 0,
-                        position: avatarLoaded ? "relative" : "absolute",
                     }}
                     onLoad={() => setAvatarLoaded(true)}
                     onError={() => setAvatarLoaded(false)}
