@@ -34,29 +34,35 @@ export const TokenAvatar = ({
         return null;
     }, [isLoading, avatarIpfsHash]);
 
-    // Reset loaded states when images change
-    useMemo(() => {
-        setAvatarLoaded(false);
-    }, [avatarIpfsHash]);
 
     return (
         <View
             className={clsx([
                 "size-11 overflow-hidden rounded",
-                !ipfsImage && "pr-1",
+                !(ipfsImage && avatarLoaded) && "pr-1",
                 extraClassNames && extraClassNames,
             ])}
         >
-            {ipfsImage ? (
-                !avatarLoaded ? <DefaultTokenIcon tokenId={tokenId} ticker={ticker}/> :
-                    <Image
-                        source={ipfsImage}
-                        contentFit="cover"
-                        style={{width: "100%", height: "100%", backgroundColor: "rgba(0,0,0,0.05)"}}
-                        onLoad={() => setAvatarLoaded(true)}
-                        onError={() => setAvatarLoaded(false)}
-                    />
-            ) : (<DefaultTokenIcon tokenId={tokenId} ticker={ticker}/>)}
+            {ipfsImage && (
+                <Image
+                    source={ipfsImage}
+                    contentFit="cover"
+                    cachePolicy="memory-disk"
+                    transition={200}
+                    recyclingKey={`${tokenId}-token-avatar`}
+                    style={{
+                        width: "100%",
+                        height: "100%",
+                        opacity: avatarLoaded ? 1 : 0,
+                        position: avatarLoaded ? "relative" : "absolute",
+                    }}
+                    onLoad={() => setAvatarLoaded(true)}
+                    onError={() => setAvatarLoaded(false)}
+                />
+            )}
+            {!(ipfsImage && avatarLoaded) && (
+                <DefaultTokenIcon tokenId={tokenId} ticker={ticker}/>
+            )}
         </View>
     );
 };
