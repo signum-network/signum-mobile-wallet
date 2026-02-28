@@ -16,7 +16,7 @@ import {useProfileEditDraftStore} from "@/hooks/useProfileEditDraftStore";
 import {useNodeHostStore} from "@/hooks/useNodeHostStore";
 
 export const ProfileForm = () => {
-    const debounceTimeout = useRef(0);
+    const debounceTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
     const {t} = useTranslation();
     const {iconColor} = useAppTheme();
     const {currentNetwork} = useNodeHostStore();
@@ -31,17 +31,17 @@ export const ProfileForm = () => {
     const formData = watch();
 
     useEffect(() => {
-        if (formState.isDirty && debounceTimeout.current === 0) {
+        if (formState.isDirty && !debounceTimeout.current) {
             debounceTimeout.current = setTimeout(() => {
                 const currentFormData = getValues();
                 saveDraft(currentFormData.publicKey, currentNetwork, currentFormData as ProfileEdit);
-                debounceTimeout.current = 0;
+                debounceTimeout.current = null;
             }, 2_000)
         }
         return () => {
             const currentFormData = getValues();
             saveDraft(currentFormData.publicKey, currentNetwork, currentFormData as ProfileEdit);
-            clearTimeout(debounceTimeout.current);
+            if (debounceTimeout.current) clearTimeout(debounceTimeout.current);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [formState.isDirty, currentNetwork]);
