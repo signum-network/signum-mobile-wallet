@@ -1,4 +1,4 @@
-import {useEffect, useMemo, useState} from "react";
+import {useMemo, useRef, useState} from "react";
 import {View} from "react-native";
 import {Image} from "expo-image";
 import clsx from "clsx";
@@ -20,7 +20,14 @@ export const TokenAvatar = ({
     const {ticker} = useTokenMetadata(tokenId)
     const {avatarIpfsHash, isLoading} = useTokenTransactionalData(tokenId);
     const [avatarLoaded, setAvatarLoaded] = useState(false);
+    const prevHashRef = useRef(avatarIpfsHash);
 
+    // Reset avatarLoaded synchronously during render when hash changes,
+    // eliminating the one-frame opacity flash from the useEffect approach
+    if (prevHashRef.current !== avatarIpfsHash) {
+        prevHashRef.current = avatarIpfsHash;
+        setAvatarLoaded(false);
+    }
 
     const ipfsImage = useMemo(() => {
         if (isLoading) return null;
@@ -29,10 +36,6 @@ export const TokenAvatar = ({
         }
         return null;
     }, [isLoading, avatarIpfsHash]);
-
-    useEffect(() => {
-        setAvatarLoaded(false);
-    }, [avatarIpfsHash]);
 
     return (
         <View

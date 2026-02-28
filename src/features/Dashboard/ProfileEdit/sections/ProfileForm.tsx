@@ -41,7 +41,10 @@ export const ProfileForm = () => {
         return () => {
             const currentFormData = getValues();
             saveDraft(currentFormData.publicKey, currentNetwork, currentFormData as ProfileEdit);
-            if (debounceTimeout.current) clearTimeout(debounceTimeout.current);
+            if (debounceTimeout.current) {
+                clearTimeout(debounceTimeout.current);
+                debounceTimeout.current = null;
+            }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [formState.isDirty, currentNetwork]);

@@ -15,7 +15,7 @@ import {src44} from "@signumjs/standards"
 import {
     PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MINUTES, PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MILLISECONDS
 } from "@/types/constants";
-
+import {djb2Hash} from "@/utils/djb2Hash";
 
 /**
  * Retrieves and manages transactional data for a specified token, including its price, IPFS avatar hash,
@@ -38,8 +38,12 @@ export const useTokenTransactionalData = (
     const queryClient = useQueryClient();
     const {description} = useTokenMetadata(tokenId)
 
+    // Include a hash of description in the query key so the query
+    // re-runs when description arrives asynchronously from useTokenMetadata
+    const descriptionKey = description ? djb2Hash(description) : 0;
+
     const {data, isLoading} = useQuery({
-        queryKey: ["fetchTokenTransactionalData", tokenId],
+        queryKey: ["fetchTokenTransactionalData", tokenId, descriptionKey],
         queryFn: async () => {
             if (!ledgerService) return defaultTokenTransactionalData;
             const currentDate = new Date();

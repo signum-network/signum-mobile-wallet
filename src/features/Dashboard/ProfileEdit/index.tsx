@@ -56,10 +56,10 @@ export const ProfileEditScreen = ({accountId}: Props) => {
 
     useEffect(() => {
             if (account && accounts && !draftDetectionRef.current) {
-                // verify if this is also an registered account.
+                // verify if this is also a registered account.
                 if (!accounts[account.publicKey]) {
                     router.push("/dashboard")
-                    alert("profile.notRegistered")
+                    alert(t("profile.notRegistered"))
                 }
                 methods.setValue("publicKey", account.publicKey)
                 // check for draft
