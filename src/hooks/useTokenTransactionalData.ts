@@ -36,7 +36,7 @@ export const useTokenTransactionalData = (
     const {isActiveNodeSynced, currentNetwork} = useNodeHostStore();
     const db = useDatabase();
     const queryClient = useQueryClient();
-    const {description} = useTokenMetadata()
+    const {description} = useTokenMetadata(tokenId)
 
     const {data, isLoading} = useQuery({
         queryKey: ["fetchTokenTransactionalData", tokenId],
@@ -100,11 +100,10 @@ export const useTokenTransactionalData = (
                         .update(tokensTransactionalData)
                         .set(updatePayload)
                         .where(eq(tokensTransactionalData.id, tokenId));
+                    await invalidateTokenQuery();
                     return updatePayload;
                 } catch (e) {
                     return row;
-                } finally {
-                    await invalidateTokenQuery();
                 }
             }
 
@@ -112,11 +111,10 @@ export const useTokenTransactionalData = (
             try {
                 const insertPayload = await mountPayload();
                 await db.insert(tokensTransactionalData).values(insertPayload);
+                await invalidateTokenQuery();
                 return insertPayload;
             } catch (e) {
                 return defaultTokenTransactionalData;
-            } finally {
-                await invalidateTokenQuery();
             }
         },
         refetchInterval: PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MILLISECONDS,

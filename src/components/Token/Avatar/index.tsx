@@ -24,12 +24,8 @@ export const TokenAvatar = ({
 
     const ipfsImage = useMemo(() => {
         if (isLoading) return null;
-        try {
-            if (avatarIpfsHash) {
-                return `${PUBLIC_IPFS_GATEWAY}/${avatarIpfsHash}`;
-            }
-        } catch {
-            // noop
+        if (avatarIpfsHash) {
+            return `${PUBLIC_IPFS_GATEWAY}/${avatarIpfsHash}`;
         }
         return null;
     }, [isLoading, avatarIpfsHash]);
@@ -42,7 +38,7 @@ export const TokenAvatar = ({
         <View
             className={clsx([
                 "size-11 overflow-hidden rounded",
-                !(ipfsImage && avatarLoaded) && "pr-1",
+                !ipfsImage && "pr-1",
                 extraClassNames && extraClassNames,
             ])}
         >
