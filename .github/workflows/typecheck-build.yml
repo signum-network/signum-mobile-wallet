@@ -56,7 +56,6 @@ jobs:
     needs: [typecheck, detect-native-changes]
     if: >-
       needs.detect-native-changes.outputs.native-changed == 'true'
-      || github.event_name == 'push'
       || github.event_name == 'workflow_dispatch'
     steps:
       - uses: actions/checkout@v4
@@ -71,15 +70,30 @@ jobs:
           distribution: temurin
           java-version: 17
 
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('android/**/*.gradle*', 'android/gradle.properties') }}
+          restore-keys: |
+            gradle-${{ runner.os }}-
+
       - run: npm ci
 
       - run: npx expo prebuild --platform android --clean
 
-      - name: Build Android Release
+      - name: Build Android (CI)
         working-directory: android
         env:
-          GRADLE_OPTS: -Xmx4096m -Dorg.gradle.daemon=false
-        run: ./gradlew assembleRelease --no-daemon -Dorg.gradle.workers.max=2
+          GRADLE_OPTS: -Xmx4096m
+        run: >-
+          ./gradlew assembleDebug
+          -PreactNativeArchitectures=x86_64
+          -Dorg.gradle.workers.max=4
+          -Dorg.gradle.caching=true
+          -Dorg.gradle.configuration-cache=true
 
   build-ios:
     name: Build iOS
@@ -87,7 +101,6 @@ jobs:
     needs: [typecheck, detect-native-changes]
     if: >-
       needs.detect-native-changes.outputs.native-changed == 'true'
-      || github.event_name == 'push'
       || github.event_name == 'workflow_dispatch'
     steps:
       - uses: actions/checkout@v4
