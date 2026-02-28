@@ -12,6 +12,11 @@ import {
 } from "@/db/schema";
 import {useTokenMetadata} from "@/hooks/useTokenMetadata";
 import {src44} from "@signumjs/standards"
+import {
+    PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_SECONDS,
+    PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MINUTES
+} from "@/types/constants";
+
 
 // Explainer time:
 // I used the long polling method
@@ -61,34 +66,36 @@ export const useTokenTransactionalData = (
                 return await ledgerService.token.fetchTokenBrandLogoHash(tokenId);
             };
 
+            const mountPayload = async () : Promise<TokenTransactionalData> => {
+                const originalIpfsHash = getOriginalIpfsHashSync();
+                const [tokenPriceNQT, avatarIpfsHash] = await Promise.all([getTokenPriceNQT(), getAvatarIpfsHash()])
+
+                return {
+                    id: tokenId,
+                    avatarIpfsHash: avatarIpfsHash || originalIpfsHash,
+                    priceNQT: tokenPriceNQT,
+                    lastUpdated: currentDate.toString(),
+                };
+            }
+
             const invalidateTokenQuery = async () => {
                 await queryClient.invalidateQueries({
                     queryKey: ["fetchAccountTokenHoldings", accountId, currentNetwork],
                 });
             };
 
-            // Update the existing row
+            // Update the existing row, fetch new data
             if (row) {
                 const lastRequestDate = new Date(row.lastUpdated);
-
-                if (differenceInMinutes(currentDate, lastRequestDate) < 4) return row;
+                // no update required, as no change expected within one block
+                if (differenceInMinutes(currentDate, lastRequestDate) < PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MINUTES) return row;
 
                 try {
-                    const originalIpfsHash = getOriginalIpfsHashSync();
-                    const [tokenPriceNQT, avatarIpfsHash] = await Promise.all([getTokenPriceNQT(), getAvatarIpfsHash()])
-
-                    const updatePayload: TokenTransactionalData = {
-                        id: tokenId,
-                        avatarIpfsHash: avatarIpfsHash || originalIpfsHash,
-                        priceNQT: tokenPriceNQT,
-                        lastUpdated: currentDate.toString(),
-                    };
-
+                    const updatePayload = await mountPayload();
                     await db
                         .update(tokensTransactionalData)
                         .set(updatePayload)
                         .where(eq(tokensTransactionalData.id, tokenId));
-
                     return updatePayload;
                 } catch (e) {
                     return row;
@@ -97,19 +104,10 @@ export const useTokenTransactionalData = (
                 }
             }
 
-            // Insert the new row
+            // otherwise: insert new row
             try {
-                const originalIpfsHash = getOriginalIpfsHashSync();
-                const [tokenPriceNQT, avatarIpfsHash] = await Promise.all([getTokenPriceNQT(), getAvatarIpfsHash()])
-                const insertPayload: TokenTransactionalData = {
-                    id: tokenId,
-                    avatarIpfsHash : avatarIpfsHash || originalIpfsHash,
-                    priceNQT: tokenPriceNQT,
-                    lastUpdated: currentDate.toString(),
-                };
-
+                const insertPayload = await mountPayload();
                 await db.insert(tokensTransactionalData).values(insertPayload);
-
                 return insertPayload;
             } catch (e) {
                 return defaultTokenTransactionalData;
@@ -117,8 +115,8 @@ export const useTokenTransactionalData = (
                 await invalidateTokenQuery();
             }
         },
-        refetchInterval: 120_000,
-        staleTime: 120_000,
+        refetchInterval: PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_SECONDS / 2,
+        staleTime: PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_SECONDS / 2,
         enabled: !!(
             isActiveNodeSynced &&
             !!ledgerService &&
