@@ -64,7 +64,7 @@ export const useTokenTransactionalData = (
                 } catch {
                     return null;
                 }
-            }
+            };
 
             const getAvatarIpfsHash = async () => {
                 return await ledgerService.token.fetchTokenBrandLogoHash(tokenId);
@@ -80,7 +80,7 @@ export const useTokenTransactionalData = (
                     priceNQT: tokenPriceNQT,
                     lastUpdated: currentDate.toString(),
                 };
-            }
+            };
 
             const invalidateTokenQuery = async () => {
                 await queryClient.invalidateQueries({
