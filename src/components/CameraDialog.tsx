@@ -88,6 +88,7 @@ export const CameraDialog = ({ onCodeScanned, expected }: Props) => {
     if (expected === "seed") {
         // seed can be any data, so we don't need to validate it
         onCodeScanned({ ...code, data: scannedData });
+        hideDialog();
     }
   };
 
