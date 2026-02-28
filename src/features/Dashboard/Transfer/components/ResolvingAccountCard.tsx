@@ -1,6 +1,6 @@
 import { View } from "react-native";
 import { Text } from "@/components/Text";
-import { useQueryAccountResolver } from "../utils/useQueryAccountResolver";
+import { useQueryAccountResolver } from "@/hooks/useQueryAccountResolver";
 import { GenericAccountCard } from "@/components/Account/GenericAccountCard";
 import { BurnAccountCard } from "./BurnAccountCard";
 

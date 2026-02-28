@@ -16,6 +16,8 @@ import { AccountType } from "@/types/account";
 import { HorizontalDivider } from "@/components/HorizontalDivider";
 import { CameraDialog } from "@/components/CameraDialog";
 import { getAccountPublicKey } from "@/utils/account/getAccountPublicKey";
+import { getLedgerService } from "@/utils/getLedgerService";
+import { Address } from "@signumjs/core";
 import { FormNavigation } from "./components/FormNavigation";
 import { WalletNameField } from "./sections/WalletNameField";
 import { SeedPhraseField } from "./sections/SeedPhraseField";
@@ -107,7 +109,17 @@ export const ImportScreen = () => {
       // Get account request to active node
       default:
         try {
-          const watchAccountPublicKey = await getAccountPublicKey(account);
+          // Resolve account string: could be RS address, numeric ID, or alias
+          let resolvedAccountId: string;
+          try {
+            resolvedAccountId = Address.create(account).getNumericId();
+          } catch {
+            // Not a valid address — try alias resolution
+            const { ledgerService } = getLedgerService();
+            resolvedAccountId = await ledgerService.alias.resolveAliasToAccountId(account);
+          }
+
+          const watchAccountPublicKey = await getAccountPublicKey(resolvedAccountId);
 
           if (!watchAccountPublicKey) {
             return alert(t("accountDoesNotExists"));

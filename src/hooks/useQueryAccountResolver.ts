@@ -5,6 +5,7 @@ import {Address} from "@signumjs/core";
 
 /**
  * Tries to resolve various input strings to account
+ * Supports: numeric IDs, Reed-Solomon addresses, and aliases (SRC-47)
  * @param accountString
  */
 export const useQueryAccountResolver = (accountString: string) => {
