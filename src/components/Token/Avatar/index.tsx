@@ -1,4 +1,4 @@
-import {useMemo, useState} from "react";
+import {useMemo, useRef, useState} from "react";
 import {View} from "react-native";
 import {Image} from "expo-image";
 import clsx from "clsx";
@@ -20,24 +20,22 @@ export const TokenAvatar = ({
     const {ticker} = useTokenMetadata(tokenId)
     const {avatarIpfsHash, isLoading} = useTokenTransactionalData(tokenId);
     const [avatarLoaded, setAvatarLoaded] = useState(false);
+    const prevHashRef = useRef(avatarIpfsHash);
 
+    // Reset avatarLoaded synchronously during render when hash changes,
+    // eliminating the one-frame opacity flash from the useEffect approach
+    if (prevHashRef.current !== avatarIpfsHash) {
+        prevHashRef.current = avatarIpfsHash;
+        setAvatarLoaded(false);
+    }
 
     const ipfsImage = useMemo(() => {
         if (isLoading) return null;
-        try {
-            if (avatarIpfsHash) {
-                return `${PUBLIC_IPFS_GATEWAY}/${avatarIpfsHash}`;
-            }
-        } catch {
-            // noop
+        if (avatarIpfsHash) {
+            return `${PUBLIC_IPFS_GATEWAY}/${avatarIpfsHash}`;
         }
         return null;
     }, [isLoading, avatarIpfsHash]);
-
-    // Reset loaded states when images change
-    useMemo(() => {
-        setAvatarLoaded(false);
-    }, [avatarIpfsHash]);
 
     return (
         <View
@@ -47,16 +45,25 @@ export const TokenAvatar = ({
                 extraClassNames && extraClassNames,
             ])}
         >
-            {ipfsImage ? (
-                !avatarLoaded ? <DefaultTokenIcon tokenId={tokenId} ticker={ticker}/> :
-                    <Image
-                        source={ipfsImage}
-                        contentFit="cover"
-                        style={{width: "100%", height: "100%", backgroundColor: "rgba(0,0,0,0.05)"}}
-                        onLoad={() => setAvatarLoaded(true)}
-                        onError={() => setAvatarLoaded(false)}
-                    />
-            ) : (<DefaultTokenIcon tokenId={tokenId} ticker={ticker}/>)}
+            {ipfsImage && (
+                <Image
+                    source={ipfsImage}
+                    contentFit="cover"
+                    cachePolicy="memory-disk"
+                    transition={200}
+                    recyclingKey={`${tokenId}-token-avatar`}
+                    style={{
+                        width: "100%",
+                        height: "100%",
+                        opacity: avatarLoaded ? 1 : 0,
+                    }}
+                    onLoad={() => setAvatarLoaded(true)}
+                    onError={() => setAvatarLoaded(false)}
+                />
+            )}
+            {!(ipfsImage && avatarLoaded) && (
+                <DefaultTokenIcon tokenId={tokenId} ticker={ticker}/>
+            )}
         </View>
     );
 };
