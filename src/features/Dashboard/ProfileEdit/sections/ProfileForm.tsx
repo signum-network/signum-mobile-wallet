@@ -1,4 +1,4 @@
-import {View, ScrollView, Pressable} from "react-native";
+import {View, Pressable} from "react-native";
 import {useTranslation} from "react-i18next";
 import {useFormContext, Controller} from "react-hook-form";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -68,7 +68,6 @@ export const ProfileForm = () => {
 
     return (
         <View>
-            <ScrollView>
                 <View className="gap-4 w-full pb-32">
                     {/* Live Preview */}
                     <Card>
@@ -386,7 +385,6 @@ export const ProfileForm = () => {
                         </Text>
                     </Card>
                 </View>
-            </ScrollView>
 
             {/* IPFS Upload Guide Modal */}
             <IpfsUploadGuide
