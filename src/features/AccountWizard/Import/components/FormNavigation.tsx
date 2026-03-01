@@ -38,7 +38,6 @@ export const FormNavigation = ({ onSubmit }: Props) => {
 
   return (
     <FormNavButton
-      inline
       type="primary"
       title={t("continue")}
       pressableProps={{ onPress: () => onSubmit() }}

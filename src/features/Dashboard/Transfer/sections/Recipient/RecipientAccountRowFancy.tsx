@@ -53,7 +53,7 @@ export const RecipientAccountRowFancy: React.FC<Props> = ({
                                                               selectedAccountId,
                                                           }) => {
     const {currentNetwork} = useNodeHostStore();
-    const {iconColor, tokens} = useAppTheme();
+    const {tokens} = useAppTheme();
     const {ledgerService} = useLedgerService()
     const [avatarLoaded, setAvatarLoaded] = useState(false);
     const [backgroundLoaded, setBackgroundLoaded] = useState(false);
@@ -130,7 +130,7 @@ export const RecipientAccountRowFancy: React.FC<Props> = ({
             className="rounded-xl overflow-hidden active:opacity-90 my-1"
             style={{
                 height: 90,
-                borderWidth: isSelected ? 3 : 0,
+                borderWidth: 2,
                 borderColor: isSelected ? tokens.success : "transparent",
             }}
         >
@@ -178,7 +178,7 @@ export const RecipientAccountRowFancy: React.FC<Props> = ({
                             width: "100%",
                             height: "100%",
                             backgroundColor: isSelected
-                                ? tokens.primarySoft
+                                ? tokens.surfaceElevated
                                 : tokens.surface,
                         }}
                     />
@@ -310,13 +310,6 @@ export const RecipientAccountRowFancy: React.FC<Props> = ({
                         </View>
                     </View>
                 </View>
-
-                {/* Right: Selection Indicator */}
-                {isSelected && (
-                    <View className="bg-white/90 rounded-full p-1.5 shadow-lg">
-                        <Ionicons name="checkmark-circle" size={24} color={iconColor.green}/>
-                    </View>
-                )}
             </View>
         </Pressable>
     );

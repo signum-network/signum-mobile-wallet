@@ -1,38 +1,39 @@
-import {useRef, type RefObject, useEffect} from "react";
-import {View, ScrollView, ActivityIndicator, Platform, KeyboardAvoidingView} from "react-native";
-import {useForm, FormProvider} from "react-hook-form";
-import {yupResolver} from "@hookform/resolvers/yup";
-import {profileEditSchema} from "./utils/schemas";
-import {Steps, type ProfileEdit} from "./utils/types";
-import {ProfileForm} from "./sections/ProfileForm";
-import {ConfirmationProfileUpdate} from "./sections/ConfirmProfileUpdate";
-import {DraftDialog} from "./sections/DraftDialog";
-import {FormNavigation} from "./components/FormNavigation";
-import {FormStepper} from "./components/FormStepper";
-import {useQueryAccount} from "@/hooks/useQueryAccount";
-import {useAccountStore} from "@/hooks/useAccountStore";
-import {useRouter} from "expo-router";
-import {Card} from "@/components/Card";
-import {useProfileEditDraftStore} from "@/hooks/useProfileEditDraftStore";
-import {useNodeHostStore} from "@/hooks/useNodeHostStore";
-import {src44} from "@signumjs/standards";
-import {Text} from "@/components/Text";
-import {useAppTheme} from "@/hooks/useAppTheme";
-import {useTranslation} from "react-i18next";
+import { useRef, type RefObject, useEffect } from "react";
+import { View, ScrollView, ActivityIndicator } from "react-native";
+import { useForm, FormProvider } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { profileEditSchema } from "./utils/schemas";
+import { Steps, type ProfileEdit } from "./utils/types";
+import { ProfileForm } from "./sections/ProfileForm";
+import { ConfirmationProfileUpdate } from "./sections/ConfirmProfileUpdate";
+import { DraftDialog } from "./sections/DraftDialog";
+import { FormNavigation } from "./components/FormNavigation";
+import { FormStepper } from "./components/FormStepper";
+import { useQueryAccount } from "@/hooks/useQueryAccount";
+import { useAccountStore } from "@/hooks/useAccountStore";
+import { useRouter } from "expo-router";
+import { Card } from "@/components/Card";
+import { useProfileEditDraftStore } from "@/hooks/useProfileEditDraftStore";
+import { useNodeHostStore } from "@/hooks/useNodeHostStore";
+import { src44 } from "@signumjs/standards";
+import { Text } from "@/components/Text";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import { useTranslation } from "react-i18next";
+import { KeyboardAnimatedContainer } from "@/components/KeyboardAnimatedContainer";
 
 interface Props {
     accountId: string
 }
 
-export const ProfileEditScreen = ({accountId}: Props) => {
-    const {t} = useTranslation();
-    const {tokens} = useAppTheme();
+export const ProfileEditScreen = ({ accountId }: Props) => {
+    const { t } = useTranslation();
+    const { tokens } = useAppTheme();
     const scrollRef: RefObject<ScrollView> = useRef(null!);
     const draftDetectionRef = useRef(false);
     const formIsInitialized = useRef(false);
-    const {data: account} = useQueryAccount(accountId);
-    const {currentNetwork} = useNodeHostStore();
-    const {getDraft} = useProfileEditDraftStore();
+    const { data: account } = useQueryAccount(accountId);
+    const { currentNetwork } = useNodeHostStore();
+    const { getDraft } = useProfileEditDraftStore();
     const methods = useForm<ProfileEdit>({
         mode: "onChange",
         // @ts-ignore
@@ -50,23 +51,23 @@ export const ProfileEditScreen = ({accountId}: Props) => {
             backgroundMimeType: "image/jpeg",
         },
     });
-    const {accounts} = useAccountStore();
+    const { accounts } = useAccountStore();
     const router = useRouter()
     const activeStep = methods.watch("activeStep")
 
     useEffect(() => {
-            if (account && accounts && !draftDetectionRef.current) {
-                // verify if this is also an registered account.
-                if (!accounts[account.publicKey]) {
-                    router.push("/dashboard")
-                    alert("profile.notRegistered")
-                }
-                methods.setValue("publicKey", account.publicKey)
-                // check for draft
-                methods.setValue("activeStep", getDraft(accountId, currentNetwork) ? Steps.DraftDialog:  Steps.ProfileForm)
-                draftDetectionRef.current = true
+        if (account && accounts && !draftDetectionRef.current) {
+            // verify if this is also an registered account.
+            if (!accounts[account.publicKey]) {
+                router.push("/dashboard")
+                alert("profile.notRegistered")
             }
-        },
+            methods.setValue("publicKey", account.publicKey)
+            // check for draft
+            methods.setValue("activeStep", getDraft(accountId, currentNetwork) ? Steps.DraftDialog : Steps.ProfileForm)
+            draftDetectionRef.current = true
+        }
+    },
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [account, accounts, accountId, currentNetwork]
     )
@@ -75,7 +76,7 @@ export const ProfileEditScreen = ({accountId}: Props) => {
         if (account && activeStep === Steps.ProfileForm && !formIsInitialized.current) {
             const draft = getDraft(accountId, currentNetwork)
 
-            const {setValue} = methods
+            const { setValue } = methods
 
             try {
                 const descriptor = src44.DescriptorData.parse(account.description, false)
@@ -103,18 +104,15 @@ export const ProfileEditScreen = ({accountId}: Props) => {
 
 
     const scrollToTop = () => {
-        scrollRef.current?.scrollTo({y: 0, animated: true});
+        scrollRef.current?.scrollTo({ y: 0, animated: true });
     };
 
     return (
-        <KeyboardAvoidingView
-            className="flex-1 w-full"
-            behavior={Platform.OS === "ios" ? "padding" : undefined}
-        >
-            <FormProvider {...methods}>
-                <View className="flex-1">
-                    {activeStep > Steps.DraftDialog && <FormStepper/>}
 
+        <FormProvider {...methods}>
+            <View className="flex-1">
+                {activeStep > Steps.DraftDialog && <FormStepper />}
+                <KeyboardAnimatedContainer baseBottom={-150}>
                     <ScrollView
                         ref={scrollRef}
                         keyboardDismissMode="on-drag"
@@ -124,7 +122,7 @@ export const ProfileEditScreen = ({accountId}: Props) => {
                             {activeStep === Steps.Initializing && (
                                 <Card>
                                     <View className="items-center justify-center py-16 gap-4">
-                                        <ActivityIndicator size="large" color={tokens.primary}/>
+                                        <ActivityIndicator size="large" color={tokens.primary} />
                                         <Text size="large" color="muted" className="text-center">
                                             {t("profile.loading")}
                                         </Text>
@@ -142,17 +140,19 @@ export const ProfileEditScreen = ({accountId}: Props) => {
                                 />
                             )}
                             {activeStep === Steps.ProfileForm && (
-                                <ProfileForm/>
+                                <ProfileForm />
                             )}
                             {activeStep === Steps.Confirmation && (
-                                <ConfirmationProfileUpdate/>
+                                <ConfirmationProfileUpdate />
                             )}
 
-                            {activeStep !== Steps.DraftDialog && <FormNavigation/>}
+
                         </View>
                     </ScrollView>
-                </View>
-            </FormProvider>
-        </KeyboardAvoidingView>
+                </KeyboardAnimatedContainer>
+            </View>
+            {activeStep !== Steps.DraftDialog && <FormNavigation />}
+        </FormProvider>
+
     );
 };

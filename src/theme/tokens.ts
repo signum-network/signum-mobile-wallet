@@ -25,7 +25,7 @@ export const themeTokens: TokenMap = {
   defaultLight: {
     background: "#F9FAFB",
     surface: "#FFFFFF",
-    surfaceElevated: "#F3F4F6",
+    surfaceElevated: "#EEF2FF",
     border: "#E5E7EB",
     text: "#111827",
     textMuted: "#6B7280",
@@ -64,7 +64,7 @@ export const themeTokens: TokenMap = {
   solarized: {
     background: "#002B36",
     surface: "#00212B",
-    surfaceElevated: "#073642",
+    surfaceElevated: "#094757",
     border: "#073642",
     text: "#EEE8D5",
     textMuted: "#93A1A1",
@@ -76,8 +76,8 @@ export const themeTokens: TokenMap = {
 
   sunrise: {
     background: "#FFF7F0",
-    surface: "#FFFFFF",
-    surfaceElevated: "#FFE9E0",
+    surface: "#FFF9ED",
+    surfaceElevated: "#FFF6D8",
     border: "#F7C6A5",
     text: "#2D1B12",
     textMuted: "#8C6E63",
@@ -90,7 +90,7 @@ export const themeTokens: TokenMap = {
   bubblegum: {
     background: "#FFF0F8",
     surface: "#FFFFFF",
-    surfaceElevated: "#F7E6FF",
+    surfaceElevated: "#FCEFFF",
     border: "#F5C9E6",
     text: "#1D0F1A",
     textMuted: "#8B7280",

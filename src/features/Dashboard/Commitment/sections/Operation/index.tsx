@@ -6,7 +6,6 @@ import {useFormContext} from "react-hook-form";
 import {NumericFormat} from "react-number-format";
 import {useWalletAccount} from "@/hooks/useWalletAccount";
 import {useTicker} from "@/hooks/useTicker";
-import {useAppTheme} from "@/hooks/useAppTheme";
 import {useNetworkFees} from "@/hooks/useNetworkFees";
 import {useLedgerService} from "@/hooks/useLedgerService";
 import {useNodeHostStore} from "@/hooks/useNodeHostStore";
@@ -41,7 +40,6 @@ export const Operation = ({
                           }: Props) => {
     const {t} = useTranslation();
     const {NativeTicker} = useTicker();
-    const {iconColor} = useAppTheme();
     const {isWatchOnly, publicKey, accountId} = useWalletAccount();
     const {cheap} = useNetworkFees({});
     const {ledgerService} = useLedgerService();
@@ -278,7 +276,7 @@ export const Operation = ({
                         </Text>
 
                         <Button
-                            icon={<Ionicons name="send" size={24} color={iconColor.default}/>}
+                            icon={<Ionicons name="send" size={24} color="white"/>}
                             type="primary"
                             size="large"
                             title={t("transfer.confirmTransaction")}

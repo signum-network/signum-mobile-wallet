@@ -20,7 +20,7 @@ export const Agreement = () => {
     setValue(key, !value);
 
   return (
-    <View className="flex justify-center items-center gap-4 pb-20 w-full">
+    <View className="flex justify-center items-center gap-4 w-full pt-4 pb-4">
       <Ionicons name="lock-closed" size={80} color={iconColor.primary} />
 
       <Text size="extraLarge" className="font-bold text-center">

@@ -177,7 +177,7 @@ export const Confirmation = ({
                     </Text>
 
                     <Button
-                        icon={<Ionicons name="send" size={24} color={iconColor.default}/>}
+                        icon={<Ionicons name="send" size={24} color="white"/>}
                         type="primary"
                         size="large"
                         title={t("transfer.confirmTransaction")}

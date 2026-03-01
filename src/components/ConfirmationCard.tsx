@@ -3,7 +3,6 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { Text } from "@/components/Text";
 import { Card } from "@/components/Card";
 import { Button } from "@/components/Button";
-import { useAppTheme } from "@/hooks/useAppTheme";
 
 interface Props {
   onConfirm: () => void;
@@ -12,7 +11,6 @@ interface Props {
 
 export const ConfirmationCard = ({ onConfirm, isDisabled }: Props) => {
   const { t } = useTranslation();
-  const { iconColor } = useAppTheme();
 
   return (
     <Card>
@@ -21,7 +19,7 @@ export const ConfirmationCard = ({ onConfirm, isDisabled }: Props) => {
       </Text>
 
       <Button
-        icon={<Ionicons name="send" size={24} color={iconColor.default} />}
+        icon={<Ionicons name="send" size={24} color="white" />}
         type="primary"
         size="large"
         title={t("transfer.confirmTransaction")}

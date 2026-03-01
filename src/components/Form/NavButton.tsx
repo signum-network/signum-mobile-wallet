@@ -3,22 +3,25 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { PUBLIC_CURRENT_OS } from "@/types/constants";
 import { Button, type ButtonProps as ButtonProps } from "../Button";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { useAccountStore } from "@/hooks/useAccountStore";
 
 const DEFAULT_HEIGHT = 78;
 
 interface Props extends ButtonProps {
   hidden?: boolean;
   bottomOffset?: number;
-  inline?: boolean;
 }
 
-export const FormNavButton = ({ hidden, bottomOffset, inline, ...props }: Props) => {
+export const FormNavButton = ({ hidden, bottomOffset, ...props }: Props) => {
   const { bottom } = useSafeAreaInsets();
   const { tokens } = useAppTheme();
 
+  const { isAccountEnrolled } = useAccountStore();
+
+
   if (hidden) return null;
 
-  if (inline) {
+  if (isAccountEnrolled) {
     return (
       <View
         style={{

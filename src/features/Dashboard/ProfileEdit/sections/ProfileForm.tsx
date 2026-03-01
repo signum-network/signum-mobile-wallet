@@ -68,7 +68,7 @@ export const ProfileForm = () => {
 
     return (
         <View>
-                <View className="gap-4 w-full pb-32">
+                <View className="gap-4 w-full pb-4">
                     {/* Live Preview */}
                     <Card>
                         <ProfilePreview formData={formData}/>

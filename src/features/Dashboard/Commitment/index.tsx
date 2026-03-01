@@ -9,7 +9,6 @@ import { useWalletAccount } from "@/hooks/useWalletAccount";
 import { useNodeHostStore } from "@/hooks/useNodeHostStore";
 import { useLedgerService } from "@/hooks/useLedgerService";
 import { useNetworkFees } from "@/hooks/useNetworkFees";
-import { KeyboardDismissView } from "@/components/KeyboardDismissView";
 import { SigningDialog } from "@/components/SigningDialog";
 import { readSecretKey } from "@/utils/sec/handleSecretKeys";
 import { DashboardScreenContainer } from "../components/DashboardScreenContainer";
@@ -127,8 +126,7 @@ export const CommitmentScreen = () => {
   return (
     <FormProvider {...methods}>
       <SigningDialog visible={isSigningTransaction} />
-
-      <KeyboardDismissView>
+      
         <ScrollView>
           <DashboardScreenContainer>
             <View className="flex flex-col items-start justify-center w-full px-4 pt-4 pb-20 gap-4">
@@ -148,7 +146,6 @@ export const CommitmentScreen = () => {
             </View>
           </DashboardScreenContainer>
         </ScrollView>
-      </KeyboardDismissView>
     </FormProvider>
   );
 };

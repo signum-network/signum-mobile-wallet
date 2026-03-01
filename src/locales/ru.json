@@ -542,8 +542,8 @@
     "invalidHexFormat": "Неверный формат hex"
   },
   "profile": {
-    "edit": "Редактировать",
-    "editProfile": "Редактировать Профиль",
+    "edit": "изменять",
+    "editProfile": "изменять Профиль",
     "name": "Имя",
     "namePlaceholder": "Введите ваше имя",
     "nameHelper": "Максимум 24 символа",

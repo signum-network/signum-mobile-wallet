@@ -11,7 +11,7 @@ export const WalletNameField = () => {
   const { control } = useFormContext<AccountImport>();
 
   return (
-    <View className="gap-4 w-full pb-20">
+    <View className="gap-4 w-full pb-8">
       <Text size="extraLarge" className="font-bold text-center">
         {t("accountWizard.createAccount.walletName")}
       </Text>
