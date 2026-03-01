@@ -93,7 +93,6 @@ jobs:
           -PreactNativeArchitectures=x86_64
           -Dorg.gradle.workers.max=4
           -Dorg.gradle.caching=true
-          -Dorg.gradle.configuration-cache=true
 
   build-ios:
     name: Build iOS
