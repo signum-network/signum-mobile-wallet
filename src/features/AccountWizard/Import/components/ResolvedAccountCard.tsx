@@ -46,7 +46,7 @@ export const ResolvedAccountCard = () => {
       return;
     }
 
-    const rawName = (resolvedAccount.aliasName ?? resolvedAccount?.name ?? "").trim();
+    const rawName = (resolvedAccount.aliasName || resolvedAccount?.name || "").trim();
     if (rawName) {
       const shortName =
         rawName.length > 30 ? `${rawName.slice(0, 30)}…` : rawName;
