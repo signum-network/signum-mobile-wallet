@@ -12,25 +12,38 @@ import {
 } from "@/db/schema";
 import {useTokenMetadata} from "@/hooks/useTokenMetadata";
 import {src44} from "@signumjs/standards"
+import {
+    PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MINUTES, PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MILLISECONDS
+} from "@/types/constants";
+import {djb2Hash} from "@/utils/djb2Hash";
 
-// Explainer time:
-// I used the long polling method
-// Fetch token transactional data every 4 minutes
-// Insert or Update the transactional data
-// Last, revalidate the token UI list, so it is sorted by estimated signa value
-
+/**
+ * Retrieves and manages transactional data for a specified token, including its price, IPFS avatar hash,
+ * and last updated timestamp. The data is fetched from a database or updated via an external ledger service,
+ * and is synchronized with the application state using React Query.
+ *
+ * @param {string} [tokenId=""] - The unique identifier of the token. If no token ID is provided, default token
+ *                                  data will be returned.
+ * @returns {TokenTransactionalData & { isLoading: boolean }} - An object containing the token's transactional
+ *                                                              data and a loading state indicating whether
+ *                                                              the data is being fetched or updated.
+ */
 export const useTokenTransactionalData = (
-    tokenId = ""
+    tokenId: string = ""
 ): TokenTransactionalData & { isLoading: boolean } => {
     const {accountId} = useWalletAccount();
     const {ledgerService} = useLedgerService();
     const {isActiveNodeSynced, currentNetwork} = useNodeHostStore();
     const db = useDatabase();
     const queryClient = useQueryClient();
-    const {description} = useTokenMetadata()
+    const {description} = useTokenMetadata(tokenId)
+
+    // Include a hash of description in the query key so the query
+    // re-runs when description arrives asynchronously from useTokenMetadata
+    const descriptionKey = description ? djb2Hash(description) : 0;
 
     const {data, isLoading} = useQuery({
-        queryKey: ["fetchTokenTransactionalData", tokenId],
+        queryKey: ["fetchTokenTransactionalData", tokenId, descriptionKey],
         queryFn: async () => {
             if (!ledgerService) return defaultTokenTransactionalData;
             const currentDate = new Date();
@@ -48,17 +61,29 @@ export const useTokenTransactionalData = (
 
             // it's possible to create a token with an ipfs hash already.
             // But it can be changed afterwards -> fetchBrandLogoHash()
-            const getOriginalIpfsHashSync =  () => {
+            const getOriginalIpfsHashSync = () => {
                 if (!description) return null;
                 try {
                     return src44.DescriptorData.parse(description).avatar?.ipfsCid;
                 } catch {
                     return null;
                 }
-            }
+            };
 
             const getAvatarIpfsHash = async () => {
                 return await ledgerService.token.fetchTokenBrandLogoHash(tokenId);
+            };
+
+            const mountPayload = async (): Promise<TokenTransactionalData> => {
+                const originalIpfsHash = getOriginalIpfsHashSync();
+                const [tokenPriceNQT, avatarIpfsHash] = await Promise.all([getTokenPriceNQT(), getAvatarIpfsHash()])
+
+                return {
+                    id: tokenId,
+                    avatarIpfsHash: avatarIpfsHash || originalIpfsHash,
+                    priceNQT: tokenPriceNQT,
+                    lastUpdated: currentDate.toString(),
+                };
             };
 
             const invalidateTokenQuery = async () => {
@@ -67,58 +92,37 @@ export const useTokenTransactionalData = (
                 });
             };
 
-            // Update the existing row
+            // Update the existing row, fetch new data
             if (row) {
                 const lastRequestDate = new Date(row.lastUpdated);
-
-                if (differenceInMinutes(currentDate, lastRequestDate) < 4) return row;
+                // no update required, as no change expected within one block
+                if (differenceInMinutes(currentDate, lastRequestDate) < PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MINUTES) return row;
 
                 try {
-                    const originalIpfsHash = getOriginalIpfsHashSync();
-                    const [tokenPriceNQT, avatarIpfsHash] = await Promise.all([getTokenPriceNQT(), getAvatarIpfsHash()])
-
-                    const updatePayload: TokenTransactionalData = {
-                        id: tokenId,
-                        avatarIpfsHash: avatarIpfsHash || originalIpfsHash,
-                        priceNQT: tokenPriceNQT,
-                        lastUpdated: currentDate.toString(),
-                    };
-
+                    const updatePayload = await mountPayload();
                     await db
                         .update(tokensTransactionalData)
                         .set(updatePayload)
                         .where(eq(tokensTransactionalData.id, tokenId));
-
+                    await invalidateTokenQuery();
                     return updatePayload;
                 } catch (e) {
                     return row;
-                } finally {
-                    await invalidateTokenQuery();
                 }
             }
 
-            // Insert the new row
+            // otherwise: insert new row
             try {
-                const originalIpfsHash = getOriginalIpfsHashSync();
-                const [tokenPriceNQT, avatarIpfsHash] = await Promise.all([getTokenPriceNQT(), getAvatarIpfsHash()])
-                const insertPayload: TokenTransactionalData = {
-                    id: tokenId,
-                    avatarIpfsHash : avatarIpfsHash || originalIpfsHash,
-                    priceNQT: tokenPriceNQT,
-                    lastUpdated: currentDate.toString(),
-                };
-
+                const insertPayload = await mountPayload();
                 await db.insert(tokensTransactionalData).values(insertPayload);
-
+                await invalidateTokenQuery();
                 return insertPayload;
             } catch (e) {
                 return defaultTokenTransactionalData;
-            } finally {
-                await invalidateTokenQuery();
             }
         },
-        refetchInterval: 120_000,
-        staleTime: 120_000,
+        refetchInterval: PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MILLISECONDS,
+        staleTime: PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MILLISECONDS,
         enabled: !!(
             isActiveNodeSynced &&
             !!ledgerService &&

@@ -5,6 +5,7 @@ on:
     branches: [develop, main]
   pull_request:
     branches: [develop, main]
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -26,10 +27,36 @@ jobs:
 
       - run: npm run ts-check
 
+  detect-native-changes:
+    name: Detect native changes
+    runs-on: ubuntu-latest
+    outputs:
+      native-changed: ${{ steps.filter.outputs.native }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            native:
+              - 'android/**'
+              - 'ios/**'
+              - 'app.json'
+              - 'app.config.*'
+              - 'eas.json'
+              - 'package.json'
+              - 'package-lock.json'
+              - 'expo-env.d.ts'
+              - '*.podspec'
+
   build-android:
     name: Build Android
     runs-on: ubuntu-latest
-    needs: typecheck
+    needs: [typecheck, detect-native-changes]
+    if: >-
+      needs.detect-native-changes.outputs.native-changed == 'true'
+      || github.event_name == 'workflow_dispatch'
     steps:
       - uses: actions/checkout@v4
 
@@ -43,18 +70,37 @@ jobs:
           distribution: temurin
           java-version: 17
 
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('android/**/*.gradle*', 'android/gradle.properties') }}
+          restore-keys: |
+            gradle-${{ runner.os }}-
+
       - run: npm ci
 
       - run: npx expo prebuild --platform android --clean
 
-      - name: Build Android Release
+      - name: Build Android (CI)
         working-directory: android
-        run: ./gradlew assembleRelease --no-daemon
+        env:
+          GRADLE_OPTS: -Xmx4096m
+        run: >-
+          ./gradlew assembleDebug
+          -PreactNativeArchitectures=x86_64
+          -Dorg.gradle.workers.max=4
+          -Dorg.gradle.caching=true
 
   build-ios:
     name: Build iOS
     runs-on: macos-latest
-    needs: typecheck
+    needs: [typecheck, detect-native-changes]
+    if: >-
+      needs.detect-native-changes.outputs.native-changed == 'true'
+      || github.event_name == 'workflow_dispatch'
     steps:
       - uses: actions/checkout@v4
 

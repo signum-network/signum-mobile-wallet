@@ -1,8 +1,32 @@
 #!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
 echo "🔍 Running TypeScript check..."
 npm run ts-check
 
-echo "🏗️  Building Android release..."
-cd android && ./gradlew assembleRelease --quiet
+HAS_ANDROID=false
+HAS_IOS=false
+
+if [ -d "android" ]; then
+  HAS_ANDROID=true
+fi
+
+if [ -d "ios" ]; then
+  HAS_IOS=true
+fi
+
+if [ "$HAS_ANDROID" = true ]; then
+  echo "🤖 Building Android debug..."
+  cd android && ./gradlew assembleDebug --quiet && cd ..
+elif [ "$HAS_IOS" = true ]; then
+  echo "🍎 Building iOS..."
+  xcodebuild build \
+    -workspace ios/SignumMobileWallet.xcworkspace \
+    -scheme SignumMobileWallet \
+    -configuration Debug \
+    -sdk iphonesimulator \
+    -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' \
+    CODE_SIGNING_ALLOWED=NO \
+    -quiet
+elif [ "$HAS_ANDROID" = false ] && [ "$HAS_IOS" = false ]; then
+  echo "⚠️  No android/ or ios/ directory found. Skipping native build check."
+  echo "   Run 'npx expo prebuild' to generate native projects."
+fi

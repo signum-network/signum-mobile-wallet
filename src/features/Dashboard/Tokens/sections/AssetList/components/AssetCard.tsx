@@ -36,7 +36,6 @@ export const AssetCard = ({
 
   const isLoadingMetadata = !ticker;
   const isLoadingTransactionalData = isLoading || !price;
-
   const totalTokenBalance = ChainValue.create(decimals).setAtomic(balanceQNT);
 
   const availableBalance = ChainValue.create(decimals).setAtomic(

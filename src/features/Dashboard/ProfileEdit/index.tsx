@@ -56,11 +56,16 @@ export const ProfileEditScreen = ({ accountId }: Props) => {
     const activeStep = methods.watch("activeStep")
 
     useEffect(() => {
-        if (account && accounts && !draftDetectionRef.current) {
-            // verify if this is also an registered account.
-            if (!accounts[account.publicKey]) {
-                router.push("/dashboard")
-                alert("profile.notRegistered")
+            if (account && accounts && !draftDetectionRef.current) {
+                // verify if this is also a registered account.
+                if (!accounts[account.publicKey]) {
+                    router.push("/dashboard")
+                    alert(t("profile.notRegistered"))
+                }
+                methods.setValue("publicKey", account.publicKey)
+                // check for draft
+                methods.setValue("activeStep", getDraft(accountId, currentNetwork) ? Steps.DraftDialog:  Steps.ProfileForm)
+                draftDetectionRef.current = true
             }
             methods.setValue("publicKey", account.publicKey)
             // check for draft
