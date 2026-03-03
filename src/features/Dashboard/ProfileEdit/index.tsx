@@ -67,12 +67,7 @@ export const ProfileEditScreen = ({ accountId }: Props) => {
                 methods.setValue("activeStep", getDraft(accountId, currentNetwork) ? Steps.DraftDialog:  Steps.ProfileForm)
                 draftDetectionRef.current = true
             }
-            methods.setValue("publicKey", account.publicKey)
-            // check for draft
-            methods.setValue("activeStep", getDraft(accountId, currentNetwork) ? Steps.DraftDialog : Steps.ProfileForm)
-            draftDetectionRef.current = true
-        }
-    },
+        },
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [account, accounts, accountId, currentNetwork]
     )
