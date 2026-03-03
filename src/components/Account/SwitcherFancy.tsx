@@ -21,7 +21,7 @@ interface Props {
 
 export const AccountSwitcherFancy = ({href}: Props) => {
     const {t} = useTranslation();
-    const {tokens} = useAppTheme();
+    const {tokens, iconColor} = useAppTheme();
     const {
         accountId,
         isWatchOnly,
@@ -63,7 +63,7 @@ export const AccountSwitcherFancy = ({href}: Props) => {
             onPress={goToAccountSettings}
             className="w-full rounded-xl overflow-hidden active:opacity-90"
             style={{
-                height: 160,
+                height: 140,
             }}
         >
             {/* Background Layer */}
@@ -80,20 +80,26 @@ export const AccountSwitcherFancy = ({href}: Props) => {
                         />
                         {/* Dark overlay for text readability */}
                         <View
+                        className="!rounded-xl overflow-hidden"
                             style={{
                                 position: "absolute",
                                 width: "100%",
                                 height: "100%",
                                 backgroundColor: "rgba(0,0,0,0.5)",
+                                borderWidth: 2,
+                                borderColor: tokens.success
                             }}
                         />
                     </>
                 ) : (
                     <View
+                        className="!rounded-xl overflow-hidden"
                         style={{
                             width: "100%",
                             height: "100%",
-                            backgroundColor: tokens.primary,
+                            backgroundColor: tokens.surfaceElevated,
+                            borderWidth: 2,
+                            borderColor: tokens.success
                         }}
                     />
                 )}
@@ -105,7 +111,7 @@ export const AccountSwitcherFancy = ({href}: Props) => {
                 <View className="flex flex-row gap-4 items-center flex-1">
                     {/* Large Avatar */}
                     <View
-                        className="size-24 rounded-full overflow-hidden border-4 border-white/20 shadow-2xl bg-white/10">
+                        className="size-24 rounded-full overflow-hidden border-2 border-white/20 shadow-2xl bg-white/10">
                         {images?.avatarUrl && !avatarLoadError ? (
                             <>
                                 {/* Show HashIcon while loading */}
@@ -159,7 +165,7 @@ export const AccountSwitcherFancy = ({href}: Props) => {
                             </View>
                         ) : (
                             <Text
-                                color="white"
+                                color="content"
                                 size="large"
                                 className="font-bold"
                             >
@@ -168,7 +174,7 @@ export const AccountSwitcherFancy = ({href}: Props) => {
                         )}
 
                         <Text
-                            color="white"
+                            color={images?.backgroundUrl && !backgroundLoadError ? "white" : "muted"}
                             size="small"
                             style={images?.backgroundUrl && !backgroundLoadError ? {
                                 textShadowColor: 'rgba(0, 0, 0, 0.75)',
@@ -181,23 +187,21 @@ export const AccountSwitcherFancy = ({href}: Props) => {
 
                         {/* Account Type Badge */}
                         <View className="flex flex-row items-center gap-1 mt-1">
-                            <View className="bg-white/20 rounded-full px-2 py-1 flex flex-row items-center gap-1">
-                                <Ionicons
-                                    name={isWatchOnly ? "eye-outline" : "shield-checkmark-outline"}
-                                    size={12}
-                                    color="white"
-                                />
-                                <Text color="white" size="extraSmall" className="font-medium">
-                                    {isWatchOnly ? t("watchOnly") : t("fullAccount")}
-                                </Text>
-                            </View>
+                            <Ionicons
+                                name={isWatchOnly ? "eye-outline" : "shield-checkmark-outline"}
+                                size={12}
+                                color={images?.backgroundUrl && !backgroundLoadError ? "white" : iconColor.muted}
+                            />
+                            <Text color={images?.backgroundUrl && !backgroundLoadError ? "white" : "muted"} size="extraSmall" className="font-medium">
+                                {isWatchOnly ? t("watchOnly") : t("fullAccount")}
+                            </Text>
                         </View>
                     </View>
                 </View>
 
                 {/* Right: Switch Icon */}
-                <View className="bg-white/20 rounded-xl p-3">
-                    <FontAwesome6 name="right-left" size={20} color="white"/>
+                <View className="bg-white/20 rounded-full p-3">
+                    <FontAwesome6 name="right-left" size={20} color={images?.backgroundUrl && !backgroundLoadError ? "white" : tokens.success}/>
                 </View>
             </View>
         </Pressable>

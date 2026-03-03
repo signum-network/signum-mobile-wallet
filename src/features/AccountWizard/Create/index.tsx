@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, type RefObject } from "react";
+import { useState } from "react";
 import { ScrollView, View, ActivityIndicator } from "react-native";
 import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -27,6 +27,9 @@ import { useNodeHostStore } from "@/hooks/useNodeHostStore";
 import { Address } from "@signumjs/core";
 import { PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MINUTES } from "@/types/constants";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+
 
 export const CreateScreen = () => {
   const { t } = useTranslation();
@@ -42,8 +45,7 @@ export const CreateScreen = () => {
   const { currentNetwork } = useNodeHostStore();
   const { iconColor } = useAppTheme();
   const [showDialog, setShowDialog] = useState(false);
-
-  const scrollRef: RefObject<ScrollView> = useRef(null!);
+  const insets = useSafeAreaInsets();
 
   const methods = useForm<AccountCreation>({
     mode: "onChange",
@@ -61,15 +63,6 @@ export const CreateScreen = () => {
   });
 
   const activeStep = methods.watch("activeStep");
-
-  useEffect(() => {
-    if (!scrollRef.current) return;
-
-    scrollRef.current?.scrollTo({
-      y: 0,
-      animated: true,
-    });
-  }, [activeStep]);
 
   const onSubmit: SubmitHandler<AccountCreation> = async (data) => {
     setShowDialog(true);
@@ -100,9 +93,9 @@ export const CreateScreen = () => {
         ledgerService.account.activate(accountId, publicKey).finally(() => {
           alert(
             `${t("unsafeAccount.activating")}\n` +
-              t("unsafeAccount.accountActivationIsPending", {
-                blocktime: PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MINUTES,
-              })
+            t("unsafeAccount.accountActivationIsPending", {
+              blocktime: PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MINUTES,
+            })
           );
           updateAccountPublicKeyActivationStatus(
             publicKey,
@@ -123,7 +116,7 @@ export const CreateScreen = () => {
   return (
     <FormProvider {...methods}>
       <FormStepper />
-         <KeyboardAnimatedContainer baseBottom={isAccountEnrolled ? -70 : 36}>
+      <KeyboardAnimatedContainer baseBottom={isAccountEnrolled ? -150 : insets.bottom}>
         <Dialog variant="full" visible={showDialog}>
           <View className="flex flex-col items-center justify-center gap-4 w-full">
             <Ionicons name="checkmark-circle" size={85} color={iconColor.green} />
@@ -142,16 +135,13 @@ export const CreateScreen = () => {
             </View>
           </View>
         </Dialog>
+     
 
-        <ScrollView
-          ref={scrollRef}
-          key={activeStep}
-          keyboardDismissMode="on-drag"
-          keyboardShouldPersistTaps="handled"
-        >
+
+        <ScrollView key={activeStep}>
           <AccountWizardContainer>
             {activeStep === Steps.AccountCreationAgreement &&
-            <Agreement />}
+              <Agreement />}
             {activeStep === Steps.SecretPhraseGeneration && (
               <SecretPhraseGeneration />
             )}
@@ -159,9 +149,9 @@ export const CreateScreen = () => {
               <SecretPhraseVerification />
             )}
           </AccountWizardContainer>
-          <FormNavigation onSubmit={methods.handleSubmit(onSubmit)} />
         </ScrollView>
-      </KeyboardAnimatedContainer>
+        </KeyboardAnimatedContainer>
+        <FormNavigation onSubmit={methods.handleSubmit(onSubmit)} />
     </FormProvider>
   );
 };

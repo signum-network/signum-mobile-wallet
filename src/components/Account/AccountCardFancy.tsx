@@ -277,135 +277,135 @@ export const AccountCardFancy = ({ publicKey, type, walletName }: Props) => {
   const { iconColor, tokens } = useAppTheme();
 
   return (
-  <GestureDetector gesture={pan}>
-    <Animated.View style={itemHeightStyle}>
-      {/* Swipe/Delete Layer */}
-      <Animated.View
-        className="!rounded-xl pr-4 flex flex-row items-center justify-end"
-        style={{
-          height: ITEM_HEIGHT,
-          position: "absolute",
-          right: "0%",
-          width: "95%",
-          backgroundColor: tokens.error,
-        }}
-      >
-        <View className="flex flex-row items-center gap-2">
-          <Text color="white" className="font-bold">
-            {t("settings.account.deleteAccount")}
-          </Text>
-          
-          <Ionicons name="trash-bin" size={24} color="white" />
-        </View>
-      </Animated.View>
-
-      {/* Foreground/Card Layer */}
-      <Animated.View
-        className="!rounded-xl overflow-hidden"
-        style={[
-          transformStyle,
-          {
-            width: "100%",
+    <GestureDetector gesture={pan}>
+      <Animated.View style={itemHeightStyle}>
+        {/* Swipe/Delete Layer */}
+        <Animated.View
+          className="!rounded-xl pr-4 flex flex-row items-center justify-end"
+          style={{
             height: ITEM_HEIGHT,
-            borderWidth: isCurrentAccount ? 3 : 0,
-            borderColor: isCurrentAccount ? tokens.success : "transparent",
-          },
-        ]}
-      >
-        <Pressable 
-          onPress={changeActiveAccount}
-          className="w-full h-full relative"
+            position: "absolute",
+            right: "0%",
+            width: "95%",
+            backgroundColor: tokens.error,
+          }}
+        >
+          <View className="flex flex-row items-center gap-2">
+            <Text color="white" className="font-bold">
+              {t("settings.account.deleteAccount")}
+            </Text>
+
+            <Ionicons name="trash-bin" size={24} color="white" />
+          </View>
+        </Animated.View>
+
+        {/* Foreground/Card Layer */}
+        <Animated.View
+          className="!rounded-xl overflow-hidden"
+          style={[
+            transformStyle,
+            {
+              width: "100%",
+              height: ITEM_HEIGHT,
+              borderWidth: 2,
+              borderColor: isCurrentAccount ? tokens.success : tokens.border,
+            },
+          ]}
+        >
+          <Pressable
+            onPress={changeActiveAccount}
+            className="w-full h-full relative"
           >
-          {/* Background Layer */}
-          <View className="absolute inset-0">
-            {images?.backgroundUrl && !backgroundLoadError ? (
-              <>
-                <Image
-                  source={images.backgroundUrl}
-                  contentFit="cover"
-                  cachePolicy="memory-disk"
-                  transition={200}
-                  onError={() => setBackgroundLoadError(true)}
-                  style={{ width: "100%", height: "100%" }}
-                />
-                {/* Dark overlay for text readability */}
+            {/* Background Layer */}
+            <View className="absolute inset-0">
+              {images?.backgroundUrl && !backgroundLoadError ? (
+                <>
+                  <Image
+                    source={images.backgroundUrl}
+                    contentFit="cover"
+                    cachePolicy="memory-disk"
+                    transition={200}
+                    onError={() => setBackgroundLoadError(true)}
+                    style={{ width: "100%", height: "100%" }}
+                  />
+                  {/* Dark overlay for text readability */}
+                  <View
+                    style={{
+                      position: "absolute",
+                      width: "100%",
+                      height: "100%",
+                      backgroundColor: isCurrentAccount
+                        ? "rgba(0,0,0,0.4)"
+                        : "rgba(0,0,0,0.5)",
+                    }}
+                  />
+                </>
+              ) : (
                 <View
                   style={{
-                    position: "absolute",
                     width: "100%",
                     height: "100%",
                     backgroundColor: isCurrentAccount
-                      ? "rgba(0,0,0,0.4)"
-                      : "rgba(0,0,0,0.5)",
+                      ? tokens.surfaceElevated
+                      : tokens.surface,
                   }}
                 />
-              </>
-            ) : (
-              <View
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  backgroundColor: isCurrentAccount
-                   ? tokens.primarySoft
-                    : tokens.surface,
-                }}
-              />
-            )}
-          </View>
-
-          {/* Active Account Badge */}
-          {isCurrentAccount && (
-            <View className="absolute top-2 right-2 z-10">
-              <View className="bg-white/90 rounded-full px-3 py-1 flex flex-row items-center gap-1 shadow-lg">
-                <Ionicons name="checkmark-circle" size={16} color={tokens.success} />
-                <Text color="success" size="extraSmall" className="font-bold">
-                  {t("settings.account.active")}
-                </Text>
-              </View>
+              )}
             </View>
-          )}
 
-          {/* Content Layer */}
-          <View className="relative w-full h-full p-3 flex flex-row items-center justify-between">
-            {/* Left block: Avatar + Button (column) + Info (right) */}
-            <View className="flex flex-row gap-3 items-center flex-1">
-              {/* Avatar + Button column */}
-              <View className="flex flex-col items-center gap-3">
-                {/* Large Avatar */}
-                <View className="size-20 rounded-full overflow-hidden border-3 border-white/30 shadow-xl bg-white/10">
-                  {images?.avatarUrl && !avatarLoadError ? (
-                    <>
-                      {/* Show HashIcon while loading */}
-                      {!avatarLoaded && (
-                        <View className="w-full h-full flex items-center justify-center">
-                          <HashIconNativeSVG seed={accountId} />
-                        </View>
-                      )}
-                      <Image
-                        source={images.avatarUrl}
-                        contentFit="cover"
-                        cachePolicy="memory-disk"
-                        transition={200}
-                        recyclingKey={accountId}
-                        onLoad={() => setAvatarLoaded(true)}
-                        onError={() => {
-                          setAvatarLoaded(false);
-                          setAvatarLoadError(true);
-                        }}
-                        style={{
-                          width: "100%",
-                          height: "100%",
-                          opacity: avatarLoaded ? 1 : 0,
-                          position: avatarLoaded ? "relative" : "absolute",
-                        }}
-                      />
-                    </>
-                  ) : (
-                    <View className="w-full h-full flex items-center justify-center">
-                      <HashIconNativeSVG seed={accountId} />
-                    </View>
-                  )}
+            {/* Active Account Badge */}
+            {isCurrentAccount && (
+              <View className="absolute top-2 right-2 z-10">
+                <View className="rounded-full px-3 py-1 flex flex-row items-center gap-1 shadow-lg">
+                  <Ionicons name="checkmark-circle" size={16} color={tokens.success} />
+                  <Text color="success" size="extraSmall" className="font-bold">
+                    {t("settings.account.active")}
+                  </Text>
                 </View>
+              </View>
+            )}
+
+            {/* Content Layer */}
+            <View className="relative w-full h-full p-3 flex flex-row items-center justify-between">
+              {/* Left block: Avatar + Button (column) + Info (right) */}
+              <View className="flex flex-row gap-3 items-center flex-1">
+                {/* Avatar + Button column */}
+                <View className="flex flex-col items-center justify-center gap-3" style={{ height: ITEM_HEIGHT, width: 100}}>
+                  {/* Large Avatar */}
+                  <View className="size-20 rounded-full overflow-hidden border-2 border-white/20 shadow-2xl bg-white/10">
+                    {images?.avatarUrl && !avatarLoadError ? (
+                      <>
+                        {/* Show HashIcon while loading */}
+                        {!avatarLoaded && (
+                          <View className="w-full h-full flex items-center justify-center">
+                            <HashIconNativeSVG seed={accountId} />
+                          </View>
+                        )}
+                        <Image
+                          source={images.avatarUrl}
+                          contentFit="cover"
+                          cachePolicy="memory-disk"
+                          transition={200}
+                          recyclingKey={accountId}
+                          onLoad={() => setAvatarLoaded(true)}
+                          onError={() => {
+                            setAvatarLoaded(false);
+                            setAvatarLoadError(true);
+                          }}
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            opacity: avatarLoaded ? 1 : 0,
+                            position: avatarLoaded ? "relative" : "absolute",
+                          }}
+                        />
+                      </>
+                    ) : (
+                      <View className="w-full h-full flex items-center justify-center">
+                        <HashIconNativeSVG seed={accountId} />
+                      </View>
+                    )}
+                  </View>
                   {/* Edit Profile Button (centered under avatar) */}
                   {type === AccountType.mnemonic && isSecured && (
                     <Button
@@ -445,10 +445,10 @@ export const AccountCardFancy = ({ publicKey, type, walletName }: Props) => {
                   color={images?.backgroundUrl && !backgroundLoadError ? "white" : "muted"}
                   size="small"
                   style={images?.backgroundUrl && !backgroundLoadError ? {
-                          textShadowColor: 'rgba(0, 0, 0, 0.75)',
-                          textShadowOffset: { width: 0, height: 1 },
-                          textShadowRadius: 3,
-                        } : {}}
+                    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+                    textShadowOffset: { width: 0, height: 1 },
+                    textShadowRadius: 3,
+                  } : {}}
                 >
                   {asRSAddress(accountId)}
                 </Text>
@@ -457,10 +457,10 @@ export const AccountCardFancy = ({ publicKey, type, walletName }: Props) => {
                   size="medium"
                   className="font-bold"
                   style={images?.backgroundUrl && !backgroundLoadError ? {
-                          textShadowColor: 'rgba(0, 0, 0, 0.75)',
-                          textShadowOffset: { width: 0, height: 1 },
-                          textShadowRadius: 3,
-                        } : {}}
+                    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+                    textShadowOffset: { width: 0, height: 1 },
+                    textShadowRadius: 3,
+                  } : {}}
                 >
                   {formatNumber({ value: availableBalance })} {NativeTicker}
                 </Text>
@@ -497,9 +497,9 @@ export const AccountCardFancy = ({ publicKey, type, walletName }: Props) => {
                     <Ionicons
                       name={
                         type === AccountType.watchOnly
-                         ? "eye-outline"
-                         : "shield-checkmark-outline"
-                        }
+                          ? "eye-outline"
+                          : "shield-checkmark-outline"
+                      }
                       size={12}
                       color={images?.backgroundUrl && !backgroundLoadError ? "white" : iconColor.muted}
                     />
@@ -509,8 +509,8 @@ export const AccountCardFancy = ({ publicKey, type, walletName }: Props) => {
                       className="font-medium"
                     >
                       {type === AccountType.watchOnly
-                       ? t("watchOnly") 
-                       : t("fullAccount")}
+                        ? t("watchOnly")
+                        : t("fullAccount")}
                     </Text>
                   </View>
                 )}
@@ -520,6 +520,6 @@ export const AccountCardFancy = ({ publicKey, type, walletName }: Props) => {
         </Pressable>
       </Animated.View>
     </Animated.View>
-  </GestureDetector>
-);
+    </GestureDetector >
+  );
 };

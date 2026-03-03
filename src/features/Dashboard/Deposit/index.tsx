@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { View, ScrollView } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { Card } from "@/components/Card";
@@ -26,14 +26,16 @@ export const DepositScreen = () => {
   };
 
   return (
-    <View className="flex-1 flex flex-col items-start justify-start mb-8 gap-4">
+
+    <View className="flex-1 flex flex-col items-start justify-start">
       <AppHeader title={t("deposit.title")} />
-      <View className="w-full px-4 gap-4">
+      <ScrollView>
+      <View className="w-full px-4 gap-4 pt-4">
         <AccountSwitcherFancy href="/dashboard/account" />
       </View>
-      <View className="flex flex-1 flex-col items-center w-full px-4">
+      <View className="flex flex-1 flex-col items-center w-full px-4 pt-4 pb-4">
         <Card>
-          <View className="flex flex-col items-center justify-center w-full gap-4 px-4">
+          <View className="flex flex-col items-center justify-center w-full gap-4 px-4 pb-4">
             <Text size="large" className="font-medium">
               {t("deposit.title")}
             </Text>
@@ -61,6 +63,7 @@ export const DepositScreen = () => {
           </View>
         </Card>
       </View>
+      </ScrollView>
     </View>
   );
 };

@@ -35,7 +35,7 @@ export const CurrencyCard = ({ id }: Props) => {
       onPress={changeActiveCurrency}
       className="w-full rounded-lg active:opacity-80 ripple-[#333] ripple-bordered"
     >
-      <Card>
+      <Card active={isCurrentCurrency}>
         <View className="h-12 w-full flex flex-row justify-between items-center">
           <View className="flex flex-row gap-1 items-center justify-start">
             <Text className="font-medium" size="large">

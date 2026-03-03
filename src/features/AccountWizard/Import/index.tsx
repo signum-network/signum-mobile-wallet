@@ -29,6 +29,7 @@ import {
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { KeyboardAnimatedContainer } from "@/components/KeyboardAnimatedContainer";
 import { AppHeader } from "@/components/AppHeader";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export const ImportScreen = () => {
   const { t } = useTranslation();
@@ -52,6 +53,8 @@ export const ImportScreen = () => {
       mnemonicAccountAgreement: false,
     },
   });
+
+  const insets = useSafeAreaInsets();
 
   const { watch, setValue, resetField, handleSubmit } = methods;
 
@@ -163,7 +166,7 @@ export const ImportScreen = () => {
         title={t("accountWizard.quickStart.importCta")}
         onBack={goBackwards}
       />
-      <KeyboardAnimatedContainer baseBottom={isAccountEnrolled ? -70 : 36}>
+      <KeyboardAnimatedContainer baseBottom={isAccountEnrolled ? -150 : insets.bottom}>
         <ScrollView
           keyboardDismissMode="on-drag"
           keyboardShouldPersistTaps="handled"
@@ -246,9 +249,8 @@ export const ImportScreen = () => {
 
             <WalletNameField />
           </AccountWizardContainer>
-
+          </ScrollView>
           <FormNavigation onSubmit={handleSubmit(onSubmit)} />
-        </ScrollView>
       </KeyboardAnimatedContainer>
     </FormProvider>
   );

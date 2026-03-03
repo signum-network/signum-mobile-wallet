@@ -30,7 +30,7 @@ export const HostCard = ({
   const isCurrentActiveNode = activeNodeHost.url === url;
 
   return (
-    <Card>
+    <Card active={isCurrentActiveNode}>
       <View className="w-full flex flex-row justify-between items-center">
         <View className="flex flex-col gap-1">
             <View className="flex flex-row items-center justify-between w-full gap-1">

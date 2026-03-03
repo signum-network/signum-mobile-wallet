@@ -14,7 +14,7 @@ export const QuickStartScreen = () => {
 
   return (
     <AccountWizardContainer>
-        <View className="flex flex-1 flex-col justify-around gap-8">
+        <View className="flex flex-1 flex-col justify-around gap-8 pb-8">
           <View className="items-center justify-center gap-4">
             <Image
               source={{ uri: wizardBannerPicture }}

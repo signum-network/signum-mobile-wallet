@@ -229,8 +229,9 @@ export const TransferScreen = () => {
             disableOnSubmit={isSigningTransaction || isComplete}
           />
         )}
-        <FormNavigation />
+      
       </ScrollView>
+        <FormNavigation />
     </FormProvider>
   );
 };

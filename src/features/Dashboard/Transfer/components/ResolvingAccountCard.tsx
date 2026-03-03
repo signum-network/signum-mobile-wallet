@@ -34,6 +34,7 @@ export const ResolvingAccountCard = ({recipient}: Props) => {
                 <Text
                   color="white"
                   className="font-bold"
+                  size="large"
                   style={{
                     textShadowColor: "rgba(0, 0, 0, 0.75)",
                     textShadowOffset: { width: 0, height: 1 },
@@ -44,7 +45,7 @@ export const ResolvingAccountCard = ({recipient}: Props) => {
                 </Text>
               </View>
             ) : (
-              <Text color="content" className="font-bold">
+              <Text size="large" color="content" className="font-bold">
                 {resolvedAccountName}
               </Text>
             )
@@ -52,8 +53,8 @@ export const ResolvingAccountCard = ({recipient}: Props) => {
 
           {/* Address */}
           <Text
-            size="small"
-            color={showBackground ? "white" : "muted"}
+            size="medium"
+            color={showBackground ? "white" : "content"}
             style={
               showBackground
                 ? {
@@ -69,7 +70,7 @@ export const ResolvingAccountCard = ({recipient}: Props) => {
 
           {/* Numeric ID */}
           <Text
-            size="extraSmall"
+            size="small"
             color={showBackground ? "white" : "muted"}
             style={
               showBackground

@@ -67,7 +67,7 @@ export const SecretPhraseGeneration = () => {
   }, []);
 
   return (
-    <View className="flex justify-center items-center gap-4 pt-8 w-full">
+    <View className="flex justify-center items-center gap-4 pt-4 w-full">
       <Text size="extraLarge" className="font-bold text-center">
         {t("accountWizard.createAccount.secondStepTitle")}
       </Text>
@@ -132,7 +132,7 @@ export const SecretPhraseGeneration = () => {
           disabled={!seedPhrase}
         />
       </View>
-      <Text className="text-center pb-20">
+      <Text className="text-center pb-4">
         {t("accountWizard.createAccount.secondStepSeedPhraseSecondTip")}
       </Text>
     </View>
