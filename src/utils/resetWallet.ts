@@ -8,6 +8,8 @@ import { clearDatabase } from "@/db/utils/clearDatabase";
 import type { ExpoSQLiteDatabase } from "drizzle-orm/expo-sqlite";
 import * as schema from "@/db/schema";
 import { AccountType } from "@/types/account";
+import {nodeHostStore} from "@/states/nodeHostStore";
+import {profileEditDraftStore} from "@/states/profileEditDraftStore";
 
 export const resetWallet = async (
   db: ExpoSQLiteDatabase<typeof schema>
@@ -33,6 +35,8 @@ export const resetWallet = async (
   appStore.getState().reset();
   marketStore.getState().reset();
   topLevelDomainStore.getState().reset();
+  nodeHostStore.getState().reset();
+  profileEditDraftStore.getState().reset();
 
   // Note: Reset accountStore LAST because we need account data above
   accountStore.getState().reset();
