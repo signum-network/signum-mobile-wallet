@@ -105,9 +105,10 @@ export const CreateScreen = () => {
         });
       }
       setTimeout(() => {
-        setShowDialog(false);
-        router.replace("/dashboard/account");
-      }, 4000);
+        requestAnimationFrame(() => {
+          router.replace("/dashboard/account");
+        });
+      }, 2000);
     } catch (error) {
       console.error(error);
     }
