@@ -103,7 +103,10 @@ export const ImportScreen = () => {
 
             setActiveAccount(publicKey);
 
-            router.replace("/dashboard/overview");
+            //Delay navigation to next frame to avoid Fabric mount/unmount race
+            requestAnimationFrame(() => {
+              router.replace("/dashboard/overview");
+            });
           }
         );
         break;
@@ -142,7 +145,10 @@ export const ImportScreen = () => {
 
           setActiveAccount(watchAccountPublicKey);
 
-          router.replace("/dashboard/overview");
+          //Delay navigation to next frame to avoid Fabric mount/unmount race
+          requestAnimationFrame(() => {
+            router.replace("/dashboard/overview");
+          });
         } catch (error: any) {
           return alert(t("accountDoesNotExists"));
         }
@@ -249,8 +255,8 @@ export const ImportScreen = () => {
 
             <WalletNameField />
           </AccountWizardContainer>
-          </ScrollView>
-          <FormNavigation onSubmit={handleSubmit(onSubmit)} />
+        </ScrollView>
+        <FormNavigation onSubmit={handleSubmit(onSubmit)} />
       </KeyboardAnimatedContainer>
     </FormProvider>
   );
