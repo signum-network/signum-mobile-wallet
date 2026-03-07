@@ -21,7 +21,7 @@ const initialValues = [...new Array(PUBLIC_PIN_LENGTH)];
 
 export const EnrollAuthScreen = () => {
   const { t } = useTranslation();
-  const { authMethod, setAuthMethod, setIsAuthEnrolled } = useAppStore();
+  const { authMethod, setAuthMethod, setIsAuthEnrolled, setIsUnlocked } = useAppStore();
   const { tokens, iconColor } = useAppTheme();
 
   const [step, setStep] = useState(Steps.enter);
@@ -71,8 +71,9 @@ export const EnrollAuthScreen = () => {
     const goToWizard = () => {
       setTimeout(() => {
         setIsAuthEnrolled(true);
+        setIsUnlocked(true);
         router.replace("/account-wizard");
-      }, 2700); // Timeout is assigned because of ringtone duration
+      }, 2000); // Timeout is assigned because of ringtone duration
     };
 
     if (authMethod === "BIOMETRIC") {
