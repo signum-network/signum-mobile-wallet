@@ -7,6 +7,7 @@ import * as schema from "@/db/schema";
 import { AccountType } from "@/types/account";
 import { resetAllStores } from "@/states/storeRegistry";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { queryClient } from "@/providers/DataInitializer";
 
 export const resetWallet = async (
   db: ExpoSQLiteDatabase<typeof schema>
@@ -30,7 +31,10 @@ export const resetWallet = async (
 
   await clearDatabase(db);
 
-  // 4. Reset all Zustand stores and clear all persisted data
-  resetAllStores();
+  // 4. Clear all persisted data, then reset in-memory state
+  // Order matters: clearing AsyncStorage before store reset prevents the persist
+  // middleware from re-writing stale state after the clear
   await AsyncStorage.clear();
+  resetAllStores();
+  queryClient.clear();
 };

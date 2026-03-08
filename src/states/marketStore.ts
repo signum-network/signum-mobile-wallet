@@ -22,19 +22,19 @@ interface Actions {
   updateMarketRate: (value: Market) => void;
 }
 
-const initialState: State = {
+const getInitialState = () => ({
   activeCurrency: defaultCurrency,
   markets: {
     [defaultCurrency]: defaultMarket,
   },
-};
+});
 
 export const marketStore = create<State & Actions>()(
   persist(
     (set, get) => ({
-      ...initialState,
+      ...getInitialState(),
       reset: () => {
-        set(initialState);
+        set(getInitialState());
       },
       setActiveCurrency: (value) =>
         set(() => ({

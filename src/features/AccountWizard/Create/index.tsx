@@ -139,7 +139,7 @@ export const CreateScreen = () => {
      
 
 
-        <ScrollView key={activeStep} contentContainerStyle={!isAccountEnrolled ? { paddingBottom: 78 + insets.bottom } : undefined}>
+        <ScrollView key={activeStep}>
           <AccountWizardContainer>
             {activeStep === Steps.AccountCreationAgreement &&
               <Agreement />}

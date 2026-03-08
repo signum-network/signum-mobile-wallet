@@ -10,6 +10,7 @@ import {
 } from "@/types/account";
 import type { networks } from "@/types/networks";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {deepClone} from "@/utils/deepClone";
 
 type addAccountParams = {
   publicKey: string;
@@ -53,20 +54,18 @@ interface Actions {
   ) => void;
 }
 
-const initialState: State = {
+const getInitialState = () =>( {
   activeAccount: "",
   accounts: {},
-};
-
-const deepClone = <T,>(o: T): T => JSON.parse(JSON.stringify(o));
+});
 
 
 export const accountStore = create<State & Actions>()(
   persist(
     (set, get) => ({
-      ...initialState,
+      ...getInitialState(),
       reset: () => {
-        set(initialState);
+        set(getInitialState());
       },
       setActiveAccount: (publicKey) =>
         set(() => ({

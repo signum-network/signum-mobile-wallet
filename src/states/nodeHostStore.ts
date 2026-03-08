@@ -35,7 +35,7 @@ interface Actions {
   setNetworkFees: (value: networkFees) => void;
 }
 
-const initialState: State = {
+const getInitialState = () =>({
   connectionType: "automatic",
   activeNodeHost: defaultNodeHost,
   isActiveNodeAvailable: false,
@@ -46,14 +46,14 @@ const initialState: State = {
   testnetReliableNodeHost: [],
   customNodeHost: [],
   networkFees: defaultNetworkFees,
-};
+}) as State;
 
 export const nodeHostStore = create<State & Actions>()(
   persist(
     (set, get) => ({
-      ...initialState,
+      ...getInitialState(),
       reset: () => {
-        set(initialState);
+        set(getInitialState());
       },
       setConnectionType: (value) =>
         set(() => ({

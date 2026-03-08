@@ -37,7 +37,7 @@ const systemScheme = Appearance.getColorScheme(); // "light" | "dark" | null
 const initialThemeDesign: ThemeDesign =
   systemScheme === "dark" ? "defaultDark" : "defaultLight";
 
-const initialState: State = {
+const getInitialState = () => ({
   themeDesign: initialThemeDesign,
   language: getDefaultLocale(),
   isTermAgreed: false,
@@ -47,13 +47,13 @@ const initialState: State = {
   isOnline: true,
   minerMode: false,
   isUnlocked: false,
-};
+}) as State;
 
 export const appStore = create<State & Actions>()(
   persist(
     (set) => ({
-      ...initialState,
-      reset: () => set(initialState),
+      ...getInitialState(),
+      reset: () => set(getInitialState()),
 
       setThemeDesign: (value) => set({ themeDesign: value }),
       setLanguage: (value) => set({ language: value }),
