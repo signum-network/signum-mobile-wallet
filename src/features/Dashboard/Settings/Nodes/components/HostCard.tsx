@@ -4,10 +4,10 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import { useNodeHostStore } from "@/hooks/useNodeHostStore";
 import { Text } from "@/components/Text";
 import { Card } from "@/components/Card";
-import type { nodeHost } from "@/types/nodeHost";
+import type { NodeHost } from "@/types/nodeHost";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
-interface Props extends nodeHost {
+interface Props extends NodeHost {
   showNetwork?: boolean;
   isCustomNodeCard?: boolean;
   showPickButton?: boolean;

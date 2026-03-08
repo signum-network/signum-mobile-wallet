@@ -7,7 +7,7 @@ import { useNodeHostStore } from "@/hooks/useNodeHostStore";
 import { HorizontalDivider } from "@/components/HorizontalDivider";
 import { Text } from "@/components/Text";
 import { Button } from "@/components/Button";
-import type { nodeHost } from "@/types/nodeHost";
+import type { NodeHost } from "@/types/nodeHost";
 import { HostCard } from "../../components/HostCard";
 import { AddNodeDialog } from "./components/AddNodeDialog";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -44,7 +44,7 @@ const queryClient = useQueryClient()
     }
   }, [nodeGroup, reliableNodeHost, testnetReliableNodeHost, customNodeHost]);
 
-  const updateActiveNode = (value: nodeHost) => {
+  const updateActiveNode = (value: NodeHost) => {
     if (isNodeGroupCustom) {
       Alert.alert(
         t("settings.node.customNodeOptions"),
