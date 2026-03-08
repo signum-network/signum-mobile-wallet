@@ -2,7 +2,7 @@ import { Dimensions, View, Pressable, Alert } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
 import { Image } from "expo-image";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { src44 } from "@signumjs/standards";
 import { useNodeHostStore } from "@/hooks/useNodeHostStore";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
@@ -98,22 +98,12 @@ export const AccountCardFancy = ({ publicKey, type, walletName }: Props) => {
   const networkData = currentAccount?.[currentNetwork];
   const activationInProgress = !!networkData?.activationInProgress;
 
-  // Track image loading states
-  const [avatarLoaded, setAvatarLoaded] = useState(false);
-  const [avatarLoadError, setAvatarLoadError] = useState(false);
-  const [backgroundLoadError, setBackgroundLoadError] = useState(false);
-
+  // Derive IPFS URLs only from the description string, not the full account object
+  const description = currentAccount?.[currentNetwork]?.description;
   const images = useMemo(() => {
-    if (!currentAccount?.[currentNetwork]?.description) return null;
+    if (!description) return null;
     try {
-      const descriptor = src44.DescriptorData.parse(
-        currentAccount[currentNetwork].description,
-        false
-      );
-      // Reset loading and error states when URLs change
-      setAvatarLoaded(false);
-      setAvatarLoadError(false);
-      setBackgroundLoadError(false);
+      const descriptor = src44.DescriptorData.parse(description, false);
       return {
         avatarUrl: toIpfsUrl(descriptor?.avatar?.ipfsCid) ?? null,
         backgroundUrl: toIpfsUrl(descriptor?.background?.ipfsCid) ?? null,
@@ -121,7 +111,14 @@ export const AccountCardFancy = ({ publicKey, type, walletName }: Props) => {
     } catch {
       return null;
     }
-  }, [currentAccount, currentNetwork]);
+  }, [description]);
+
+  // Track image loading errors — reset only when the URL actually changes
+  const [avatarLoadError, setAvatarLoadError] = useState(false);
+  const [backgroundLoadError, setBackgroundLoadError] = useState(false);
+
+  useEffect(() => setAvatarLoadError(false), [images?.avatarUrl]);
+  useEffect(() => setBackgroundLoadError(false), [images?.backgroundUrl]);
 
   const removeAccount = async () => {
     itemHeight.set(0);
@@ -374,32 +371,16 @@ export const AccountCardFancy = ({ publicKey, type, walletName }: Props) => {
                   {/* Large Avatar */}
                   <View className="size-20 rounded-full overflow-hidden border-2 border-white/20 shadow-2xl bg-white/10">
                     {images?.avatarUrl && !avatarLoadError ? (
-                      <>
-                        {/* Show HashIcon while loading */}
-                        {!avatarLoaded && (
-                          <View className="w-full h-full flex items-center justify-center">
-                            <HashIconNativeSVG seed={accountId} />
-                          </View>
-                        )}
-                        <Image
-                          source={images.avatarUrl}
-                          contentFit="cover"
-                          cachePolicy="memory-disk"
-                          transition={200}
-                          recyclingKey={accountId}
-                          onLoad={() => setAvatarLoaded(true)}
-                          onError={() => {
-                            setAvatarLoaded(false);
-                            setAvatarLoadError(true);
-                          }}
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            opacity: avatarLoaded ? 1 : 0,
-                            position: avatarLoaded ? "relative" : "absolute",
-                          }}
-                        />
-                      </>
+                      <Image
+                        source={images.avatarUrl}
+                        contentFit="cover"
+                        cachePolicy="memory-disk"
+                        transition={200}
+                        recyclingKey={accountId}
+                        placeholder={null}
+                        onError={() => setAvatarLoadError(true)}
+                        style={{ width: "100%", height: "100%" }}
+                      />
                     ) : (
                       <View className="w-full h-full flex items-center justify-center">
                         <HashIconNativeSVG seed={accountId} />
