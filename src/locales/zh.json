@@ -258,6 +258,10 @@
       "bubblegum": {
         "title": "泡泡糖",
         "description": "俏皮的粉色与紫色粉彩主题。"
+      },
+      "rogueEmberDark": {
+        "title": "Rogue Ember",
+        "description": "深色科技主题，带红橙色点缀。"
       }
     },
     "about": {

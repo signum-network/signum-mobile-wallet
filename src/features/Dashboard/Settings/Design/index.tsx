@@ -12,6 +12,7 @@ const AVAILABLE_DESIGNS: ThemeDesign[] = [
   "midnight",
   "solarized",
   "sunrise",
+  "rogueEmberDark"
 ];
 
 export const DesignSettingsScreen = () => {
