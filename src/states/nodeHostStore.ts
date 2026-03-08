@@ -1,35 +1,36 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import { type nodeHost, defaultNodeHost } from "@/types/nodeHost";
+import { type NodeHost, defaultNodeHost } from "@/types/nodeHost";
 import type { nodeConnectionTypes } from "@/types/nodeConnectionTypes";
 import { type networkFees, defaultNetworkFees } from "@/types/networkFees";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { PUBLIC_SIGNUM_DEFAULT_NODE_URL, PUBLIC_SIGNUM_DEFAULT_NODE_NAME } from "@/types/constants";
 
 interface State {
   connectionType: nodeConnectionTypes;
-  activeNodeHost: nodeHost;
+  activeNodeHost: NodeHost;
   isActiveNodeAvailable: boolean;
   isActiveNodeSynced: boolean;
   activeNodeSyncedPercentage: number;
   activeNodeNumberOfBlocks: number;
-  reliableNodeHost: nodeHost[];
-  testnetReliableNodeHost: nodeHost[];
-  customNodeHost: nodeHost[];
+  reliableNodeHost: NodeHost[];
+  testnetReliableNodeHost: NodeHost[];
+  customNodeHost: NodeHost[];
   networkFees: networkFees;
 }
 
 interface Actions {
   reset: () => void;
   setConnectionType: (value: nodeConnectionTypes) => void;
-  setActiveNodeHost: (value: nodeHost) => void;
+  setActiveNodeHost: (value: NodeHost) => void;
   setIsActiveNodeAvailable: (value: boolean) => void;
   setIsActiveNodeSynced: (value: boolean) => void;
   setActiveNodeSyncedPercentage: (value: number) => void;
   setActiveNodeNumberOfBlocks: (value: number) => void;
   resetActiveNodeHost: () => void;
-  setReliableNodeHost: (value: nodeHost[]) => void;
-  setTestnetReliableNodeHost: (value: nodeHost[]) => void;
-  addCustomNode: (value: nodeHost) => void;
+  setReliableNodeHost: (value: NodeHost[]) => void;
+  setTestnetReliableNodeHost: (value: NodeHost[]) => void;
+  addCustomNode: (value: NodeHost) => void;
   removeCustomNode: (value: string) => void; // remove custom node by name
   setNetworkFees: (value: networkFees) => void;
 }
@@ -41,7 +42,11 @@ const initialState: State = {
   isActiveNodeSynced: false,
   activeNodeSyncedPercentage: 0,
   activeNodeNumberOfBlocks: 0,
-  reliableNodeHost: [],
+  reliableNodeHost: [{
+    name: PUBLIC_SIGNUM_DEFAULT_NODE_NAME,
+    url: PUBLIC_SIGNUM_DEFAULT_NODE_URL,
+    isTestnet: false,
+  }],
   testnetReliableNodeHost: [],
   customNodeHost: [],
   networkFees: defaultNetworkFees,

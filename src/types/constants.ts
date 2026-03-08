@@ -11,6 +11,9 @@ export const PUBLIC_INACTIVITY_AUTO_LOCK = (__DEV__ ? 30 : 5) * 60_000;
 export const PUBLIC_SIGNUM_PUBLIC_RESOURCES_URL =
   "https://signum-network.github.io/public-resources";
 
+export const PUBLIC_SIGNUM_DEFAULT_NODE_URL = "https://europe.signum.network";
+export const PUBLIC_SIGNUM_DEFAULT_NODE_NAME = "Europe";
+
 export const PUBLIC_SIGNUM_ACCOUNT_ACTIVATOR_MAINNET_URL =
   "https://activator.signum.network";
 
