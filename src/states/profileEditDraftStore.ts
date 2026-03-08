@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { registerStore } from "@/states/storeRegistry";
 import { persist, createJSONStorage } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import type { ProfileEdit } from "@/features/Dashboard/ProfileEdit/utils/types";
@@ -55,3 +56,4 @@ export const profileEditDraftStore = create<State & Actions>()(
     }
   )
 );
+registerStore(profileEditDraftStore);

@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { registerStore } from "@/states/storeRegistry";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { type nodeHost, defaultNodeHost } from "@/types/nodeHost";
 import type { nodeConnectionTypes } from "@/types/nodeConnectionTypes";
@@ -122,3 +123,4 @@ export const nodeHostStore = create<State & Actions>()(
     }
   )
 );
+registerStore(nodeHostStore);

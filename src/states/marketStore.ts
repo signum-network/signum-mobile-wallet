@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { registerStore } from "@/states/storeRegistry";
 import { persist, createJSONStorage } from "zustand/middleware";
 import {
   type SupportedTickerSymbol,
@@ -59,3 +60,4 @@ export const marketStore = create<State & Actions>()(
     }
   )
 );
+registerStore(marketStore);

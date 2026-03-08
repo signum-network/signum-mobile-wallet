@@ -1,20 +1,17 @@
 import { deletePin } from "@/utils/sec/handlePin";
 import { deleteSecretKey } from "@/utils/sec/handleSecretKeys";
-import { appStore } from "@/states/appStore";
 import { accountStore } from "@/states/accountStore";
-import { marketStore } from "@/states/marketStore";
-import { topLevelDomainStore } from "@/states/topLevelDomainStore";
 import { clearDatabase } from "@/db/utils/clearDatabase";
 import type { ExpoSQLiteDatabase } from "drizzle-orm/expo-sqlite";
 import * as schema from "@/db/schema";
 import { AccountType } from "@/types/account";
-import {nodeHostStore} from "@/states/nodeHostStore";
-import {profileEditDraftStore} from "@/states/profileEditDraftStore";
+import { resetAllStores } from "@/states/storeRegistry";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const resetWallet = async (
   db: ExpoSQLiteDatabase<typeof schema>
 ): Promise<void> => {
-  // 1. Get accounts before resetting store
+  // 1. Get accounts before resetting stores
   const accounts = accountStore.getState().accounts;
   const secretKeyDeletionPromises: Promise<boolean>[] = [];
 
@@ -31,13 +28,7 @@ export const resetWallet = async (
   // 3. Clear database
   await clearDatabase(db);
 
-  // 4. Reset all Zustand stores
-  appStore.getState().reset();
-  marketStore.getState().reset();
-  topLevelDomainStore.getState().reset();
-  nodeHostStore.getState().reset();
-  profileEditDraftStore.getState().reset();
-
-  // Note: Reset accountStore LAST because we need account data above
-  accountStore.getState().reset();
+  // 4. Reset all Zustand stores and clear all persisted data
+  resetAllStores();
+  await AsyncStorage.clear();
 };

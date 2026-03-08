@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { registerStore } from "@/states/storeRegistry";
 import { persist, createJSONStorage } from "zustand/middleware";
 import {
   type WalletAccount,
@@ -168,3 +169,4 @@ export const accountStore = create<State & Actions>()(
     }
   )
 );
+registerStore(accountStore);

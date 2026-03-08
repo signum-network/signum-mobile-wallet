@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { registerStore } from "@/states/storeRegistry";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { getDefaultLocale, type locales } from "@/locales";
 import type { authMethod } from "@/types/authMethod";
@@ -75,3 +76,4 @@ export const appStore = create<State & Actions>()(
     }
   )
 );
+registerStore(appStore);

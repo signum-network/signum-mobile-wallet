@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { registerStore } from "@/states/storeRegistry";
 import { persist, createJSONStorage } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -43,3 +44,4 @@ export const topLevelDomainStore = create<State & Actions>()(
     }
   )
 );
+registerStore(topLevelDomainStore);
