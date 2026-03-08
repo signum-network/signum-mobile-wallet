@@ -83,6 +83,7 @@ export const NodeHostInitializer = () => {
 
     useEffect(() => {
         if(data){
+            console.log('[NodeHostInitializer] Reliable node hosts loaded:', data);
             setReliableNodeHost(data.mainnet);
             setTestnetReliableNodeHost(data.testnet);
         }
