@@ -4,7 +4,8 @@ export type ThemeDesign =
   | "midnight"
   | "solarized"
   | "sunrise"
-  | "bubblegum";
+  | "bubblegum"
+  | "rogueEmberDark";
 
 export type ThemeTokens = {
   background: string;
@@ -99,4 +100,16 @@ export const themeTokens: TokenMap = {
     success: "#4FB3FF",
     error: "#C04AFF",
   },
+  rogueEmberDark: {
+    background: "#000000",
+    surface: "#05000A",
+    surfaceElevated: "#1a0101",
+    border: "#5C120C",
+    text: "#E5E7EB",
+    textMuted: "#8A817C",
+    primary: "#A62014",
+    primarySoft: "#A6201422",
+    success: "#F22F1D",
+    error: "#F28B05",
+  }
 };

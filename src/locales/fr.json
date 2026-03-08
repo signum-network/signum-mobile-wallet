@@ -258,6 +258,10 @@
       "bubblegum": {
         "title": "Bubblegum",
         "description": "Thème pastel ludique avec rose et violet."
+      },
+      "rogueEmberDark": {
+        "title": "Rogue Ember",
+        "description": "Thème technologique sombre avec accents rouge-orange."
       }
     },
     "about": {

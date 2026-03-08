@@ -258,6 +258,10 @@
       "bubblegum": {
         "title": "Bubblegum",
         "description": "Игрившая пастельная тема с розовым и фиолетовым."
+      },
+      "rogueEmberDark": {
+        "title": "Rogue Ember",
+        "description": "Тёмная техно-тема с красно-оранжевыми акцентами."
       }
     },
     "about": {
