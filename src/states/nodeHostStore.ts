@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { registerStore } from "@/states/storeRegistry";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { type NodeHost, defaultNodeHost } from "@/types/nodeHost";
 import type { nodeConnectionTypes } from "@/types/nodeConnectionTypes";
@@ -35,7 +36,7 @@ interface Actions {
   setNetworkFees: (value: networkFees) => void;
 }
 
-const initialState: State = {
+const getInitialState = () =>({
   connectionType: "automatic",
   activeNodeHost: defaultNodeHost,
   isActiveNodeAvailable: false,
@@ -50,14 +51,14 @@ const initialState: State = {
   testnetReliableNodeHost: [],
   customNodeHost: [],
   networkFees: defaultNetworkFees,
-};
+}) as State;
 
 export const nodeHostStore = create<State & Actions>()(
   persist(
     (set, get) => ({
-      ...initialState,
+      ...getInitialState(),
       reset: () => {
-        set(initialState);
+        set(getInitialState());
       },
       setConnectionType: (value) =>
         set(() => ({
@@ -127,3 +128,4 @@ export const nodeHostStore = create<State & Actions>()(
     }
   )
 );
+registerStore(nodeHostStore);

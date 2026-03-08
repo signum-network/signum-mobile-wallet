@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { registerStore } from "@/states/storeRegistry";
 import { persist, createJSONStorage } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -15,17 +16,17 @@ interface Actions {
   setTopLevelDomains: (value: TopLevelDomainMap) => void;
 }
 
-const initialState: State = {
+const getInitialState = () => ({
   lastUpdated: "",
   topLevelDomains: {},
-};
+});
 
 export const topLevelDomainStore = create<State & Actions>()(
   persist(
     (set) => ({
-      ...initialState,
+      ...getInitialState(),
       reset: () => {
-        set(initialState);
+        set(getInitialState());
       },
       setLastUpdated: (value) =>
         set(() => ({
@@ -43,3 +44,4 @@ export const topLevelDomainStore = create<State & Actions>()(
     }
   )
 );
+registerStore(topLevelDomainStore);

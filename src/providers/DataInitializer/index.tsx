@@ -6,7 +6,7 @@ import { OnlineManagerInitializer } from "./OnlineManagerInitializer";
 import { MarketInitializer } from "./MarketInitializer";
 import { DeepLinkInitializer } from "./DeepLinkInitializer";
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 
 export const DataInitializer = ({ children }: ChildrenProps) => {
   return (

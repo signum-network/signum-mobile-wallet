@@ -172,7 +172,7 @@ export const ImportScreen = () => {
         title={t("accountWizard.quickStart.importCta")}
         onBack={goBackwards}
       />
-      <KeyboardAnimatedContainer baseBottom={isAccountEnrolled ? -150 : insets.bottom}>
+      <KeyboardAnimatedContainer baseBottom={isAccountEnrolled ? -75 : insets.bottom}>
         <ScrollView
           keyboardDismissMode="on-drag"
           keyboardShouldPersistTaps="handled"

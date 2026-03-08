@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { registerStore } from "@/states/storeRegistry";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { getDefaultLocale, type locales } from "@/locales";
 import type { authMethod } from "@/types/authMethod";
@@ -36,7 +37,7 @@ const systemScheme = Appearance.getColorScheme(); // "light" | "dark" | null
 const initialThemeDesign: ThemeDesign =
   systemScheme === "dark" ? "defaultDark" : "defaultLight";
 
-const initialState: State = {
+const getInitialState = () => ({
   themeDesign: initialThemeDesign,
   language: getDefaultLocale(),
   isTermAgreed: false,
@@ -46,13 +47,13 @@ const initialState: State = {
   isOnline: true,
   minerMode: false,
   isUnlocked: false,
-};
+}) as State;
 
 export const appStore = create<State & Actions>()(
   persist(
     (set) => ({
-      ...initialState,
-      reset: () => set(initialState),
+      ...getInitialState(),
+      reset: () => set(getInitialState()),
 
       setThemeDesign: (value) => set({ themeDesign: value }),
       setLanguage: (value) => set({ language: value }),
@@ -75,3 +76,4 @@ export const appStore = create<State & Actions>()(
     }
   )
 );
+registerStore(appStore);

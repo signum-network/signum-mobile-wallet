@@ -15,13 +15,14 @@ export const saveSecretKey = async (
   agreementPrivateKey: string
 ) => {
   try {
-    return await SecureStore.setItemAsync(
+    await SecureStore.setItemAsync(
       publicKey,
       JSON.stringify({ signPrivateKey, agreementPrivateKey }),
       options
-    ).then(() => true);
+    );
+    return true;
   } catch (error) {
-    console.error(error);
+    console.error("Error while saving key:", error);
   }
 };
 
@@ -31,24 +32,21 @@ export const readSecretKey = async (
   { signPrivateKey: string; agreementPrivateKey: string } | undefined
 > => {
   try {
-    return await SecureStore.getItemAsync(publicKey, options).then(
-      (data: any) => {
-        const { signPrivateKey, agreementPrivateKey } = JSON.parse(data);
-        return { signPrivateKey, agreementPrivateKey };
-      }
-    );
+    const data = await SecureStore.getItemAsync(publicKey, options);
+    const { signPrivateKey, agreementPrivateKey } = JSON.parse(data!);
+    return { signPrivateKey, agreementPrivateKey };
   } catch (error) {
-    console.error(error);
+    console.error("Error while reading key:", error);
   }
 };
 
 export const deleteSecretKey = async (publicKey: string) => {
   try {
-    return await SecureStore.deleteItemAsync(publicKey, options).then(
-      () => true
-    );
+    console.log("Deleting key:", publicKey);
+    await SecureStore.deleteItemAsync(publicKey, options);
+    return true;
   } catch (error) {
-    console.error(error);
+    console.error("Error while deleting key:", error);
     return false;
   }
 };
