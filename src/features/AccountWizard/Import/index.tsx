@@ -176,6 +176,7 @@ export const ImportScreen = () => {
         <ScrollView
           keyboardDismissMode="on-drag"
           keyboardShouldPersistTaps="handled"
+          contentContainerStyle={!isAccountEnrolled ? { paddingBottom: 78 + insets.bottom } : undefined}
         >
           <AccountWizardContainer>
             <View className="flex flex-col items-center justify-center w-full gap-4">

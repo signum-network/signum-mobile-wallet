@@ -1,5 +1,6 @@
 type ResettableStore = {
   getState: () => { reset: () => void };
+  persist: { getOptions: () => { name?: string } };
 };
 
 const registry: ResettableStore[] = [];
@@ -21,11 +22,11 @@ export const registerStore = (store: ResettableStore) => {
  * and invokes its reset method to revert its state to the
  * initial configuration. It is typically used to clear stored
  * states or reinitialize the application-wide data held by each store.
- *
- * Note: The `registry` is assumed to be a collection of stores,
- * each containing a `getState` method that provides access to a
- * `reset` function.
  */
 export const resetAllStores = () => {
-  registry.forEach(store => store.getState().reset());
+  console.log("Resetting stores and clearing persisted data...");
+  registry.forEach(store => {
+    console.log("Resetting store:", store.persist.getOptions().name);
+    store.getState().reset();
+  });
 };
