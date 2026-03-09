@@ -2,7 +2,7 @@ import { create } from "zustand";
 
 export type PendingDeepLink = {
   pathname: string;
-  params?: Record<string, string>;
+  params?: Record<string, unknown>;
 };
 
 interface State {

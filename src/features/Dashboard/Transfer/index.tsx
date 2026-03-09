@@ -35,6 +35,15 @@ import {FeeSelection} from "./sections/FeeSelection";
 import {Confirmation} from "./sections/Confirmation";
 import {FormNavigation} from "./components/FormNavigation";
 import {FormStepper} from "./components/FormStepper";
+import {pendingDeepLinkStore} from "@/states/pendingDeepLinkStore";
+
+type TransferDeeplinkParams = {
+    amountPlanck: string,
+    recipient: string,
+    message?: string,
+    messageIsText?: boolean,
+    encrypt?: boolean
+}
 
 
 export const TransferScreen = () => {
@@ -66,6 +75,7 @@ export const TransferScreen = () => {
         },
     });
 
+
     const activeStep = methods.watch("activeStep");
 
     const scrollToTop = () => {
@@ -79,11 +89,13 @@ export const TransferScreen = () => {
 
     useEffect(() => scrollToTop(), [activeStep]);
 
+    // Reset form on focus, applying pending deep link values if available
     useFocusEffect(
         useCallback(() => {
             const initialAsset = routeAsset || "0";
+            const {pendingDeepLink, clearPendingDeepLink} = pendingDeepLinkStore.getState();
 
-            methods.reset({
+            const defaults: Partial<TransactionCreation> = {
                 activeStep: Steps.Recipient,
                 recipient: "",
                 asset: initialAsset,
@@ -91,7 +103,40 @@ export const TransferScreen = () => {
                 memo: "",
                 isMemoEncrypted: false,
                 isMemoBinary: false,
-            });
+            };
+
+            if (pendingDeepLink) {
+                const {
+                    recipient,
+                    amountPlanck,
+                    encrypt,
+                    messageIsText,
+                    message
+                } = pendingDeepLink.params as TransferDeeplinkParams;
+                if (recipient) {
+                    defaults.recipient = recipient;
+                }
+                if (amountPlanck) {
+                    try {
+                        defaults.amount = parseFloat(Amount.fromPlanck(amountPlanck).getSigna());
+                        defaults.asset = "0";
+                    } catch {
+                    }
+                }
+                if (encrypt) {
+                    defaults.isMemoEncrypted = true;
+                }
+                if (messageIsText === false) {
+                    defaults.isMemoBinary = true;
+                }
+                if (message) {
+                    defaults.memo = message;
+                    defaults.includeMemo = true;
+                }
+                clearPendingDeepLink();
+            }
+
+            methods.reset(defaults);
             setIsSigningTransaction(false);
             setIsComplete(false);
             setTransactionId("");
