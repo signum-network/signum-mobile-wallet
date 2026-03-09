@@ -282,7 +282,7 @@
       "confirm": "Yes, reset everything",
       "error": "An error occurred while resetting the wallet. Please try again."
     },
-    "lock": "Lock wallet"
+    "lock": "Lock Wallet"
   },
   "deposit": {
     "title": "Receive",

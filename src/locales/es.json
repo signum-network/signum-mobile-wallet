@@ -282,7 +282,7 @@
       "confirm": "Sí, restablecer todo",
       "error": "Ocurrió un error al restablecer la wallet. Por favor, inténtalo de nuevo."
     },
-    "lock": "Lock wallet"
+    "lock": "Bloquear Wallet"
   },
   "deposit": {
     "title": "Recibir",

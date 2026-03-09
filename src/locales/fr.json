@@ -282,7 +282,7 @@
       "confirm": "Oui, tout réinitialiser",
       "error": "Une erreur s'est produite lors de la réinitialisation du portefeuille. Veuillez réessayer."
     },
-    "lock": "Lock wallet"
+    "lock": "Verrouiller le portefeuille"
   },
   "deposit": {
     "title": "Recevoir",
