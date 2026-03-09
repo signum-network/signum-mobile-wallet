@@ -117,9 +117,12 @@
       "firstStepSecondaryTermTitle": "Je comprends que si je perds l'accès à mes portefeuilles, personne ne pourra les restaurer",
       "firstStepThirdTermTitle": "Je comprends qu'en cas de transfert de cette application vers un autre appareil ou de suppression, mes fonds ne pourront être récupérés qu'avec la phrase secrète",
       "secondStepTitle": "Votre phrase secrète",
-      "secondStepDescription": "Une phrase secrète est un ensemble de mots aléatoires dans un ordre précis. C'est comme le mot de passe principal de votre portefeuille, et vous ne pouvez pas le changer ni le choisir.",
+      "secondStepDescription": "Votre phrase secrète est une séquence unique de mots qui donne un accès complet à votre portefeuille. Elle est générée aléatoirement et ne peut être ni modifiée ni choisie manuellement.",
       "secondStepSeedPhraseTip": "Réservé à vos yeux",
-      "secondStepSeedPhraseSecondTip": "Nous ne stockons pas la phrase secrète, même sur votre appareil. Notez‑la et gardez‑la toujours privée ! Après avoir sauvegardé votre phrase secrète, vous pouvez utiliser votre portefeuille en toute confiance, sachant qu'elle est bien sauvegardée",
+      "secondStepSeedPhraseSecondTip": "Nous ne stockons pas la phrase secrète — pas même sur votre appareil. Notez‑la et conservez‑la en lieu sûr. Si vous la perdez, personne ne pourra récupérer votre compte ni vos fonds. Il n'existe aucune option de réinitialisation ou de récupération.",
+      "wordCount": "Mots",
+      "regenerate": "Générer une nouvelle phrase",
+      "addressPreview": "Votre adresse",
       "copiedSeedPhrase": "Phrase secrète copiée avec succès !",
       "enterSeedPhraseVerification": "Confirmez maintenant que vous avez sauvegardé la phrase en saisissant le mot demandé de votre phrase secrète",
       "verification": "Vérification",
@@ -150,7 +153,7 @@
       "importAccountAlreadyExists": "Ce compte existe déjà dans votre portefeuille, veuillez aller dans les paramètres du compte et l'utiliser !",
       "importAccountResolvedAddress": "Adresse du compte : {{address}}",
       "importAccountResolvedName": "Nom du compte : {{name}}",
-      "importAccountResolvedAddressHint": "Utilisez cette suggestion comme aide pour vous assurer d'importer le bon compte"
+      "importAccountResolvedAddressHint": "Veuillez vérifier l'adresse pour vous assurer d'importer le bon compte."
     },
     "walletNameAlreadyUsed": "Ce nom de portefeuille est déjà utilisé, veuillez en choisir un autre !"
   },
@@ -282,7 +285,7 @@
       "confirm": "Oui, tout réinitialiser",
       "error": "Une erreur s'est produite lors de la réinitialisation du portefeuille. Veuillez réessayer."
     },
-    "lock": "Lock wallet"
+    "lock": "Verrouiller le portefeuille"
   },
   "deposit": {
     "title": "Recevoir",

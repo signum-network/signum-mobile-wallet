@@ -131,18 +131,20 @@ export const CommitmentScreen = () => {
           <DashboardScreenContainer>
             <View className="flex flex-col items-start justify-center w-full px-4 pt-4 pb-20 gap-4">
               {!isComplete ? (
+                  <>
+              <Balance
+                  availableBalance={availableBalance}
+                  committedBalance={committedBalance}
+              />
                 <Operation
                   availableBalance={availableBalance}
                   committedBalance={committedBalance}
                   onSubmit={methods.handleSubmit(onSubmit)}
                 />
+                  </>
               ) : (
                 <CompleteCard transactionId={transactionId} />
               )}
-              <Balance
-                availableBalance={availableBalance}
-                committedBalance={committedBalance}
-              />
             </View>
           </DashboardScreenContainer>
         </ScrollView>

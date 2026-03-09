@@ -117,9 +117,12 @@
       "firstStepSecondaryTermTitle": "Ich verstehe, dass mir niemand helfen kann, die Wallet wiederherzustellen, wenn ich den Zugriff verliere",
       "firstStepThirdTermTitle": "Ich verstehe, dass meine Gelder bei einem Gerätewechsel oder Löschen dieser App nur mit der geheimen Wortfolge wiederhergestellt werden können",
       "secondStepTitle": "Deine geheime Wortfolge",
-      "secondStepDescription": "Eine geheime Wortfolge ist eine Reihe zufälliger Wörter in einer bestimmten Reihenfolge. Sie ist wie das Hauptpasswort deiner Wallet und kann nicht geändert oder frei gewählt werden.",
+      "secondStepDescription": "Deine geheime Wortfolge ist eine einzigartige Abfolge von Wörtern, die vollen Zugriff auf deine Wallet gewährt. Sie wird zufällig erzeugt und kann nicht geändert oder manuell gewählt werden.",
       "secondStepSeedPhraseTip": "Nur für deine Augen",
-      "secondStepSeedPhraseSecondTip": "Wir speichern die geheime Wortfolge nicht einmal auf deinem Gerät. Notiere sie und bewahre sie immer privat auf! Nachdem du die geheime Wortfolge gesichert hast, kannst du deine Wallet beruhigt nutzen, da sie sicher aufbewahrt ist",
+      "secondStepSeedPhraseSecondTip": "Wir speichern die geheime Wortfolge nicht — nicht einmal auf deinem Gerät. Schreibe sie auf und bewahre sie an einem sicheren Ort auf. Wenn du sie verlierst, kann dein Konto und dein Guthaben von niemandem wiederhergestellt werden. Es gibt keine Möglichkeit zum Zurücksetzen oder Wiederherstellen.",
+      "wordCount": "Wörter",
+      "regenerate": "Neue Wortfolge erzeugen",
+      "addressPreview": "Deine Adresse",
       "copiedSeedPhrase": "Geheime Wortfolge erfolgreich kopiert!",
       "enterSeedPhraseVerification": "Bestätige nun, dass du die Wortfolge gesichert hast, indem du das angeforderte Wort aus deiner Wortfolge eingibst",
       "verification": "Verifizierung",
@@ -150,7 +153,7 @@
       "importAccountAlreadyExists": "Dieses Konto existiert bereits in deiner Wallet, bitte gehe zu den Kontoeinstellungen und verwende es!",
       "importAccountResolvedAddress": "Kontoadresse: {{address}}",
       "importAccountResolvedName": "Kontoname: {{name}}",
-      "importAccountResolvedAddressHint": "Nutze diesen Vorschlag, um sicherzustellen, dass du das korrekte Konto importierst"
+      "importAccountResolvedAddressHint": "Bitte überprüfe die Adresse, um sicherzustellen, dass du das richtige Konto importierst."
     },
     "walletNameAlreadyUsed": "Der Wallet‑Name wird bereits verwendet, bitte wähle einen anderen!"
   },

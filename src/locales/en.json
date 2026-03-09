@@ -117,9 +117,12 @@
       "firstStepSecondaryTermTitle": "I understand that if i ever lose access to my wallets, no one can help restore it",
       "firstStepThirdTermTitle": "I understand that in the event of this application being transferred to a different device or being deleted, my funds can solely be retrieved using the secret phrase",
       "secondStepTitle": "Your secret phrase",
-      "secondStepDescription": "A secret phrase is a set of random words arranged in a specific order. It's like the main password for your wallet, and you can't change or choose it.",
+      "secondStepDescription": "Your secret phrase is a unique sequence of words that grants full access to your wallet. It is generated randomly and cannot be changed or chosen manually.",
       "secondStepSeedPhraseTip": "For your eyes only",
-      "secondStepSeedPhraseSecondTip": "We do not store the secret phrase even on your device. Note it and always keep it private!. After backing up your secret phrase, you can use your wallet confidently, knowing it's safely saved",
+      "secondStepSeedPhraseSecondTip": "We do not store the secret phrase — not even on your device. Write it down and keep it in a safe place. If you lose it, your account and funds cannot be recovered by anyone. There is no reset or recovery option.",
+      "wordCount": "Words",
+      "regenerate": "Generate new phrase",
+      "addressPreview": "Your address",
       "copiedSeedPhrase": "Secret phrase copied successfully!",
       "enterSeedPhraseVerification": "Now, confirm that you store the phrase by entering the requested word from your secret phrase",
       "verification": "Verification",
@@ -150,7 +153,7 @@
       "importAccountAlreadyExists": "This account already exists on your wallet, please go to account settings and use it!",
       "importAccountResolvedAddress": "Account address: {{address}}",
       "importAccountResolvedName": "Account Name: {{name}}",
-      "importAccountResolvedAddressHint": "Use this suggestion as a helpful tool to ensure you import the accurate account"
+      "importAccountResolvedAddressHint": "Please verify the address to make sure you are importing the correct account."
     },
     "walletNameAlreadyUsed": "The wallet name is already being used, please choose another one!"
   },
@@ -282,7 +285,7 @@
       "confirm": "Yes, reset everything",
       "error": "An error occurred while resetting the wallet. Please try again."
     },
-    "lock": "Lock wallet"
+    "lock": "Lock Wallet"
   },
   "deposit": {
     "title": "Receive",
