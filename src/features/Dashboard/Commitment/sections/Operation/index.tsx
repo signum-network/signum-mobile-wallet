@@ -279,11 +279,11 @@ export const Operation = ({
                             icon={<Ionicons name="send" size={24} color="white"/>}
                             type="primary"
                             size="large"
+                            disabled={!canSubmit}
                             title={t("transfer.confirmTransaction")}
                             pressableProps={{
                                 delayLongPress: 2000,
                                 onLongPress: onSubmit,
-                                disabled: !canSubmit,
                             }}
                             fullWidth
                         />
