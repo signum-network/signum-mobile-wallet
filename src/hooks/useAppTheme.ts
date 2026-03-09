@@ -10,6 +10,7 @@ const DARK_DESIGNS: ThemeDesign[] = [
   "defaultDark",
   "midnight",
   "solarized",
+  "rogueEmberDark"
 ];
 
 export const useAppTheme = () => {
