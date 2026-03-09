@@ -21,6 +21,7 @@ import {asRSAddress} from "@/utils/account/asRSAddress";
 import {asAddress} from "@/utils/account/asAddress";
 import {SelectableAccountList} from "./SelectableAccountList";
 
+
 const MAX_RECENT_RECIPIENTS = 10;
 
 export const Recipient = () => {

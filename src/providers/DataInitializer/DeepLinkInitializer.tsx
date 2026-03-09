@@ -128,7 +128,24 @@ export const DeepLinkInitializer = () => {
                     }
                 });
                 setRoutingRequested(true);
-            } else {
+            } else if (parsed.action === "pay" && parsed.decodedPayload) {
+                const payload = parsed.decodedPayload as any;
+                console.log('[DeepLink] Pay payload:', payload);
+                const {amountPlanck, recipient, message, messageIsText, encrypt} = payload;
+
+                setPendingDeepLink({
+                    pathname: "/dashboard/overview/send" as const,
+                    params: {
+                        amountPlanck,
+                        recipient,
+                        message,
+                        messageIsText,
+                        encrypt,
+                    }
+                });
+                setRoutingRequested(true);
+            }
+            else {
                 throw new Error(t("deeplink.unsupportedAction", {action: parsed.action}));
             }
         } catch (error: any) {
