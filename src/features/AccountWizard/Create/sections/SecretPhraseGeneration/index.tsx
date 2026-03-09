@@ -27,7 +27,7 @@ export const SecretPhraseGeneration = () => {
     const {iconColor, tokens} = useAppTheme();
     const {watch, setValue} = useFormContext<AccountCreation>();
     const [strength, setStrength] = useState<Strength>(Strength.Bits_192);
-    const [addressPreview, setAddressPreview] = useState("")
+    const [addressPreview, setAddressPreview] = useState("");
     const seedPhrase = watch("seedPhrase");
 
     const generateSeedPhrase = useCallback((s: Strength = strength) => {
