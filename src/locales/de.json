@@ -153,7 +153,7 @@
       "importAccountAlreadyExists": "Dieses Konto existiert bereits in deiner Wallet, bitte gehe zu den Kontoeinstellungen und verwende es!",
       "importAccountResolvedAddress": "Kontoadresse: {{address}}",
       "importAccountResolvedName": "Kontoname: {{name}}",
-      "importAccountResolvedAddressHint": "Nutze diesen Vorschlag, um sicherzustellen, dass du das korrekte Konto importierst"
+      "importAccountResolvedAddressHint": "Bitte überprüfe die Adresse, um sicherzustellen, dass du das richtige Konto importierst."
     },
     "walletNameAlreadyUsed": "Der Wallet‑Name wird bereits verwendet, bitte wähle einen anderen!"
   },

@@ -153,7 +153,7 @@
       "importAccountAlreadyExists": "Esta conta já existe na sua carteira; vá para as configurações da conta e use-a",
       "importAccountResolvedAddress": "Endereço da conta: {{address}}",
       "importAccountResolvedName": "Nome da conta: {{name}}",
-      "importAccountResolvedAddressHint": "Use esta sugestão para garantir que importará a conta correta"
+      "importAccountResolvedAddressHint": "Verifique o endereço para ter certeza de que está importando a conta correta."
     },
     "walletNameAlreadyUsed": "Esse nome de carteira já está em uso; escolha outro!"
   },

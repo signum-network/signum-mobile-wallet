@@ -153,7 +153,7 @@
       "importAccountAlreadyExists": "该账户已存在于你的钱包中，请前往账户设置使用它！",
       "importAccountResolvedAddress": "账户地址：{{address}}",
       "importAccountResolvedName": "账户名称：{{name}}",
-      "importAccountResolvedAddressHint": "使用此建议以确保你导入的是正确的账户"
+      "importAccountResolvedAddressHint": "请核实地址，确保你导入的是正确的账户。"
     },
     "walletNameAlreadyUsed": "钱包名称已被使用，请选择其他名称！"
   },

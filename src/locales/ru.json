@@ -153,7 +153,7 @@
       "importAccountAlreadyExists": "Этот аккаунт уже существует в вашем кошельке; перейдите в настройки аккаунта и используйте его",
       "importAccountResolvedAddress": "Адрес аккаунта: {{address}}",
       "importAccountResolvedName": "Имя аккаунта: {{name}}",
-      "importAccountResolvedAddressHint": "Используйте это предложение, чтобы убедиться, что импортируете правильный аккаунт"
+      "importAccountResolvedAddressHint": "Проверьте адрес, чтобы убедиться, что вы импортируете правильный аккаунт."
     },
     "walletNameAlreadyUsed": "Имя кошелька уже используется; выберите другое!"
   },
