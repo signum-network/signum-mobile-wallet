@@ -20,7 +20,7 @@ export const Card = ({
   return (
     <View
       className={clsx(
-        "flex flex-col justify-start items-start gap-4 p-4 rounded-lg w-full",
+        "flex flex-col justify-start items-start gap-4 p-4 rounded-xl w-full",
         className
       )}
       style={[
