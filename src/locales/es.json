@@ -155,7 +155,8 @@
       "importAccountResolvedName": "Nombre de la cuenta: {{name}}",
       "importAccountResolvedAddressHint": "Verifica la dirección para asegurarte de que estás importando la cuenta correcta."
     },
-    "walletNameAlreadyUsed": "Ese nombre de wallet ya está en uso; ¡elige otro!"
+    "walletNameAlreadyUsed": "Ese nombre de wallet ya está en uso; ¡elige otro!",
+    "maxAccountsReached": "Se alcanzó el número máximo de cuentas ({{max}}). Por favor, elimina una wallet existente para continuar."
   },
   "bottomBar": {
     "home": "Inicio",

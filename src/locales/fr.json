@@ -155,7 +155,8 @@
       "importAccountResolvedName": "Nom du compte : {{name}}",
       "importAccountResolvedAddressHint": "Veuillez vérifier l'adresse pour vous assurer d'importer le bon compte."
     },
-    "walletNameAlreadyUsed": "Ce nom de portefeuille est déjà utilisé, veuillez en choisir un autre !"
+    "walletNameAlreadyUsed": "Ce nom de portefeuille est déjà utilisé, veuillez en choisir un autre !",
+    "maxAccountsReached": "Nombre maximum de comptes ({{max}}) atteint. Veuillez supprimer un portefeuille existant pour continuer."
   },
   "bottomBar": {
     "home": "Accueil",

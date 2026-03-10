@@ -29,6 +29,7 @@ import {
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { KeyboardAnimatedContainer } from "@/components/KeyboardAnimatedContainer";
 import { AppHeader } from "@/components/AppHeader";
+import { PUBLIC_MAX_ACCOUNTS } from "@/types/constants";
 
 export const ImportScreen = () => {
     const { t } = useTranslation();
@@ -40,6 +41,13 @@ export const ImportScreen = () => {
         addAccount,
         setActiveAccount,
     } = useAccountStore();
+
+    useEffect(() => {
+        if (accountPublicKeys.length >= PUBLIC_MAX_ACCOUNTS) {
+            alert(t("accountWizard.maxAccountsReached", { max: PUBLIC_MAX_ACCOUNTS }));
+            router.back();
+        }
+    }, []);
 
     const methods = useForm<AccountImport>({
         mode: "onChange",

@@ -48,3 +48,5 @@ export const SECURE_STORE_PIN_SALT = "PIN_SALT";
 export const PUBLIC_RESERVED_SIGNA_FOR_TX_FEE = 0.5;
 
 export const PUBLIC_BURN_ACCOUNT_ID = "0"
+
+export const PUBLIC_MAX_ACCOUNTS = 25;
