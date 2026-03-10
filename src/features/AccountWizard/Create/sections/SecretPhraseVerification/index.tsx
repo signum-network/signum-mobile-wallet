@@ -44,7 +44,7 @@ export const SecretPhraseVerification = () => {
               placeholder={t(
                 "accountWizard.createAccount.verificationPlaceholder",
                 {
-                  word: seedPhraseVerificationIndex,
+                  word: seedPhraseVerificationIndex + 1,
                 }
               )}
               onBlur={onBlur}
