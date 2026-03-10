@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
 import { FormNavButton } from "@/components/Form/NavButton";
+import { useAccountStore } from "@/hooks/useAccountStore";
 import { type AccountCreation, Steps } from "../utils/types";
 
 interface Props {
@@ -10,6 +11,7 @@ interface Props {
 
 export const FormNavigation = ({ onSubmit }: Props) => {
   const { t } = useTranslation();
+  const { accountWalletNames } = useAccountStore();
   const { watch, setValue } = useFormContext<AccountCreation>();
 
   const activeStep = watch("activeStep");
@@ -26,9 +28,13 @@ export const FormNavigation = ({ onSubmit }: Props) => {
 
   const isCorrectWord =
     seedPhraseVerificationWord ===
-    seedPhrase.split(" ").at(seedPhraseVerificationIndex - 1);
+    seedPhrase.split(" ").at(seedPhraseVerificationIndex);
 
-  const canCompleteThirdStep = !!walletName.trim() && isCorrectWord;
+  const isWalletNameTaken =
+    accountWalletNames.includes(walletName.trim().toLowerCase());
+
+  const canCompleteThirdStep =
+    !!walletName.trim() && isCorrectWord && !isWalletNameTaken;
 
   const FormNavButtonProps = useMemo(() => {
     switch (activeStep) {

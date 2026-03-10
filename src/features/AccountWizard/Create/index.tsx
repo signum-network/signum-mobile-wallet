@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ScrollView, View, ActivityIndicator } from "react-native";
 import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -25,7 +25,7 @@ import { FormStepper } from "./components/FormStepper";
 import { useLedgerService } from "@/hooks/useLedgerService";
 import { useNodeHostStore } from "@/hooks/useNodeHostStore";
 import { Address } from "@signumjs/core";
-import { PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MINUTES } from "@/types/constants";
+import { PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MINUTES, PUBLIC_MAX_ACCOUNTS } from "@/types/constants";
 import { useAppTheme } from "@/hooks/useAppTheme";
 
 
@@ -34,11 +34,19 @@ export const CreateScreen = () => {
   const { t } = useTranslation();
   const {
     accountWalletNames,
+    accountPublicKeys,
     isAccountEnrolled,
     addAccount,
     setActiveAccount,
     updateAccountPublicKeyActivationStatus,
   } = useAccountStore();
+
+  useEffect(() => {
+    if (accountPublicKeys.length >= PUBLIC_MAX_ACCOUNTS) {
+      alert(t("accountWizard.maxAccountsReached", { max: PUBLIC_MAX_ACCOUNTS }));
+      router.back();
+    }
+  }, []);
 
   const { ledgerService } = useLedgerService();
   const { currentNetwork } = useNodeHostStore();

@@ -5,12 +5,16 @@ import { Text } from "@/components/Text";
 import { wizardBannerPicture } from "@/assets";
 import { Button } from "@/components/Button";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { useAccountStore } from "@/hooks/useAccountStore";
+import { PUBLIC_MAX_ACCOUNTS } from "@/types/constants";
 import { AccountWizardContainer } from "../components/AccountWizardContainer";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 export const QuickStartScreen = () => {
   const { t } = useTranslation();
   const { iconColor } = useAppTheme();
+  const { accountPublicKeys } = useAccountStore();
+  const isMaxAccountsReached = accountPublicKeys.length >= PUBLIC_MAX_ACCOUNTS;
 
   return (
     <AccountWizardContainer>
@@ -34,12 +38,19 @@ export const QuickStartScreen = () => {
               {t("accountWizard.quickStart.ctaTitle")}
             </Text>
 
+            {isMaxAccountsReached && (
+              <Text size="small" color="error" className="text-center">
+                {t("accountWizard.maxAccountsReached", { max: PUBLIC_MAX_ACCOUNTS })}
+              </Text>
+            )}
+
             <Button
               fullWidth
               wide
               title={t("accountWizard.quickStart.createCta")}
               type="primary"
               size="large"
+              disabled={isMaxAccountsReached}
               icon={<Ionicons name="add-circle" size={24} color="white" />}
               linkProps={{ href: "/account-wizard/create", replace: false }}
             />
@@ -52,6 +63,7 @@ export const QuickStartScreen = () => {
               title={t("accountWizard.quickStart.importCta")}
               type="blackout"
               size="large"
+              disabled={isMaxAccountsReached}
               icon={
                 <Ionicons
                   name="refresh-sharp"
