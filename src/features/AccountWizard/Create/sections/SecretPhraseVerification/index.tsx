@@ -33,7 +33,7 @@ export const SecretPhraseVerification = () => {
           fullWidth
         >
           {t("accountWizard.createAccount.verificationHint", {
-            word: seedPhraseVerificationIndex,
+            word: seedPhraseVerificationIndex +  1,
           })}
         </Text>
 
