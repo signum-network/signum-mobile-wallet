@@ -5,6 +5,7 @@ import {useSafeAreaInsets} from "react-native-safe-area-context";
 import {useAppTheme} from "@/hooks/useAppTheme";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import {StackActions} from "@react-navigation/native";
+import { TAB_BAR_BASE_HEIGHT } from "@/theme/constants";
 
 type TabBarIconProperties = { color: string };
 
@@ -23,7 +24,7 @@ export function AppNavigation() {
             screenOptions={{
                 headerShown: false,
                 tabBarStyle: {
-                    height: 72 + insets.bottom,
+                    height: TAB_BAR_BASE_HEIGHT + insets.bottom,
                     paddingBottom: 8 + insets.bottom,
                     paddingTop: 8,
                     backgroundColor: tokens.surfaceElevated ?? tokens.surface,
