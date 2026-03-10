@@ -3,8 +3,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Button, type ButtonProps as ButtonProps } from "../Button";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useAccountStore } from "@/hooks/useAccountStore";
+import { FORM_NAV_BUTTON_HEIGHT } from "@/theme/constants";
 
-const DEFAULT_HEIGHT = 78;
 
 interface Props extends ButtonProps {
   hidden?: boolean;
@@ -24,7 +24,7 @@ export const FormNavButton = ({ hidden, ...props }: Props) => {
   return (
     <View
       style={{
-        height: DEFAULT_HEIGHT + safeBottom,
+        height: FORM_NAV_BUTTON_HEIGHT + safeBottom,
         paddingBottom: safeBottom,
         backgroundColor: tokens.background,
         borderTopWidth: 1,

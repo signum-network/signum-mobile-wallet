@@ -112,7 +112,7 @@ export const ProfileEditScreen = ({ accountId }: Props) => {
         <FormProvider {...methods}>
             <View className="flex-1">
                 {activeStep > Steps.DraftDialog && <FormStepper />}
-                <KeyboardAnimatedContainer baseBottom={-150}>
+                <KeyboardAnimatedContainer>
                     <ScrollView
                         ref={scrollRef}
                         keyboardDismissMode="on-drag"
