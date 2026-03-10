@@ -1,38 +1,38 @@
-import {useEffect} from "react";
-import {ScrollView, View} from "react-native";
-import {useTranslation} from "react-i18next";
-import {router} from "expo-router";
-import {useForm, FormProvider, type SubmitHandler} from "react-hook-form";
-import {yupResolver} from "@hookform/resolvers/yup";
-import type {BarcodeScanningResult} from "expo-camera";
-import {accountImportSchema} from "./utils/schemas";
-import type {AccountImport} from "./utils/types";
-import {AccountWizardContainer} from "../components/AccountWizardContainer";
-import {useAppTheme} from "@/hooks/useAppTheme";
-import {useAccountStore} from "@/hooks/useAccountStore";
-import {Text} from "@/components/Text";
-import {Button} from "@/components/Button";
-import {AccountType} from "@/types/account";
-import {HorizontalDivider} from "@/components/HorizontalDivider";
-import {CameraDialog} from "@/components/CameraDialog";
-import {getAccountPublicKey} from "@/utils/account/getAccountPublicKey";
-import {getLedgerService} from "@/utils/getLedgerService";
-import {Address} from "@signumjs/core";
-import {FormNavigation} from "./components/FormNavigation";
-import {WalletNameField} from "./sections/WalletNameField";
-import {SeedPhraseField} from "./sections/SeedPhraseField";
-import {AccountIdField} from "./sections/AccountIdField";
+import { useEffect } from "react";
+import { ScrollView, View } from "react-native";
+import { useTranslation } from "react-i18next";
+import { router } from "expo-router";
+import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import type { BarcodeScanningResult } from "expo-camera";
+import { accountImportSchema } from "./utils/schemas";
+import type { AccountImport } from "./utils/types";
+import { AccountWizardContainer } from "../components/AccountWizardContainer";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import { useAccountStore } from "@/hooks/useAccountStore";
+import { Text } from "@/components/Text";
+import { Button } from "@/components/Button";
+import { AccountType } from "@/types/account";
+import { HorizontalDivider } from "@/components/HorizontalDivider";
+import { CameraDialog } from "@/components/CameraDialog";
+import { getAccountPublicKey } from "@/utils/account/getAccountPublicKey";
+import { getLedgerService } from "@/utils/getLedgerService";
+import { Address } from "@signumjs/core";
+import { FormNavigation } from "./components/FormNavigation";
+import { WalletNameField } from "./sections/WalletNameField";
+import { SeedPhraseField } from "./sections/SeedPhraseField";
+import { AccountIdField } from "./sections/AccountIdField";
 import {
     generateSecretKeys,
     saveSecretKey,
 } from "@/utils/sec/handleSecretKeys";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import {KeyboardAnimatedContainer} from "@/components/KeyboardAnimatedContainer";
-import {AppHeader} from "@/components/AppHeader";
+import { KeyboardAnimatedContainer } from "@/components/KeyboardAnimatedContainer";
+import { AppHeader } from "@/components/AppHeader";
 
 export const ImportScreen = () => {
-    const {t} = useTranslation();
-    const {iconColor, tokens} = useAppTheme();
+    const { t } = useTranslation();
+    const { iconColor, tokens } = useAppTheme();
     const {
         accountWalletNames,
         accountPublicKeys,
@@ -53,7 +53,7 @@ export const ImportScreen = () => {
         },
     });
 
-    const {watch, setValue, resetField, handleSubmit} = methods;
+    const { watch, setValue, resetField, handleSubmit } = methods;
 
     const type = watch("type");
     const isAccountTypeMnemonic = type === AccountType.mnemonic;
@@ -73,7 +73,7 @@ export const ImportScreen = () => {
     };
 
     const onSubmit: SubmitHandler<AccountImport> = async (data) => {
-        const {walletName, account} = data;
+        const { walletName, account } = data;
 
         if (accountWalletNames.includes(walletName.toLowerCase())) {
             return alert(t("accountWizard.walletNameAlreadyUsed"));
@@ -81,7 +81,7 @@ export const ImportScreen = () => {
 
         switch (data.type) {
             case AccountType.mnemonic:
-                const {publicKey, signPrivateKey, agreementPrivateKey} =
+                const { publicKey, signPrivateKey, agreementPrivateKey } =
                     generateSecretKeys(account);
 
                 if (accountPublicKeys.includes(publicKey)) {
@@ -118,7 +118,7 @@ export const ImportScreen = () => {
                         resolvedAccountId = Address.create(account).getNumericId();
                     } catch {
                         // Not a valid address — try alias resolution
-                        const {ledgerService} = getLedgerService();
+                        const { ledgerService } = getLedgerService();
                         resolvedAccountId = await ledgerService.alias.resolveAliasToAccountId(account);
                     }
 
@@ -169,7 +169,7 @@ export const ImportScreen = () => {
                 title={t("accountWizard.quickStart.importCta")}
                 onBack={goBackwards}
             />
-            <KeyboardAnimatedContainer baseBottom={isAccountEnrolled ? -75 : 0}>
+            <KeyboardAnimatedContainer noTabBar={!isAccountEnrolled}>
                 <ScrollView
                     keyboardDismissMode="on-drag"
                     keyboardShouldPersistTaps="handled"
@@ -203,7 +203,7 @@ export const ImportScreen = () => {
                                     extraClassNames="flex-1 px-4"
                                     size="medium"
                                     titleClassName="font-medium"
-                                    pressableProps={{onPress: setMnemonicMode}}
+                                    pressableProps={{ onPress: setMnemonicMode }}
                                 />
 
                                 <Button
@@ -219,7 +219,7 @@ export const ImportScreen = () => {
                                     extraClassNames="flex-1 px-4"
                                     size="medium"
                                     titleClassName="font-medium"
-                                    pressableProps={{onPress: setWatchOnlyMode}}
+                                    pressableProps={{ onPress: setWatchOnlyMode }}
                                 />
                             </View>
                             {type === AccountType.mnemonic && (
@@ -231,7 +231,7 @@ export const ImportScreen = () => {
                                         expected="seed"
                                         onCodeScanned={onCodeScanned}
                                     />
-                                    <SeedPhraseField/>
+                                    <SeedPhraseField />
                                 </View>
                             )}
                             {type === AccountType.watchOnly && (
@@ -243,18 +243,18 @@ export const ImportScreen = () => {
                                         expected="address"
                                         onCodeScanned={onCodeScanned}
                                     />
-                                    <AccountIdField/>
+                                    <AccountIdField />
                                 </View>
                             )}
                         </View>
 
-                        <HorizontalDivider/>
+                        <HorizontalDivider />
 
-                        <WalletNameField/>
+                        <WalletNameField />
                     </AccountWizardContainer>
                 </ScrollView>
-                <FormNavigation onSubmit={handleSubmit(onSubmit)}/>
             </KeyboardAnimatedContainer>
+            <FormNavigation onSubmit={handleSubmit(onSubmit)} />
         </FormProvider>
     );
 };

@@ -27,7 +27,6 @@ import { useNodeHostStore } from "@/hooks/useNodeHostStore";
 import { Address } from "@signumjs/core";
 import { PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MINUTES } from "@/types/constants";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 
 
@@ -45,7 +44,6 @@ export const CreateScreen = () => {
   const { currentNetwork } = useNodeHostStore();
   const { iconColor } = useAppTheme();
   const [showDialog, setShowDialog] = useState(false);
-  const insets = useSafeAreaInsets();
 
   const methods = useForm<AccountCreation>({
     mode: "onChange",
@@ -117,7 +115,7 @@ export const CreateScreen = () => {
   return (
     <FormProvider {...methods}>
       <FormStepper />
-      <KeyboardAnimatedContainer baseBottom={isAccountEnrolled ? -150 : insets.bottom}>
+      <KeyboardAnimatedContainer noTabBar={!isAccountEnrolled}>
         <Dialog variant="full" visible={showDialog}>
           <View className="flex flex-col items-center justify-center gap-4 w-full">
             <Ionicons name="checkmark-circle" size={85} color={iconColor.green} />
