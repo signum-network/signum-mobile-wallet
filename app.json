@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Signum Mobile Wallet",
-    "slug": "signum-mobile-wallet",
+    "slug": "signum-mobile-wallet-v2",
     "version": "2.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -66,9 +66,9 @@
         "origin": false
       },
       "eas": {
-        "projectId": "3c034d5a-8077-4e74-99f2-969c45e57e28"
+        "projectId": "0b374804-e7c2-4d7d-90df-68084c4ca9a8"
       }
     },
-    "owner": "digital-independencedev"
+    "owner": "signum-network-association"
   }
 }
