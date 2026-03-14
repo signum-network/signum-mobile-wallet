@@ -1,0 +1,22 @@
+name: Build & Submit to Play Store
+
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  build-android:
+    name: Build Android production
+    type: build
+    params:
+      platform: android
+      profile: production
+
+  submit-android:
+    name: Submit to Play Store
+    needs: [build-android]
+    type: submit
+    params:
+      platform: android
+      profile: production
+      build_id: ${{ needs.build-android.outputs.build_id }}

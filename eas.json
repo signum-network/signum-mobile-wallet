@@ -24,12 +24,21 @@
     },
     "production": {
       "node": "20.18.0",
+      "image": "latest",
       "android": {
         "buildType": "app-bundle"
       },
       "autoIncrement": false,
       "env": {
         "EAS_BUILD_ENV": "production"
+      }
+    }
+  },
+  "submit": {
+    "production": {
+      "android": {
+        "serviceAccountKeyPath": "./play-store-key.json",
+        "track": "internal"
       }
     }
   }

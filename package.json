@@ -5,24 +5,20 @@
   "scripts": {
     "start": "expo start --dev-client",
     "start-clean": "expo start -c --dev-client",
-
     "android": "expo run:android",
     "ios": "expo run:ios",
-
     "prebuild": "npx expo prebuild --clean",
     "expo-fix": "npx expo install --fix",
     "expo-doctor": "npx expo-doctor@latest",
-
     "ts-check": "tsc",
     "db-generate": "npx drizzle-kit generate",
     "prepare": "husky",
-
     "test-deeplink": "node scripts/test-deeplink.js",
     "test-connect": "node scripts/test-connect-deeplink.js",
-
     "build-dev": "set EAS_NO_VCS=1 && eas build --profile development",
     "build-preview": "eas build --profile preview",
-    "build-prod": "eas build --profile production"
+    "build-prod": "eas build --profile production",
+    "new-version": "node scripts/new-version.mjs"
   },
   "dependencies": {
     "@expo-google-fonts/space-mono": "^0.4.2",
@@ -94,6 +90,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.28.4",
+    "@changesets/cli": "^2.30.0",
     "@types/react": "~19.1.10",
     "babel-plugin-module-resolver": "^5.0.2",
     "depcheck": "^1.4.7",
