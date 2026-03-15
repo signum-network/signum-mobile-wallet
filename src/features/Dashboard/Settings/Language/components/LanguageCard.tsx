@@ -31,7 +31,7 @@ export const LanguageCard = ({ lng, label }: Props) => {
       onPress={changeLanguage}
       className="w-full rounded-lg active:opacity-80 ripple-[#333] ripple-bordered"
     >
-      <Card>
+      <Card active={isCurrentLanguage}>
         <View className="h-12 w-full flex flex-row justify-between items-center">
           <View className="flex flex-row gap-1 items-center justify-start">
             <Text className="font-medium" size="large">

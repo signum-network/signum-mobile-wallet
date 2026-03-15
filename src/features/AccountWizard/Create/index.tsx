@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, type RefObject } from "react";
+import { useEffect, useState } from "react";
 import { ScrollView, View, ActivityIndicator } from "react-native";
 import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -25,25 +25,33 @@ import { FormStepper } from "./components/FormStepper";
 import { useLedgerService } from "@/hooks/useLedgerService";
 import { useNodeHostStore } from "@/hooks/useNodeHostStore";
 import { Address } from "@signumjs/core";
-import { PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MINUTES } from "@/types/constants";
+import { PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MINUTES, PUBLIC_MAX_ACCOUNTS } from "@/types/constants";
 import { useAppTheme } from "@/hooks/useAppTheme";
+
+
 
 export const CreateScreen = () => {
   const { t } = useTranslation();
   const {
     accountWalletNames,
+    accountPublicKeys,
     isAccountEnrolled,
     addAccount,
     setActiveAccount,
     updateAccountPublicKeyActivationStatus,
   } = useAccountStore();
 
+  useEffect(() => {
+    if (accountPublicKeys.length >= PUBLIC_MAX_ACCOUNTS) {
+      alert(t("accountWizard.maxAccountsReached", { max: PUBLIC_MAX_ACCOUNTS }));
+      router.back();
+    }
+  }, []);
+
   const { ledgerService } = useLedgerService();
   const { currentNetwork } = useNodeHostStore();
   const { iconColor } = useAppTheme();
   const [showDialog, setShowDialog] = useState(false);
-
-  const scrollRef: RefObject<ScrollView> = useRef(null!);
 
   const methods = useForm<AccountCreation>({
     mode: "onChange",
@@ -61,15 +69,6 @@ export const CreateScreen = () => {
   });
 
   const activeStep = methods.watch("activeStep");
-
-  useEffect(() => {
-    if (!scrollRef.current) return;
-
-    scrollRef.current?.scrollTo({
-      y: 0,
-      animated: true,
-    });
-  }, [activeStep]);
 
   const onSubmit: SubmitHandler<AccountCreation> = async (data) => {
     setShowDialog(true);
@@ -100,9 +99,9 @@ export const CreateScreen = () => {
         ledgerService.account.activate(accountId, publicKey).finally(() => {
           alert(
             `${t("unsafeAccount.activating")}\n` +
-              t("unsafeAccount.accountActivationIsPending", {
-                blocktime: PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MINUTES,
-              })
+            t("unsafeAccount.accountActivationIsPending", {
+              blocktime: PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MINUTES,
+            })
           );
           updateAccountPublicKeyActivationStatus(
             publicKey,
@@ -112,9 +111,10 @@ export const CreateScreen = () => {
         });
       }
       setTimeout(() => {
-        setShowDialog(false);
-        router.replace("/dashboard/account");
-      }, 4000);
+        requestAnimationFrame(() => {
+          router.replace("/dashboard/account");
+        });
+      }, 2000);
     } catch (error) {
       console.error(error);
     }
@@ -122,9 +122,8 @@ export const CreateScreen = () => {
 
   return (
     <FormProvider {...methods}>
-      <FormNavigation onSubmit={methods.handleSubmit(onSubmit)} />
       <FormStepper />
-         <KeyboardAnimatedContainer baseBottom={isAccountEnrolled ? -70 : 36}> 
+      <KeyboardAnimatedContainer noTabBar={!isAccountEnrolled}>
         <Dialog variant="full" visible={showDialog}>
           <View className="flex flex-col items-center justify-center gap-4 w-full">
             <Ionicons name="checkmark-circle" size={85} color={iconColor.green} />
@@ -143,11 +142,13 @@ export const CreateScreen = () => {
             </View>
           </View>
         </Dialog>
+     
 
-        <ScrollView ref={scrollRef} key={activeStep}>
+
+        <ScrollView key={activeStep}>
           <AccountWizardContainer>
-            {activeStep === Steps.AccountCreationAgreement && 
-            <Agreement />}
+            {activeStep === Steps.AccountCreationAgreement &&
+              <Agreement />}
             {activeStep === Steps.SecretPhraseGeneration && (
               <SecretPhraseGeneration />
             )}
@@ -156,7 +157,8 @@ export const CreateScreen = () => {
             )}
           </AccountWizardContainer>
         </ScrollView>
-      </KeyboardAnimatedContainer>
+        </KeyboardAnimatedContainer>
+        <FormNavigation onSubmit={methods.handleSubmit(onSubmit)} />
     </FormProvider>
   );
 };

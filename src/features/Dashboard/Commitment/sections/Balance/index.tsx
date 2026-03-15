@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { Card } from "@/components/Card";
 import { Text } from "@/components/Text";
-import { useAccount } from "@/hooks/useAccount";
+import { useWalletAccount } from "@/hooks/useWalletAccount";
 import { useTicker } from "@/hooks/useTicker";
 import { formatNumber } from "@/utils/formatNumber";
 import { SignaSymbol } from "@/components/SignaSymbol";
@@ -18,7 +18,7 @@ export const Balance = ({ availableBalance, committedBalance }: Props) => {
   const { NativeTicker } = useTicker();
   const {
     accountData: { balance },
-  } = useAccount();
+  } = useWalletAccount();
 
   const percentageCommitted = useMemo(() => {
     const totalBalance = balance?.totalBalance?.getSigna

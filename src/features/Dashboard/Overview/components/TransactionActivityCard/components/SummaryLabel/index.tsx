@@ -1,6 +1,6 @@
 import { Fragment, useMemo } from "react";
 import { Amount } from "@signumjs/util";
-import { useAccount } from "@/hooks/useAccount";
+import { useWalletAccount } from "@/hooks/useWalletAccount";
 import type { Transaction } from "@signumjs/core";
 import type { AvailableTransactionString } from "../../utils/transactionTypeReader";
 import type { TextProps } from "./types";
@@ -25,7 +25,7 @@ export const SummaryLabel = ({
   amountNQT,
   attachment,
 }: Props) => {
-  const { accountId } = useAccount();
+  const { accountId } = useWalletAccount();
 
   // Note: Isolating summary logic here because attachment is not typed
   // We have similar behavior as we do on the <TransactionActivityCard/> component

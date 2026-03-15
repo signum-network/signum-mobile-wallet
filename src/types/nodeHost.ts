@@ -1,4 +1,4 @@
-export type nodeHost = {
+export type NodeHost = {
   name: string;
   url: string;
   isTestnet: boolean;

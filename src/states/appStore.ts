@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { registerStore } from "@/states/storeRegistry";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { getDefaultLocale, type locales } from "@/locales";
 import type { authMethod } from "@/types/authMethod";
@@ -15,6 +16,7 @@ interface State {
   failedAuthAttempts: number;
   isOnline: boolean;
   minerMode: boolean;
+  isUnlocked: boolean;
 }
 
 interface Actions {
@@ -27,6 +29,7 @@ interface Actions {
   setFailedAuthAttempts: (value: number) => void;
   setIsOnline: (value: boolean) => void;
   setMinerMode: (value: boolean) => void;
+  setIsUnlocked: (value: boolean) => void;
 }
 
 const systemScheme = Appearance.getColorScheme(); // "light" | "dark" | null
@@ -34,7 +37,7 @@ const systemScheme = Appearance.getColorScheme(); // "light" | "dark" | null
 const initialThemeDesign: ThemeDesign =
   systemScheme === "dark" ? "defaultDark" : "defaultLight";
 
-const initialState: State = {
+const getInitialState = () => ({
   themeDesign: initialThemeDesign,
   language: getDefaultLocale(),
   isTermAgreed: false,
@@ -43,13 +46,14 @@ const initialState: State = {
   failedAuthAttempts: 0,
   isOnline: true,
   minerMode: false,
-};
+  isUnlocked: false,
+}) as State;
 
 export const appStore = create<State & Actions>()(
   persist(
     (set) => ({
-      ...initialState,
-      reset: () => set(initialState),
+      ...getInitialState(),
+      reset: () => set(getInitialState()),
 
       setThemeDesign: (value) => set({ themeDesign: value }),
       setLanguage: (value) => set({ language: value }),
@@ -59,11 +63,17 @@ export const appStore = create<State & Actions>()(
       setFailedAuthAttempts: (value) => set({ failedAuthAttempts: value }),
       setIsOnline: (value) => set({ isOnline: value }),
       setMinerMode: (value) => set({ minerMode: value }),
+      setIsUnlocked: (value) => set({ isUnlocked: value }),
     }),
     {
       name: "app-storage",
       storage: createJSONStorage(() => AsyncStorage),
       version: 1,
+      partialize: (state) => {
+        const { isUnlocked, ...rest } = state;
+        return rest;
+      },
     }
   )
 );
+registerStore(appStore);

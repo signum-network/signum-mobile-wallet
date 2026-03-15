@@ -8,7 +8,7 @@ import type { Transaction } from "@signumjs/core";
 import { Card } from "@/components/Card";
 import { Text } from "@/components/Text";
 import { Button } from "@/components/Button";
-import { useAccount } from "@/hooks/useAccount";
+import { useWalletAccount } from "@/hooks/useWalletAccount";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { useLedgerService } from "@/hooks/useLedgerService";
 import { NoTransactionsFoundCard } from "@/components/Account/NoTransactionsFoundCard";
@@ -21,7 +21,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 
 export const Activity = () => {
   const { t } = useTranslation();
-  const { accountId } = useAccount();
+  const { accountId } = useWalletAccount();
   const { iconColor } = useAppTheme();
   const { ledgerService } = useLedgerService();
   const { isActiveNodeSynced, currentNetwork } = useNodeHostStore();
@@ -71,7 +71,7 @@ export const Activity = () => {
   const isLoading = isPending && !transactions.length;
 
   return (
-    <View className="pb-60">
+    <View className="pb-72">
     <Card>
       <Text size="large" className="font-medium">
         {t("transaction_other")}
@@ -105,7 +105,7 @@ export const Activity = () => {
               title={t("overview.loadMore")}
               type="secondary"
               icon={
-                <Ionicons name="search" size={24} color={iconColor.default} />
+                <Ionicons name="add-circle-outline" size={24} color={iconColor.muted} />
               }
               linkProps={{
                 href: "/dashboard/overview/activity",

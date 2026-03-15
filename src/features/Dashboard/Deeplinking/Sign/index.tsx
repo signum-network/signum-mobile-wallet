@@ -1,0 +1,267 @@
+import {useCallback, useEffect, useState} from "react";
+import {useTranslation} from "react-i18next";
+import {ScrollView, View, ActivityIndicator, Linking} from "react-native";
+import {useRouter} from "expo-router";
+import {Address, type Transaction} from "@signumjs/core";
+import {useQueryClient} from "@tanstack/react-query";
+import {useWalletAccount} from "@/hooks/useWalletAccount";
+import {useLedgerService} from "@/hooks/useLedgerService";
+import {WatchOnlyAccountCard} from "@/components/Account/WatchOnlyAccountCard";
+import {SigningDialog} from "@/components/SigningDialog";
+import {Text} from "@/components/Text";
+import {Card} from "@/components/Card";
+import {Button} from "@/components/Button";
+import {readSecretKey} from "@/utils/sec/handleSecretKeys";
+import {KeyboardDismissView} from "@/components/KeyboardDismissView";
+import {SuccessSection} from "./sections/SuccessSection";
+import {useNodeHostStore} from "@/hooks/useNodeHostStore";
+import {pendingDeepLinkStore} from "@/states/pendingDeepLinkStore";
+import {TransactionPreviewSection} from "./sections/TransactionPreviewSection";
+import {useAppTheme} from "@/hooks/useAppTheme";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import {ConfirmationCard} from "@/components/ConfirmationCard";
+
+type SignDeeplinkParams = {
+    transactionBytes: string;
+    callbackUrl: string;
+}
+
+
+function replacePublickeyInUnsignedTx(unsignedTxHex: string, publicKey: string) {
+    /*
+    Example tx bytes
+    002061d56715a005c213e4144ba84af94aae2458308fae1f0cb083870c8f3012eea58147f3b09d4a0822e...
+    002061d56715a005 [c213e4144ba84af94aae2458308fae1f0cb083870c8f3012eea58147f3b09d4a] 0822e...
+    | - 8 bytes header -  | - 32 bytes public key - | - n bytes payload - |
+     */
+    return unsignedTxHex.substring(0, 16) + publicKey + unsignedTxHex.substring(16 + 64);
+
+}
+
+
+export const SignScreen = () => {
+    const {t} = useTranslation();
+    const router = useRouter();
+    const {ledgerService} = useLedgerService();
+    const {isWatchOnly, publicKey} = useWalletAccount();
+    const {currentNetwork} = useNodeHostStore();
+    const queryClient = useQueryClient();
+    const {iconColor} = useAppTheme();
+
+    const [parsedTx, setParsedTx] = useState<Transaction | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isSigning, setIsSigning] = useState(false);
+    const [isComplete, setIsComplete] = useState(false);
+    const [transactionId, setTransactionId] = useState("");
+    const [error, setError] = useState<string | null>(null);
+    const {pendingDeepLink, clearPendingDeepLink} = pendingDeepLinkStore()
+    const {transactionBytes, callbackUrl} = pendingDeepLink?.params as SignDeeplinkParams ?? {};
+
+    // we need to buffer the unsigned bytes, as pendingDeeplink gets wiped upon successful deeplink handling/delivery
+    // these are set only on _successfully_ parsed tx.
+    const [bufferedDeeplinkParams, setBufferedDeeplinkParams] = useState({
+        transactionBytes: "",
+        callbackUrl
+    });
+
+
+    useEffect(() => {
+        if (transactionBytes) {
+            parseTransaction(transactionBytes);
+        }
+
+    }, [transactionBytes]);
+
+    function resetState() {
+        setParsedTx(null);
+        setIsLoading(true);
+        setIsSigning(false);
+        setIsComplete(false);
+        setTransactionId("");
+        setBufferedDeeplinkParams({
+            transactionBytes: "",
+            callbackUrl: ""
+        });
+        setError(null);
+    }
+
+    const parseTransaction = async (txb: string) => {
+        try {
+            resetState();
+            if (!ledgerService) {
+                throw new Error("Ledger service not available");
+            }
+            const parsed = await ledgerService.account.parseTransactionBytes(txb);
+            setParsedTx(parsed as Transaction);
+            // we are ready to sign now.
+            setBufferedDeeplinkParams(prev => ({
+                ...prev,
+                transactionBytes: txb,
+            }));
+        } catch (err: any) {
+            console.error("Failed to parse transaction:", err);
+            setError(err?.message || "Failed to parse transaction");
+        } finally {
+            setIsLoading(false);
+            clearPendingDeepLink();
+        }
+    };
+
+    const handleSign = useCallback(async () => {
+        if (!parsedTx || !ledgerService) return;
+
+        try {
+            console.log("Signing transaction...", publicKey);
+            const secretKeys = await readSecretKey(publicKey);
+            if (!secretKeys) {
+                throw new Error("Unable to read secret keys");
+            }
+            setIsSigning(true);
+            const {signPrivateKey} = secretKeys;
+            // Explanation: The user may have connected to dApp with another account
+            // So, we set actual selected accounts public key in the byte sequence, which was generated by the dApp.
+            const txBytes = replacePublickeyInUnsignedTx(bufferedDeeplinkParams.transactionBytes, publicKey);
+            const confirmation =
+                await ledgerService.ledgerInstance.transaction.signAndBroadcastTransaction(
+                    {
+                        unsignedHexMessage: txBytes,
+                        senderPrivateKey: signPrivateKey,
+                        senderPublicKey: publicKey,
+                    }
+                );
+
+            console.log("Transaction successfully signed...", confirmation.transaction);
+
+            const accountId = Address.fromPublicKey(publicKey).getNumericId();
+            setTransactionId(confirmation.transaction);
+            setIsComplete(true);
+            const callbackUrl = new URL(bufferedDeeplinkParams.callbackUrl);
+            callbackUrl.searchParams.set("transactionId", transactionId);
+            callbackUrl.searchParams.set("status", 'success');
+            Linking.openURL(callbackUrl.toString());
+            // delay the cache invalidation to get time from network - intentional timeout without cleanup -
+            setTimeout(() => {
+                queryClient.invalidateQueries({
+                    queryKey: ["fetchAccountTransactionsBasicOverview", accountId, currentNetwork],
+                })
+                resetState();
+                router.push('/dashboard/overview')
+            }, 5_000)
+        } catch (err: any) {
+            console.error("Failed to sign transaction:", err);
+            alert("Error: " + (err?.message || JSON.stringify(err)));
+            const callbackUrl = new URL(bufferedDeeplinkParams.callbackUrl);
+            callbackUrl.searchParams.set("status", 'failed');
+        } finally {
+            setIsSigning(false);
+        }
+    }, [bufferedDeeplinkParams, publicKey, currentNetwork]);
+
+    const handleReject = () => {
+        const callbackUrl = new URL(bufferedDeeplinkParams.callbackUrl);
+        callbackUrl.searchParams.set("status", 'rejected');
+        Linking.openURL(callbackUrl.toString());
+        resetState();
+        router.back();
+    }
+
+    if (isWatchOnly) {
+        return (
+            <KeyboardDismissView>
+                <ScrollView className="flex-1 p-4">
+                    <WatchOnlyAccountCard/>
+                </ScrollView>
+            </KeyboardDismissView>
+        );
+    }
+
+    if (isLoading) {
+        return (
+            <KeyboardDismissView>
+                <ScrollView className="flex-1 p-4" contentContainerClassName="justify-center">
+                    <Card>
+                        <View className="items-center gap-4 py-6">
+                            <ActivityIndicator size="large" color={iconColor.primary}/>
+                            <View className="gap-2">
+                                <Text className="text-center text-lg font-semibold">
+                                    {t("sign.loadingTitle")}
+                                </Text>
+                                <Text className="text-center opacity-70">
+                                    {t("sign.loadingDescription")}
+                                </Text>
+                            </View>
+                        </View>
+                    </Card>
+                </ScrollView>
+            </KeyboardDismissView>
+        );
+    }
+
+    if (error || !parsedTx) {
+        return (
+            <KeyboardDismissView>
+                <ScrollView className="flex-1 p-4" contentContainerClassName="justify-center">
+                    <Card>
+                        <View className="items-center gap-6 py-6">
+                            <View className="items-center gap-3">
+                                <Ionicons
+                                    name="alert-circle-outline"
+                                    size={64}
+                                    color="#ef4444"
+                                />
+                                <View className="gap-2">
+                                    <Text className="text-center text-lg font-semibold">
+                                        {t("sign.errorTitle")}
+                                    </Text>
+                                    <Text className="text-center opacity-70">
+                                        {error || t("sign.errorDescription")}
+                                    </Text>
+                                </View>
+                            </View>
+                            <Button
+                                type="blackout"
+                                title={t("sign.errorGoBack")}
+                                pressableProps={{onPress: () => router.back()}}
+                                fullWidth
+                            />
+                        </View>
+                    </Card>
+                </ScrollView>
+            </KeyboardDismissView>
+        );
+    }
+
+    return (
+        <KeyboardDismissView>
+            <ScrollView className="flex-1 p-4">
+                <SigningDialog visible={isSigning}/>
+
+                <View className="gap-4 w-full">
+                    {isComplete && <SuccessSection transactionId={transactionId}/>}
+
+                    <TransactionPreviewSection transaction={parsedTx}/>
+
+                    {!isComplete && (
+                        <View className="flex flex-col gap-2">
+                            <View>
+                                <ConfirmationCard
+                                    onConfirm={handleSign}
+                                    isDisabled={isSigning}
+                                />
+                            </View>
+                            <View>
+                                <Button
+                                    type="secondary"
+                                    title={t("connectDApp.reject")}
+                                    pressableProps={{onPress: handleReject}}
+                                    fullWidth
+                                    disabled={isSigning}
+                                />
+                            </View>
+                        </View>
+                    )}
+                </View>
+            </ScrollView>
+        </KeyboardDismissView>
+    );
+};

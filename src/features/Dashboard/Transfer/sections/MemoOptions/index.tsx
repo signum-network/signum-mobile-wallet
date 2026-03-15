@@ -1,95 +1,117 @@
-import { useEffect } from "react";
-import { View, ScrollView } from "react-native";
-import { useTranslation } from "react-i18next";
-import { useFormContext, Controller } from "react-hook-form";
-import { Text } from "@/components/Text";
-import { Card } from "@/components/Card";
-import { FormCheckbox } from "@/components/Form/Checkbox";
-import { TextInput } from "@/components/TextInput";
-import { type TransactionCreation, maxMemoLength } from "../../utils/types";
+import {useEffect, useMemo} from "react";
+import {View} from "react-native";
+import {useTranslation} from "react-i18next";
+import {useFormContext, Controller} from "react-hook-form";
+import {Text} from "@/components/Text";
+import {Card} from "@/components/Card";
+import {FormCheckbox} from "@/components/Form/Checkbox";
+import {TextInput} from "@/components/TextInput";
+import {type TransactionCreation, maxMemoLength} from "../../utils/types";
+import {useQueryAccount} from "@/hooks/useQueryAccount";
+import {PUBLIC_BURN_ACCOUNT_ID} from "@/types/constants";
 
 export const MemoOptions = () => {
-  const { t } = useTranslation();
-  const { watch, setValue, control } = useFormContext<TransactionCreation>();
+    const {t} = useTranslation();
+    const {watch, setValue, control} = useFormContext<TransactionCreation>();
 
-  const memo = watch("memo");
-  const includeMemo = watch("includeMemo");
-  const isMemoEncrypted = watch("isMemoEncrypted");
+    const memo = watch("memo");
+    const includeMemo = watch("includeMemo");
+    const isMemoEncrypted = watch("isMemoEncrypted");
+    const recipient = watch("recipient")
 
-  const toggleMemoAvailability = () => {
-    setValue("includeMemo", !includeMemo);
-    setValue("isMemoEncrypted", false);
-    setValue("memo", "");
-  };
+    const {data: account} = useQueryAccount(recipient)
 
-  const toggleEncryptedMemoAvailability = () => {
-    setValue("isMemoEncrypted", !isMemoEncrypted);
-  };
+    const canEncrypt = useMemo(() => {
+        if (recipient === PUBLIC_BURN_ACCOUNT_ID) {
+            return false;
+        }
+        if (!account) {
+            return false;
+        }
+        if (account.isAT) {
+            return false;
+        }
+        if (!account.publicKey) {
+            return false;
+        }
+        return true;
+    }, [account])
 
-  useEffect(() => {
-    setValue("fee", "");
-  }, [memo, includeMemo, isMemoEncrypted]);
 
-  return (
-    <View>
-      <ScrollView>
-        <View className="gap-4 w-full pb-32">
-          <FormCheckbox
-            value={includeMemo}
-            onPress={toggleMemoAvailability}
-            title={t("transfer.addMemoTitle")}
-            description={t("transfer.addMemoDescription")}
-            fullWidth
-            bordered
-          />
+    const toggleMemoAvailability = () => {
+        setValue("includeMemo", !includeMemo);
+        setValue("isMemoEncrypted", false);
+        setValue("memo", "");
+    };
 
-          {includeMemo && (
-            <>
-              <Card>
-                <View>
-                  <Text size="large" className="font-medium">
-                    {t("transfer.addMemoHint")}
-                  </Text>
-                </View>
+    const toggleEncryptedMemoAvailability = () => {
+        setValue("isMemoEncrypted", !isMemoEncrypted);
+    };
 
-                <Controller
-                  control={control}
-                  render={({ field: { onChange, onBlur, value } }) => (
-                    <TextInput
-                      onBlur={onBlur}
-                      onChangeText={onChange}
-                      value={value}
-                      returnKeyType="done"
-                      extraClassNames="font-medium w-full min-h-40"
-                      size="large"
-                      maxLength={maxMemoLength}
-                      multiline
-                      textAlignVertical="top"
+    useEffect(() => {
+        setValue("fee", "");
+    }, [memo, includeMemo, isMemoEncrypted]);
+
+    return (
+        <View className="w-full">
+                <View className="gap-4 w-full pb-32">
+                    <FormCheckbox
+                        value={includeMemo}
+                        onPress={toggleMemoAvailability}
+                        title={t("transfer.addMemoTitle")}
+                        description={t("transfer.addMemoDescription")}
+                        fullWidth
+                        bordered
                     />
-                  )}
-                  name="memo"
-                />
 
-                <Text
-                  color={memo.length > maxMemoLength ? "error" : "muted"}
-                  className="self-end"
-                >
-                  {`${memo.length}/${maxMemoLength}`}
-                </Text>
-              </Card>
+                    {includeMemo && (
+                        <>
+                            <Card>
+                                <View>
+                                    <Text size="large" className="font-medium">
+                                        {t("transfer.addMemoHint")}
+                                    </Text>
+                                </View>
 
-              <FormCheckbox
-                value={isMemoEncrypted}
-                onPress={toggleEncryptedMemoAvailability}
-                title={"🔐 " + t("transfer.addEncryptedMemoTitle")}
-                description={t("transfer.addEncryptedMemoDescription")}
-                fullWidth
-                bordered
-              />
-            </>
-          )}
+                                <Controller
+                                    control={control}
+                                    render={({field: {onChange, onBlur, value}}) => (
+                                        <TextInput
+                                            onBlur={onBlur}
+                                            onChangeText={onChange}
+                                            value={value}
+                                            returnKeyType="done"
+                                            extraClassNames="font-medium w-full min-h-40"
+                                            size="large"
+                                            maxLength={maxMemoLength}
+                                            multiline
+                                            textAlignVertical="top"
+                                        />
+                                    )}
+                                    name="memo"
+                                />
+
+                                <Text
+                                    color={memo.length > maxMemoLength ? "error" : "muted"}
+                                    className="self-end"
+                                >
+                                    {`${memo.length}/${maxMemoLength}`}
+                                </Text>
+                            </Card>
+
+                            {canEncrypt && (
+                                <FormCheckbox
+                                    value={isMemoEncrypted}
+                                    onPress={toggleEncryptedMemoAvailability}
+                                    title={"🔐 " + t("transfer.addEncryptedMemoTitle")}
+                                    description={t("transfer.addEncryptedMemoDescription")}
+                                    fullWidth
+                                    bordered
+                                />
+                            )}
+                        </>
+                    )}
+                </View>
         </View>
-      </ScrollView>
-    </View>
-  );
+    );
 };

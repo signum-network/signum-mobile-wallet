@@ -5,11 +5,10 @@ import { useFocusEffect } from "expo-router";
 import { Amount } from "@signumjs/util";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useQueryClient } from "@tanstack/react-query";
-import { useAccount } from "@/hooks/useAccount";
+import { useWalletAccount } from "@/hooks/useWalletAccount";
 import { useNodeHostStore } from "@/hooks/useNodeHostStore";
 import { useLedgerService } from "@/hooks/useLedgerService";
 import { useNetworkFees } from "@/hooks/useNetworkFees";
-import { KeyboardDismissView } from "@/components/KeyboardDismissView";
 import { SigningDialog } from "@/components/SigningDialog";
 import { readSecretKey } from "@/utils/sec/handleSecretKeys";
 import { DashboardScreenContainer } from "../components/DashboardScreenContainer";
@@ -25,7 +24,7 @@ export const CommitmentScreen = () => {
     accountId,
     publicKey,
     accountData: { balance },
-  } = useAccount();
+  } = useWalletAccount();
   const { cheap } = useNetworkFees({});
   const { currentNetwork } = useNodeHostStore();
 
@@ -109,9 +108,6 @@ export const CommitmentScreen = () => {
       }
 
       setIsComplete(true);
-    } catch (error) {
-      alert("Error: " + JSON.stringify(error));
-    } finally {
       queryClient.invalidateQueries({
         queryKey: [
           "fetchAccountTransactionsBasicOverview",
@@ -119,6 +115,9 @@ export const CommitmentScreen = () => {
           currentNetwork,
         ],
       });
+    } catch (error) {
+      alert("Error: " + JSON.stringify(error));
+    } finally {
 
       setIsSigningTransaction(false);
     }
@@ -127,28 +126,28 @@ export const CommitmentScreen = () => {
   return (
     <FormProvider {...methods}>
       <SigningDialog visible={isSigningTransaction} />
-
-      <KeyboardDismissView>
+      
         <ScrollView>
           <DashboardScreenContainer>
             <View className="flex flex-col items-start justify-center w-full px-4 pt-4 pb-20 gap-4">
               {!isComplete ? (
+                  <>
+              <Balance
+                  availableBalance={availableBalance}
+                  committedBalance={committedBalance}
+              />
                 <Operation
                   availableBalance={availableBalance}
                   committedBalance={committedBalance}
                   onSubmit={methods.handleSubmit(onSubmit)}
                 />
+                  </>
               ) : (
                 <CompleteCard transactionId={transactionId} />
               )}
-              <Balance
-                availableBalance={availableBalance}
-                committedBalance={committedBalance}
-              />
             </View>
           </DashboardScreenContainer>
         </ScrollView>
-      </KeyboardDismissView>
     </FormProvider>
   );
 };

@@ -1,8 +1,8 @@
 {
   "expo": {
     "name": "Signum Mobile Wallet",
-    "slug": "signum-mobile-wallet",
-    "version": "2.0.0",
+    "slug": "signum-mobile-wallet-v2",
+    "version": "2.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -25,7 +25,7 @@
         "ITSAppUsesNonExemptEncryption": false
       },
       "bundleIdentifier": "com.signum.mobile.wallet",
-      "buildNumber": "1"
+      "buildNumber": "2"
     },
     "android": {
       "edgeToEdgeEnabled": true,
@@ -39,10 +39,7 @@
         "android.permission.USE_FINGERPRINT",
         "android.permission.CAMERA"
       ],
-      "versionCode": 1
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
+      "versionCode": 2
     },
     "plugins": [
       "expo-router",
@@ -69,9 +66,9 @@
         "origin": false
       },
       "eas": {
-        "projectId": "0765d670-c2f7-4e5b-a395-49a08823ab2b"
+        "projectId": "0b374804-e7c2-4d7d-90df-68084c4ca9a8"
       }
     },
-    "owner": "angis"
+    "owner": "signum-network-association"
   }
 }

@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { type Transaction, TransactionType } from "@signumjs/core";
 import { ChainTime } from "@signumjs/util";
 import { decryptMessage } from "@signumjs/crypto";
-import { useAccount } from "@/hooks/useAccount";
+import { useWalletAccount } from "@/hooks/useWalletAccount";
 import { useLedgerService } from "@/hooks/useLedgerService";
 import { useDateLocale } from "@/hooks/useDateLocale";
 import { useAppTheme } from "@/hooks/useAppTheme";
@@ -25,7 +25,7 @@ export const TransactionActivityCard = (props: Transaction) => {
   const { t } = useTranslation();
   const { ledgerService } = useLedgerService();
   const { iconColor } = useAppTheme();
-  const { publicKey, accountId, isWatchOnly } = useAccount();
+  const { publicKey, accountId, isWatchOnly } = useWalletAccount();
   const dateLocale = useDateLocale();
 
   const {
@@ -41,7 +41,7 @@ export const TransactionActivityCard = (props: Transaction) => {
 
   const transactionReadableType = transactionTypeReader(type, subtype);
 
-  const isPending = !confirmations || confirmations < 2;
+  const isPending = confirmations === undefined;
   const timestampToDate = ChainTime.fromChainTimestamp(timestamp).getDate();
   const transactionDate = formatDistanceToNow(timestampToDate, {
     addSuffix: true,

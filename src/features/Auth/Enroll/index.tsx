@@ -10,6 +10,7 @@ import { getHardwareAuth } from "@/utils/sec/getHardwareAuth";
 import { generateHash } from "@/utils/sec/generateHash";
 import { savePin } from "@/utils/sec/handlePin";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 enum Steps {
   enter,
@@ -20,8 +21,8 @@ const initialValues = [...new Array(PUBLIC_PIN_LENGTH)];
 
 export const EnrollAuthScreen = () => {
   const { t } = useTranslation();
-  const { authMethod, setAuthMethod, setIsAuthEnrolled } = useAppStore();
-  const { tokens } = useAppTheme();
+  const { authMethod, setAuthMethod, setIsAuthEnrolled, setIsUnlocked } = useAppStore();
+  const { tokens, iconColor } = useAppTheme();
 
   const [step, setStep] = useState(Steps.enter);
 
@@ -70,8 +71,9 @@ export const EnrollAuthScreen = () => {
     const goToWizard = () => {
       setTimeout(() => {
         setIsAuthEnrolled(true);
+        setIsUnlocked(true);
         router.replace("/account-wizard");
-      }, 2700); // Timeout is assigned because of ringtone duration
+      }, 2000); // Timeout is assigned because of ringtone duration
     };
 
     if (authMethod === "BIOMETRIC") {
@@ -130,26 +132,31 @@ export const EnrollAuthScreen = () => {
       className="flex-1 items-center justify-start"
       style={{ backgroundColor: tokens.background }}
     >
-      <View className="max-w-md mb-2 justify-center h-14 pt-4">
+      <View className="w-full mb-2 justify-center h-14 mt-4 px-4">
         {step === Steps.verify && verificationError ? (
           <Button
+            icon={
+              <Ionicons
+                name="arrow-back-outline"
+                size={18}
+                color={iconColor.default}
+              />
+            }
             type="secondary"
-            size="small"
-            rounded
             title={t("auth.goBack")}
+            fullWidth
             pressableProps={{
               onPress: resetProgress,
               pointerEvents: verificationSuccess ? "none" : "auto",
             }}
             extraClassNames={verificationSuccess ? "opacity-0" : "opacity-100"}
-            wide
           />
         ) : (
           <Button
             title=" "
             pressableProps={{ pointerEvents: "none" }}
             extraClassNames="opacity-0"
-            wide
+            fullWidth
           />
         )}
       </View>

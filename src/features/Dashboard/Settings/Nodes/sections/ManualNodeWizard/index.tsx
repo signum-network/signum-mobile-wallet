@@ -7,10 +7,11 @@ import { useNodeHostStore } from "@/hooks/useNodeHostStore";
 import { HorizontalDivider } from "@/components/HorizontalDivider";
 import { Text } from "@/components/Text";
 import { Button } from "@/components/Button";
-import type { nodeHost } from "@/types/nodeHost";
+import type { NodeHost } from "@/types/nodeHost";
 import { HostCard } from "../../components/HostCard";
 import { AddNodeDialog } from "./components/AddNodeDialog";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import {useQueryClient} from "@tanstack/react-query";
 
 export const ManualNodeWizard = () => {
   const { t } = useTranslation();
@@ -22,7 +23,7 @@ export const ManualNodeWizard = () => {
     setActiveNodeHost,
     removeCustomNode,
   } = useNodeHostStore();
-
+const queryClient = useQueryClient()
   const [nodeGroup, setNodeGroup] = useState<"mainnet" | "testnet" | "custom">(
     "mainnet"
   );
@@ -43,7 +44,7 @@ export const ManualNodeWizard = () => {
     }
   }, [nodeGroup, reliableNodeHost, testnetReliableNodeHost, customNodeHost]);
 
-  const updateActiveNode = (value: nodeHost) => {
+  const updateActiveNode = (value: NodeHost) => {
     if (isNodeGroupCustom) {
       Alert.alert(
         t("settings.node.customNodeOptions"),
@@ -80,15 +81,31 @@ export const ManualNodeWizard = () => {
     }
   };
 
+  const refreshNodeHosts = async () => {
+      await queryClient.invalidateQueries({queryKey: ['fetchReliableNodeHosts']})
+      alert(t("settings.node.refreshedNodeHosts"))
+  }
+
   return (
     <Fragment>
       <HorizontalDivider />
 
       <View className="w-full flex flex-col items-center gap-4">
+      <View className="w-full flex flex-row items-center justify-center gap-4">
+
         <Text size="large" className="font-medium">
           {t("settings.node.selectANode")}
         </Text>
 
+          <Button
+              type="link"
+              size="small"
+              icon={<Ionicons name="refresh" size={20} color={iconColor.primary} />}
+              title={t('settings.node.refresh')}
+              pressableProps={{ onPress: refreshNodeHosts }}
+          >
+          </Button>
+      </View>
         <View
           className="flex flex-row items-stretch gap-2 rounded-full max-w-md w-full p-1 overflow-hidden border"
           style={{

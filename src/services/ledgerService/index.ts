@@ -3,12 +3,14 @@ import type { LedgerServiceContext } from "./ledgerServiceContext";
 import { AccountService } from "./accountService";
 import { NodeService } from "./nodeService";
 import { TokenService } from "./tokenService";
+import { AliasService } from "./aliasService";
 
 export class LedgerService {
   private readonly ledger: Ledger;
   private readonly accountService: AccountService;
   private readonly nodeService: NodeService;
   private readonly tokenService: TokenService;
+  private readonly aliasService: AliasService;
 
   constructor(private nodeHost: string) {
     this.ledger = LedgerClientFactory.createClient({
@@ -22,7 +24,10 @@ export class LedgerService {
     this.accountService = new AccountService(context);
     this.nodeService = new NodeService(context);
     this.tokenService = new TokenService(context);
+    this.aliasService = new AliasService(context);
   }
+
+
 
   get ledgerInstance() {
     return this.ledger;
@@ -42,5 +47,9 @@ export class LedgerService {
 
   get token(): TokenService {
     return this.tokenService;
+  }
+
+  get alias() : AliasService {
+      return this.aliasService;
   }
 }

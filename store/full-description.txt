@@ -1,0 +1,49 @@
+Signum Mobile Wallet is the official, open-source, non-custodial wallet for the Signum blockchain. Manage your SIGNA, tokens, and mining commitments — all from your phone.
+
+Your keys. Your coins. Always.
+
+Private keys are stored exclusively on your device using encrypted secure storage. They are never transmitted to any server. The app collects no personal data, uses no analytics or tracking, and contains no ads. Fully open source under the Apache 2.0 license — verify the code yourself on GitHub.
+
+SEND & RECEIVE SIGNA
+Send SIGNA directly to any address or scan a QR code for instant transfers. Attach plain or encrypted messages to transactions. Generate QR codes and payment requests to receive funds effortlessly.
+
+TOKEN MANAGEMENT
+View and transfer Signum tokens alongside your SIGNA balance. Track your full token portfolio with real-time market values powered by CoinGecko.
+
+MINER COMMITMENT MANAGEMENT
+The only mobile wallet that lets you manage your mining commitments remotely. Add or remove commitments directly from your phone — no need to access your mining rig.
+
+DAPP INTEGRATION
+Connect seamlessly with Signum dApps through the SRC-22 deep linking standard. Compatible with Signum Phoenix Wallet and XT Wallet Browser Extension. Supports new full signing action for fully flexible DAPP integration. Approve and sign transactions initiated by decentralized applications with a secure long-press confirmation flow.
+
+MULTIPLE ACCOUNTS
+Manage up to 25 accounts in a single app. Create new accounts with secure mnemonic seed phrases, import existing accounts with your private key, or add watch-only accounts to monitor any address.
+
+SECURITY FIRST
+• PIN protection and biometric authentication (Face ID, Touch ID, fingerprint)
+• Automatic logout on inactivity
+• Private keys never leave your device
+• Recovery phrases are never stored on the device
+• All transaction signing happens locally
+• Watch-only accounts are restricted from signing
+
+CUSTOMIZABLE EXPERIENCE
+Choose from 6 design themes — Default Light, Default Dark, Midnight (OLED-friendly), Sunrise, and Bubblegum. Available in 7 languages: English, Spanish, Portuguese, French, German, Chinese, and Russian. Display balances in your preferred fiat currency.
+
+TRANSACTION HISTORY
+Browse your complete activity feed with human-readable transaction details. View parsed summaries or raw JSON data for full transparency across all Signum transaction types — payments, token transfers, marketplace operations, smart contracts, subscriptions, and more.
+
+FLEXIBLE NODE SELECTION
+Connect to the Signum network through predefined nodes or configure your own custom node. Switch between mainnet and testnet with ease.
+
+PRIVACY BY DESIGN
+No personal data is collected or stored. No analytics. No tracking. No advertising. Your financial activity stays on your device. GDPR compliant by default — because there is simply nothing to collect.
+
+OPEN SOURCE
+100% open source. Every line of code is publicly auditable. Built with React Native and the official SignumJS SDK. Community-driven development with no centralized dependencies.
+
+Signum is the world's first truly sustainable blockchain, using the energy-efficient Proof of Commitment (PoC+) consensus. By using Signum Mobile Wallet, you're supporting a greener future for decentralized finance.
+
+Download now and take full control of your Signa.
+
+Website: https://signum.network

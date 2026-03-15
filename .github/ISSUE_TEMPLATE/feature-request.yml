@@ -1,0 +1,60 @@
+name: Feature Request
+description: Suggest a new feature or improvement for the Signum Mobile Wallet
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Got an idea to make the wallet better? We'd love to hear it!
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area of the app
+      description: Which part of the app does this relate to?
+      options:
+        - Account setup / onboarding
+        - Sending / receiving
+        - Address book
+        - Transaction history
+        - Settings
+        - Security / authentication
+        - New feature / not yet in the app
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or motivation
+      description: What problem does this solve, or why would this be useful?
+      placeholder: I often need to ... but currently there's no way to ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: Describe how you'd like this to work.
+      placeholder: It would be great if the app could ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Have you considered any workarounds or alternative approaches?
+    validations:
+      required: false
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Mockups or references
+      description: If you have sketches, mockups, or examples from other apps, share them here.
+    validations:
+      required: false

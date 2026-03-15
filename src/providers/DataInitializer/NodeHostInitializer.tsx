@@ -1,150 +1,153 @@
-import { useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { useNodeHostStore } from "@/hooks/useNodeHostStore";
-import { useLedgerService } from "@/hooks/useLedgerService";
-import { useAppStore } from "@/hooks/useAppStore";
-import type { nodeHost, PublicNodeHost } from "@/types/nodeHost";
-import { LedgerClientFactory } from "@signumjs/core";
+import {useEffect} from "react";
+import {useQuery} from "@tanstack/react-query";
+import {useNodeHostStore} from "@/hooks/useNodeHostStore";
+import {useLedgerService} from "@/hooks/useLedgerService";
+import {useAppStore} from "@/hooks/useAppStore";
+import type {NodeHost, PublicNodeHost} from "@/types/nodeHost";
+import {ChainService} from "@signumjs/core";
+
 import {
-  PUBLIC_SIGNUM_PUBLIC_RESOURCES_URL,
-  PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MILLISECONDS,
+    PUBLIC_SIGNUM_PUBLIC_RESOURCES_URL,
+    PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MILLISECONDS,
 } from "@/types/constants";
 
 export const NodeHostInitializer = () => {
-  const { isOnline } = useAppStore();
-  const { ledgerService } = useLedgerService();
-  const {
-    connectionType,
-    activeNodeHost,
-    reliableNodeHost,
-    setActiveNodeHost,
-    setReliableNodeHost,
-    setTestnetReliableNodeHost,
-    setIsActiveNodeAvailable,
-    setIsActiveNodeSynced,
-    setActiveNodeSyncedPercentage,
-    setActiveNodeNumberOfBlocks,
-    resetActiveNodeHost,
-  } = useNodeHostStore();
+    const {isOnline} = useAppStore();
+    const {ledgerService} = useLedgerService();
+    const {
+        connectionType,
+        activeNodeHost,
+        reliableNodeHost,
+        setActiveNodeHost,
+        setReliableNodeHost,
+        setTestnetReliableNodeHost,
+        setIsActiveNodeAvailable,
+        setIsActiveNodeSynced,
+        setActiveNodeSyncedPercentage,
+        setActiveNodeNumberOfBlocks,
+        resetActiveNodeHost,
+    } = useNodeHostStore();
 
-  useQuery({
-    queryKey: ["fetchReliableNodeHosts"],
-    queryFn: () =>
-      fetch(`${PUBLIC_SIGNUM_PUBLIC_RESOURCES_URL}/nodes.json`).then(
-        async (res) => {
-          const response: any = await res.json();
+    const {data} = useQuery({
+        queryKey: ["fetchReliableNodeHosts"],
+        queryFn: async () => {
+            const reliableNodesMap = new Map<string, NodeHost>();
+            const testnetReliableNodesMap = new Map<string, NodeHost>();
+            const res = await fetch(`${PUBLIC_SIGNUM_PUBLIC_RESOURCES_URL}/nodes.json`)
+            const response: any = await res.json();
+            const mainnetNodes = response.mainnet;
+            const testnetNodes = response.testnet;
 
-          const reliableNodes: nodeHost[] = [];
-          const testnetReliableNodes: nodeHost[] = [];
-
-          const mainnetNodes = response.mainnet;
-          const testnetNodes = response.testnet;
-
-          mainnetNodes.forEach(({ name, url }: PublicNodeHost) => {
-            if (url.includes("localhost")) return;
-
-            reliableNodes.push({
-              name,
-              url,
-              isTestnet: false,
+            mainnetNodes.forEach(({name, url}: PublicNodeHost) => {
+                if (url.includes("localhost")) return;
+                if (reliableNodesMap.has(url)) return;
+                reliableNodesMap.set(url, {
+                    name,
+                    url,
+                    isTestnet: false,
+                });
             });
-          });
 
-          testnetNodes.forEach(({ name, url }: PublicNodeHost) => {
-            if (url.includes("localhost")) return;
-
-            testnetReliableNodes.push({
-              name,
-              url,
-              isTestnet: true,
+            testnetNodes.forEach(({name, url}: PublicNodeHost) => {
+                if (url.includes("localhost")) return;
+                if (testnetReliableNodesMap.has(url)) return;
+                testnetReliableNodesMap.set(url, {
+                    name,
+                    url,
+                    isTestnet: true,
+                });
             });
-          });
 
-          // Sorting the array alphabetically by the "name" property
-          const sorter = (a: nodeHost, b: nodeHost) => {
-            // Convert names to lowercase for case-insensitive sorting
-            const nameA = a.name.toLowerCase();
-            const nameB = b.name.toLowerCase();
+            const sortByName = (a: NodeHost, b: NodeHost) => {
+                const nameA = a.name.toLowerCase();
+                const nameB = b.name.toLowerCase();
+                if (nameA < nameB) return -1;
+                if (nameA > nameB) return 1;
+                return 0;
+            };
 
-            // Compare names
-            if (nameA < nameB) return -1;
-            if (nameA > nameB) return 1;
-            return 0; // Names are equal
-          };
+            const mainnet = Array.from(reliableNodesMap.values()).sort(sortByName);
+            const testnet = Array.from(testnetReliableNodesMap.values()).sort(sortByName);
 
-          reliableNodes.sort(sorter);
-          testnetReliableNodes.sort(sorter);
+            return {
+                mainnet,
+                testnet,
+            }
+        },
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: false,
+        refetchInterval: false,
+        staleTime: Infinity,
+    });
 
-          setReliableNodeHost(reliableNodes);
-          setTestnetReliableNodeHost(testnetReliableNodes);
-
-          return testnetNodes;
+    useEffect(() => {
+        if(data){
+            console.log('[NodeHostInitializer] Reliable node hosts loaded:', data);
+            setReliableNodeHost(data.mainnet);
+            setTestnetReliableNodeHost(data.testnet);
         }
-      ),
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-    refetchInterval: false,
-    staleTime: Infinity,
-  });
+    }, [data]);
 
-  useEffect(() => {
-    if (
-      !reliableNodeHost.length ||
-      activeNodeHost.name ||
-      connectionType === "manual"
-    ) {
-      return;
-    }
+    useEffect(() => {
+        if (
+            !reliableNodeHost.length ||
+            activeNodeHost.name ||
+            connectionType === "manual"
+        ) {
+            return;
+        }
 
-    (async () => {
-      const reliableNodeHostsUrls = reliableNodeHost.map((node) => node.url);
+        async function determineBestNodeHost(nodeHosts: NodeHost[]) {
+            async function probe(url: string) {
+                await new ChainService({nodeHost: url}).query("getBlock")
+                return url
+            }
 
-      const probeClient = LedgerClientFactory.createClient({
-        nodeHost: reliableNodeHost[0].url,
-        reliableNodeHosts: reliableNodeHostsUrls,
-      });
+            const urls = nodeHosts.map(node => node.url)
+            const fastestResponderUrl = await Promise.race(urls.map(probe))
+            const selectedHost = nodeHosts.find(node => node.url === fastestResponderUrl)
+            if (selectedHost) {
+                setActiveNodeHost(selectedHost)
+            }
+        }
 
-      await probeClient.service.selectBestHost().then((host) => {
-        const index = reliableNodeHostsUrls.indexOf(host);
-        setActiveNodeHost(reliableNodeHost[index]);
-      });
-    })();
-  }, [reliableNodeHost, activeNodeHost, connectionType]);
+        determineBestNodeHost(reliableNodeHost);
 
-  // TODO: Once SignumJS has improved the selectBestHost method, clean the active node host if active node is syncing
-  useQuery({
-    queryKey: ["fetchBlockchainStatus", activeNodeHost.url],
-    queryFn: async () => {
-      if (!ledgerService) return;
+    }, [reliableNodeHost, activeNodeHost, connectionType]);
 
-      try {
-        const status = await ledgerService.node.fetchBlockchainStatus();
-        const { numberOfBlocks, lastBlockchainFeederHeight } = status;
+    // TODO: Once SignumJS has improved the selectBestHost method, clean the active node host if active node is syncing
+    const {data: blockchainStatus, error: blockchainStatusError} = useQuery({
+        queryKey: ["fetchBlockchainStatus", activeNodeHost.url],
+        queryFn: async () => {
+            const status = await ledgerService!.node.fetchBlockchainStatus();
+            const {numberOfBlocks, lastBlockchainFeederHeight} = status;
+            const percentageRaw = (numberOfBlocks / lastBlockchainFeederHeight) * 100;
+            return {
+                numberOfBlocks,
+                isSynced: lastBlockchainFeederHeight - numberOfBlocks <= 1,
+                syncedPercentage: Number(percentageRaw.toFixed(2)),
+            };
+        },
+        refetchInterval: PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MILLISECONDS,
+        enabled: !!activeNodeHost.url && !!ledgerService,
+    });
 
-        setIsActiveNodeSynced(lastBlockchainFeederHeight - numberOfBlocks <= 1);
+    useEffect(() => {
+        if (blockchainStatus) {
+            setActiveNodeSyncedPercentage(blockchainStatus.syncedPercentage);
+            setActiveNodeNumberOfBlocks(blockchainStatus.numberOfBlocks);
+            setIsActiveNodeSynced(blockchainStatus.isSynced);
+            setIsActiveNodeAvailable(true);
+        }
+    }, [blockchainStatus]);
 
-        setActiveNodeSyncedPercentage(
-          (numberOfBlocks / lastBlockchainFeederHeight) * 100
-        );
+    useEffect(() => {
+        if (blockchainStatusError) {
+            setIsActiveNodeAvailable(false);
+            if (isOnline && connectionType === "automatic") resetActiveNodeHost();
+        }
+    }, [blockchainStatusError]);
 
-        setIsActiveNodeAvailable(true);
-
-        setActiveNodeNumberOfBlocks(numberOfBlocks);
-
-        return true;
-      } catch (error) {
-        // Node is unavailable, reset active node if connectionType === automatic
-        if (isOnline && connectionType === "automatic") resetActiveNodeHost();
-
-        setIsActiveNodeAvailable(false);
-
-        return false;
-      }
-    },
-    refetchInterval: PUBLIC_SIGNUM_AVERAGE_BLOCK_TIME_IN_MILLISECONDS,
-    enabled: !!activeNodeHost.url,
-  });
-
-  return null;
+    return null;
 };

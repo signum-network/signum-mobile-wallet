@@ -1,0 +1,90 @@
+name: Wallet Feedback
+description: Share your feedback about the Signum Mobile Wallet
+title: "[Feedback]: "
+labels: ["feedback"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to share your feedback! This helps us improve the wallet for everyone.
+
+  - type: dropdown
+    id: type
+    attributes:
+      label: Feedback type
+      description: What kind of feedback is this?
+      options:
+        - Bug report
+        - Feature request
+        - UX / design feedback
+        - General comment
+    validations:
+      required: true
+
+  - type: dropdown
+    id: rating
+    attributes:
+      label: Overall experience rating
+      description: How would you rate your experience with the wallet?
+      options:
+        - "3 - Amazing"
+        - "2 - Good"
+        - "1 - Bad"
+        - "0 - Very bad"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area of the app
+      description: Which part of the app does this relate to?
+      options:
+        - Account setup / onboarding
+        - Sending / receiving
+        - Address book
+        - Transaction history
+        - Settings
+        - Security / authentication
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe your feedback in detail. What happened? What did you expect? What could be improved?
+      placeholder: Tell us what's on your mind...
+    validations:
+      required: true
+
+  - type: textarea
+    id: device
+    attributes:
+      label: Device & OS (for bug reports)
+      description: If this is a bug, please share your device and OS version.
+      placeholder: |
+        Device: Pixel 8
+        OS: Android 15
+        App version: 2.0.0
+    validations:
+      required: false
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: If applicable, add screenshots to help explain your feedback. Drag and drop images here.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Guidelines
+      options:
+        - label: I have checked for existing feedback on this topic
+          required: true
+        - label: This feedback is constructive and respectful
+          required: true

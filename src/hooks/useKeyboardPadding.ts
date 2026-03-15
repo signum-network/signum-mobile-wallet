@@ -9,29 +9,43 @@ import {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
+import {
+  TAB_BAR_BASE_HEIGHT,
+  FORM_NAV_BUTTON_HEIGHT,
+} from "@/theme/constants";
 
 type Options = {
-  /** Fixed bottom spacing, e.g. for a sticky button/tab bar */
-  baseBottom?: number;
+  /** Set true on screens without bottom tab bar, e.g. onboarding account-wizard */
+  noTabBar?: boolean;
+  /** Set true on screens without bottom form navigation button */
+  noFormNavButton?: boolean;
+  /** Optional small manual correction */
+  extraOffset?: number;
   /** If false, first render snaps without animation */
   animateOnMount?: boolean;
-  /** Animation duration when keyboard opens (ms) */
+  /** Animation duration when keyboard opens */
   openDuration?: number;
-  /** Animation duration when keyboard closes (ms) */
+  /** Animation duration when keyboard closes */
   closeDuration?: number;
-  /** Ignore very small "ghost" heights (e.g. stale values) */
+  /** Ignore tiny ghost keyboard heights */
   threshold?: number;
 };
 
 /**
- * Hook that returns an animated style with a bottom padding
- * that increases when the keyboard is visible.
+ * Returns an animated style with bottom padding that grows when the keyboard opens.
  *
- * Combines reanimated’s useAnimatedKeyboard with real RN Keyboard events
- * and also uses keyboardDidHide to hard-reset padding.
+ * Calculation:
+ * keyboard shift = keyboard height - already occupied bottom space
+ *
+ * Bottom space assumptions:
+ * - Tab bar exists by default and already includes safe area bottom inset
+ * - FormNavButton exists by default
+ * - On screens without tab bar, safe area bottom is used instead
  */
 export function useKeyboardPadding({
-  baseBottom = 0,
+  noTabBar = false,
+  noFormNavButton = false,
+  extraOffset = 0,
   animateOnMount = true,
   openDuration = 250,
   closeDuration = 200,
@@ -39,58 +53,57 @@ export function useKeyboardPadding({
 }: Options = {}) {
   const insets = useSafeAreaInsets();
   const isFocused = useIsFocused();
-  const kbd = useAnimatedKeyboard();
+  const keyboard = useAnimatedKeyboard();
 
-  // Track real visibility from RN events (0 = hidden, 1 = visible)
   const visible = useSharedValue(0);
-
-  // Shared value that holds the current paddingBottom
-  const padding = useSharedValue(baseBottom);
-
-  // Flag to avoid animation on the very first paint
+  const padding = useSharedValue(0);
   const mounted = useSharedValue(animateOnMount ? 1 : 0);
 
   useEffect(() => {
-    const onShow = () => (visible.value = 1);
-    const onWillHide = () => (visible.value = 0);
-    const onDidHide = () => {
-      // Hard reset padding on full hide
-      padding.value = baseBottom;
-    };
+    const onShow = () => { visible.value = 1; };
+    const onHide = () => { visible.value = 0; padding.value = 0; };
 
-    const show =
+    const showSub =
       Platform.OS === "ios"
         ? Keyboard.addListener("keyboardWillShow", onShow)
         : Keyboard.addListener("keyboardDidShow", onShow);
 
-    const willHide =
+    const hideSub =
       Platform.OS === "ios"
-        ? Keyboard.addListener("keyboardWillHide", onWillHide)
-        : Keyboard.addListener("keyboardDidHide", onWillHide);
+        ? Keyboard.addListener("keyboardWillHide", onHide)
+        : Keyboard.addListener("keyboardDidHide", onHide);
 
-    const didHide = Keyboard.addListener("keyboardDidHide", onDidHide);
+    const didHideSub = Keyboard.addListener("keyboardDidHide", onHide);
 
     return () => {
-      show.remove();
-      willHide.remove();
-      didHide.remove();
+      showSub.remove();
+      hideSub.remove();
+      didHideSub.remove();
       visible.value = 0;
-      padding.value = baseBottom;
+      padding.value = 0;
     };
-  }, [baseBottom, visible, padding]);
+  }, [padding, visible]);
 
   useEffect(() => {
     mounted.value = 1;
   }, [mounted]);
 
   const style = useAnimatedStyle(() => {
-    const raw = kbd.height.value ?? 0;
-    const safeBottom = insets.bottom;
-    const height = Math.max(0, raw - safeBottom);
+    const keyboardHeight = keyboard.height.value ?? 0;
 
-    const active = isFocused && visible.value === 1 && height > threshold;
-    const target = baseBottom + (active ? height : 0);
-    const duration = active ? openDuration : closeDuration;
+    const tabBarHeight = noTabBar ? insets.bottom : TAB_BAR_BASE_HEIGHT + insets.bottom;
+    const formNavHeight = noFormNavButton ? 0 : FORM_NAV_BUTTON_HEIGHT;
+
+    const occupiedBottomSpace = tabBarHeight + formNavHeight;
+
+    const isKeyboardVisible =
+      isFocused && visible.value === 1 && keyboardHeight > threshold;
+
+    const target = isKeyboardVisible
+      ? Math.max(0, keyboardHeight - occupiedBottomSpace + extraOffset)
+      : 0;
+
+    const duration = isKeyboardVisible ? openDuration : closeDuration;
 
     if (!mounted.value) {
       padding.value = target;
@@ -104,11 +117,13 @@ export function useKeyboardPadding({
 
     return { paddingBottom: padding.value };
   }, [
-    baseBottom,
+    closeDuration,
+    extraOffset,
     insets.bottom,
     isFocused,
+    noFormNavButton,
+    noTabBar,
     openDuration,
-    closeDuration,
     threshold,
   ]);
 

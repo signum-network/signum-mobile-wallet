@@ -30,7 +30,7 @@ export const DesignCard = ({ id }: Props) => {
       onPress={handlePress}
       className="w-full rounded-lg active:opacity-80 ripple-[#333] ripple-bordered"
     >
-      <Card>
+      <Card active={isCurrentDesign}>
         <View className="h-20 w-full flex flex-row justify-between items-center">
           <View className="flex flex-1 gap-1 items-start justify-center">
             <Text className="font-medium" size="large">

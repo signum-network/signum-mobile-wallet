@@ -1,0 +1,34 @@
+# Test Connect Deep Link
+
+## Manual Test Link (copy and paste into mobile browser):
+
+signum://v1?action=connect&payload=eyJhcHBOYW1lIjoiVGVzdCBEZW1vIGRBcHAiLCJjYWxsYmFja1VybCI6Imh0dHBzOi8vZXhhbXBsZS5jb20vY2FsbGJhY2siLCJuZXR3b3JrIjoidGVzdG5ldCJ9
+
+## Payload Breakdown:
+
+Base64 encoded: eyJhcHBOYW1lIjoiVGVzdCBEZW1vIGRBcHAiLCJjYWxsYmFja1VybCI6Imh0dHBzOi8vZXhhbXBsZS5jb20vY2FsbGJhY2siLCJuZXR3b3JrIjoidGVzdG5ldCJ9
+
+Decoded JSON:
+{
+  "appName": "Test Demo dApp",
+  "callbackUrl": "https://example.com/callback",
+  "network": "testnet"
+}
+
+## Expected Result:
+
+- Screen should show "Test Demo dApp" as the app name
+- Should show "example.com" as the domain
+- Network should match (testnet)
+- Should show account selector
+- Should be able to select account and connect
+
+## Debug Steps:
+
+1. Paste the deep link above into mobile browser address bar
+2. Wallet should open
+3. Check console logs for:
+   - [DeepLink] Connect payload: {...}
+   - [DeepLink] Extracted: {...}
+   - [ConnectDApp] Params received: {...}
+4. Check if app name displays correctly
