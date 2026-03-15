@@ -24,7 +24,6 @@
     },
     "production": {
       "node": "20.18.0",
-      "image": "latest",
       "android": {
         "buildType": "app-bundle"
       },
