@@ -152,6 +152,9 @@ info("Write user-facing 'What's new' text (max 500 chars for Play Store).");
 const rl = createInterface({ input: process.stdin, output: process.stdout });
 const prompt = (q) => new Promise((res) => rl.question(q, res));
 
+// eslint-disable-next-line no-prefer-const
+let releaseNotes = "";
+
 // eslint-disable-next-line no-constant-condition
 while (true) {
   await prompt("\n  Press Enter when you're done editing the release notes…");
@@ -162,7 +165,7 @@ while (true) {
     continue;
   }
 
-  const releaseNotes = readFileSync(releaseNotesPath, "utf-8").trim();
+  releaseNotes = readFileSync(releaseNotesPath, "utf-8").trim();
   if (releaseNotes.length === 0) {
     console.log("  ⚠ Release notes are empty. Please add content and try again.");
     continue;
