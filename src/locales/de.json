@@ -88,6 +88,7 @@
     "misuse": "Die Entwickler können nicht für den Missbrauch dieser Anwendung verantwortlich gemacht werden, einschließlich, aber nicht beschränkt auf unautorisierte Transaktionen, betrügerische Aktivitäten oder Verstöße gegen geltendes Recht.",
     "regulatory": "Du bist allein dafür verantwortlich, alle geltenden Gesetze und Vorschriften in deiner Rechtsordnung bezüglich der Nutzung, Aufbewahrung und Übertragung von Kryptowährungen einzuhalten.",
     "noFinancialAdvice": "Nichts in dieser App stellt eine Finanz-, Anlage- oder Rechtsberatung dar.",
+    "acknowledgmentsIntro": "Durch Fortfahren bestätigst du, dass:",
     "acknowledgments": [
       "Du verstehst, dass dies eine nicht-verwahrende Wallet ist und nur du deine Guthaben kontrollierst",
       "Du bist verantwortlich dafür, deine Seed-Phrase und privaten Schlüssel sicher aufzubewahren",

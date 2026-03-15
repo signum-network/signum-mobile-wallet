@@ -1,14 +1,18 @@
-import { useMemo } from "react";
-import { View } from "react-native";
+import { useMemo, useState } from "react";
+import { Pressable, ScrollView, View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "expo-router";
 import { Image } from "expo-image";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { Button } from "@/components/Button";
+import { Dialog } from "@/components/Dialog";
 import { signumWhiteSymbolPicture } from "@/assets";
 import { Text } from "@/components/Text";
 import { useAppStore } from "@/hooks/useAppStore";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { LanguageCard } from "@/features/Dashboard/Settings/Language/components/LanguageCard";
+import { lngCards } from "@/locales";
 import Markdown from "react-native-marked";
 
 export const TermsScreen = () => {
@@ -17,6 +21,7 @@ export const TermsScreen = () => {
   const { setIsTermAgreed } = useAppStore();
   const router = useRouter();
   const insets = useSafeAreaInsets();
+  const [languageDialogVisible, setLanguageDialogVisible] = useState(false);
 
   const markdown = useMemo(() => {
     const sections = [
@@ -41,7 +46,7 @@ export const TermsScreen = () => {
       `**License:** ${t("terms.license")}`,
     ].join("\n\n");
 
-    return `# ${t("terms.title")}\n\n${body}\n\n**By continuing, you acknowledge that:**\n${bullets}\n\n${links}`;
+    return `# ${t("terms.title")}\n\n${body}\n\n**${t("terms.acknowledgmentsIntro")}**\n${bullets}\n\n${links}`;
   }, [t]);
 
   const saveTerms = () => {
@@ -63,6 +68,13 @@ export const TermsScreen = () => {
           backgroundColor: tokens.primary,
         }}
       >
+        <Pressable
+          onPress={() => setLanguageDialogVisible(true)}
+          className="absolute right-4 active:opacity-70"
+          style={{ top: insets.top + 12 }}
+        >
+          <Ionicons name="globe-outline" size={28} color="white" />
+        </Pressable>
         <Image
           source={{ uri: signumWhiteSymbolPicture }}
           style={{ width: 96, height: 96 }}
@@ -105,6 +117,38 @@ export const TermsScreen = () => {
           />
         </View>
       </View>
+
+      <Dialog
+        visible={languageDialogVisible}
+        variant="transparent"
+        onClose={() => setLanguageDialogVisible(false)}
+      >
+        <View className="p-4 gap-3">
+          <View className="flex-row justify-between items-center mb-2">
+            <Text size="large" className="font-bold">
+              {t("settings.language.title")}
+            </Text>
+            <Pressable
+              onPress={() => setLanguageDialogVisible(false)}
+              className="active:opacity-70"
+            >
+              <Ionicons name="close" size={24} color={tokens.text} />
+            </Pressable>
+          </View>
+          <ScrollView style={{ maxHeight: 400 }}>
+            <View className="gap-2">
+              {lngCards.map(({ lng, label }) => (
+                <Pressable
+                  key={lng}
+                  onPress={() => setLanguageDialogVisible(false)}
+                >
+                  <LanguageCard lng={lng} label={label} />
+                </Pressable>
+              ))}
+            </View>
+          </ScrollView>
+        </View>
+      </Dialog>
     </View>
   );
 };

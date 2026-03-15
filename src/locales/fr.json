@@ -88,6 +88,7 @@
     "misuse": "Les développeurs ne peuvent être tenus responsables de toute utilisation abusive de cette application, y compris, mais sans s'y limiter, les transactions non autorisées, les activités frauduleuses ou les violations des lois applicables.",
     "regulatory": "Vous êtes seul responsable du respect de toutes les lois et réglementations applicables dans votre juridiction concernant l'utilisation, le stockage et le transfert de cryptomonnaies.",
     "noFinancialAdvice": "Rien dans cette application ne constitue un conseil financier, d'investissement ou juridique.",
+    "acknowledgmentsIntro": "En continuant, vous reconnaissez que :",
     "acknowledgments": [
       "Vous comprenez qu'il s'agit d'un portefeuille non dépositaire et que vous seul contrôlez vos fonds",
       "Vous êtes responsable de la sécurité de votre phrase de récupération et de vos clés privées",

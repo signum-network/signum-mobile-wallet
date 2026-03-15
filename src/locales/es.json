@@ -88,6 +88,7 @@
     "misuse": "Los desarrolladores no se hacen responsables del mal uso de esta aplicación, incluyendo, entre otros, transacciones no autorizadas, actividades fraudulentas o violaciones de las leyes aplicables.",
     "regulatory": "Eres el único responsable de cumplir con todas las leyes y regulaciones aplicables en tu jurisdicción respecto al uso, almacenamiento y transferencia de criptomonedas.",
     "noFinancialAdvice": "Nada en esta aplicación constituye asesoramiento financiero, de inversión o legal.",
+    "acknowledgmentsIntro": "Al continuar, reconoces que:",
     "acknowledgments": [
       "Entiendes que esta es una wallet sin custodia y solo tú controlas tus fondos",
       "Eres responsable de mantener segura tu frase semilla y claves privadas",
