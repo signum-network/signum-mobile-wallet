@@ -18,6 +18,7 @@
 
 import { execSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
+import { createInterface } from "node:readline";
 import { createHash } from "node:crypto";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -74,8 +75,8 @@ info("Working tree: clean ✓");
 // Must have changeset files to consume — OR we create one interactively
 const changesetFiles = run("ls .changeset/*.md 2>/dev/null || true");
 const hasExistingChangesets = changesetFiles
-  .split("\n")
-  .filter((f) => f && !f.endsWith("README.md")).length > 0;
+    .split("\n")
+    .filter((f) => f && !f.endsWith("README.md")).length > 0;
 
 // ── Step 1: Create changeset (interactive) ─────────────────────────────
 
@@ -90,8 +91,8 @@ if (hasExistingChangesets) {
   // Verify a changeset was actually created
   const afterFiles = run("ls .changeset/*.md 2>/dev/null || true");
   const newChangesets = afterFiles
-    .split("\n")
-    .filter((f) => f && !f.endsWith("README.md"));
+      .split("\n")
+      .filter((f) => f && !f.endsWith("README.md"));
   if (newChangesets.length === 0) {
     die("No changeset was created. Aborting.");
   }
@@ -140,33 +141,42 @@ info(`buildNumber: ${oldVersionCode + 1}`);
 
 // ── Step 5: Edit release notes ─────────────────────────────────────────
 
-heading("Opening release notes for editing");
+heading("Edit release notes");
 
 const releaseNotesPath = resolve(ROOT, "store/release-notes/en-US.txt");
 const hashBefore = fileHash(releaseNotesPath);
 
-const editor = process.env.EDITOR || "nano";
-info(`Using editor: ${editor}`);
+info(`File: store/release-notes/en-US.txt`);
 info("Write user-facing 'What's new' text (max 500 chars for Play Store).");
 
-runInteractive(`${editor} "${releaseNotesPath}"`);
+const rl = createInterface({ input: process.stdin, output: process.stdout });
+const prompt = (q) => new Promise((res) => rl.question(q, res));
 
-// ── Step 6: Validate release notes ─────────────────────────────────────
+// eslint-disable-next-line no-constant-condition
+while (true) {
+  await prompt("\n  Press Enter when you're done editing the release notes…");
 
-const hashAfter = fileHash(releaseNotesPath);
-if (hashBefore === hashAfter) {
-  die("Release notes were not changed. Please write user-facing release notes.");
+  const hashAfter = fileHash(releaseNotesPath);
+  if (hashBefore === hashAfter) {
+    console.log("  ⚠ Release notes were not changed. Please edit the file and try again.");
+    continue;
+  }
+
+  const releaseNotes = readFileSync(releaseNotesPath, "utf-8").trim();
+  if (releaseNotes.length === 0) {
+    console.log("  ⚠ Release notes are empty. Please add content and try again.");
+    continue;
+  }
+  if (releaseNotes.length > 500) {
+    console.log(`  ⚠ Release notes are ${releaseNotes.length} chars — Play Store limit is 500. Please shorten and try again.`);
+    continue;
+  }
+
+  info(`Release notes: ${releaseNotes.length}/500 chars ✓`);
+  break;
 }
 
-const releaseNotes = readFileSync(releaseNotesPath, "utf-8").trim();
-if (releaseNotes.length === 0) {
-  die("Release notes are empty.");
-}
-if (releaseNotes.length > 500) {
-  die(`Release notes are ${releaseNotes.length} chars — Play Store limit is 500.`);
-}
-
-info(`Release notes: ${releaseNotes.length}/500 chars ✓`);
+rl.close();
 
 // ── Step 7: Commit ─────────────────────────────────────────────────────
 
@@ -202,7 +212,7 @@ Merging this PR into \`main\` will automatically:
 
 try {
   const prUrl = run(
-    `gh pr create --base main --head develop --title "Release v${newVersion}" --body "${prBody.replace(/"/g, '\\"')}"`,
+      `gh pr create --base main --head develop --title "Release v${newVersion}" --body "${prBody.replace(/"/g, '\\"')}"`,
   );
   info(`Pull request created: ${prUrl}`);
 } catch (e) {
