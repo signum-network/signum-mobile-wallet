@@ -1,0 +1,89 @@
+name: Bug Report
+description: Report a bug in the Signum Mobile Wallet
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting this bug! Please fill in as much detail as possible so we can reproduce and fix it.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area of the app
+      description: Which part of the app is affected?
+      options:
+        - Account setup / onboarding
+        - Sending / receiving
+        - Address book
+        - Transaction history
+        - Settings
+        - Security / authentication
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      description: How much does this impact your usage?
+      options:
+        - Critical — app crashes or data loss
+        - High — feature is broken, no workaround
+        - Medium — feature is broken, but there's a workaround
+        - Low — cosmetic or minor annoyance
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: Describe the bug clearly.
+      placeholder: When I try to send SIGNA, the app shows a blank screen...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What did you expect to happen?
+      placeholder: I expected the transaction confirmation screen to appear...
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: How can we reproduce this bug?
+      placeholder: |
+        1. Open the app
+        2. Go to Send
+        3. Enter an amount and tap Send
+        4. See blank screen
+    validations:
+      required: true
+
+  - type: textarea
+    id: device
+    attributes:
+      label: Device & OS
+      description: Please share your device info.
+      placeholder: |
+        Device: Pixel 8
+        OS: Android 15
+        App version: 2.0.0
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots or screen recordings
+      description: If applicable, add visuals to help explain the bug. Drag and drop files here.
+    validations:
+      required: false
