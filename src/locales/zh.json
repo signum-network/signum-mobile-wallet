@@ -78,9 +78,27 @@
   "maxButton": "使用全部可用余额",
   "textOrMemo": "文本或备注",
   "terms": {
-    "requestFirstLine": "在使用本钱包之前，",
-    "requestSecondLine": "先看一则开源说明",
-    "openSourceMd": "# 开源\n\n**Signum Mobile Wallet** 是在 **Apache 2.0 许可证** 下发布的开源软件。\n\n ### 简而言之：\n- 你可以使用、复制、修改并分发该应用；\n- 重新分发时，**保留许可证与版权声明**；并**标注修改**；\n- 适用贡献者授予的**专利许可**；\n- **不提供任何担保**，不承担任何责任。\n\n ### 了解更多：\n\n- **查看源码：**\n https://github.com/signum-network/signum-mobile-wallet\n- **Apache-2.0（全文）：**\n https://github.com/signum-network/signum-mobile-wallet/tree/main?tab=License-1-ov-file\n- **NOTICE 与致谢：**\n https://github.com/signum-network/signum-mobile-wallet/blob/main/NOTICE.md\n\n> 提示：开源许可证不是使用条款——**无需同意**即可使用。本说明仅为透明性目的。"
+    "requestFirstLine": "在开始之前，",
+    "requestSecondLine": "请阅读以下重要免责声明",
+    "title": "免责声明",
+    "nonCustodial": "**Signum Mobile Wallet** 是一款开源的非托管钱包。这意味着**您需独自负责**保管您的助记词、私钥和密码。开发者无法访问您的账户，且在任何情况下**都无法恢复丢失的密钥、助记词或资金**。",
+    "useAtOwnRisk": "**使用风险自负。** 本软件按\"原样\"提供，不作任何形式的担保。开发者和贡献者对任何币、代币或其他数字资产的损失概不负责，无论是由软件缺陷、用户错误、设备故障还是其他原因造成的。",
+    "irreversible": "区块链交易是**不可逆的**。一旦交易在 Signum 网络上得到确认，就无法撤销。发送前请务必仔细核对收款地址和金额。",
+    "thirdParty": "本应用连接**第三方服务**（如 Signum 节点、CoinGecko）以获取网络访问和市场数据。开发者不对这些服务的准确性、可用性或可靠性作任何保证。",
+    "misuse": "开发者不对本应用的任何滥用行为承担责任，包括但不限于未经授权的交易、欺诈活动或违反适用法律的行为。",
+    "regulatory": "您需独自负责遵守您所在司法管辖区内有关加密货币使用、存储和转移的所有适用法律法规。",
+    "noFinancialAdvice": "本应用中的任何内容均不构成财务、投资或法律建议。",
+    "acknowledgments": [
+      "您理解这是一个非托管钱包，只有您自己控制您的资金",
+      "您有责任妥善保管您的助记词和私钥",
+      "丢失的助记词或私钥任何人都无法恢复",
+      "区块链交易一经确认即不可撤销",
+      "开发者不对任何经济损失承担责任",
+      "您有责任遵守您所在国家的法律",
+      "您对使用本应用的方式承担全部责任"
+    ],
+    "sourceCodeUrl": "https://github.com/signum-network/signum-mobile-wallet",
+    "license": "Apache License 2.0"
   },
   "auth": {
     "enrollPassCodeTitle": "请设置一个代码以保护你的设备",

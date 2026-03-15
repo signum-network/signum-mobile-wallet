@@ -78,9 +78,27 @@
   "maxButton": "Use all available balance",
   "textOrMemo": "Text or Memo",
   "terms": {
-    "requestFirstLine": "Before you start using this wallet,",
-    "requestSecondLine": "here’s a quick open-source note",
-    "openSourceMd": "# Open Source\n\n**Signum Mobile Wallet** is open-source software under the **Apache License 2.0**.\n\n ### In short:\n- You may use, copy, modify, and distribute the app.\n- When distributing, keep **license and copyright notices**; mark **changes**.\n- A **patent license** from contributors applies.\n- Provided **as is**, without warranties.\n\n ### Learn more:\n\n- **View source:**\n https://github.com/signum-network/signum-mobile-wallet\n- **Apache-2.0 (full text):**\n https://github.com/signum-network/signum-mobile-wallet/tree/main?tab=License-1-ov-file\n- **NOTICE & acknowledgments:**\n https://github.com/signum-network/signum-mobile-wallet/blob/main/NOTICE.md\n\n> Note: Open-source licenses are not terms of service—**no acceptance** is required. This notice is for transparency."
+    "requestFirstLine": "Before you start,",
+    "requestSecondLine": "please read this important disclaimer",
+    "title": "Disclaimer",
+    "nonCustodial": "**Signum Mobile Wallet** is a non-custodial, open-source wallet. This means **you are solely responsible** for safeguarding your seed phrase, private keys, and passcode. The developers have no access to your accounts and **cannot recover lost keys, seed phrases, or funds** under any circumstances.",
+    "useAtOwnRisk": "**Use at your own risk.** This software is provided \"as is\", without warranty of any kind. The developers and contributors shall not be held liable for any loss of coins, tokens, or other digital assets, whether caused by software bugs, user error, device failure, or any other reason.",
+    "irreversible": "Blockchain transactions are **irreversible**. Once a transaction is confirmed on the Signum network, it cannot be undone. Always double-check recipient addresses and amounts before sending.",
+    "thirdParty": "This app connects to **third-party services** (e.g. Signum nodes, CoinGecko) for network access and market data. The developers make no guarantees regarding the accuracy, availability, or reliability of these services.",
+    "misuse": "The developers cannot be held responsible for any misuse of this application, including but not limited to unauthorized transactions, fraudulent activity, or violations of applicable laws.",
+    "regulatory": "You are solely responsible for complying with all applicable laws and regulations in your jurisdiction regarding the use, storage, and transfer of cryptocurrency.",
+    "noFinancialAdvice": "Nothing in this app constitutes financial, investment, or legal advice.",
+    "acknowledgments": [
+      "You understand this is a non-custodial wallet and you alone control your funds",
+      "You are responsible for keeping your seed phrase and private keys safe",
+      "Lost seed phrases or private keys cannot be recovered by anyone",
+      "Blockchain transactions are irreversible once confirmed",
+      "The developers bear no liability for any financial losses",
+      "You are responsible for complying with your local laws",
+      "You accept full responsibility for how you use this application"
+    ],
+    "sourceCodeUrl": "https://github.com/signum-network/signum-mobile-wallet",
+    "license": "Apache License 2.0"
   },
   "auth": {
     "enrollPassCodeTitle": "Please set a passcode to secure your device",

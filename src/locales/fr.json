@@ -78,9 +78,27 @@
   "maxButton": "Utiliser tout le solde disponible",
   "textOrMemo": "Texte ou mémo",
   "terms": {
-    "requestFirstLine": "Avant de commencer à utiliser ce portefeuille,",
-    "requestSecondLine": "voici une brève note open source",
-    "openSourceMd": "# Open Source\n\n**Signum Mobile Wallet** est un logiciel open source sous licence **Apache 2.0**.\n\n ### En bref :\n- Vous pouvez utiliser, copier, modifier et distribuer l'application.\n- Lors de la distribution, conservez les **mentions de licence et de copyright** ; indiquez les **modifications**.\n- Une **licence de brevet** des contributeurs s'applique.\n- Fourni **en l'état**, sans garanties.\n\n ### En savoir plus :\n\n- **Code source :**\n https://github.com/signum-network/signum-mobile-wallet\n- **Apache-2.0 (texte complet) :**\n https://github.com/signum-network/signum-mobile-wallet/tree/main?tab=License-1-ov-file\n- **NOTICE & remerciements :**\n https://github.com/signum-network/signum-mobile-wallet/blob/main/NOTICE.md\n\n> Remarque : Les licences open source ne sont pas des conditions d'utilisation — **aucune acceptation** n'est requise. Cet avis vise la transparence."
+    "requestFirstLine": "Avant de commencer,",
+    "requestSecondLine": "veuillez lire cet avertissement important",
+    "title": "Avertissement",
+    "nonCustodial": "**Signum Mobile Wallet** est un portefeuille open source et non dépositaire. Cela signifie que **vous êtes seul responsable** de la protection de votre phrase de récupération, de vos clés privées et de votre code d'accès. Les développeurs n'ont aucun accès à vos comptes et **ne peuvent récupérer ni clés, ni phrases de récupération, ni fonds perdus** en aucune circonstance.",
+    "useAtOwnRisk": "**Utilisation à vos propres risques.** Ce logiciel est fourni « tel quel », sans garantie d'aucune sorte. Les développeurs et contributeurs ne pourront être tenus responsables de toute perte de monnaies, tokens ou autres actifs numériques, que ce soit en raison de bugs logiciels, d'erreurs utilisateur, de pannes d'appareil ou de toute autre raison.",
+    "irreversible": "Les transactions blockchain sont **irréversibles**. Une fois qu'une transaction est confirmée sur le réseau Signum, elle ne peut pas être annulée. Vérifiez toujours les adresses des destinataires et les montants avant d'envoyer.",
+    "thirdParty": "Cette application se connecte à des **services tiers** (par ex. nœuds Signum, CoinGecko) pour l'accès réseau et les données de marché. Les développeurs ne garantissent ni l'exactitude, ni la disponibilité, ni la fiabilité de ces services.",
+    "misuse": "Les développeurs ne peuvent être tenus responsables de toute utilisation abusive de cette application, y compris, mais sans s'y limiter, les transactions non autorisées, les activités frauduleuses ou les violations des lois applicables.",
+    "regulatory": "Vous êtes seul responsable du respect de toutes les lois et réglementations applicables dans votre juridiction concernant l'utilisation, le stockage et le transfert de cryptomonnaies.",
+    "noFinancialAdvice": "Rien dans cette application ne constitue un conseil financier, d'investissement ou juridique.",
+    "acknowledgments": [
+      "Vous comprenez qu'il s'agit d'un portefeuille non dépositaire et que vous seul contrôlez vos fonds",
+      "Vous êtes responsable de la sécurité de votre phrase de récupération et de vos clés privées",
+      "Les phrases de récupération ou clés privées perdues ne peuvent être récupérées par personne",
+      "Les transactions blockchain sont irréversibles une fois confirmées",
+      "Les développeurs n'assument aucune responsabilité pour les pertes financières",
+      "Vous êtes responsable du respect des lois de votre pays",
+      "Vous acceptez l'entière responsabilité de l'utilisation que vous faites de cette application"
+    ],
+    "sourceCodeUrl": "https://github.com/signum-network/signum-mobile-wallet",
+    "license": "Apache License 2.0"
   },
   "auth": {
     "enrollPassCodeTitle": "Veuillez définir un code pour sécuriser votre appareil",

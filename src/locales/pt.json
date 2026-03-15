@@ -78,9 +78,27 @@
   "maxButton": "Usar todo o saldo disponível",
   "textOrMemo": "Texto ou memo",
   "terms": {
-    "requestFirstLine": "Antes de usar esta carteira,",
-    "requestSecondLine": "aqui vai uma breve nota de código aberto",
-    "openSourceMd": "# Código aberto\n\n**Signum Mobile Wallet** é software de código aberto sob a **Licença Apache 2.0**.\n\n ### Em resumo:\n- Você pode usar, copiar, modificar e distribuir o app.\n- Ao redistribuir, **mantenha os avisos de licença e copyright**; **indique as alterações**.\n- Aplica-se uma **licença de patentes** dos contribuidores.\n- Fornecido **sem garantias**, sem responsabilidade de qualquer tipo.\n\n ### Saiba mais:\n\n- **Ver o código-fonte:**\n https://github.com/signum-network/signum-mobile-wallet\n- **Apache-2.0 (texto completo):**\n https://github.com/signum-network/signum-mobile-wallet/tree/main?tab=License-1-ov-file\n- **NOTICE & agradecimentos:**\n https://github.com/signum-network/signum-mobile-wallet/blob/main/NOTICE.md\n\n> Nota: Licenças de código aberto não são termos de uso—**não é necessário aceitar**. Este aviso é para transparência."
+    "requestFirstLine": "Antes de começar,",
+    "requestSecondLine": "por favor leia este importante aviso",
+    "title": "Aviso legal",
+    "nonCustodial": "**Signum Mobile Wallet** é uma carteira de código aberto e sem custódia. Isso significa que **você é o único responsável** por proteger sua frase semente, chaves privadas e código de acesso. Os desenvolvedores não têm acesso às suas contas e **não podem recuperar chaves, frases semente ou fundos perdidos** sob nenhuma circunstância.",
+    "useAtOwnRisk": "**Use por sua própria conta e risco.** Este software é fornecido \"como está\", sem garantia de qualquer tipo. Os desenvolvedores e colaboradores não serão responsáveis por qualquer perda de moedas, tokens ou outros ativos digitais, seja por bugs de software, erro do usuário, falha do dispositivo ou qualquer outro motivo.",
+    "irreversible": "As transações em blockchain são **irreversíveis**. Uma vez que uma transação é confirmada na rede Signum, ela não pode ser desfeita. Sempre verifique os endereços dos destinatários e os valores antes de enviar.",
+    "thirdParty": "Este aplicativo se conecta a **serviços de terceiros** (ex.: nós Signum, CoinGecko) para acesso à rede e dados de mercado. Os desenvolvedores não garantem a precisão, disponibilidade ou confiabilidade desses serviços.",
+    "misuse": "Os desenvolvedores não se responsabilizam pelo mau uso deste aplicativo, incluindo, mas não se limitando a, transações não autorizadas, atividades fraudulentas ou violações das leis aplicáveis.",
+    "regulatory": "Você é o único responsável por cumprir todas as leis e regulamentações aplicáveis em sua jurisdição em relação ao uso, armazenamento e transferência de criptomoedas.",
+    "noFinancialAdvice": "Nada neste aplicativo constitui aconselhamento financeiro, de investimento ou jurídico.",
+    "acknowledgments": [
+      "Você entende que esta é uma carteira sem custódia e somente você controla seus fundos",
+      "Você é responsável por manter sua frase semente e chaves privadas em segurança",
+      "Frases semente ou chaves privadas perdidas não podem ser recuperadas por ninguém",
+      "As transações em blockchain são irreversíveis após confirmadas",
+      "Os desenvolvedores não assumem responsabilidade por quaisquer perdas financeiras",
+      "Você é responsável por cumprir as leis do seu país",
+      "Você aceita total responsabilidade pelo uso que fizer deste aplicativo"
+    ],
+    "sourceCodeUrl": "https://github.com/signum-network/signum-mobile-wallet",
+    "license": "Apache License 2.0"
   },
   "auth": {
     "enrollPassCodeTitle": "Defina um código para proteger seu dispositivo",

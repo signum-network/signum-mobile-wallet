@@ -78,9 +78,27 @@
   "maxButton": "Gesamtes verfügbares Guthaben verwenden",
   "textOrMemo": "Text oder Memo",
   "terms": {
-    "requestFirstLine": "Bevor du diese Wallet verwendest,",
-    "requestSecondLine": "hier ein kurzer Open‑Source‑Hinweis",
-    "openSourceMd": "# Open Source\n\n**Signum Mobile Wallet** ist Open‑Source‑Software unter der **Apache‑Lizenz 2.0**.\n\n ### Kurz gesagt:\n- Du darfst die App verwenden, kopieren, verändern und weitergeben.\n- Beim Weitergeben **Lizenz- und Urheberrechtsvermerke beibehalten**; **Änderungen** kennzeichnen.\n- Eine **Patentlizenz** der Beitragenden gilt.\n- Bereitgestellt **ohne Gewähr**, ohne Garantien.\n\n ### Mehr erfahren:\n\n- **Quellcode ansehen:**\n https://github.com/signum-network/signum-mobile-wallet\n- **Apache‑2.0 (Volltext):**\n https://github.com/signum-network/signum-mobile-wallet/tree/main?tab=License-1-ov-file\n- **NOTICE & Danksagungen:**\n https://github.com/signum-network/signum-mobile-wallet/blob/main/NOTICE.md\n\n> Hinweis: Open‑Source‑Lizenzen sind keine Nutzungsbedingungen—**keine Zustimmung** erforderlich. Dieser Hinweis dient der Transparenz."
+    "requestFirstLine": "Bevor du beginnst,",
+    "requestSecondLine": "lies bitte diesen wichtigen Haftungsausschluss",
+    "title": "Haftungsausschluss",
+    "nonCustodial": "**Signum Mobile Wallet** ist eine quelloffene, nicht-verwahrende Wallet. Das bedeutet, dass **du allein verantwortlich bist** für den Schutz deiner Seed-Phrase, privaten Schlüssel und deines Passcodes. Die Entwickler haben keinen Zugang zu deinen Konten und **können verlorene Schlüssel, Seed-Phrasen oder Guthaben unter keinen Umständen wiederherstellen**.",
+    "useAtOwnRisk": "**Nutzung auf eigene Gefahr.** Diese Software wird \"wie besehen\" bereitgestellt, ohne jegliche Gewährleistung. Die Entwickler und Mitwirkenden haften nicht für den Verlust von Coins, Token oder anderen digitalen Vermögenswerten, sei es durch Softwarefehler, Benutzerfehler, Geräteausfall oder andere Gründe.",
+    "irreversible": "Blockchain-Transaktionen sind **unwiderruflich**. Sobald eine Transaktion im Signum-Netzwerk bestätigt ist, kann sie nicht rückgängig gemacht werden. Überprüfe immer Empfängeradressen und Beträge vor dem Senden.",
+    "thirdParty": "Diese App verbindet sich mit **Drittanbieterdiensten** (z. B. Signum-Knoten, CoinGecko) für Netzwerkzugang und Marktdaten. Die Entwickler übernehmen keine Garantie für die Genauigkeit, Verfügbarkeit oder Zuverlässigkeit dieser Dienste.",
+    "misuse": "Die Entwickler können nicht für den Missbrauch dieser Anwendung verantwortlich gemacht werden, einschließlich, aber nicht beschränkt auf unautorisierte Transaktionen, betrügerische Aktivitäten oder Verstöße gegen geltendes Recht.",
+    "regulatory": "Du bist allein dafür verantwortlich, alle geltenden Gesetze und Vorschriften in deiner Rechtsordnung bezüglich der Nutzung, Aufbewahrung und Übertragung von Kryptowährungen einzuhalten.",
+    "noFinancialAdvice": "Nichts in dieser App stellt eine Finanz-, Anlage- oder Rechtsberatung dar.",
+    "acknowledgments": [
+      "Du verstehst, dass dies eine nicht-verwahrende Wallet ist und nur du deine Guthaben kontrollierst",
+      "Du bist verantwortlich dafür, deine Seed-Phrase und privaten Schlüssel sicher aufzubewahren",
+      "Verlorene Seed-Phrasen oder private Schlüssel können von niemandem wiederhergestellt werden",
+      "Blockchain-Transaktionen sind nach Bestätigung unwiderruflich",
+      "Die Entwickler übernehmen keine Haftung für finanzielle Verluste",
+      "Du bist verantwortlich für die Einhaltung der Gesetze deines Landes",
+      "Du übernimmst die volle Verantwortung für die Nutzung dieser Anwendung"
+    ],
+    "sourceCodeUrl": "https://github.com/signum-network/signum-mobile-wallet",
+    "license": "Apache License 2.0"
   },
   "auth": {
     "enrollPassCodeTitle": "Bitte richte einen Code ein, um dein Gerät zu sichern",

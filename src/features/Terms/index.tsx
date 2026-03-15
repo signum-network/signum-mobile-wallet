@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "expo-router";
@@ -16,7 +17,32 @@ export const TermsScreen = () => {
   const { setIsTermAgreed } = useAppStore();
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const markdown = t("terms.openSourceMd");
+
+  const markdown = useMemo(() => {
+    const sections = [
+      "nonCustodial",
+      "useAtOwnRisk",
+      "irreversible",
+      "thirdParty",
+      "misuse",
+      "regulatory",
+      "noFinancialAdvice",
+    ] as const;
+
+    const body = sections.map((key) => t(`terms.${key}`)).join("\n\n");
+
+    const acknowledgments = t("terms.acknowledgments", {
+      returnObjects: true,
+    }) as string[];
+    const bullets = acknowledgments.map((item) => `- ${item}`).join("\n");
+
+    const links = [
+      `**Source code:** ${t("terms.sourceCodeUrl")}`,
+      `**License:** ${t("terms.license")}`,
+    ].join("\n\n");
+
+    return `# ${t("terms.title")}\n\n${body}\n\n**By continuing, you acknowledge that:**\n${bullets}\n\n${links}`;
+  }, [t]);
 
   const saveTerms = () => {
     setIsTermAgreed(true);
