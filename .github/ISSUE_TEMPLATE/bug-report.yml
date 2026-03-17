@@ -15,11 +15,12 @@ body:
       description: Which part of the app is affected?
       options:
         - Account setup / onboarding
-        - Sending / receiving
         - Address book
-        - Transaction history
+        - Deeplinking
+        - Sending / receiving
         - Settings
         - Security / authentication
+        - Transaction history
         - Other
     validations:
       required: true
