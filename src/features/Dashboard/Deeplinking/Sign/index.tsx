@@ -38,6 +38,11 @@ function replacePublickeyInUnsignedTx(unsignedTxHex: string, publicKey: string) 
 
 }
 
+function redirectToDApp(callbackUrl: URL) {
+    const urlString = callbackUrl.toString();
+    console.log("[DL-SIGNING] Redirecting to dApp...", urlString);
+    return Linking.openURL(urlString);
+}
 
 export const SignScreen = () => {
     const {t} = useTranslation();
@@ -87,7 +92,6 @@ export const SignScreen = () => {
 
     const parseTransaction = async (txb: string) => {
         try {
-            resetState();
             if (!ledgerService) {
                 throw new Error("Ledger service not available");
             }
@@ -108,7 +112,7 @@ export const SignScreen = () => {
     };
 
     const handleSign = useCallback(async () => {
-        if (!parsedTx || !ledgerService) return;
+        if (!parsedTx || !ledgerService || !bufferedDeeplinkParams) return;
 
         try {
             console.log("Signing transaction...", publicKey);
@@ -130,15 +134,17 @@ export const SignScreen = () => {
                     }
                 );
 
-            console.log("Transaction successfully signed...", confirmation.transaction);
+            console.log("[DL-SIGNING] Transaction successfully signed...", confirmation.transaction);
 
             const accountId = Address.fromPublicKey(publicKey).getNumericId();
             setTransactionId(confirmation.transaction);
             setIsComplete(true);
+
+            console.log("[DL-SIGNING] Preparing callback...", bufferedDeeplinkParams);
             const callbackUrl = new URL(bufferedDeeplinkParams.callbackUrl);
-            callbackUrl.searchParams.set("transactionId", transactionId);
+            callbackUrl.searchParams.set("transactionId", confirmation.transaction);
             callbackUrl.searchParams.set("status", 'success');
-            Linking.openURL(callbackUrl.toString());
+            redirectToDApp(callbackUrl)
             // delay the cache invalidation to get time from network - intentional timeout without cleanup -
             setTimeout(() => {
                 queryClient.invalidateQueries({
@@ -148,10 +154,11 @@ export const SignScreen = () => {
                 router.push('/dashboard/overview')
             }, 5_000)
         } catch (err: any) {
-            console.error("Failed to sign transaction:", err);
+            console.error("[DL-SIGNING] Failed to sign transaction:", err);
             alert("Error: " + (err?.message || JSON.stringify(err)));
             const callbackUrl = new URL(bufferedDeeplinkParams.callbackUrl);
             callbackUrl.searchParams.set("status", 'failed');
+            redirectToDApp(callbackUrl)
         } finally {
             setIsSigning(false);
         }
@@ -160,7 +167,7 @@ export const SignScreen = () => {
     const handleReject = () => {
         const callbackUrl = new URL(bufferedDeeplinkParams.callbackUrl);
         callbackUrl.searchParams.set("status", 'rejected');
-        Linking.openURL(callbackUrl.toString());
+        redirectToDApp(callbackUrl)
         resetState();
         router.back();
     }
@@ -232,36 +239,34 @@ export const SignScreen = () => {
     }
 
     return (
-        <KeyboardDismissView>
-            <ScrollView className="flex-1 p-4">
-                <SigningDialog visible={isSigning}/>
+        <ScrollView className="flex-1 p-4">
+            <SigningDialog visible={isSigning}/>
 
-                <View className="gap-4 w-full">
-                    {isComplete && <SuccessSection transactionId={transactionId}/>}
+            <View className="gap-4 w-full">
+                {isComplete && <SuccessSection transactionId={transactionId}/>}
 
-                    <TransactionPreviewSection transaction={parsedTx}/>
+                <TransactionPreviewSection transaction={parsedTx}/>
 
-                    {!isComplete && (
-                        <View className="flex flex-col gap-2">
-                            <View>
-                                <ConfirmationCard
-                                    onConfirm={handleSign}
-                                    isDisabled={isSigning}
-                                />
-                            </View>
-                            <View>
-                                <Button
-                                    type="secondary"
-                                    title={t("connectDApp.reject")}
-                                    pressableProps={{onPress: handleReject}}
-                                    fullWidth
-                                    disabled={isSigning}
-                                />
-                            </View>
+                {!isComplete && (
+                    <View className="flex flex-col gap-2">
+                        <View>
+                            <ConfirmationCard
+                                onConfirm={handleSign}
+                                isDisabled={isSigning}
+                            />
                         </View>
-                    )}
-                </View>
-            </ScrollView>
-        </KeyboardDismissView>
+                        <View>
+                            <Button
+                                type="secondary"
+                                title={t("connectDApp.reject")}
+                                pressableProps={{onPress: handleReject}}
+                                fullWidth
+                                disabled={isSigning}
+                            />
+                        </View>
+                    </View>
+                )}
+            </View>
+        </ScrollView>
     );
 };
