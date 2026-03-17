@@ -5,18 +5,18 @@ on:
     tags: ["v*"]
 
 jobs:
-  build-android:
+  build_android:
     name: Build Android production
     type: build
     params:
       platform: android
       profile: production
 
-  submit-android:
+  submit_android:
     name: Submit to Play Store
-    needs: [build-android]
+    needs: [build_android]
     type: submit
     params:
       platform: android
       profile: production
-      build_id: ${{ needs.build-android.outputs.build_id }}
+      build_id: ${{ needs.build_android.outputs.build_id }}

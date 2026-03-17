@@ -54,7 +54,6 @@ export const Button = ({
     const classNames = clsx(
         "flex flex-row justify-center items-center py-1 ripple-[#333] ripple-bordered",
         heightClass,
-        paddingClass,
         fullWidth && "w-full",
         wide && "!px-16",
         rounded ? "rounded-full" : "rounded-lg",
@@ -213,7 +212,7 @@ export const Button = ({
                             animatedProgressStyle,
                         ]}
                     />}
-                <View style={{zIndex: 2}}>{Inner}</View>
+                <View className={paddingClass} style={{zIndex: 2}}>{Inner}</View>
             </Pressable>
         )
     ;

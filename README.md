@@ -218,6 +218,13 @@ This project uses multiple EAS build profiles with different guarantees dependin
 
 Correct versioning is essential for publishing builds to **Google Play** and **App Store Connect**.
 
+----
+### Cut new release
+
+To cut a new release just run `npm run new-version`
+
+---
+
 Expo uses:
 
 - **version** → user-visible version  

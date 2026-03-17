@@ -19,16 +19,24 @@ export const ProfilePreview = ({formData}: Props) => {
 
     // Build descriptor from form data
     const builder = src44.DescriptorDataBuilder.create();
-    if (formData.name) builder.setName(formData.name);
-    if (formData.description) builder.setDescription(formData.description);
-    if (formData.homepage) builder.setHomePage(formData.homepage);
-    if (formData.socialMediaLinks.length)
+    if (formData.name) {
+        builder.setName(formData.name);
+    }
+    if (formData.description) {
+        builder.setDescription(formData.description);
+    }
+    if (formData.homepage) {
+        builder.setHomePage(formData.homepage);
+    }
+    if (formData.socialMediaLinks.length) {
         builder.setSocialMediaLinks(formData.socialMediaLinks);
-    if (formData.avatarCid)
+    }
+    if (formData.avatarCid && formData.avatarMimeType) {
         builder.setAvatar(formData.avatarCid, formData.avatarMimeType);
-    if (formData.backgroundCid)
+    }
+    if (formData.backgroundCid && formData.backgroundMimeType){
         builder.setBackground(formData.backgroundCid, formData.backgroundMimeType);
-
+    }
     const descriptorData = builder.build();
     const descriptorString = descriptorData.stringify();
     const publicKey = formData.publicKey;

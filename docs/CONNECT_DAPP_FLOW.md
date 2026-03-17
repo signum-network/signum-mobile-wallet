@@ -71,7 +71,7 @@ const deeplink = src22.createDeeplink({
   action: 'connect',
   payload: {
     appName: 'My DApp',
-    callbackUrl: 'https://mydapp.com/wallet-callback',
+    callbackUrl: "https://mydapp.com/?action=connect",
     network: 'testnet' // optional
   }
 });
@@ -79,6 +79,7 @@ const deeplink = src22.createDeeplink({
 // deeplink = "signum://v1?action=connect&payload=eyJhcHBOYW1lIjoiTXkg..."
 window.location.href = deeplink;
 ```
+
 
 ### User Flow
 
@@ -100,9 +101,14 @@ window.location.href = deeplink;
 
 ### Callback Parameters
 
+When successfully connected, the wallet will redirect to the callback URL with the following query parameters:
+
 | Parameter | Type | Description |
 |-----------|------|-------------|
 | `publicKey` | string | User's public key (64 hex characters) |
+
+> It's recommended to store this public key in the local or session storage, such that the connection status is available throughout the dApp's lifecycle.
+
 
 ### Error Handling
 
@@ -140,17 +146,19 @@ signum://v1?action=sign&payload=<base64_encoded_json>
 
 ```json
 {
-  "unsignedTransactionBytes": "001046...",
-  "network": "testnet" // optional: "mainnet" or "testnet"
+   "unsignedTransactionBytes": "001046...", 
+   "network": "testnet" // optional: "mainnet" or "testnet"
+   "callbackUrl": ""
 }
 ```
 
 ### Required Fields
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `unsignedTransactionBytes` | string | Unsigned transaction in hex format |
-| `network` | string | Optional. Must match wallet's current network |
+| Field                      | Type | Description                                      |
+|----------------------------|------|--------------------------------------------------|
+| `unsignedTransactionBytes` | string | Unsigned transaction in hex format               |
+| `network`                  | string | Optional. Must match wallet's current network    |
+| `callbackUrl`              | string | The dApps callback url to provide signing status |
 
 ### Example
 
@@ -174,8 +182,9 @@ const unsigned = await ledger.transaction.sendAmountToSingleRecipient({
 const signLink = src22.createDeeplink({
   action: 'sign',
   payload: {
-    unsignedTransactionBytes: unsigned.unsignedTransactionBytes,
-    network: 'testnet'
+      unsignedTransactionBytes: unsigned.unsignedTransactionBytes, 
+      network: 'testnet', 
+      callbackUrl: "https://mydapp.com?action=sign"
   }
 });
 
@@ -202,6 +211,20 @@ window.location.href = signLink;
    - Copy button
    - Explorer link button
    - Auto-redirects to dashboard after 5 seconds
+
+
+### Callback Parameters
+
+When successfully connected, the wallet will redirect to the callback URL with the following query parameters:
+
+| Parameter       | Type                          | Description                                         |
+|-----------------|-------------------------------|-----------------------------------------------------|
+| `status`        | `success`,`failed`,`rejected` | Status of signing                                   |
+| `transactionId` | string                        | Iff status is `success` a transactionId is provided |
+
+> It's recommended to store this public key in the local or session storage, such that the connection status is available throughout the dApp's lifecycle.
+
+
 
 ### Supported Transaction Types
 
@@ -301,7 +324,7 @@ function connectWallet() {
     action: 'connect',
     payload: {
       appName: 'My DApp',
-      callbackUrl: `${window.location.origin}/callback`,
+      callbackUrl: `${window.location.origin}/callback-connect`,
       network: 'testnet'
     }
   });
@@ -355,8 +378,9 @@ async function sendPayment(recipient, amount) {
   const signLink = src22.createDeeplink({
     action: 'sign',
     payload: {
-      unsignedTransactionBytes: unsigned.unsignedTransactionBytes,
-      network: 'testnet'
+       unsignedTransactionBytes: unsigned.unsignedTransactionBytes, 
+       callbackUrl: `${window.location.origin}/callback-sign`,
+       network: 'testnet'
     }
   });
 
