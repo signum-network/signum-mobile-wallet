@@ -1,15 +1,3 @@
-The Signum Mobile Wallet  [RELOADED]
-
-- Manage up to 25 accounts
-- Send Signa and Tokens with Messages
-- Manage Mining Commitment
-- Multi-language Support
-- Multiple Themes
-- Edit/Update Account Profiles (fully SRC44 compliant)
-- Automatic Node Selection + Custom Nodes
-- Deeplinking capable: 
-    - Phoenix/XT compatible (pay action), 
-    - New 'sign' action (for next generation dApps)
-- Improved Security 
-     - Argon2 Key Protection
-     - Larger Seeds (up to 24 words)
+- Fixed Deeplinking Callback
+- Fixed IPFS Hash editing
+- Minor layout improvements
