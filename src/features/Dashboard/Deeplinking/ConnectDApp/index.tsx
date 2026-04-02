@@ -51,10 +51,14 @@ export const ConnectDAppScreen = () => {
             // Open callback URL
             const url = new URL(callbackUrl);
             url.searchParams.set("publicKey", activeAccount);
+            url.searchParams.set("status", "success");
             await Linking.openURL(url.toString());
         } catch (error: any) {
+            const url = new URL(callbackUrl);
+            url.searchParams.set("status", "success");
             console.error("Failed to connect to dApp:", error);
             alert(t("connectDApp.connectionFailed") + ": " + error.message);
+            await Linking.openURL(url.toString());
         } finally {
             setIsConnecting(false);
             clearPendingDeepLink()
@@ -62,10 +66,15 @@ export const ConnectDAppScreen = () => {
         }
     };
 
-    const handleReject = () => {
+    const handleReject = async () => {
+
         alert(t('connectDApp.connectionRejected'))
         clearPendingDeepLink()
         router.back()
+        if (!callbackUrl) return;
+        const url = new URL(callbackUrl);
+        url.searchParams.set("status", "rejected");
+        await Linking.openURL(url.toString());
     };
 
     if (!walletAccount) {
