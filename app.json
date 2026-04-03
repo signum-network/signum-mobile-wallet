@@ -24,7 +24,7 @@
         "NSFaceIDUsageDescription": "Allow $(PRODUCT_NAME) to use Face ID for wallet authentication",
         "ITSAppUsesNonExemptEncryption": false
       },
-      "bundleIdentifier": "com.signum.mobile.wallet",
+      "bundleIdentifier": "com.signum.mobile.wallet.v2",
       "buildNumber": "3"
     },
     "android": {
