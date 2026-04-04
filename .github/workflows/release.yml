@@ -11,10 +11,15 @@ jobs:
   tag-release:
     name: Tag & GitHub Release
     runs-on: ubuntu-latest
+    outputs:
+      new_release: ${{ steps.check.outputs.exists == 'false' }}
+      tag: ${{ steps.version.outputs.tag }}
+      version: ${{ steps.version.outputs.version }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          token: ${{ secrets.PAT_TOKEN }}
 
       - name: Read version from package.json
         id: version
@@ -65,3 +70,47 @@ jobs:
           gh release create "${{ steps.version.outputs.tag }}" \
             --title "${{ steps.version.outputs.tag }}" \
             --notes-file /tmp/release-notes.md
+
+  build-submit:
+    name: Build & Submit to Play Store
+    needs: tag-release
+    if: needs.tag-release.outputs.new_release == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.18.0
+          cache: npm
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Build Android AAB
+        run: eas build --local --platform android --profile production --non-interactive --output ./app-release.aab
+
+      - name: Submit to Play Store
+        run: eas submit --platform android --profile production --path ./app-release.aab --non-interactive
+
+      - name: Upload AAB to GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release upload "${{ needs.tag-release.outputs.tag }}" ./app-release.aab
