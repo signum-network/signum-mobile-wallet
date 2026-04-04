@@ -1,5 +1,11 @@
 # signum-mobile-wallet
 
+## 2.0.3
+
+### Patch Changes
+
+- Added Deeplinking connection status on callback
+
 ## 2.0.2
 
 ### Patch Changes

@@ -1,3 +1,1 @@
-- Fixed Deeplinking Callback
-- Fixed IPFS Hash editing
-- Minor layout improvements
+- Added status for connection deeplink on callback
