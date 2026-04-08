@@ -199,7 +199,7 @@
       "confirm": "是的，移除",
       "accountRemoved": "账户已成功移除！",
       "addAccount": "添加账户",
-      "swipeToLeft": "向左滑动以删除账户",
+      "swipeToLeft": "向左滑动或长按以删除账户",
       "unsecuredAccount": "未加固账户"
     },
     "language": {

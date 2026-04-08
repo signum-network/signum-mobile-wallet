@@ -311,6 +311,8 @@ export const AccountCardFancy = ({ publicKey, type, walletName }: Props) => {
         >
           <Pressable
             onPress={changeActiveAccount}
+            onLongPress={requestDelete}
+            delayLongPress={600}
             className="w-full h-full relative"
           >
             {/* Background Layer */}

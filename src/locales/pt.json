@@ -199,7 +199,7 @@
       "confirm": "Sim, remover",
       "accountRemoved": "Conta removida com sucesso!",
       "addAccount": "Adicionar conta",
-      "swipeToLeft": "Deslize para a esquerda para excluir uma conta",
+      "swipeToLeft": "Deslize para a esquerda ou pressione longamente para excluir uma conta",
       "unsecuredAccount": "Conta sem segurança"
     },
     "language": {
