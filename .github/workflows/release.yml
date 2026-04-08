@@ -71,7 +71,7 @@ jobs:
             --title "${{ steps.version.outputs.tag }}" \
             --notes-file /tmp/release-notes.md
 
-  build-submit:
+  build-submit-android:
     name: Build & Submit to Play Store
     needs: tag-release
     if: needs.tag-release.outputs.new_release == 'true'
@@ -82,14 +82,15 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20.18.0
+          node-version: 22
           cache: npm
 
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: 17
+          java-version: 21
+          cache: gradle
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
@@ -114,3 +115,38 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release upload "${{ needs.tag-release.outputs.tag }}" ./app-release.aab
+
+  build-submit-ios:
+    name: Build & Submit to App Store
+    needs: tag-release
+    if: needs.tag-release.outputs.new_release == 'true'
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Build iOS IPA
+        run: eas build --local --platform ios --profile production --non-interactive --output ./app-release.ipa
+
+      - name: Submit to App Store
+        run: eas submit --platform ios --profile production --path ./app-release.ipa --non-interactive
+
+      - name: Upload IPA to GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release upload "${{ needs.tag-release.outputs.tag }}" ./app-release.ipa
