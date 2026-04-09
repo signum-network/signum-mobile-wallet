@@ -8,6 +8,9 @@
       "node": "20.18.0",
       "developmentClient": true,
       "distribution": "internal",
+      "ios": {
+        "image": "macos-sequoia-15.6-xcode-26.2"
+      },
       "env": {
         "EAS_BUILD_ENV": "development"
       }
@@ -16,6 +19,9 @@
       "node": "20.18.0",
       "android": {
         "buildType": "apk"
+      },
+      "ios": {
+        "image": "macos-sequoia-15.6-xcode-26.2"
       },
       "distribution": "internal",
       "env": {
@@ -26,6 +32,9 @@
       "node": "20.18.0",
       "android": {
         "buildType": "app-bundle"
+      },
+      "ios": {
+        "image": "macos-sequoia-15.6-xcode-26.2"
       },
       "autoIncrement": false,
       "env": {
