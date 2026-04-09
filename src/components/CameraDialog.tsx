@@ -146,12 +146,12 @@ export const CameraDialog = ({onCodeScanned, expected}: Props) => {
                                 className="opacity-50"
                             />
                             <Text className="text-center font-medium">
-                                {t("allowTheAppToUseTheCamera")} 🤖
+                                {t("allowTheAppToUseTheCamera")}
                             </Text>
                             <Button
                                 icon={<FontAwesome6 name="qrcode" size={24} color="white"/>}
                                 fullWidth
-                                title={t("requestCameraPermission")}
+                                title={t("continue")}
                                 type="primary"
                                 pressableProps={{onPress: request}}
                             />
@@ -159,13 +159,13 @@ export const CameraDialog = ({onCodeScanned, expected}: Props) => {
                     )}
                 </View>
 
-                <Button
+                {canUseCamera && <Button
                     icon={<FontAwesome6 name="window-close" size={24} color="white"/>}
                     fullWidth
                     title={t("cancel")}
                     type="error"
                     pressableProps={{onPress: hideDialog}}
-                />
+                />}
             </Dialog>
 
             <Button

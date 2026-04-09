@@ -53,7 +53,7 @@
       [
         "expo-camera",
         {
-          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
+          "cameraPermission": "$(PRODUCT_NAME) uses the camera to scan QR codes for sending payments and importing accounts. For example, you can scan a recipient's QR code to quickly fill in their wallet address.",
           "recordAudioAndroid": false
         }
       ],
