@@ -1,1 +1,3 @@
-- Added status for connection deeplink on callback
+- Explained Permission Usage
+- Remove account on Long Press
+- Moved "Reset Wallet" from About to Settings
