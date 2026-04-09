@@ -17,10 +17,11 @@
  */
 
 import { execSync } from "node:child_process";
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdtempSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { createInterface } from "node:readline";
 import { createHash } from "node:crypto";
-import { resolve, dirname } from "node:path";
+import { resolve, dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -213,9 +214,13 @@ Merging this PR into \`main\` will automatically:
 3. Trigger EAS build + submit to Play Store
 `;
 
+const tmpDir = mkdtempSync(join(tmpdir(), "signum-release-"));
+const bodyFile = join(tmpDir, "pr-body.md");
+writeFileSync(bodyFile, prBody);
+
 try {
   const prUrl = run(
-      `gh pr create --base main --head develop --title "Release v${newVersion}" --body "${prBody.replace(/"/g, '\\"')}"`,
+      `gh pr create --base main --head develop --title "Release v${newVersion}" --body-file "${bodyFile}"`,
   );
   info(`Pull request created: ${prUrl}`);
 } catch (e) {
@@ -227,6 +232,8 @@ try {
     console.error("Failed to create PR. You can create it manually.");
     console.error(e.message);
   }
+} finally {
+  rmSync(tmpDir, { recursive: true, force: true });
 }
 
 console.log(`\n✔ Release v${newVersion} prepared. Review and merge the PR to deploy.\n`);
