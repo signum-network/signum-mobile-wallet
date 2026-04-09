@@ -1,5 +1,11 @@
 # signum-mobile-wallet
 
+## 2.0.4
+
+### Patch Changes
+
+- Added long press for account deletion, specified permission usages, Reset Wallet in Settings
+
 ## 2.0.3
 
 ### Patch Changes

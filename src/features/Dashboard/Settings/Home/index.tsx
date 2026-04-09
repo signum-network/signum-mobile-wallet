@@ -5,6 +5,7 @@ import {DashboardScreenContainer} from "../../components/DashboardScreenContaine
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {SettingsCard} from "./components/SettingsCard";
 import {Button} from "@/components/Button";
+import {ResetWalletDialog} from "@/components/ResetWalletDialog";
 import {useAppStore} from "@/hooks/useAppStore";
 
 export const SettingsScreen = () => {
@@ -64,6 +65,7 @@ export const SettingsScreen = () => {
                         pressableProps={{onPress: () => setIsUnlocked(false)}}
                         fullWidth
                     />
+                    <ResetWalletDialog variant="accent" />
                 </View>
             </DashboardScreenContainer>
         </ScrollView>

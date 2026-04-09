@@ -199,7 +199,7 @@
       "confirm": "Ja, entfernen",
       "accountRemoved": "Konto erfolgreich entfernt!",
       "addAccount": "Konto hinzufügen",
-      "swipeToLeft": "Nach links wischen, um ein Konto zu löschen",
+      "swipeToLeft": "Nach links wischen oder lange drücken, um ein Konto zu löschen",
       "unsecuredAccount": "Ungesichertes Konto"
     },
     "language": {

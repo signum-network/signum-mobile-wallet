@@ -199,7 +199,7 @@
       "confirm": "Oui, supprimer",
       "accountRemoved": "Compte supprimé avec succès !",
       "addAccount": "Ajouter un compte",
-      "swipeToLeft": "Balayez vers la gauche pour supprimer le compte",
+      "swipeToLeft": "Balayez vers la gauche ou appuyez longuement pour supprimer le compte",
       "unsecuredAccount": "Compte non sécurisé"
     },
     "language": {
