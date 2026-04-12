@@ -5,14 +5,26 @@ import { useNodeHostStore } from "@/hooks/useNodeHostStore";
 import { useLedgerService } from "@/hooks/useLedgerService";
 import { getBalancesFromAccount } from "@/utils/account/getBalancesFromAccount";
 import { getTokenBalancesFromAccount } from "@/utils/account/getTokenBalancesFromAccount";
-import { PUBLIC_SIGNUM_FETCH_ACCOUNT_DATA_INTERVAL } from "@/types/constants";
+import {
+  PUBLIC_SIGNUM_FETCH_ACCOUNT_DATA_INTERVAL,
+  PUBLIC_SIGNUM_FETCH_ACCOUNT_DATA_INTERVAL_WHILE_ACTIVATING,
+} from "@/types/constants";
 
 export const AccountInitializer = () => {
   const { ledgerService } = useLedgerService();
   const { isActiveNodeSynced, currentNetwork } = useNodeHostStore();
-  const { isAuthenticated, publicKey, accountId } = useWalletAccount();
+  const {
+    isAuthenticated,
+    publicKey,
+    accountId,
+    accountData: { activationInProgress },
+  } = useWalletAccount();
   const { updateAccountActivationStatus, updateAccountData } =
     useAccountStore();
+
+  const pollInterval = activationInProgress
+    ? PUBLIC_SIGNUM_FETCH_ACCOUNT_DATA_INTERVAL_WHILE_ACTIVATING
+    : PUBLIC_SIGNUM_FETCH_ACCOUNT_DATA_INTERVAL;
 
   useQuery({
     queryKey: ["fetchAccount", publicKey, currentNetwork],
@@ -63,8 +75,8 @@ export const AccountInitializer = () => {
         return false;
       }
     },
-    refetchInterval: PUBLIC_SIGNUM_FETCH_ACCOUNT_DATA_INTERVAL,
-    staleTime: PUBLIC_SIGNUM_FETCH_ACCOUNT_DATA_INTERVAL,
+    refetchInterval: pollInterval,
+    staleTime: pollInterval,
     enabled: isAuthenticated && isActiveNodeSynced && !!ledgerService,
   });
 

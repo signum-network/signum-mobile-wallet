@@ -313,11 +313,11 @@
     "copy": "复制地址"
   },
   "unsafeAccount": {
-    "title": "账户不安全",
-    "description": "此账户尚未在区块链上完全注册。请注册您的账户，以确保安全并能完整使用所有服务，包括交易所。",
-    "activate": "注册账户",
-    "activating": "账户正在网络上注册",
-    "accountActivationIsPending": "这可能需要最多 {{blocktime}} 分钟",
+    "title": "激活您的账户",
+    "description": "欢迎！要完成新的 Signum 账户设置，需要进行一次性激活。此步骤会将您的公钥注册到区块链上，以便您能够安全地发送和接收交易。这是创建 Signum 账户的正常步骤，仅需进行一次。",
+    "activate": "激活账户",
+    "activating": "正在激活",
+    "accountActivationIsPending": "此过程通常需要约 {{blocktime}} 分钟。请保持应用打开并稍作等待——您的账户即将就绪。",
     "visitAccountManager": "前往账户管理"
   },
   "watchOnlyAccount": {
