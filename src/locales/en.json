@@ -313,11 +313,11 @@
     "copy": "Copy address"
   },
   "unsafeAccount": {
-    "title": "Account is unsafe",
-    "description": "This account is not yet fully registered on the blockchain.Please register your account to ensure security and full access to all services, including exchanges.",
-    "activate": "Register account",
-    "activating": "Account is being registered on the network.",
-    "accountActivationIsPending": "It may take up to {{blocktime}} minutes",
+    "title": "Activate your account",
+    "description": "Welcome! To finish setting up your new Signum account, a one-time activation is required. This registers your public key on the blockchain so you can securely send and receive transactions. It is a normal part of creating a Signum account and only happens once.",
+    "activate": "Activate account",
+    "activating": "Activation in progress",
+    "accountActivationIsPending": "This usually takes about {{blocktime}} minutes. Please keep the app open and wait a moment — your account will be ready shortly.",
     "visitAccountManager": "Visit account manager"
   },
   "watchOnlyAccount": {
