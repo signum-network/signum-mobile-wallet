@@ -1,3 +1,4 @@
 - Explained Permission Usage
 - Remove account on Long Press
 - Moved "Reset Wallet" from About to Settings
+- Better messages on account activation

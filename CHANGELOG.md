@@ -1,5 +1,11 @@
 # signum-mobile-wallet
 
+## 2.0.5
+
+### Patch Changes
+
+- More user-friendly Account Activation messages
+
 ## 2.0.4
 
 ### Patch Changes
