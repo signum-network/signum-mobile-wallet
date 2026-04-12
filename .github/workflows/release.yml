@@ -3,6 +3,17 @@ name: Release
 on:
   push:
     branches: [main]
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: "Which platform(s) to build & submit"
+        required: true
+        default: "both"
+        type: choice
+        options:
+          - both
+          - android
+          - ios
 
 permissions:
   contents: write
@@ -74,7 +85,9 @@ jobs:
   build-submit-android:
     name: Build & Submit to Play Store
     needs: tag-release
-    if: needs.tag-release.outputs.new_release == 'true'
+    if: |
+      (github.event_name == 'push' && needs.tag-release.outputs.new_release == 'true') ||
+      (github.event_name == 'workflow_dispatch' && (github.event.inputs.platform == 'android' || github.event.inputs.platform == 'both'))
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -128,7 +141,9 @@ jobs:
   build-submit-ios:
     name: Build & Submit to App Store
     needs: tag-release
-    if: needs.tag-release.outputs.new_release == 'true'
+    if: |
+      (github.event_name == 'push' && needs.tag-release.outputs.new_release == 'true') ||
+      (github.event_name == 'workflow_dispatch' && (github.event.inputs.platform == 'ios' || github.event.inputs.platform == 'both'))
     runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
