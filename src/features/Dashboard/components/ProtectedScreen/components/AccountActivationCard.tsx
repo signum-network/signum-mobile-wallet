@@ -68,12 +68,12 @@ export const AccountActivationCard = () => {
 
             <View className="w-full flex flex-row items-center justify-center gap-2">
               <Ionicons
-                name="alert-circle"
+                name="information-circle"
                 size={22}
-                color={theme.colors.notification}
+                color={theme.colors.primary}
               />
 
-              <Text size="large" className="font-medium" color="error">
+              <Text size="large" className="font-medium" color="primary">
                 {t(
                   !activationInProgress
                     ? "unsafeAccount.title"

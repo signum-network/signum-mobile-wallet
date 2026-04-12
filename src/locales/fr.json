@@ -313,11 +313,11 @@
     "copy": "Copier l'adresse"
   },
   "unsafeAccount": {
-    "title": "Compte non sûr",
-    "description": "Ce compte n'est pas encore entièrement enregistré sur la blockchain. Veuillez enregistrer votre compte afin d'assurer sa sécurité et de pouvoir l'utiliser pour tous les services, y compris les plateformes d'échange.",
-    "activate": "Enregistrer le compte",
-    "activating": "Enregistrement du compte en cours…",
-    "accountActivationIsPending": "Cela peut prendre jusqu'à {{blocktime}} minutes",
+    "title": "Activez votre compte",
+    "description": "Bienvenue ! Pour finaliser la création de votre nouveau compte Signum, une activation unique est nécessaire. Cette étape enregistre votre clé publique sur la blockchain afin que vous puissiez envoyer et recevoir des transactions en toute sécurité. Il s'agit d'une étape normale lors de la création d'un compte Signum et elle n'a lieu qu'une seule fois.",
+    "activate": "Activer le compte",
+    "activating": "Activation en cours",
+    "accountActivationIsPending": "Cela prend généralement environ {{blocktime}} minutes. Veuillez garder l'application ouverte et patienter un instant — votre compte sera bientôt prêt.",
     "visitAccountManager": "Aller au gestionnaire de comptes"
   },
   "watchOnlyAccount": {
