@@ -1,4 +1,4 @@
-import {useMemo, useState} from "react";
+import {useMemo} from "react";
 import {useTranslation} from "react-i18next";
 import {Linking, ScrollView, View} from "react-native";
 import {useRouter} from "expo-router";
@@ -28,7 +28,6 @@ export const ConnectDAppScreen = () => {
     const {t} = useTranslation();
     const router = useRouter();
     const {accounts, activeAccount} = useAccountStore();
-    const [isConnecting, setIsConnecting] = useState(false);
 
     const walletAccount = useMemo(() => {
         return Object.values(accounts).find(account => account.publicKey === activeAccount);
@@ -47,22 +46,21 @@ export const ConnectDAppScreen = () => {
     const handleApprove = async () => {
         if (!callbackUrl) return;
         try {
-            setIsConnecting(true);
             // Open callback URL
             const url = new URL(callbackUrl);
             url.searchParams.set("publicKey", activeAccount);
             url.searchParams.set("status", "success");
+            clearPendingDeepLink()
+            router.back()
             await Linking.openURL(url.toString());
         } catch (error: any) {
             const url = new URL(callbackUrl);
             url.searchParams.set("status", "success");
             console.error("Failed to connect to dApp:", error);
             alert(t("connectDApp.connectionFailed") + ": " + error.message);
-            await Linking.openURL(url.toString());
-        } finally {
-            setIsConnecting(false);
             clearPendingDeepLink()
             router.back()
+            await Linking.openURL(url.toString());
         }
     };
 
@@ -176,7 +174,6 @@ export const ConnectDAppScreen = () => {
                                 title={t("connectDApp.reject")}
                                 pressableProps={{onPress: handleReject}}
                                 fullWidth
-                                disabled={isConnecting}
                             />
                         </View>
                         <View style={{flex: 1}}>
@@ -185,7 +182,7 @@ export const ConnectDAppScreen = () => {
                                 title={t("connectDApp.connect")}
                                 pressableProps={{onPress: handleApprove}}
                                 fullWidth
-                                disabled={!canConnect || isConnecting}
+                                disabled={!canConnect}
                             />
                         </View>
                     </View>
