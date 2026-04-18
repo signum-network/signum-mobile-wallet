@@ -107,7 +107,12 @@ export const SignScreen = () => {
             setError(err?.message || "Failed to parse transaction");
         } finally {
             setIsLoading(false);
-            clearPendingDeepLink();
+            // only clear if the store still holds OUR deeplink - a newer one
+            // that arrived during parsing must not be wiped
+            const currentParams = pendingDeepLinkStore.getState().pendingDeepLink?.params as SignDeeplinkParams | undefined;
+            if (currentParams?.transactionBytes === txb) {
+                clearPendingDeepLink();
+            }
         }
     };
 
@@ -167,9 +172,9 @@ export const SignScreen = () => {
     const handleReject = () => {
         const callbackUrl = new URL(bufferedDeeplinkParams.callbackUrl);
         callbackUrl.searchParams.set("status", 'rejected');
-        redirectToDApp(callbackUrl)
         resetState();
         router.back();
+        redirectToDApp(callbackUrl)
     }
 
     if (isWatchOnly) {
