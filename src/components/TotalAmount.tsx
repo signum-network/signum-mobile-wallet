@@ -6,12 +6,19 @@ import {useTranslation} from "react-i18next";
 import {useTicker} from "@/hooks/useTicker";
 import {useActiveMarketRate} from "@/hooks/useActiveMarketRate";
 
+type TokenTotal = {
+    value: string
+    ticker: string
+    decimals: number
+}
+
 type Props  = {
     fee: Amount
     total: Amount
+    tokenTotal?: TokenTotal
 }
 
-export function TotalAmount({fee, total}: Props) {
+export function TotalAmount({fee, total, tokenTotal}: Props) {
     const {t} = useTranslation()
     const {NativeTicker} = useTicker()
     const {price: marketPrice, symbol} = useActiveMarketRate();
@@ -41,7 +48,13 @@ export function TotalAmount({fee, total}: Props) {
                         {`${formatNumber({value: Number(total.getSigna())})} ${NativeTicker}`}
                     </Text>
 
-                    {marketValue && (
+                    {tokenTotal && (
+                        <Text className="font-medium">
+                            {`${formatNumber({value: Number(tokenTotal.value), maximumFractionDigits: tokenTotal.decimals})} ${tokenTotal.ticker}`}
+                        </Text>
+                    )}
+
+                    {!tokenTotal && marketValue && (
                         <Text size="small" color="muted">
                             {`${symbol}${formatNumber({value: marketValue, isFiat: true})}`}
                         </Text>
