@@ -1,5 +1,11 @@
 # signum-mobile-wallet
 
+## 2.0.6
+
+### Patch Changes
+
+- Ukranian Translations, More reliable Deeplinking, Shows Token Amount n Sending now
+
 ## 2.0.5
 
 ### Patch Changes

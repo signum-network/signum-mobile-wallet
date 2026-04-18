@@ -2,7 +2,7 @@
   "expo": {
     "name": "Signum Mobile Wallet",
     "slug": "signum-mobile-wallet-v2",
-    "version": "2.0.5",
+    "version": "2.0.6",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -25,7 +25,7 @@
         "ITSAppUsesNonExemptEncryption": false
       },
       "bundleIdentifier": "com.signum.mobile.wallet.v2",
-      "buildNumber": "6"
+      "buildNumber": "7"
     },
     "android": {
       "edgeToEdgeEnabled": true,
@@ -39,7 +39,7 @@
         "android.permission.USE_FINGERPRINT",
         "android.permission.CAMERA"
       ],
-      "versionCode": 6
+      "versionCode": 7
     },
     "plugins": [
       "expo-router",
