@@ -19,6 +19,7 @@ export const DeepLinkInitializer = () => {
     const {setPendingDeepLink, pendingDeepLink} = pendingDeepLinkStore();
     const [routingRequested, setRoutingRequested] = useState(false);
     const lastProcessedUrl = useRef<string | null>(null);
+    const handleDeepLinkRef = useRef<(url: string) => void>(() => {});
 
     useEffect(() => {
 
@@ -26,7 +27,7 @@ export const DeepLinkInitializer = () => {
         Linking.getInitialURL().then((url) => {
             if (url && url !== lastProcessedUrl.current) {
                 lastProcessedUrl.current = url;
-                handleDeepLink(url);
+                handleDeepLinkRef.current(url);
             }
         })
 
@@ -35,7 +36,7 @@ export const DeepLinkInitializer = () => {
             console.log('[DeepLink] Received URL:', url);
             if (url !== lastProcessedUrl.current) {
                 lastProcessedUrl.current = url;
-                handleDeepLink(url);
+                handleDeepLinkRef.current(url);
             }
 
         });
@@ -47,7 +48,6 @@ export const DeepLinkInitializer = () => {
             console.log('[DeepLink] Navigating to pending deep link:', pendingDeepLink.pathname, 'with params:', pendingDeepLink.params);
             setRoutingRequested(false)
             router.push( pendingDeepLink.pathname as any);
-            lastProcessedUrl.current = null;
         }
     }, [pendingDeepLink, isUnlocked, routingRequested, setRoutingRequested]);
 
@@ -153,6 +153,13 @@ export const DeepLinkInitializer = () => {
             alert(t(error.message))
         }
     },[currentNetwork, accounts]);
+
+    // Keep the ref pointing at the latest handleDeepLink so the URL listener
+    // (registered once at mount) always invokes the current version and never
+    // captures a stale closure over accounts / currentNetwork.
+    useEffect(() => {
+        handleDeepLinkRef.current = handleDeepLink;
+    }, [handleDeepLink]);
 
     return null;
 };

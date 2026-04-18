@@ -43,11 +43,12 @@ export const Confirmation = ({
     const fee = watch("fee");
     const recipient = watch("recipient")
 
-    const {decimals} = useTokenMetadata(asset);
+    const {decimals, ticker} = useTokenMetadata(asset);
 
     const isAssetSigna = asset === "0";
     const feeAmount = Amount.fromPlanck(fee ?? "0");
-    const signaAmount = Amount.fromSigna(amount);
+    const signaAmount = isAssetSigna ? Amount.fromSigna(amount) : Amount.Zero();
+    const tokenAmount = ChainValue.create(decimals).setCompound(amount);
     const totalAmount = signaAmount.clone().add(feeAmount);
 
     const copyTransactionId = async () => {
@@ -143,7 +144,19 @@ export const Confirmation = ({
                     </View>
                 </View>
 
-                <TotalAmount fee={feeAmount} total={totalAmount} />
+                <TotalAmount
+                    fee={feeAmount}
+                    total={totalAmount}
+                    tokenTotal={
+                        isAssetSigna
+                            ? undefined
+                            : {
+                                value: tokenAmount.getCompound(),
+                                ticker,
+                                decimals,
+                            }
+                    }
+                />
 
                 {includeMemo && (
                     <View className="w-full flex flex-col gap-1">
