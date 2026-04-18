@@ -10,9 +10,10 @@ import frTranslation from "./fr.json";
 import deTranslation from "./de.json";
 import zhTranslation from "./zh.json";
 import ruTranslation from "./ru.json";
+import ukTranslation from "./uk.json";
 
 // Use canonical ISO codes (zh instead of cn)
-export type Locales = "en" | "es" | "pt" | "fr" | "de" | "zh" | "ru";
+export type Locales = "en" | "es" | "pt" | "fr" | "de" | "zh" | "ru" | "uk";
 export type locales = Locales; // backwards compatibility if other files import `locales`
 
 export const lngCards: { lng: locales; label: string }[] = [
@@ -23,9 +24,10 @@ export const lngCards: { lng: locales; label: string }[] = [
   { lng: "de", label: "German" },
   { lng: "zh", label: "Chinese" },
   { lng: "ru", label: "Russian" },
+  { lng: "uk", label: "Ukrainian" },
 ];
 
-const SUPPORTED = new Set<Locales>(["en", "es", "pt", "fr", "de", "zh", "ru"]);
+const SUPPORTED = new Set<Locales>(["en", "es", "pt", "fr", "de", "zh", "ru", "uk"]);
 
 // Separators: prefer NBSP for Russian thousand separator for nicer grouping
 type Separator = Readonly<{ thousand: string; decimal: string }>;
@@ -39,8 +41,9 @@ export const languageSeparators = new Map<Locales, Separator>([
   ["pt", europeanSeparator],
   ["fr", europeanSeparator],
   ["de", europeanSeparator],
-  ["zh", defaultSeparator], 
+  ["zh", defaultSeparator],
   ["ru", russianSeparator],
+  ["uk", russianSeparator],
 ]);
 
 // Normalize locale codes coming from the device (e.g., pt-BR → pt, zh-CN → zh)
@@ -80,6 +83,7 @@ i18n
       de: { translation: deTranslation },
       zh: { translation: zhTranslation },
       ru: { translation: ruTranslation },
+      uk: { translation: ukTranslation },
     },
     // React-specific options
     react: {
