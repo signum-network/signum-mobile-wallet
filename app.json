@@ -22,7 +22,9 @@
       "supportsTablet": true,
       "infoPlist": {
         "NSFaceIDUsageDescription": "Allow $(PRODUCT_NAME) to use Face ID for wallet authentication",
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "CFBundleDevelopmentRegion": "en",
+        "CFBundleLocalizations": ["en", "es", "pt", "fr", "de", "zh", "ru", "uk"]
       },
       "bundleIdentifier": "com.signum.mobile.wallet.v2",
       "buildNumber": "7"
