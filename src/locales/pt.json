@@ -475,7 +475,11 @@
     "loadingTitle": "Analisando Transação",
     "loadingDescription": "Por favor, aguarde enquanto analisamos os detalhes da transação...",
     "errorTitle": "Erro de Transação",
-    "errorDescription": "Não foi possível analisar a transação. Por favor, tente novamente ou entre em contato com a dApp.",
+    "errors": {
+      "parseFailed": "Não foi possível analisar a transação. Por favor, tente novamente ou entre em contato com o desenvolvedor da dApp.",
+      "unknownSigner": "Esta carteira não pode assinar pela conta solicitada pela dApp. A conta é desconhecida aqui ou é apenas de observação.",
+      "signingFailed": "Falha ao assinar ou transmitir a transação."
+    },
     "errorGoBack": "Voltar",
     "txTypes": {
       "transferTo": "Pagamento",

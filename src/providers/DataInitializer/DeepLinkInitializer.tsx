@@ -1,5 +1,5 @@
 import {useEffect, useState, useRef, useCallback} from "react";
-import {Linking} from "react-native";
+import {AppState, AppStateStatus, Linking} from "react-native";
 import {useRouter} from "expo-router";
 import {useTranslation} from "react-i18next";
 import {src22} from "@signumjs/standards";
@@ -12,7 +12,7 @@ const EXPO_DEVELOPMENT_CLIENT = "expo-development-client";
 
 export const DeepLinkInitializer = () => {
     const router = useRouter();
-    const {currentNetwork} = useNodeHostStore()
+    const {currentNetwork} = useNodeHostStore();
     const {accounts} = useAccountStore();
     const {isUnlocked} = useAppStore();
     const {t} = useTranslation();
@@ -20,6 +20,12 @@ export const DeepLinkInitializer = () => {
     const [routingRequested, setRoutingRequested] = useState(false);
     const lastProcessedUrl = useRef<string | null>(null);
     const handleDeepLinkRef = useRef<(url: string) => void>(() => {});
+    const [appState, setAppState] = useState<AppStateStatus>(AppState.currentState);
+
+    useEffect(() => {
+        const sub = AppState.addEventListener("change", setAppState);
+        return () => sub.remove();
+    }, []);
 
     useEffect(() => {
 
@@ -44,12 +50,12 @@ export const DeepLinkInitializer = () => {
     }, []);
 
     useEffect(() => {
-        if (routingRequested && isUnlocked && pendingDeepLink) {
+        if (routingRequested && isUnlocked && pendingDeepLink && appState === "active") {
             console.log('[DeepLink] Navigating to pending deep link:', pendingDeepLink.pathname, 'with params:', pendingDeepLink.params);
-            setRoutingRequested(false)
-            router.push( pendingDeepLink.pathname as any);
+            setRoutingRequested(false);
+            router.push(pendingDeepLink.pathname as any);
         }
-    }, [pendingDeepLink, isUnlocked, routingRequested, setRoutingRequested]);
+    }, [pendingDeepLink, isUnlocked, routingRequested, appState, router]);
 
 
     const handleDeepLink = useCallback((url: string) => {

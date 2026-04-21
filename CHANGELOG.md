@@ -1,5 +1,11 @@
 # signum-mobile-wallet
 
+## 2.0.7
+
+### Patch Changes
+
+- Improved Signing Flow
+
 ## 2.0.6
 
 ### Patch Changes

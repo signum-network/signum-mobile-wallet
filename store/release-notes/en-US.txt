@@ -1,3 +1,2 @@
-- Ukrainian translations
-- Shows Token Amount on Transfer
-- Improved Deep Linking
+- Improved Deep Linking Signing
+- fixes iOS Deep Linking issue
