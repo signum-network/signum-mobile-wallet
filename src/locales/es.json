@@ -475,7 +475,11 @@
     "loadingTitle": "Analizando Transacción",
     "loadingDescription": "Por favor espere mientras analizamos los detalles de la transacción...",
     "errorTitle": "Error de Transacción",
-    "errorDescription": "No pudimos analizar la transacción. Por favor intente nuevamente o contacte a la dApp.",
+    "errors": {
+      "parseFailed": "No se pudo analizar la transacción. Por favor, intente nuevamente o contacte al desarrollador de la dApp.",
+      "unknownSigner": "Esta billetera no puede firmar por la cuenta solicitada por la dApp. La cuenta es desconocida aquí o es de solo observación.",
+      "signingFailed": "No se pudo firmar o transmitir la transacción."
+    },
     "errorGoBack": "Volver",
     "txTypes": {
       "transferTo": "Payment",

@@ -475,7 +475,11 @@
     "loadingTitle": "Analyse de la Transaction",
     "loadingDescription": "Veuillez patienter pendant que nous analysons les détails de la transaction...",
     "errorTitle": "Erreur de Transaction",
-    "errorDescription": "Nous n'avons pas pu analyser la transaction. Veuillez réessayer ou contacter la dApp.",
+    "errors": {
+      "parseFailed": "La transaction n'a pas pu être analysée. Veuillez réessayer ou contacter le développeur de la dApp.",
+      "unknownSigner": "Ce portefeuille ne peut pas signer pour le compte demandé par la dApp. Le compte est inconnu ici ou en mode observation uniquement.",
+      "signingFailed": "Échec de la signature ou de la diffusion de la transaction."
+    },
     "errorGoBack": "Retour",
     "txTypes": {
       "transferTo": "Payment",
