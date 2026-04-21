@@ -475,7 +475,11 @@
     "loadingTitle": "Parsing Transaction",
     "loadingDescription": "Please wait while we analyze the transaction details...",
     "errorTitle": "Transaction Error",
-    "errorDescription": "We couldn't parse the transaction. Please try again or contact the dApp.",
+    "errors": {
+      "parseFailed": "We couldn't parse the transaction. Please try again or contact the dApp developer.",
+      "unknownSigner": "This wallet cannot sign for the account requested by the dApp. The account is either unknown here or watch-only.",
+      "signingFailed": "Failed to sign or broadcast the transaction."
+    },
     "errorGoBack": "Go Back",
     "txTypes": {
       "transferTo": "Payment",

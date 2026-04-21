@@ -475,7 +475,11 @@
     "loadingTitle": "正在解析交易",
     "loadingDescription": "请稍候，我们正在分析交易详情...",
     "errorTitle": "交易错误",
-    "errorDescription": "我们无法解析交易。请重试或联系 dApp。",
+    "errors": {
+      "parseFailed": "我们无法解析交易。请重试或联系 dApp。",
+      "unknownSigner": "此钱包无法为 dApp 请求的账户签名。该账户在此钱包中未知或仅为观察模式。",
+      "signingFailed": "签署或广播交易失败。"
+    },
     "errorGoBack": "返回",
     "txTypes": {
       "transferTo": "付款",
