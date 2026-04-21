@@ -10,7 +10,6 @@ import {Text} from "@/components/Text";
 import {Card} from "@/components/Card";
 import {Button} from "@/components/Button";
 import {readSecretKey} from "@/utils/sec/handleSecretKeys";
-import {KeyboardDismissView} from "@/components/KeyboardDismissView";
 import {SuccessSection} from "./sections/SuccessSection";
 import {useNodeHostStore} from "@/hooks/useNodeHostStore";
 import {pendingDeepLinkStore} from "@/states/pendingDeepLinkStore";
@@ -128,8 +127,6 @@ export const SignScreen = () => {
                 return;
             }
 
-            throw new Error("Testfehler");
-
             setIsSigning(true);
             const {signPrivateKey} = secretKeys;
             const confirmation =
@@ -181,10 +178,9 @@ export const SignScreen = () => {
 
     if (isLoading) {
         return (
-            <KeyboardDismissView>
                 <ScrollView className="flex-1 p-4" contentContainerClassName="justify-center">
                     <Card>
-                        <View className="items-center gap-4 py-6">
+                        <View className="items-center gap-4 py-6 w-full">
                             <ActivityIndicator size="large" color={iconColor.primary}/>
                             <View className="gap-2">
                                 <Text className="text-center text-lg font-semibold">
@@ -197,17 +193,15 @@ export const SignScreen = () => {
                         </View>
                     </Card>
                 </ScrollView>
-            </KeyboardDismissView>
         );
     }
 
     if (error || !parsedTx) {
         return (
-            <KeyboardDismissView>
                 <ScrollView className="flex-1 p-4" contentContainerClassName="justify-center">
                     <Card>
-                        <View className="items-center gap-6 py-6">
-                            <View className="items-center gap-3">
+                        <View className="items-center gap-6 py-6 w-full">
+                            <View className="items-center gap-3 w-full">
                                 <Ionicons
                                     name="alert-circle-outline"
                                     size={64}
@@ -220,6 +214,11 @@ export const SignScreen = () => {
                                     <Text className="text-center opacity-70">
                                         {error ? t(error.messageKey, error.values) : t("sign.errors.parseFailed")}
                                     </Text>
+                                    {error?.detail && (
+                                        <Text size="small" className="text-center italic opacity-50">
+                                            {error.detail}
+                                        </Text>
+                                    )}
                                 </View>
                             </View>
                             <Button
@@ -231,8 +230,7 @@ export const SignScreen = () => {
                         </View>
                     </Card>
                 </ScrollView>
-            </KeyboardDismissView>
-        );
+        )
     }
 
     return (
