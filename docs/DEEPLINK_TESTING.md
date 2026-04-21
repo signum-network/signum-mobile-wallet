@@ -222,10 +222,10 @@ Deploy smart contracts using contract references (CIP templates).
 
 ## Future Enhancements
 
-- [ ] Support for callbacks (returning result to calling app)
-- [ ] Support for multi-out transactions
-- [ ] Better asset/token detection in preview
-- [ ] Transaction simulation before signing
+- [x] Support for callbacks (returning result to calling app)
+- [x] Support for multi-out transactions
+- [x] Better asset/token detection in preview
+- [x] Transaction simulation before signing
 - [ ] QR code scanning for deep links
 - [ ] Deep link analytics/logging
 

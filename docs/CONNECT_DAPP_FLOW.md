@@ -9,6 +9,9 @@ The Signum Mobile Wallet supports deep link integration for dApps via the SRC-22
 
 Both actions require explicit user approval and are protected by authentication guards.
 
+> 💡 Check the [Demo dApp](../demo-dapp/index.html)
+
+
 ## Deep Link Protocol
 
 All deep links use the `signum://` URL scheme and follow the SRC-22 standard format:
@@ -144,7 +147,7 @@ signum://v1?action=sign&payload=<base64_encoded_json>
 
 ### Payload Structure
 
-```json
+```json5
 {
    "unsignedTransactionBytes": "001046...", 
    "network": "testnet" // optional: "mainnet" or "testnet"
@@ -228,7 +231,8 @@ When successfully connected, the wallet will redirect to the callback URL with t
 
 ### Supported Transaction Types
 
-The wallet displays custom preview components for the following transaction types:
+The wallet all Signum transactions, except for large contract (>8KiB) creation (which don't fit in a URL).
+Following custom preview components for the following transaction types are supported (all others have a genenric signing screen):
 
 | Transaction Type | Features Shown |
 |------------------|----------------|
@@ -513,18 +517,6 @@ Test various error conditions:
 - Malformed transaction bytes
 - Network mismatch scenarios
 - Locked wallet state (before authentication)
-
-## Comparison: Connect Flow vs. Sign-Only Flow
-
-| Feature | Connect Flow | Sign-Only Flow |
-|---------|-------------|----------------|
-| **dApp gets public key** | ✅ Yes, via callback | ❌ No |
-| **User approval** | ✅ Explicit approval screen | ✅ Explicit (via signing) |
-| **dApp complexity** | Medium (callback handler needed) | Low (just create deeplink) |
-| **Transaction creation** | ✅ dApp creates with real account | ⚠️ Need placeholder/guess account |
-| **Multiple transactions** | ✅ Reuse public key | ⚠️ Need new placeholder for each |
-| **Balance validation** | ✅ Accurate (knows real account) | ⚠️ Error-prone (placeholder may differ) |
-| **Best for** | Full dApps with user sessions | One-off payments, simple interactions |
 
 ## Architecture Notes
 

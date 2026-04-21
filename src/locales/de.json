@@ -476,7 +476,7 @@
     "loadingDescription": "Bitte warte, während wir die Transaktionsdetails analysieren...",
     "errorTitle": "Transaktionsfehler",
     "errors": {
-      "parseFailed": "Die Transaktion konnte nicht analysiert werden. Bitte versuche es erneut oder kontaktiere die dApp.",
+      "parseFailed": "Die Transaktion konnte nicht analysiert werden. Bitte versuche es erneut oder kontaktiere den dApp-Entwickler.",
       "unknownSigner": "Diese Wallet kann für das von der dApp angeforderte Konto nicht signieren. Das Konto ist hier entweder unbekannt oder nur beobachtend.",
       "signingFailed": "Signieren oder Senden der Transaktion fehlgeschlagen."
     },
