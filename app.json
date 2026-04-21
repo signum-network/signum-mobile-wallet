@@ -2,7 +2,7 @@
   "expo": {
     "name": "Signum Mobile Wallet",
     "slug": "signum-mobile-wallet-v2",
-    "version": "2.0.6",
+    "version": "2.0.7",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -24,10 +24,19 @@
         "NSFaceIDUsageDescription": "Allow $(PRODUCT_NAME) to use Face ID for wallet authentication",
         "ITSAppUsesNonExemptEncryption": false,
         "CFBundleDevelopmentRegion": "en",
-        "CFBundleLocalizations": ["en", "es", "pt", "fr", "de", "zh", "ru", "uk"]
+        "CFBundleLocalizations": [
+          "en",
+          "es",
+          "pt",
+          "fr",
+          "de",
+          "zh",
+          "ru",
+          "uk"
+        ]
       },
       "bundleIdentifier": "com.signum.mobile.wallet.v2",
-      "buildNumber": "7"
+      "buildNumber": "8"
     },
     "android": {
       "edgeToEdgeEnabled": true,
@@ -41,7 +50,7 @@
         "android.permission.USE_FINGERPRINT",
         "android.permission.CAMERA"
       ],
-      "versionCode": 7
+      "versionCode": 8
     },
     "plugins": [
       "expo-router",
