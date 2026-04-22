@@ -1,2 +1,3 @@
 - Improved Deep Linking Signing
 - fixes iOS Deep Linking issue
+- fixes cashback Id Signing issue

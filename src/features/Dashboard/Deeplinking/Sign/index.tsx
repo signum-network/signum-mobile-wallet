@@ -2,7 +2,7 @@ import {useCallback, useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {ScrollView, View, ActivityIndicator, Linking} from "react-native";
 import {useRouter} from "expo-router";
-import {type Transaction} from "@signumjs/core";
+import {type ChainService, type Transaction, type TransactionId} from "@signumjs/core";
 import {useQueryClient} from "@tanstack/react-query";
 import {useLedgerService} from "@/hooks/useLedgerService";
 import {SigningDialog} from "@/components/SigningDialog";
@@ -18,6 +18,7 @@ import {useAppTheme} from "@/hooks/useAppTheme";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {ConfirmationCard} from "@/components/ConfirmationCard";
 import {SigningAccountCard} from "./components/SigningAccountCard";
+import {generateSignature, generateSignedTransactionBytes, verifySignature} from "@signumjs/crypto";
 
 type SignDeeplinkParams = {
     transactionBytes: string;
@@ -35,6 +36,32 @@ function redirectToDApp(callbackUrl: URL) {
     const urlString = callbackUrl.toString();
     console.log("[DL-SIGNING] Redirecting to dApp...", urlString);
     return Linking.openURL(urlString);
+}
+
+interface SigningArgs {
+    chainService: ChainService;
+    unsignedTransactionBytes: string;
+    senderPublicKey: string;
+    senderPrivateKey: string;
+}
+
+// We need to reimplement the signAndBroadcast method, as there's a gap in signumjs:
+// signAndBroadcastTransaction in SignumJS does not support skipping additional security checks :eyes
+// PROBLEM: The additional security check also checks against the cashbackId, which is a problem on mobile deep linking
+// A dApp might use Node A, while the wallet might use Node B, and the cashbackId might be different on each node.
+// The signing would fail then. However, it's not transparent to the wallet user a) why and b) even if so, which node to choose.
+// As we don't have birdirectional communication like in XT Wallet we cannot switch the nodes in the dApp.
+// The only way to solve this is to implement a custom signAndBroadcast method, which does not check against the cashbackId.
+// This is a workaround until the signumjs team implements this feature.
+async function signAndBroadcastTransaction(args: SigningArgs) {
+    const {chainService, unsignedTransactionBytes, senderPrivateKey, senderPublicKey}  = args
+    const signature = generateSignature(unsignedTransactionBytes, senderPrivateKey);
+    const isValid = verifySignature(signature, unsignedTransactionBytes, senderPublicKey);
+    if (!isValid) {
+        throw new Error('The signed message could not be verified! Transaction not broadcasted!');
+    }
+    const signedTransactionBytes = generateSignedTransactionBytes(unsignedTransactionBytes, signature);
+    return chainService.send<TransactionId>('broadcastTransaction', {transactionBytes: signedTransactionBytes, skipAdditionalSecurityCheck: true});
 }
 
 export const SignScreen = () => {
@@ -128,15 +155,13 @@ export const SignScreen = () => {
             }
 
             setIsSigning(true);
-            const {signPrivateKey} = secretKeys;
-            const confirmation =
-                await ledgerService.ledgerInstance.transaction.signAndBroadcastTransaction(
-                    {
-                        unsignedHexMessage: bufferedDeeplinkParams.transactionBytes,
-                        senderPrivateKey: signPrivateKey,
-                        senderPublicKey,
-                    }
-                );
+            const {signPrivateKey: senderPrivateKey} = secretKeys;
+            const confirmation = await signAndBroadcastTransaction({
+                unsignedTransactionBytes: bufferedDeeplinkParams.transactionBytes,
+                senderPrivateKey,
+                senderPublicKey,
+                chainService: ledgerService.ledgerInstance.service
+            })
 
             console.log("[DL-SIGNING] Transaction successfully signed...", confirmation.transaction);
 

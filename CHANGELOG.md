@@ -1,5 +1,11 @@
 # signum-mobile-wallet
 
+## 2.0.8
+
+### Patch Changes
+
+- Fixing cashback id issue on deep linking sign
+
 ## 2.0.7
 
 ### Patch Changes
