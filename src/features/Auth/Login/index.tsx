@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
-import {View, Keyboard} from "react-native";
+import {View, Keyboard, ScrollView} from "react-native";
 import {router} from "expo-router";
 import {useAppStore} from "@/hooks/useAppStore";
 import {PinAuthenticator} from "@/features/Auth/components/PinAuthenticator";
@@ -124,36 +124,38 @@ export const LoginAuthScreen = () => {
     }, [failedAuthAttempts]);
 
     return (
-        <View
-            className="flex-1 items-center justify-start"
-            style={{
-                backgroundColor: tokens.background,
-            }}
-        >
-            {/* Top slot: show reset button only after first failed attempt */}
-            <View className="w-full mb-2 justify-center h-14 mt-4 px-4">
-                {failedAuthAttempts >= 1 ? (
-                    <ResetWalletDialog variant="ghost" />
-                ) : (
-                    <View className="opacity-0" pointerEvents="none">
-                        {/* Placeholder to keep layout height consistent */}
+        <ScrollView className="flex-1" contentContainerStyle={{ flexGrow: 1 }}>
+            <View
+                className="flex-1 items-center justify-start"
+                style={{
+                    backgroundColor: tokens.background,
+                }}
+            >
+                {/* Top slot: show reset button only after first failed attempt */}
+                <View className="w-full mb-2 justify-center h-14 mt-4 px-4">
+                    {failedAuthAttempts >= 1 ? (
                         <ResetWalletDialog variant="ghost" />
-                    </View>
-                )}
+                    ) : (
+                        <View className="opacity-0" pointerEvents="none">
+                            {/* Placeholder to keep layout height consistent */}
+                            <ResetWalletDialog variant="ghost" />
+                        </View>
+                    )}
+                </View>
+                <PinAuthenticator
+                    label={t("auth.loginPassCodeTitle")}
+                    complementaryLabel={t("auth.loginPassCodeDescription")}
+                    errorLabel={t("auth.verifyIncorrectPassCode")}
+                    successLabel={`${t("auth.loginCorrectPassCode")} 😊`}
+                    error={error}
+                    success={success}
+                    length={PUBLIC_PIN_LENGTH}
+                    value={value}
+                    onChange={handleOnChangeValues}
+                    onReset={resetValues}
+                    disabled={loading}
+                />
             </View>
-            <PinAuthenticator
-                label={t("auth.loginPassCodeTitle")}
-                complementaryLabel={t("auth.loginPassCodeDescription")}
-                errorLabel={t("auth.verifyIncorrectPassCode")}
-                successLabel={`${t("auth.loginCorrectPassCode")} 😊`}
-                error={error}
-                success={success}
-                length={PUBLIC_PIN_LENGTH}
-                value={value}
-                onChange={handleOnChangeValues}
-                onReset={resetValues}
-                disabled={loading}
-            />
-        </View>
+        </ScrollView>
     );
 };

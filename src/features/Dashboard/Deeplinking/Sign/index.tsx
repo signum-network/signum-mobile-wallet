@@ -262,7 +262,7 @@ export const SignScreen = () => {
         <ScrollView className="flex-1 p-4">
             <SigningDialog visible={isSigning}/>
 
-            <View className="gap-4 w-full">
+            <View className="gap-4 w-full pb-12">
                 {isComplete && <SuccessSection transactionId={transactionId}/>}
 
                 <SigningAccountCard publicKey={parsedTx.senderPublicKey}/>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { View, Alert } from "react-native";
+import { View, Alert, ScrollView } from "react-native";
 import { useTranslation } from "react-i18next";
 import { router } from "expo-router";
 import { useAppStore } from "@/hooks/useAppStore";
@@ -128,68 +128,70 @@ export const EnrollAuthScreen = () => {
   }, [verificationSuccess, verificationError]);
 
   return (
-    <View
-      className="flex-1 items-center justify-start"
-      style={{ backgroundColor: tokens.background }}
-    >
-      <View className="w-full mb-2 justify-center h-14 mt-4 px-4">
-        {step === Steps.verify && verificationError ? (
-          <Button
-            icon={
-              <Ionicons
-                name="arrow-back-outline"
-                size={18}
-                color={iconColor.default}
-              />
-            }
-            type="secondary"
-            title={t("auth.goBack")}
-            fullWidth
-            pressableProps={{
-              onPress: resetProgress,
-              pointerEvents: verificationSuccess ? "none" : "auto",
-            }}
-            extraClassNames={verificationSuccess ? "opacity-0" : "opacity-100"}
+    <ScrollView className="flex-1" contentContainerStyle={{ flexGrow: 1 }}>
+      <View
+        className="flex-1 items-center justify-start"
+        style={{ backgroundColor: tokens.background }}
+      >
+        <View className="w-full mb-2 justify-center h-14 mt-4 px-4">
+          {step === Steps.verify && verificationError ? (
+            <Button
+              icon={
+                <Ionicons
+                  name="arrow-back-outline"
+                  size={18}
+                  color={iconColor.default}
+                />
+              }
+              type="secondary"
+              title={t("auth.goBack")}
+              fullWidth
+              pressableProps={{
+                onPress: resetProgress,
+                pointerEvents: verificationSuccess ? "none" : "auto",
+              }}
+              extraClassNames={verificationSuccess ? "opacity-0" : "opacity-100"}
+            />
+          ) : (
+            <Button
+              title=" "
+              pressableProps={{ pointerEvents: "none" }}
+              extraClassNames="opacity-0"
+              fullWidth
+            />
+          )}
+        </View>
+
+        {step === Steps.enter && (
+          <PinAuthenticator
+            label={t("auth.enrollPassCodeTitle")}
+            complementaryLabel={t("auth.enrollPassCodeDescription")}
+            errorLabel=""
+            successLabel=""
+            error={false}
+            success={false}
+            length={PUBLIC_PIN_LENGTH}
+            value={firstStepvalues}
+            onChange={handleOnChangeFirstStepValues}
+            onReset={() => {}}
           />
-        ) : (
-          <Button
-            title=" "
-            pressableProps={{ pointerEvents: "none" }}
-            extraClassNames="opacity-0"
-            fullWidth
+        )}
+
+        {step === Steps.verify && (
+          <PinAuthenticator
+            label={t("auth.enterPassCodeAgain")}
+            complementaryLabel={t("auth.verifyPassCode")}
+            errorLabel={t("auth.verifyIncorrectPassCode")}
+            successLabel={`${t("auth.verifyLoadingWait")} 🔒`}
+            error={verificationError}
+            success={verificationSuccess}
+            length={PUBLIC_PIN_LENGTH}
+            value={verificationValues}
+            onChange={handleOnChangeVerificationValues}
+            onReset={resetVerificationValues}
           />
         )}
       </View>
-
-      {step === Steps.enter && (
-        <PinAuthenticator
-          label={t("auth.enrollPassCodeTitle")}
-          complementaryLabel={t("auth.enrollPassCodeDescription")}
-          errorLabel=""
-          successLabel=""
-          error={false}
-          success={false}
-          length={PUBLIC_PIN_LENGTH}
-          value={firstStepvalues}
-          onChange={handleOnChangeFirstStepValues}
-          onReset={() => {}}
-        />
-      )}
-
-      {step === Steps.verify && (
-        <PinAuthenticator
-          label={t("auth.enterPassCodeAgain")}
-          complementaryLabel={t("auth.verifyPassCode")}
-          errorLabel={t("auth.verifyIncorrectPassCode")}
-          successLabel={`${t("auth.verifyLoadingWait")} 🔒`}
-          error={verificationError}
-          success={verificationSuccess}
-          length={PUBLIC_PIN_LENGTH}
-          value={verificationValues}
-          onChange={handleOnChangeVerificationValues}
-          onReset={resetVerificationValues}
-        />
-      )}
-    </View>
+    </ScrollView>
   );
 };
