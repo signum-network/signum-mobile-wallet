@@ -33,7 +33,7 @@ export const WalletNameField = () => {
               value={value}
               returnKeyType="done"
               size="large"
-              textAlign="center"
+              textAlign="left"
               maxLength={30}
             />
           )}

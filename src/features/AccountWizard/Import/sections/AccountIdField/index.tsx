@@ -15,11 +15,11 @@ export const AccountIdField = () => {
     <View className="gap-4 w-full">
       <Card>
         <View>
-          <Text size="large" className="font-medium">
+          <Text size="large" className="font-medium text-center">
             {t("accountWizard.importAccount.importWatchOnlyTitle")}
           </Text>
 
-          <Text size="large" color="muted" className="font-medium">
+          <Text size="large" color="muted" className="font-medium text-center">
             {t("accountWizard.importAccount.importWatchOnlySecondHint")}
           </Text>
         </View>
@@ -34,7 +34,7 @@ export const AccountIdField = () => {
                 returnKeyType="done"
                 value={value}
                 size="large"
-                textAlign="center"
+                textAlign="left"
               />
             )}
             name="account"
