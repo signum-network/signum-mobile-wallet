@@ -11,13 +11,18 @@ import { useQueryAccountResolver } from "@/hooks/useQueryAccountResolver";
 
 export const ResolvedAccountCard = () => {
   const { t } = useTranslation();
-  const { watch, setValue } = useFormContext<AccountImport>();
+  const { watch, setValue, formState } = useFormContext<AccountImport>();
 
   const type = watch("type");
   const account = watch("account");
 
   // For mnemonic: derive a numeric ID from the seed phrase
   // For watchOnly: pass the raw input (address, numeric ID, or alias)
+
+  // Track if user already edited wallet name
+  const isWalletNameDirty = formState.dirtyFields.walletName;
+
+  // Build query input depending on account type
   const queryInput = useMemo(() => {
     if (!account?.trim()) return "";
     const input = account.trim();
@@ -38,29 +43,27 @@ export const ResolvedAccountCard = () => {
   useEffect(() => {
     if (isLoading) return;
 
-    if (!resolvedAccount) {
-      setValue("walletName", "", {
-        shouldValidate: false,
-        shouldDirty: false,
-      });
-      return;
-    }
+    // Do not overwrite if user already typed something
+    if (isWalletNameDirty) return;
 
-    const rawName = (resolvedAccount.aliasName || resolvedAccount?.name || "").trim();
-    if (rawName) {
-      const shortName =
-        rawName.length > 30 ? `${rawName.slice(0, 30)}…` : rawName;
-      setValue("walletName", shortName, {
-        shouldValidate: false,
-        shouldDirty: false,
-      });
-    } else {
-      setValue("walletName", "", {
-        shouldValidate: false,
-        shouldDirty: false,
-      });
-    }
-  }, [resolvedAccount, isLoading, setValue]);
+    // Do not reset wallet name if nothing resolved
+    if (!resolvedAccount) return;
+
+    const rawName = (
+      resolvedAccount.aliasName ||
+      resolvedAccount?.name ||
+      ""
+    ).trim();
+
+    if (!rawName) return;
+
+    const shortName =
+      rawName.length > 30 ? `${rawName.slice(0, 30)}…` : rawName;
+    setValue("walletName", shortName, {
+      shouldValidate: false,
+      shouldDirty: false,
+    });
+  }, [resolvedAccount, isLoading, isWalletNameDirty, setValue]);
 
   if (!resolvedAccount) return null;
 
