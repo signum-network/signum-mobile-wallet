@@ -172,7 +172,9 @@
       "importAccountAlreadyExists": "Цей акаунт вже існує у вашому гаманці; перейдіть у налаштування акаунту та використовуйте його",
       "importAccountResolvedAddress": "Адреса акаунту: {{address}}",
       "importAccountResolvedName": "Ім'я акаунту: {{name}}",
-      "importAccountResolvedAddressHint": "Перевірте адресу, щоб переконатися, що ви імпортуєте правильний акаунт."
+      "importAccountResolvedAddressHint": "Перевірте адресу, щоб переконатися, що ви імпортуєте правильний акаунт.",
+      "importAccountUseCustomPassphrase": "Власна парольна фраза",
+      "importAccountCustomPassphraseHint": "Увімкніть цю опцію, щоб вводити власні парольні фрази. Регістр символів і спеціальні символи будуть збережені."
     },
     "walletNameAlreadyUsed": "Ім'я гаманця вже використовується; оберіть інше!",
     "maxAccountsReached": "Досягнуто максимальну кількість акаунтів ({{max}}). Будь ласка, видаліть існуючий гаманець, щоб продовжити."

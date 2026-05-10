@@ -172,7 +172,9 @@
       "importAccountAlreadyExists": "Esta cuenta ya existe en tu wallet; ve a los ajustes de la cuenta y úsala",
       "importAccountResolvedAddress": "Dirección de la cuenta: {{address}}",
       "importAccountResolvedName": "Nombre de la cuenta: {{name}}",
-      "importAccountResolvedAddressHint": "Verifica la dirección para asegurarte de que estás importando la cuenta correcta."
+      "importAccountResolvedAddressHint": "Verifica la dirección para asegurarte de que estás importando la cuenta correcta.",
+      "importAccountUseCustomPassphrase": "Personalizada passphrase",
+      "importAccountCustomPassphraseHint": "Activa esta opción para introducir passphrase personalizadas. Se conservarán las mayúsculas/minúsculas y los caracteres especiales."
     },
     "walletNameAlreadyUsed": "Ese nombre de wallet ya está en uso; ¡elige otro!",
     "maxAccountsReached": "Se alcanzó el número máximo de cuentas ({{max}}). Por favor, elimina una wallet existente para continuar."

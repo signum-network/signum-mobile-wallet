@@ -172,7 +172,9 @@
       "importAccountAlreadyExists": "Ce compte existe déjà dans votre portefeuille, veuillez aller dans les paramètres du compte et l'utiliser !",
       "importAccountResolvedAddress": "Adresse du compte : {{address}}",
       "importAccountResolvedName": "Nom du compte : {{name}}",
-      "importAccountResolvedAddressHint": "Veuillez vérifier l'adresse pour vous assurer d'importer le bon compte."
+      "importAccountResolvedAddressHint": "Veuillez vérifier l'adresse pour vous assurer d'importer le bon compte.",
+      "importAccountUseCustomPassphrase": "Passphrase personnalisée",
+      "importAccountCustomPassphraseHint": "Activez cette option pour saisir des passphrase personnalisées. Les majuscules/minuscules et les caractères spéciaux seront conservés."
     },
     "walletNameAlreadyUsed": "Ce nom de portefeuille est déjà utilisé, veuillez en choisir un autre !",
     "maxAccountsReached": "Nombre maximum de comptes ({{max}}) atteint. Veuillez supprimer un portefeuille existant pour continuer."
