@@ -172,7 +172,9 @@
       "importAccountAlreadyExists": "Этот аккаунт уже существует в вашем кошельке; перейдите в настройки аккаунта и используйте его",
       "importAccountResolvedAddress": "Адрес аккаунта: {{address}}",
       "importAccountResolvedName": "Имя аккаунта: {{name}}",
-      "importAccountResolvedAddressHint": "Проверьте адрес, чтобы убедиться, что вы импортируете правильный аккаунт."
+      "importAccountResolvedAddressHint": "Проверьте адрес, чтобы убедиться, что вы импортируете правильный аккаунт.",
+      "importAccountUseCustomPassphrase": "Пользовательская фраза-пароль",
+      "importAccountCustomPassphraseHint": "Включите эту опцию, чтобы вводить пользовательские фразы-пароли. Регистр символов и специальные символы будут сохранены."
     },
     "walletNameAlreadyUsed": "Имя кошелька уже используется; выберите другое!",
     "maxAccountsReached": "Достигнуто максимальное количество аккаунтов ({{max}}). Пожалуйста, удалите существующий кошелёк, чтобы продолжить."

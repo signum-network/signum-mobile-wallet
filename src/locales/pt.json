@@ -172,7 +172,9 @@
       "importAccountAlreadyExists": "Esta conta já existe na sua carteira; vá para as configurações da conta e use-a",
       "importAccountResolvedAddress": "Endereço da conta: {{address}}",
       "importAccountResolvedName": "Nome da conta: {{name}}",
-      "importAccountResolvedAddressHint": "Verifique o endereço para ter certeza de que está importando a conta correta."
+      "importAccountResolvedAddressHint": "Verifique o endereço para ter certeza de que está importando a conta correta.",
+      "importAccountUseCustomPassphrase": "Passphrase personalizada",
+      "importAccountCustomPassphraseHint": "Ative esta opção para inserir passphrase personalizadas. Letras maiúsculas/minúsculas e caracteres especiais serão preservados."
     },
     "walletNameAlreadyUsed": "Esse nome de carteira já está em uso; escolha outro!",
     "maxAccountsReached": "Número máximo de contas ({{max}}) atingido. Por favor, remova uma carteira existente para continuar."
