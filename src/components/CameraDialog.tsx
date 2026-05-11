@@ -155,6 +155,13 @@ export const CameraDialog = ({onCodeScanned, expected}: Props) => {
                                 type="primary"
                                 pressableProps={{onPress: request}}
                             />
+                            <Button
+                                icon={<FontAwesome6 name="window-close" size={24} color="white"/>}
+                                fullWidth
+                                title={t("cancel")}
+                                type="error"
+                                pressableProps={{onPress: hideDialog}}
+                            />
                         </Fragment>
                     )}
                 </View>
