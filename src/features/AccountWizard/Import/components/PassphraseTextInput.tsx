@@ -181,7 +181,7 @@ export const PassphraseTextInput = ({
                   backgroundColor: tokens.primary,
                 }}
               >
-                <RNText style={{ color: tokens.text, fontSize: 14 }}>
+                <RNText style={{ color: "white", fontSize: 14 }}>
                   {suggestion}
                 </RNText>
               </Pressable>
