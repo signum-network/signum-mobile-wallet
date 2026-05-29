@@ -60,13 +60,16 @@ export const LoginAuthScreen = () => {
             let isValidPin = false;
 
             if (isLegacyHash(key)) {
+                console.log("Legacy hash detected, performing migration");
                 // SHA-1 hash from react-native-quick-crypto <1.1.0 (no digest = silent SHA-1 default)
                 isValidPin = verifyLegacyHash(formatedValues, salt, key);
                 if (isValidPin) {
                     // Silent migration: re-hash with SHA-512 on successful login
                     const migrated = await generateHash(formatedValues);
                     await savePin(migrated.key, migrated.salt);
+                    console.log("Migration completed successfully");
                 }
+                console.log("PIN Not Valid");
             } else {
                 const tryHash = await generateHash(formatedValues, salt);
                 isValidPin = key === tryHash.key;
