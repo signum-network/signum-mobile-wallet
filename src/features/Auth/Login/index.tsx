@@ -68,8 +68,9 @@ export const LoginAuthScreen = () => {
                     const migrated = await generateHash(formatedValues);
                     await savePin(migrated.key, migrated.salt);
                     console.log("Migration completed successfully");
+                }else{
+                    console.log("PIN Not Valid");
                 }
-                console.log("PIN Not Valid");
             } else {
                 const tryHash = await generateHash(formatedValues, salt);
                 isValidPin = key === tryHash.key;
