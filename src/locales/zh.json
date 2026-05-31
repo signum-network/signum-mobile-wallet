@@ -597,7 +597,7 @@
     "backgroundPlaceholder": "QmT5NvUtoM...",
     "backgroundHelper": "背景图片的 IPFS 内容标识符",
     "mimeType": "Image Format",
-    "ipfsInstructions": "使用 Pinata、NFT.Storage、Storacha 或 IPFS Desktop 将图片上传到 IPFS，然后在此粘贴 CID。示例：QmT5NvUtoM5nWFfrQdVrFtvGfKFmG7AHE8P34isapyhCxX",
+    "ipfsInstructions": "使用 Pinata、NFT.Storage 或 IPFS Desktop 将图片上传到 IPFS，然后在此粘贴 CID。示例：QmT5NvUtoM5nWFfrQdVrFtvGfKFmG7AHE8P34isapyhCxX",
     "profilePreview": "个人资料预览",
     "confirmUpdate": "确认个人资料更新",
     "updateSuccess": "个人资料已更新！",
