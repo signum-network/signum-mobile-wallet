@@ -13,6 +13,7 @@
     "ts-check": "tsc",
     "db-generate": "npx drizzle-kit generate",
     "prepare": "husky",
+    "test": "vitest run",
     "test-deeplink": "node scripts/test-deeplink.js",
     "test-connect": "node scripts/test-connect-deeplink.js",
     "build-dev": "set EAS_NO_VCS=1 && eas build --profile development",
@@ -99,7 +100,8 @@
     "drizzle-kit": "^0.31.8",
     "husky": "^9.0.11",
     "reactotron-react-native": "^5.1.18",
-    "typescript": "~5.9.2"
+    "typescript": "~5.9.2",
+    "vitest": "4.1.6"
   },
   "overrides": {
     "react-number-format": {

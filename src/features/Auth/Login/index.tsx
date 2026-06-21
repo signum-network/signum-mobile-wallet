@@ -5,8 +5,9 @@ import {router} from "expo-router";
 import {useAppStore} from "@/hooks/useAppStore";
 import {PinAuthenticator} from "@/features/Auth/components/PinAuthenticator";
 import {PUBLIC_PIN_MAX_ATTEMPTS, PUBLIC_PIN_LENGTH} from "@/types/constants";
-import {generateHash} from "@/utils/sec/generateHash";
-import {readPin} from "@/utils/sec/handlePin";
+import {generateHash, isLegacyHash, verifyLegacyHash} from "@/utils/sec/generateHash";
+import {readPin, savePin} from "@/utils/sec/handlePin";
+import {readAuthAttempts, saveAuthAttempts, deleteAuthAttempts} from "@/utils/sec/handleAuthAttempts";
 import {useAccountStore} from "@/hooks/useAccountStore";
 import {useAppTheme} from "@/hooks/useAppTheme";
 import {useResetApp} from "@/hooks/useResetApp";
@@ -31,6 +32,7 @@ export const LoginAuthScreen = () => {
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
     const [value, setValues] = useState<string[]>(initialValues);
+    const [attemptsLoaded, setAttemptsLoaded] = useState(false);
 
     const {resetApp} = useResetApp({
         onSuccess: () => {
@@ -55,18 +57,33 @@ export const LoginAuthScreen = () => {
 
             const {key, salt} = storedPinData;
 
-            const tryHash = await generateHash(formatedValues, salt);
+            let isValidPin = false;
 
-            if (!tryHash) return goToEnrollScreen();
-
-            const isValidPin = key === tryHash.key;
+            if (isLegacyHash(key)) {
+                console.log("Legacy hash detected, performing migration");
+                // SHA-1 hash from react-native-quick-crypto <1.1.0 (no digest = silent SHA-1 default)
+                isValidPin = verifyLegacyHash(formatedValues, salt, key);
+                if (isValidPin) {
+                    // Silent migration: re-hash with SHA-512 on successful login
+                    const migrated = await generateHash(formatedValues);
+                    await savePin(migrated.key, migrated.salt);
+                    console.log("Migration completed successfully");
+                }else{
+                    console.log("PIN Not Valid");
+                }
+            } else {
+                const tryHash = await generateHash(formatedValues, salt);
+                isValidPin = key === tryHash.key;
+            }
 
             if (isValidPin) {
                 setSuccess(true);
             } else {
                 setLoading(false);
                 setError(true);
-                setFailedAuthAttempts(failedAuthAttempts + 1);
+                const next = failedAuthAttempts + 1;
+                setFailedAuthAttempts(next);
+                await saveAuthAttempts(next);
             }
         }
     };
@@ -84,6 +101,7 @@ export const LoginAuthScreen = () => {
 
     const onSuccess = () => {
         setFailedAuthAttempts(0);
+        void deleteAuthAttempts();
         setTimeout(() => {
             // Set unlocked - AuthGuard will:
             // 1. Reveal Stack
@@ -102,6 +120,13 @@ export const LoginAuthScreen = () => {
         Keyboard.dismiss();
         await resetApp();
     };
+
+    useEffect(() => {
+        readAuthAttempts().then((count) => {
+            setFailedAuthAttempts(count);
+            setAttemptsLoaded(true);
+        });
+    }, []);
 
     useEffect(() => {
         if (success && !error) onSuccess();
@@ -153,7 +178,7 @@ export const LoginAuthScreen = () => {
                     value={value}
                     onChange={handleOnChangeValues}
                     onReset={resetValues}
-                    disabled={loading}
+                    disabled={loading || !attemptsLoaded}
                 />
             </View>
         </ScrollView>

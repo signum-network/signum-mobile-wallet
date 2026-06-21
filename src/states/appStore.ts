@@ -68,9 +68,17 @@ export const appStore = create<State & Actions>()(
     {
       name: "app-storage",
       storage: createJSONStorage(() => AsyncStorage),
-      version: 1,
+      version: 2,
+      migrate: (persisted, version) => {
+        if (version < 2) {
+          const state = persisted as Record<string, unknown>;
+          delete state.failedAuthAttempts;
+          return state;
+        }
+        return persisted;
+      },
       partialize: (state) => {
-        const { isUnlocked, ...rest } = state;
+        const { isUnlocked, failedAuthAttempts, ...rest } = state;
         return rest;
       },
     }
