@@ -1,5 +1,11 @@
 # signum-mobile-wallet
 
+## 2.0.9
+
+### Patch Changes
+
+- Custom Passphrase Support, Hardened PIN hashing, Layout fixes and improvements
+
 ## 2.0.8
 
 ### Patch Changes
