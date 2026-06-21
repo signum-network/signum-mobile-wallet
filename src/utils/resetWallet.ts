@@ -1,4 +1,5 @@
 import { deletePin } from "@/utils/sec/handlePin";
+import { deleteAuthAttempts } from "@/utils/sec/handleAuthAttempts";
 import { deleteSecretKey } from "@/utils/sec/handleSecretKeys";
 import { accountStore } from "@/states/accountStore";
 import { clearDatabase } from "@/db/utils/clearDatabase";
@@ -23,9 +24,10 @@ export const resetWallet = async (
       secretKeyDeletionPromises.push(deleteSecretKey(account.publicKey));
     }
   });
-  // 2. Delete PIN and secret keys
+  // 2. Delete PIN, brute-force attempts counter, and secret keys
 
   await deletePin();
+  await deleteAuthAttempts();
   await Promise.allSettled(secretKeyDeletionPromises);
   // 3. Clear database
 
