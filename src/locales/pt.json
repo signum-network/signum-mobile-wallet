@@ -597,7 +597,7 @@
     "backgroundPlaceholder": "QmT5NvUtoM...",
     "backgroundHelper": "Identificador de conteúdo IPFS para sua imagem de fundo",
     "mimeType": "Image Format",
-    "ipfsInstructions": "Envie sua imagem para IPFS usando Pinata, NFT.Storage, Storacha ou IPFS Desktop, depois cole o CID aqui. Exemplo: QmT5NvUtoM5nWFfrQdVrFtvGfKFmG7AHE8P34isapyhCxX",
+    "ipfsInstructions": "Envie sua imagem para IPFS usando Pinata, NFT.Storage ou IPFS Desktop, depois cole o CID aqui. Exemplo: QmT5NvUtoM5nWFfrQdVrFtvGfKFmG7AHE8P34isapyhCxX",
     "profilePreview": "Visualização do Perfil",
     "confirmUpdate": "Confirmar Atualização do Perfil",
     "updateSuccess": "Perfil Atualizado!",

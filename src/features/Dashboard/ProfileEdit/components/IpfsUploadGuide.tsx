@@ -13,11 +13,6 @@ interface Props {
 
 const IPFS_PLATFORMS = [
     {
-        name: "Storacha",
-        url: "https://storacha.network",
-        logo: require("../../../../../assets/storacha-bug.png"),
-    },
-    {
         name: "Pinata",
         url: "https://pinata.cloud",
         logo: require("../../../../../assets/pinata.png"),
