@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 echo "🔍 Running TypeScript check..."
 npm run ts-check
+npm run test
 
 HAS_ANDROID=false
 HAS_IOS=false

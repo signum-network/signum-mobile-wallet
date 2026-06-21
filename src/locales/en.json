@@ -172,7 +172,9 @@
       "importAccountAlreadyExists": "This account already exists on your wallet, please go to account settings and use it!",
       "importAccountResolvedAddress": "Account address: {{address}}",
       "importAccountResolvedName": "Account Name: {{name}}",
-      "importAccountResolvedAddressHint": "Please verify the address to make sure you are importing the correct account."
+      "importAccountResolvedAddressHint": "Please verify the address to make sure you are importing the correct account.",
+      "importAccountUseCustomPassphrase": "Custom passphrase",
+      "importAccountCustomPassphraseHint": "Enable this option to enter custom passphrases. Uppercase/lowercase letters and special characters will be kept as entered."
     },
     "walletNameAlreadyUsed": "The wallet name is already being used, please choose another one!",
     "maxAccountsReached": "Maximum number of accounts ({{max}}) reached. Please remove an existing wallet to continue."
@@ -595,7 +597,7 @@
     "backgroundPlaceholder": "QmT5NvUtoM...",
     "backgroundHelper": "IPFS content identifier for your background image",
     "mimeType": "Image Format",
-    "ipfsInstructions": "Upload your image to IPFS using Pinata, NFT.Storage, Storacha, or IPFS Desktop, then paste the CID here. Example: QmT5NvUtoM5nWFfrQdVrFtvGfKFmG7AHE8P34isapyhCxX",
+    "ipfsInstructions": "Upload your image to IPFS using Pinata, NFT.Storage, or IPFS Desktop, then paste the CID here. Example: QmT5NvUtoM5nWFfrQdVrFtvGfKFmG7AHE8P34isapyhCxX",
     "profilePreview": "Profile Preview",
     "confirmUpdate": "Confirm Profile Update",
     "updateSuccess": "Profile Updated!",

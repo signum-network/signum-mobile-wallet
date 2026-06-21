@@ -172,7 +172,9 @@
       "importAccountAlreadyExists": "该账户已存在于你的钱包中，请前往账户设置使用它！",
       "importAccountResolvedAddress": "账户地址：{{address}}",
       "importAccountResolvedName": "账户名称：{{name}}",
-      "importAccountResolvedAddressHint": "请核实地址，确保你导入的是正确的账户。"
+      "importAccountResolvedAddressHint": "请核实地址，确保你导入的是正确的账户。",
+      "importAccountUseCustomPassphrase": "自定义密码短语",
+      "importAccountCustomPassphraseHint": "启用此选项以输入自定义密码短语。大小写字母和特殊字符将被保留。"
     },
     "walletNameAlreadyUsed": "钱包名称已被使用，请选择其他名称！",
     "maxAccountsReached": "已达到最大账户数量 ({{max}})。请删除一个现有钱包后再继续。"
@@ -595,7 +597,7 @@
     "backgroundPlaceholder": "QmT5NvUtoM...",
     "backgroundHelper": "背景图片的 IPFS 内容标识符",
     "mimeType": "Image Format",
-    "ipfsInstructions": "使用 Pinata、NFT.Storage、Storacha 或 IPFS Desktop 将图片上传到 IPFS，然后在此粘贴 CID。示例：QmT5NvUtoM5nWFfrQdVrFtvGfKFmG7AHE8P34isapyhCxX",
+    "ipfsInstructions": "使用 Pinata、NFT.Storage 或 IPFS Desktop 将图片上传到 IPFS，然后在此粘贴 CID。示例：QmT5NvUtoM5nWFfrQdVrFtvGfKFmG7AHE8P34isapyhCxX",
     "profilePreview": "个人资料预览",
     "confirmUpdate": "确认个人资料更新",
     "updateSuccess": "个人资料已更新！",

@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { ScrollView, View } from "react-native";
+import { useEffect, useRef } from "react";
+import { Animated, Easing, ScrollView, View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { router } from "expo-router";
 import { useForm, FormProvider, type SubmitHandler } from "react-hook-form";
@@ -171,6 +171,36 @@ export const ImportScreen = () => {
         }
     };
 
+    // Ensures BIP39 word suggestions below the input is visible
+    const scrollRef = useRef<ScrollView>(null);
+    const scrollY = useRef(0);
+    const seedPhraseY = useRef(0);
+    const scrollAnimation = useRef(new Animated.Value(0)).current;
+    const smoothScrollTo = (targetY: number) => {
+    scrollAnimation.stopAnimation();
+    scrollAnimation.setValue(scrollY.current);
+    const listenerId = scrollAnimation.addListener(({ value }) => {
+        scrollRef.current?.scrollTo({
+        y: value,
+        animated: false,
+        });
+    });
+      // Animate scroll
+    Animated.timing(scrollAnimation, {
+        toValue: targetY,
+        duration: 1000,
+        easing: Easing.out(Easing.cubic),
+        useNativeDriver: false,
+    }).start(() => {
+        scrollAnimation.removeListener(listenerId);
+    });
+    };
+    const scrollToSeedPhrase = () => {
+    setTimeout(() => {
+        smoothScrollTo(Math.max(0, seedPhraseY.current + 190)); // 190 offset to position the seed phrase suggestions above the keyboard.
+    }, 200); // small delay to allow keyboard + layout to settle
+    };
+
     return (
         <FormProvider {...methods}>
             <AppHeader
@@ -179,8 +209,13 @@ export const ImportScreen = () => {
             />
             <KeyboardAnimatedContainer noTabBar={!isAccountEnrolled}>
                 <ScrollView
-                    keyboardDismissMode="on-drag"
-                    keyboardShouldPersistTaps="handled"
+                ref={scrollRef}
+                keyboardDismissMode="on-drag"
+                keyboardShouldPersistTaps="handled"
+                scrollEventThrottle={16}
+                onScroll={(event) => {
+                    scrollY.current = event.nativeEvent.contentOffset.y;
+                }}
                 >
                     <AccountWizardContainer>
                         <View className="flex flex-col items-center justify-center w-full gap-4">
@@ -239,7 +274,13 @@ export const ImportScreen = () => {
                                         expected="seed"
                                         onCodeScanned={onCodeScanned}
                                     />
-                                    <SeedPhraseField />
+                                    <View
+                                        onLayout={(event) => {
+                                        seedPhraseY.current = event.nativeEvent.layout.y;
+                                        }}
+                                    >
+                                        <SeedPhraseField onFocus={scrollToSeedPhrase} />
+                                    </View>
                                 </View>
                             )}
                             {type === AccountType.watchOnly && (

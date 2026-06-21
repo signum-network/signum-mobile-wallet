@@ -172,7 +172,9 @@
       "importAccountAlreadyExists": "Этот аккаунт уже существует в вашем кошельке; перейдите в настройки аккаунта и используйте его",
       "importAccountResolvedAddress": "Адрес аккаунта: {{address}}",
       "importAccountResolvedName": "Имя аккаунта: {{name}}",
-      "importAccountResolvedAddressHint": "Проверьте адрес, чтобы убедиться, что вы импортируете правильный аккаунт."
+      "importAccountResolvedAddressHint": "Проверьте адрес, чтобы убедиться, что вы импортируете правильный аккаунт.",
+      "importAccountUseCustomPassphrase": "Пользовательская фраза-пароль",
+      "importAccountCustomPassphraseHint": "Включите эту опцию, чтобы вводить пользовательские фразы-пароли. Регистр символов и специальные символы будут сохранены."
     },
     "walletNameAlreadyUsed": "Имя кошелька уже используется; выберите другое!",
     "maxAccountsReached": "Достигнуто максимальное количество аккаунтов ({{max}}). Пожалуйста, удалите существующий кошелёк, чтобы продолжить."
@@ -595,7 +597,7 @@
     "backgroundPlaceholder": "QmT5NvUtoM...",
     "backgroundHelper": "Идентификатор содержимого IPFS для фонового изображения",
     "mimeType": "Image Format",
-    "ipfsInstructions": "Загрузите изображение в IPFS с помощью Pinata, NFT.Storage, Storacha или IPFS Desktop, затем вставьте CID здесь. Пример: QmT5NvUtoM5nWFfrQdVrFtvGfKFmG7AHE8P34isapyhCxX",
+    "ipfsInstructions": "Загрузите изображение в IPFS с помощью Pinata, NFT.Storage или IPFS Desktop, затем вставьте CID здесь. Пример: QmT5NvUtoM5nWFfrQdVrFtvGfKFmG7AHE8P34isapyhCxX",
     "profilePreview": "Предпросмотр Профиля",
     "confirmUpdate": "Подтвердить Обновление Профиля",
     "updateSuccess": "Профиль Обновлён!",

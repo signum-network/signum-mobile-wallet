@@ -172,7 +172,9 @@
       "importAccountAlreadyExists": "Esta conta já existe na sua carteira; vá para as configurações da conta e use-a",
       "importAccountResolvedAddress": "Endereço da conta: {{address}}",
       "importAccountResolvedName": "Nome da conta: {{name}}",
-      "importAccountResolvedAddressHint": "Verifique o endereço para ter certeza de que está importando a conta correta."
+      "importAccountResolvedAddressHint": "Verifique o endereço para ter certeza de que está importando a conta correta.",
+      "importAccountUseCustomPassphrase": "Passphrase personalizada",
+      "importAccountCustomPassphraseHint": "Ative esta opção para inserir passphrase personalizadas. Letras maiúsculas/minúsculas e caracteres especiais serão preservados."
     },
     "walletNameAlreadyUsed": "Esse nome de carteira já está em uso; escolha outro!",
     "maxAccountsReached": "Número máximo de contas ({{max}}) atingido. Por favor, remova uma carteira existente para continuar."
@@ -595,7 +597,7 @@
     "backgroundPlaceholder": "QmT5NvUtoM...",
     "backgroundHelper": "Identificador de conteúdo IPFS para sua imagem de fundo",
     "mimeType": "Image Format",
-    "ipfsInstructions": "Envie sua imagem para IPFS usando Pinata, NFT.Storage, Storacha ou IPFS Desktop, depois cole o CID aqui. Exemplo: QmT5NvUtoM5nWFfrQdVrFtvGfKFmG7AHE8P34isapyhCxX",
+    "ipfsInstructions": "Envie sua imagem para IPFS usando Pinata, NFT.Storage ou IPFS Desktop, depois cole o CID aqui. Exemplo: QmT5NvUtoM5nWFfrQdVrFtvGfKFmG7AHE8P34isapyhCxX",
     "profilePreview": "Visualização do Perfil",
     "confirmUpdate": "Confirmar Atualização do Perfil",
     "updateSuccess": "Perfil Atualizado!",

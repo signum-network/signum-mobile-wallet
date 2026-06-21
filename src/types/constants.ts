@@ -47,6 +47,8 @@ export const SECURE_STORE_PIN_KEY = "PIN_KEY";
 
 export const SECURE_STORE_PIN_SALT = "PIN_SALT";
 
+export const SECURE_STORE_AUTH_ATTEMPTS_KEY = "AUTH_ATTEMPTS";
+
 export const PUBLIC_RESERVED_SIGNA_FOR_TX_FEE = 0.5;
 
 export const PUBLIC_BURN_ACCOUNT_ID = "0"
