@@ -1,1 +1,1 @@
-- Updated to SignumJS 3.3.1 which fixes an issue with cashback Id verification (Deeplink Signing Flow).
+- Updated to SignumJS 3.3.2 which fixes an issue with cashback Id verification (Deeplink Signing Flow).

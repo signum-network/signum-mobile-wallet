@@ -1,5 +1,11 @@
 # signum-mobile-wallet
 
+## 2.0.11
+
+### Patch Changes
+
+- Another patch of signumjs - previous was not working
+
 ## 2.0.10
 
 ### Patch Changes
