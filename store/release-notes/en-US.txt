@@ -1,3 +1,1 @@
-- Custom Passphrase Support
-- PIN hardening (from default SHA-1 upgraded to SHA-512)
-- Minro Layout fixes and improvements
+- Updated to SignumJS 3.3.1 which fixes an issue with cashback Id verification (Deeplink Signing Flow).

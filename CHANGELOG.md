@@ -1,5 +1,11 @@
 # signum-mobile-wallet
 
+## 2.0.10
+
+### Patch Changes
+
+- Updated signumjs to 3.3.1
+
 ## 2.0.9
 
 ### Patch Changes
