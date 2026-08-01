@@ -55,7 +55,8 @@ export const ConnectDAppScreen = () => {
             await Linking.openURL(url.toString());
         } catch (error: any) {
             const url = new URL(callbackUrl);
-            url.searchParams.set("status", "success");
+            url.searchParams.set("status", "failed");
+            url.searchParams.set("error", error.message ?? "Unknown error");
             console.error("Failed to connect to dApp:", error);
             alert(t("connectDApp.connectionFailed") + ": " + error.message);
             clearPendingDeepLink()

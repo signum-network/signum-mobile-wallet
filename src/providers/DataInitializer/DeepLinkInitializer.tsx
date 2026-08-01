@@ -74,7 +74,7 @@ export const DeepLinkInitializer = () => {
                 if (!payload) {
                     throw Error(t("deeplink.missingUnsignedTransactionBytes"))
                 }
-                const {unsignedTransactionBytes, network = "", callbackUrl} = payload;
+                const {unsignedTransactionBytes, network = "", callbackUrl, nodeHost = ""} = payload;
                 if (!unsignedTransactionBytes) {
                     throw new Error(t("deeplink.missingUnsignedTransactionBytes"))
                 }
@@ -83,6 +83,11 @@ export const DeepLinkInitializer = () => {
                 }
                 if (!callbackUrl) {
                     throw new Error(t("deeplink.missingCallback"))
+                }
+
+                if(nodeHost){
+                    // assert node host url
+                    new URL(nodeHost);
                 }
 
                 // assert Url
@@ -94,6 +99,7 @@ export const DeepLinkInitializer = () => {
                     params: {
                         transactionBytes: unsignedTransactionBytes,
                         callbackUrl,
+                        nodeHost,
                     },
                 });
                 setRoutingRequested(true);
