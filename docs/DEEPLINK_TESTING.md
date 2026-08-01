@@ -194,6 +194,8 @@ Deploy smart contracts using contract references (CIP templates).
 - Check that account has sufficient balance
 - Verify private keys are accessible in secure storage
 - Ensure transaction deadline hasn't expired
+- Check that account is not watch-only
+- dApp should send a valide node url
 - Check node connection
 
 ### Common Errors
