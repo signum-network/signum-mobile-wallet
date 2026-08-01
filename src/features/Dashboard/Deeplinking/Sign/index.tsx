@@ -86,6 +86,10 @@ export const SignScreen = () => {
     const parseTransaction = async (txb: string) => {
         try {
             if(!ledgerService) throw new Error("Ledger service not initialized")
+
+            // Parsing produces the preview the user confirms, so it MUST run on the wallet's own trusted node.
+            // Never parse on the dApp-provided node - a malicious node could return a spoofed preview while the
+            // actual signed bytes do something else.
             const parsed = await ledgerService?.account.parseTransactionBytes(txb)
             setParsedTx(parsed as Transaction);
             // we are ready to sign now.
