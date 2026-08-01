@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useMemo, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {ScrollView, View, ActivityIndicator, Linking} from "react-native";
 import {useRouter} from "expo-router";
@@ -17,6 +17,7 @@ import {useAppTheme} from "@/hooks/useAppTheme";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {ConfirmationCard} from "@/components/ConfirmationCard";
 import {SigningAccountCard} from "./components/SigningAccountCard";
+import {useLedgerService} from "@/hooks/useLedgerService";
 
 type SignDeeplinkParams = {
     transactionBytes: string;
@@ -42,7 +43,7 @@ export const SignScreen = () => {
     const {currentNetwork, activeNodeHost} = useNodeHostStore();
     const queryClient = useQueryClient();
     const {iconColor} = useAppTheme();
-
+    const {ledgerService} = useLedgerService()
     const [parsedTx, setParsedTx] = useState<Transaction | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isSigning, setIsSigning] = useState(false);
@@ -52,13 +53,6 @@ export const SignScreen = () => {
     const {pendingDeepLink, clearPendingDeepLink} = pendingDeepLinkStore()
     const {transactionBytes, callbackUrl, nodeHost = ""} = pendingDeepLink?.params as SignDeeplinkParams ?? {};
 
-    // Parsing produces the preview the user confirms, so it MUST run on the wallet's own trusted node.
-    // Never parse on the dApp-provided node - a malicious node could return a spoofed preview while the
-    // actual signed bytes do something else.
-    const walletLedger = useMemo(
-        () => LedgerClientFactory.createClient({nodeHost: activeNodeHost.url}),
-        [activeNodeHost.url]
-    );
     // we need to buffer the unsigned bytes, as pendingDeeplink gets wiped upon successful deeplink handling/delivery
     // these are set only on _successfully_ parsed tx.
     const [bufferedDeeplinkParams, setBufferedDeeplinkParams] = useState({
@@ -91,10 +85,8 @@ export const SignScreen = () => {
 
     const parseTransaction = async (txb: string) => {
         try {
-            if (!walletLedger) {
-                throw new Error("Ledger service not available");
-            }
-            const parsed = await walletLedger.transaction.parseTransactionBytes(txb);
+            if(!ledgerService) throw new Error("Ledger service not initialized")
+            const parsed = await ledgerService?.account.parseTransactionBytes(txb)
             setParsedTx(parsed as Transaction);
             // we are ready to sign now.
             setBufferedDeeplinkParams(prev => ({
@@ -123,7 +115,7 @@ export const SignScreen = () => {
     };
 
     const handleSign = useCallback(async () => {
-        if (!parsedTx || !walletLedger || !bufferedDeeplinkParams) return;
+        if (!parsedTx || !bufferedDeeplinkParams) return;
 
         try {
             const {senderPublicKey, sender} = parsedTx;
@@ -178,7 +170,7 @@ export const SignScreen = () => {
         } finally {
             setIsSigning(false);
         }
-    }, [parsedTx, bufferedDeeplinkParams, currentNetwork, activeNodeHost.url, walletLedger]);
+    }, [parsedTx, bufferedDeeplinkParams, currentNetwork, activeNodeHost.url]);
 
     const handleReject = () => {
         const callbackUrl = new URL(bufferedDeeplinkParams.callbackUrl);
