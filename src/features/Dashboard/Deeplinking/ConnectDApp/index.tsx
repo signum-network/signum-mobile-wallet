@@ -11,6 +11,7 @@ import {Image} from "expo-image";
 import {signumBlueSymbolPicture} from "@/assets";
 import {pendingDeepLinkStore} from "@/states/pendingDeepLinkStore";
 import {AccountCardFancy} from "@/components/Account";
+import {useNodeHostStore} from "@/hooks/useNodeHostStore";
 
 type ConnectSearchParams = {
     appName?: string;
@@ -28,6 +29,7 @@ export const ConnectDAppScreen = () => {
     const {t} = useTranslation();
     const router = useRouter();
     const {accounts, activeAccount} = useAccountStore();
+    const {activeNodeHost} = useNodeHostStore();
 
     const walletAccount = useMemo(() => {
         return Object.values(accounts).find(account => account.publicKey === activeAccount);
@@ -49,6 +51,7 @@ export const ConnectDAppScreen = () => {
             // Open callback URL
             const url = new URL(callbackUrl);
             url.searchParams.set("publicKey", activeAccount);
+            url.searchParams.set("nodeHost", activeNodeHost.url);
             url.searchParams.set("status", "success");
             clearPendingDeepLink()
             router.back()
