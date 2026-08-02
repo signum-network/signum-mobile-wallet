@@ -2,9 +2,8 @@ import {useCallback, useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {ScrollView, View, ActivityIndicator, Linking} from "react-native";
 import {useRouter} from "expo-router";
-import {type ChainService, type Transaction, type TransactionId} from "@signumjs/core";
+import {type Transaction, LedgerClientFactory} from "@signumjs/core";
 import {useQueryClient} from "@tanstack/react-query";
-import {useLedgerService} from "@/hooks/useLedgerService";
 import {SigningDialog} from "@/components/SigningDialog";
 import {Text} from "@/components/Text";
 import {Card} from "@/components/Card";
@@ -18,11 +17,12 @@ import {useAppTheme} from "@/hooks/useAppTheme";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import {ConfirmationCard} from "@/components/ConfirmationCard";
 import {SigningAccountCard} from "./components/SigningAccountCard";
-import {generateSignature, generateSignedTransactionBytes, verifySignature} from "@signumjs/crypto";
+import {useLedgerService} from "@/hooks/useLedgerService";
 
 type SignDeeplinkParams = {
     transactionBytes: string;
     callbackUrl: string;
+    nodeHost: string;
 }
 
 type SignError = {
@@ -31,47 +31,19 @@ type SignError = {
     detail?: string;
 }
 
-
 function redirectToDApp(callbackUrl: URL) {
     const urlString = callbackUrl.toString();
     console.log("[DL-SIGNING] Redirecting to dApp...", urlString);
     return Linking.openURL(urlString);
 }
 
-interface SigningArgs {
-    chainService: ChainService;
-    unsignedTransactionBytes: string;
-    senderPublicKey: string;
-    senderPrivateKey: string;
-}
-
-// We need to reimplement the signAndBroadcast method, as there's a gap in signumjs:
-// signAndBroadcastTransaction in SignumJS does not support skipping additional security checks :eyes
-// PROBLEM: The additional security check also checks against the cashbackId, which is a problem on mobile deep linking
-// A dApp might use Node A, while the wallet might use Node B, and the cashbackId might be different on each node.
-// The signing would fail then. However, it's not transparent to the wallet user a) why and b) even if so, which node to choose.
-// As we don't have birdirectional communication like in XT Wallet we cannot switch the nodes in the dApp.
-// The only way to solve this is to implement a custom signAndBroadcast method, which does not check against the cashbackId.
-// This is a workaround until the signumjs team implements this feature.
-async function signAndBroadcastTransaction(args: SigningArgs) {
-    const {chainService, unsignedTransactionBytes, senderPrivateKey, senderPublicKey}  = args
-    const signature = generateSignature(unsignedTransactionBytes, senderPrivateKey);
-    const isValid = verifySignature(signature, unsignedTransactionBytes, senderPublicKey);
-    if (!isValid) {
-        throw new Error('The signed message could not be verified! Transaction not broadcasted!');
-    }
-    const signedTransactionBytes = generateSignedTransactionBytes(unsignedTransactionBytes, signature);
-    return chainService.send<TransactionId>('broadcastTransaction', {transactionBytes: signedTransactionBytes, skipAdditionalSecurityCheck: true});
-}
-
 export const SignScreen = () => {
     const {t} = useTranslation();
     const router = useRouter();
-    const {ledgerService} = useLedgerService();
-    const {currentNetwork} = useNodeHostStore();
+    const {currentNetwork, activeNodeHost} = useNodeHostStore();
     const queryClient = useQueryClient();
     const {iconColor} = useAppTheme();
-
+    const {ledgerService} = useLedgerService()
     const [parsedTx, setParsedTx] = useState<Transaction | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isSigning, setIsSigning] = useState(false);
@@ -79,12 +51,13 @@ export const SignScreen = () => {
     const [transactionId, setTransactionId] = useState("");
     const [error, setError] = useState<SignError | null>(null);
     const {pendingDeepLink, clearPendingDeepLink} = pendingDeepLinkStore()
-    const {transactionBytes, callbackUrl} = pendingDeepLink?.params as SignDeeplinkParams ?? {};
+    const {transactionBytes, callbackUrl, nodeHost = ""} = pendingDeepLink?.params as SignDeeplinkParams ?? {};
 
     // we need to buffer the unsigned bytes, as pendingDeeplink gets wiped upon successful deeplink handling/delivery
     // these are set only on _successfully_ parsed tx.
     const [bufferedDeeplinkParams, setBufferedDeeplinkParams] = useState({
         transactionBytes: "",
+        nodeHost,
         callbackUrl
     });
 
@@ -104,17 +77,20 @@ export const SignScreen = () => {
         setTransactionId("");
         setBufferedDeeplinkParams({
             transactionBytes: "",
-            callbackUrl: ""
+            callbackUrl: "",
+            nodeHost: ""
         });
         setError(null);
     }
 
     const parseTransaction = async (txb: string) => {
         try {
-            if (!ledgerService) {
-                throw new Error("Ledger service not available");
-            }
-            const parsed = await ledgerService.account.parseTransactionBytes(txb);
+            if(!ledgerService) throw new Error("Ledger service not initialized")
+
+            // Parsing produces the preview the user confirms, so it MUST run on the wallet's own trusted node.
+            // Never parse on the dApp-provided node - a malicious node could return a spoofed preview while the
+            // actual signed bytes do something else.
+            const parsed = await ledgerService?.account.parseTransactionBytes(txb)
             setParsedTx(parsed as Transaction);
             // we are ready to sign now.
             setBufferedDeeplinkParams(prev => ({
@@ -135,14 +111,15 @@ export const SignScreen = () => {
         }
     };
 
-    const sendFailedCallback = () => {
+    const sendFailedCallback = (errorMsg: string) => {
         const callbackUrl = new URL(bufferedDeeplinkParams.callbackUrl);
         callbackUrl.searchParams.set("status", 'failed');
+        callbackUrl.searchParams.set("error", errorMsg ?? "Unknown error");
         redirectToDApp(callbackUrl);
     };
 
     const handleSign = useCallback(async () => {
-        if (!parsedTx || !ledgerService || !bufferedDeeplinkParams) return;
+        if (!parsedTx || !bufferedDeeplinkParams) return;
 
         try {
             const {senderPublicKey, sender} = parsedTx;
@@ -150,17 +127,23 @@ export const SignScreen = () => {
             const secretKeys = await readSecretKey(senderPublicKey);
             if (!secretKeys) {
                 setError({messageKey: "sign.errors.unknownSigner"});
-                sendFailedCallback();
+                sendFailedCallback("Unknown signer");
                 return;
             }
 
             setIsSigning(true);
             const {signPrivateKey: senderPrivateKey} = secretKeys;
-            const confirmation = await signAndBroadcastTransaction({
-                unsignedTransactionBytes: bufferedDeeplinkParams.transactionBytes,
+            // Broadcast on the dApp's originating node (if provided) so the cashbackId - which is baked
+            // into the unsigned bytes on that node - is accepted; the node rejects a foreign cashbackId.
+            // Fall back to the wallet's node when the dApp did not send one.
+            const broadcastNodeHost = bufferedDeeplinkParams.nodeHost || activeNodeHost.url;
+            console.log("[DL-SIGNING] Broadcasting via node:", broadcastNodeHost);
+            const broadcastLedger = LedgerClientFactory.createClient({nodeHost: broadcastNodeHost});
+
+            const confirmation = await broadcastLedger.transaction.signAndBroadcastTransaction({
+                unsignedHexMessage: bufferedDeeplinkParams.transactionBytes,
                 senderPrivateKey,
                 senderPublicKey,
-                chainService: ledgerService.ledgerInstance.service
             })
 
             console.log("[DL-SIGNING] Transaction successfully signed...", confirmation.transaction);
@@ -187,11 +170,11 @@ export const SignScreen = () => {
                 messageKey: "sign.errors.signingFailed",
                 detail: err?.message || String(err),
             });
-            sendFailedCallback();
+            sendFailedCallback(err?.message ?? "Unknown error");
         } finally {
             setIsSigning(false);
         }
-    }, [parsedTx, bufferedDeeplinkParams, currentNetwork]);
+    }, [parsedTx, bufferedDeeplinkParams, currentNetwork, activeNodeHost.url]);
 
     const handleReject = () => {
         const callbackUrl = new URL(bufferedDeeplinkParams.callbackUrl);
@@ -203,58 +186,58 @@ export const SignScreen = () => {
 
     if (isLoading) {
         return (
-                <ScrollView className="flex-1 p-4" contentContainerClassName="justify-center">
-                    <Card>
-                        <View className="items-center gap-4 py-6 w-full">
-                            <ActivityIndicator size="large" color={iconColor.primary}/>
-                            <View className="gap-2">
-                                <Text className="text-center text-lg font-semibold">
-                                    {t("sign.loadingTitle")}
-                                </Text>
-                                <Text className="text-center opacity-70">
-                                    {t("sign.loadingDescription")}
-                                </Text>
-                            </View>
+            <ScrollView className="flex-1 p-4" contentContainerClassName="justify-center">
+                <Card>
+                    <View className="items-center gap-4 py-6 w-full">
+                        <ActivityIndicator size="large" color={iconColor.primary}/>
+                        <View className="gap-2">
+                            <Text className="text-center text-lg font-semibold">
+                                {t("sign.loadingTitle")}
+                            </Text>
+                            <Text className="text-center opacity-70">
+                                {t("sign.loadingDescription")}
+                            </Text>
                         </View>
-                    </Card>
-                </ScrollView>
+                    </View>
+                </Card>
+            </ScrollView>
         );
     }
 
     if (error || !parsedTx) {
         return (
-                <ScrollView className="flex-1 p-4" contentContainerClassName="justify-center">
-                    <Card>
-                        <View className="items-center gap-6 py-6 w-full">
-                            <View className="items-center gap-3 w-full">
-                                <Ionicons
-                                    name="alert-circle-outline"
-                                    size={64}
-                                    color="#ef4444"
-                                />
-                                <View className="gap-2">
-                                    <Text className="text-center text-lg font-semibold">
-                                        {t("sign.errorTitle")}
-                                    </Text>
-                                    <Text className="text-center opacity-70">
-                                        {error ? t(error.messageKey, error.values) : t("sign.errors.parseFailed")}
-                                    </Text>
-                                    {error?.detail && (
-                                        <Text size="small" className="text-center italic opacity-50">
-                                            {error.detail}
-                                        </Text>
-                                    )}
-                                </View>
-                            </View>
-                            <Button
-                                type="blackout"
-                                title={t("sign.errorGoBack")}
-                                pressableProps={{onPress: () => router.back()}}
-                                fullWidth
+            <ScrollView className="flex-1 p-4" contentContainerClassName="justify-center">
+                <Card>
+                    <View className="items-center gap-6 py-6 w-full">
+                        <View className="items-center gap-3 w-full">
+                            <Ionicons
+                                name="alert-circle-outline"
+                                size={64}
+                                color="#ef4444"
                             />
+                            <View className="gap-2">
+                                <Text className="text-center text-lg font-semibold">
+                                    {t("sign.errorTitle")}
+                                </Text>
+                                <Text className="text-center opacity-70">
+                                    {error ? t(error.messageKey, error.values) : t("sign.errors.parseFailed")}
+                                </Text>
+                                {error?.detail && (
+                                    <Text size="small" className="text-center italic opacity-50">
+                                        {error.detail}
+                                    </Text>
+                                )}
+                            </View>
                         </View>
-                    </Card>
-                </ScrollView>
+                        <Button
+                            type="blackout"
+                            title={t("sign.errorGoBack")}
+                            pressableProps={{onPress: () => router.back()}}
+                            fullWidth
+                        />
+                    </View>
+                </Card>
+            </ScrollView>
         )
     }
 

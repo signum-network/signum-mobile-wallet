@@ -106,9 +106,11 @@ window.location.href = deeplink;
 
 When successfully connected, the wallet will redirect to the callback URL with the following query parameters:
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `publicKey` | string | User's public key (64 hex characters) |
+| Parameter   | Type                          | Description                                                            |
+|-------------|-------------------------------|------------------------------------------------------------------------|
+| `publicKey` | string                        | User's public key (64 hex characters)                                  |
+| `status`    | `success`,`failed`,`rejected` | Status of signing                                                      |
+| `error`     | string                        | (Optional) If `status = 'failed'` you will have the error message here |
 
 > It's recommended to store this public key in the local or session storage, such that the connection status is available throughout the dApp's lifecycle.
 
@@ -151,17 +153,19 @@ signum://v1?action=sign&payload=<base64_encoded_json>
 {
    "unsignedTransactionBytes": "001046...", 
    "network": "testnet" // optional: "mainnet" or "testnet"
-   "callbackUrl": ""
+   "callbackUrl": "",
+   "nodeHostUrl": "https://your-node.com"
 }
 ```
 
 ### Required Fields
 
-| Field                      | Type | Description                                      |
-|----------------------------|------|--------------------------------------------------|
-| `unsignedTransactionBytes` | string | Unsigned transaction in hex format               |
-| `network`                  | string | Optional. Must match wallet's current network    |
-| `callbackUrl`              | string | The dApps callback url to provide signing status |
+| Field                      | Type | Description                                                      |
+|----------------------------|------|------------------------------------------------------------------|
+| `unsignedTransactionBytes` | string | Unsigned transaction in hex format                               |
+| `network`                  | string | Optional. Must match wallet's current network                    |
+| `callbackUrl`              | string | The dApps callback url to provide signing status                 |
+| `nodeHostUrl`              | string | The dApps nodehost url used for generating the unsigned tx bytes |
 
 ### Example
 
@@ -187,7 +191,8 @@ const signLink = src22.createDeeplink({
   payload: {
       unsignedTransactionBytes: unsigned.unsignedTransactionBytes, 
       network: 'testnet', 
-      callbackUrl: "https://mydapp.com?action=sign"
+      callbackUrl: "https://mydapp.com?action=sign",
+     nodeHostUrl: ledger.service.settings.nodeHost
   }
 });
 
@@ -220,10 +225,11 @@ window.location.href = signLink;
 
 When successfully connected, the wallet will redirect to the callback URL with the following query parameters:
 
-| Parameter       | Type                          | Description                                         |
-|-----------------|-------------------------------|-----------------------------------------------------|
-| `status`        | `success`,`failed`,`rejected` | Status of signing                                   |
-| `transactionId` | string                        | Iff status is `success` a transactionId is provided |
+| Parameter       | Type                          | Description                                                             |
+|-----------------|-------------------------------|-------------------------------------------------------------------------|
+| `transactionId` | string                        | Iff status is `success` a transactionId is provided                     |
+| `status`        | `success`,`failed`,`rejected` | Status of signing                                                       |
+| `error`         | string                        | (Optional) Iff `status = 'failed'` you will have the error message here |
 
 > It's recommended to store this public key in the local or session storage, such that the connection status is available throughout the dApp's lifecycle.
 
@@ -384,7 +390,8 @@ async function sendPayment(recipient, amount) {
     payload: {
        unsignedTransactionBytes: unsigned.unsignedTransactionBytes, 
        callbackUrl: `${window.location.origin}/callback-sign`,
-       network: 'testnet'
+       network: 'testnet',
+       nodeHostUrl: ledger.service.settings.nodeHost
     }
   });
 
@@ -606,5 +613,5 @@ Transaction Signing / Callback Redirect
 **Transaction keeps failing:**
 - Verify account has sufficient balance
 - Check network is correct (mainnet vs testnet)
-- Verify transaction bytes are from same network as wallet
+- Verify transaction bytes are from same node as wallet
 - Try creating transaction again with fresh data

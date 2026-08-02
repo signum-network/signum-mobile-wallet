@@ -433,7 +433,8 @@
                 payload: {
                     unsignedTransactionBytes: unsignedTx.unsignedTransactionBytes,
                     network: currentNetwork,
-                    callbackUrl
+                    callbackUrl,
+                    nodeHost: ledgerService.service.settings.nodeHost
                 }
             });
 

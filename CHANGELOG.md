@@ -1,5 +1,11 @@
 # signum-mobile-wallet
 
+## 2.0.12
+
+### Patch Changes
+
+- Extended Deeplinking protocol by dApp node host url
+
 ## 2.0.11
 
 ### Patch Changes
