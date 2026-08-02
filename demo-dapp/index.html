@@ -344,11 +344,12 @@
 
     function updateNetwork() {
         currentNetwork = document.getElementById('networkSelect').value;
+        const walletNodeHost = localStorage.getItem('nodeHost');
 
         if (currentNetwork === 'testnet') {
-            document.getElementById('nodeHost').value = 'https://europe3.testnet.signum.network';
+            document.getElementById('nodeHost').value = walletNodeHost || 'https://europe3.testnet.signum.network';
         } else {
-            document.getElementById('nodeHost').value = 'https://europe.signum.network';
+            document.getElementById('nodeHost').value = walletNodeHost || 'https://europe.signum.network';
         }
 
         initializeLedger();
@@ -459,8 +460,11 @@
         if (action === 'connected') {
             // Handle connect callback
             const publicKey = params.get('publicKey').toLowerCase();
+            const nodeHost = params.get('nodeHost').toLowerCase();
+
             if (publicKey) {
                 localStorage.setItem('publicKey', publicKey);
+                localStorage.setItem('nodeHost', nodeHost);
                 updateUI();
                 // Clean URL
                 window.history.replaceState({}, document.title, window.location.pathname);
@@ -481,11 +485,15 @@
         const walletInfoEl = document.getElementById('walletInfo');
         const sendBtn = document.getElementById('sendBtn');
         const disconnectBtn = document.getElementById('disconnectBtn');
+        const nodeHostEl = document.getElementById('nodeHost');
 
         if (connectedWallet) {
             statusEl.className = 'status connected';
             statusEl.innerHTML = '✅ Connected to Wallet';
-
+            const walletNodeHost = localStorage.getItem('nodeHost');
+            if (walletNodeHost) {
+                nodeHostEl.value = walletNodeHost;
+            }
             walletInfoEl.style.display = 'block';
             walletInfoEl.innerHTML = `
                     <div><strong>Address:</strong> <code>${connectedWallet.accountRS}</code></div>
