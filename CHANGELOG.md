@@ -1,5 +1,11 @@
 # signum-mobile-wallet
 
+## 2.0.13
+
+### Patch Changes
+
+- DL - Connect Callback provides 'nodeHost' now
+
 ## 2.0.12
 
 ### Patch Changes

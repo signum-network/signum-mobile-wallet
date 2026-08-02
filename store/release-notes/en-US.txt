@@ -1,2 +1,1 @@
-- Extended Deeplink (DL) Signing Flow parameters by 'nodeHostUrl'
-- Failed DL operations return error message now
+- Connect callback on Deeplinking provides the wallets active node host url now

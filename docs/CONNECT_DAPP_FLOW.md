@@ -109,6 +109,7 @@ When successfully connected, the wallet will redirect to the callback URL with t
 | Parameter   | Type                          | Description                                                            |
 |-------------|-------------------------------|------------------------------------------------------------------------|
 | `publicKey` | string                        | User's public key (64 hex characters)                                  |
+| `nodeHost`  | string                        | The wallet's selected node host url (bring your own node)              |
 | `status`    | `success`,`failed`,`rejected` | Status of signing                                                      |
 | `error`     | string                        | (Optional) If `status = 'failed'` you will have the error message here |
 
